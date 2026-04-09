@@ -10,8 +10,12 @@ const styles = {
   busy: "bg-slate-200 text-slate-700",
   "on site": "bg-emerald-100 text-emerald-700",
   "in transit": "bg-blue-100 text-blue-700",
+  "off shift": "bg-slate-100 text-slate-700",
   "in stock": "bg-emerald-100 text-emerald-700",
-  "low stock": "bg-amber-100 text-amber-700"
+  "low stock": "bg-amber-100 text-amber-700",
+  limited: "bg-amber-100 text-amber-700",
+  preorder: "bg-blue-100 text-blue-700",
+  "out of stock": "bg-rose-100 text-rose-700"
 };
 
 export default function StatusBadge({ value }) {

@@ -43,7 +43,7 @@ export default function TasksPage() {
       />
 
       <div className="overflow-hidden rounded-[28px] border border-white/60">
-        <div className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] bg-white/70 px-5 py-4 text-xs uppercase tracking-[0.2em] text-slate-400">
+        <div className="hidden grid-cols-[1.4fr_1fr_1fr_0.9fr] bg-white/70 px-5 py-4 text-xs uppercase tracking-[0.2em] text-slate-400 md:grid">
           <span>Task</span>
           <span>{t("common.location")}</span>
           <span>{user.role === "admin" ? t("common.assignedTo") : t("common.date")}</span>
@@ -52,7 +52,7 @@ export default function TasksPage() {
 
         <div className="divide-y divide-white/60">
           {scopedTasks.map((task) => (
-            <div key={task.id} className="grid grid-cols-[1.4fr_1fr_1fr_0.9fr] items-center gap-4 bg-white/55 px-5 py-4">
+            <div key={task.id} className="bg-white/55 px-4 py-4 md:grid md:grid-cols-[1.4fr_1fr_1fr_0.9fr] md:items-center md:gap-4 md:px-5">
               <div className="flex items-center gap-3">
                 <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
                   <ClipboardList size={16} />
@@ -62,9 +62,18 @@ export default function TasksPage() {
                   <p className="text-xs text-slate-400">{task.priority} priority</p>
                 </div>
               </div>
-              <p className="text-sm text-slate-500">{task.location}</p>
-              <p className="text-sm text-slate-500">{user.role === "admin" ? task.assignee : task.date}</p>
-              <div className="flex items-center gap-3">
+              <div className="mt-3 grid gap-2 text-sm text-slate-500 md:mt-0 md:block">
+                <p className="md:hidden">
+                  <span className="text-slate-400">{t("common.location")}:</span> {task.location}
+                </p>
+                <p className="md:hidden">
+                  <span className="text-slate-400">{user.role === "admin" ? t("common.assignedTo") : t("common.date")}:</span>{" "}
+                  {user.role === "admin" ? task.assignee : task.date}
+                </p>
+                <p className="hidden md:block">{task.location}</p>
+              </div>
+              <p className="hidden text-sm text-slate-500 md:block">{user.role === "admin" ? task.assignee : task.date}</p>
+              <div className="mt-3 flex items-center gap-3 md:mt-0">
                 <StatusBadge value={task.status} />
                 {user.role === "employee" ? (
                   <button onClick={() => toggleTaskStatus(task.id)} className="text-xs text-brand-700">

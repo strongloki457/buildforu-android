@@ -10,9 +10,9 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
   const { t } = useI18n();
 
   return (
-    <header className="glass-nav sticky top-4 z-20 rounded-[28px] p-4">
+    <header className="glass-nav sticky top-4 z-20 rounded-[24px] p-3 sm:rounded-[28px] sm:p-4">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={onMenuOpen}
             className="rounded-2xl bg-slate-900 px-3 py-3 text-white lg:hidden"
@@ -22,10 +22,10 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
 
           <div className="min-w-0 flex-1">
             <p className="text-xs uppercase tracking-[0.25em] text-brand-600">{t("common.welcomeBack")}</p>
-            <h1 className="truncate text-2xl text-slate-900">{pageTitle}</h1>
+            <h1 className="truncate text-xl text-slate-900 sm:text-2xl">{pageTitle}</h1>
           </div>
 
-          <div className="relative hidden flex-1 md:block">
+          <div className="relative hidden min-w-[220px] flex-1 md:block">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               placeholder={t("common.search")}
@@ -60,6 +60,14 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
           </div>
 
           <UserMenu />
+        </div>
+
+        <div className="relative md:hidden">
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            placeholder={t("common.search")}
+            className="w-full rounded-2xl border border-white/70 bg-white/80 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-brand-300"
+          />
         </div>
 
         <nav className="hidden gap-2 overflow-x-auto pb-1 lg:flex">

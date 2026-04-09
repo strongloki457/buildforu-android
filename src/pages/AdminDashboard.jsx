@@ -30,11 +30,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <section className="glass-panel rounded-[32px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-8 text-white">
+      <section className="glass-panel rounded-[28px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-6 text-white sm:rounded-[32px] sm:p-8">
         <p className="text-sm uppercase tracking-[0.3em] text-white/60">{t("dashboard.activeProjects")}</p>
         <div className="mt-4 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <h2 className="text-4xl">{t("dashboard.adminTitle")}</h2>
+            <h2 className="text-3xl sm:text-4xl">{t("dashboard.adminTitle")}</h2>
             <p className="mt-3 max-w-2xl text-white/70">
               Today’s operation board surfaces workforce coverage, task pressure, live schedules and delivery health in one streamlined view.
             </p>

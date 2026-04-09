@@ -29,6 +29,7 @@ function getCalendarCells(tasks) {
 
 export default function CalendarCard({ title, subtitle, tasks }) {
   const cells = getCalendarCells(tasks);
+  const upcomingTasks = [...tasks].sort((left, right) => left.date.localeCompare(right.date)).slice(0, 6);
 
   return (
     <Card>
@@ -43,7 +44,27 @@ export default function CalendarCard({ title, subtitle, tasks }) {
         }
       />
 
-      <div className="grid grid-cols-7 gap-2">
+      <div className="space-y-4 md:hidden">
+        {upcomingTasks.length ? (
+          upcomingTasks.map((task) => (
+            <div key={task.id} className="rounded-[24px] border border-white/70 bg-white/75 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-base text-slate-900">{task.title}</p>
+                  <p className="mt-2 text-sm text-slate-500">{task.location}</p>
+                </div>
+                <span className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">{task.date}</span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/50 p-6 text-sm text-slate-500">
+            No scheduled items for this month.
+          </div>
+        )}
+      </div>
+
+      <div className="hidden grid-cols-7 gap-2 md:grid">
         {dayLabels.map((day) => (
           <div key={day} className="px-2 py-3 text-center text-xs uppercase tracking-[0.2em] text-slate-400">
             {day}

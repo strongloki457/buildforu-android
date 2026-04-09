@@ -13,7 +13,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
       />
 
       <aside
-        className={`fixed left-0 top-0 z-40 flex h-full w-[300px] flex-col border-r border-white/40 bg-slate-950/90 p-6 text-white transition duration-300 lg:sticky lg:z-10 lg:w-full lg:translate-x-0 lg:rounded-[32px] ${
+        className={`fixed left-0 top-0 z-40 flex h-full w-[88vw] max-w-[320px] flex-col overflow-y-auto border-r border-white/40 bg-slate-950/95 p-5 text-white transition duration-300 sm:w-[300px] sm:p-6 lg:sticky lg:z-10 lg:w-full lg:max-w-none lg:translate-x-0 lg:rounded-[32px] ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -43,7 +43,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
           </div>
         </div>
 
-        <nav className="mt-8 space-y-2">
+        <nav className="mt-8 space-y-2 pb-6">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -52,7 +52,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition ${
+                  `flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm transition ${
                     isActive
                       ? "bg-gradient-to-r from-brand-700 to-brand-500 text-white"
                       : "text-white/70 hover:bg-white/8 hover:text-white"

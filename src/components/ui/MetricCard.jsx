@@ -12,10 +12,10 @@ export default function MetricCard({ icon: Icon, label, value, tone = "default",
       <div className="flex items-start justify-between">
         <div>
           <p className={`text-sm ${tone === "dark" ? "text-white/70" : "text-slate-500"}`}>{label}</p>
-          <p className={`mt-2 text-3xl ${tone === "dark" ? "text-white" : "text-slate-900"}`}>{value}</p>
+          <p className={`mt-2 text-2xl sm:text-3xl ${tone === "dark" ? "text-white" : "text-slate-900"}`}>{value}</p>
         </div>
         <div
-          className={`rounded-2xl p-3 ${
+          className={`rounded-2xl p-2.5 sm:p-3 ${
             tone === "dark" ? "bg-white/10 text-white" : "bg-brand-100 text-brand-700"
           }`}
         >

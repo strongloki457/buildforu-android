@@ -12,16 +12,24 @@ import {
 export const AppDataContext = createContext(null);
 
 function buildWorkerRecord(worker, currentWorker) {
+  const assignedProject =
+    worker.assignedProject?.trim() ||
+    currentWorker?.assignedProject ||
+    currentWorker?.location ||
+    "Unassigned";
+  const position = worker.position?.trim() || currentWorker?.position || currentWorker?.trade || "";
+
   return {
     id: currentWorker?.id ?? `worker-${Date.now()}`,
     name: worker.name.trim(),
     email: worker.email.trim(),
     phone: worker.phone.trim(),
-    position: worker.position.trim(),
-    trade: worker.position.trim(),
-    location: currentWorker?.location ?? "Unassigned",
-    status: currentWorker?.status ?? "Available",
-    availability: currentWorker?.availability ?? "Available",
+    position,
+    trade: position,
+    assignedProject,
+    location: assignedProject,
+    status: worker.status?.trim() || currentWorker?.status || "On site",
+    availability: worker.availability?.trim() || currentWorker?.availability || "Available",
     completionRate: currentWorker?.completionRate ?? 0,
     nextShift: currentWorker?.nextShift ?? "Not scheduled"
   };
