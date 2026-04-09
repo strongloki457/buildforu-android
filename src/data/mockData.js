@@ -100,6 +100,9 @@ export const mockWorkers = [
   {
     id: "u-employee-1",
     name: "Alex Novak",
+    email: "alex@buildforu.com",
+    phone: "+49 151 555 0131",
+    position: "Site Supervisor",
     trade: "Site Supervisor",
     location: "North River Residences",
     status: "On site",
@@ -110,6 +113,9 @@ export const mockWorkers = [
   {
     id: "u-employee-2",
     name: "Mia Berger",
+    email: "mia@buildforu.com",
+    phone: "+49 151 555 0182",
+    position: "Electrician",
     trade: "Electrician",
     location: "Skyline Offices",
     status: "In transit",
@@ -120,6 +126,9 @@ export const mockWorkers = [
   {
     id: "u-employee-3",
     name: "Luca Moretti",
+    email: "luca@buildforu.com",
+    phone: "+49 151 555 0197",
+    position: "Plumbing Lead",
     trade: "Plumbing Lead",
     location: "Harbor Villas",
     status: "On site",

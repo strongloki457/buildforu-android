@@ -11,9 +11,26 @@ import {
 
 export const AppDataContext = createContext(null);
 
+function buildWorkerRecord(worker, currentWorker) {
+  return {
+    id: currentWorker?.id ?? `worker-${Date.now()}`,
+    name: worker.name.trim(),
+    email: worker.email.trim(),
+    phone: worker.phone.trim(),
+    position: worker.position.trim(),
+    trade: worker.position.trim(),
+    location: currentWorker?.location ?? "Unassigned",
+    status: currentWorker?.status ?? "Available",
+    availability: currentWorker?.availability ?? "Available",
+    completionRate: currentWorker?.completionRate ?? 0,
+    nextShift: currentWorker?.nextShift ?? "Not scheduled"
+  };
+}
+
 export function AppDataProvider({ children }) {
   const [tasks, setTasks] = useState(mockTasks);
   const [threads, setThreads] = useState(mockThreads);
+  const [workers, setWorkers] = useState(mockWorkers);
 
   const addTask = ({ employeeId, assignee, title, location, date }) => {
     const newTask = {
@@ -74,20 +91,50 @@ export function AppDataProvider({ children }) {
     );
   };
 
+  const addWorker = (worker) => {
+    const newWorker = buildWorkerRecord(worker);
+    setWorkers((currentWorkers) => [newWorker, ...currentWorkers]);
+    return newWorker;
+  };
+
+  const updateWorker = (workerId, updates) => {
+    let updatedWorker = null;
+
+    setWorkers((currentWorkers) =>
+      currentWorkers.map((worker) => {
+        if (worker.id !== workerId) {
+          return worker;
+        }
+
+        updatedWorker = buildWorkerRecord(updates, worker);
+        return updatedWorker;
+      })
+    );
+
+    return updatedWorker;
+  };
+
+  const deleteWorker = (workerId) => {
+    setWorkers((currentWorkers) => currentWorkers.filter((worker) => worker.id !== workerId));
+  };
+
   const value = useMemo(
     () => ({
       tasks,
       threads,
-      workers: mockWorkers,
+      workers,
       projects: mockProjects,
       materials: mockMaterials,
       finance: mockFinance,
       notifications: mockNotifications,
       addTask,
+      addWorker,
+      updateWorker,
+      deleteWorker,
       toggleTaskStatus,
       sendMessage
     }),
-    [tasks, threads]
+    [tasks, threads, workers]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

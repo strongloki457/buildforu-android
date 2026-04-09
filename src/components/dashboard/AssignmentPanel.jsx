@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
@@ -15,8 +15,19 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign }) 
     setForm((current) => ({ ...current, [key]: value }));
   };
 
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      employeeId: workers.some((worker) => worker.id === current.employeeId) ? current.employeeId : workers[0]?.id ?? ""
+    }));
+  }, [workers]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!form.employeeId) {
+      return;
+    }
+
     const assignee = workers.find((worker) => worker.id === form.employeeId);
 
     onAssign({
@@ -39,13 +50,18 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign }) 
         <select
           value={form.employeeId}
           onChange={(event) => handleChange("employeeId", event.target.value)}
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3 text-sm outline-none"
+          disabled={!workers.length}
+          className="rounded-2xl border border-white/70 bg-white px-4 py-3 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
         >
-          {workers.map((worker) => (
-            <option key={worker.id} value={worker.id}>
-              {worker.name} · {worker.trade}
-            </option>
-          ))}
+          {workers.length ? (
+            workers.map((worker) => (
+              <option key={worker.id} value={worker.id}>
+                {worker.name} · {worker.trade}
+              </option>
+            ))
+          ) : (
+            <option value="">Add a worker to assign tasks</option>
+          )}
         </select>
 
         <input
@@ -69,7 +85,7 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign }) 
           className="rounded-2xl border border-white/70 bg-white px-4 py-3 text-sm outline-none"
         />
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full disabled:cursor-not-allowed disabled:opacity-60" disabled={!workers.length}>
           Assign task
         </Button>
       </form>

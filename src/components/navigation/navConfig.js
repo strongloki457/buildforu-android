@@ -3,6 +3,7 @@ import {
   ClipboardList,
   FolderKanban,
   LayoutDashboard,
+  Map,
   MessageSquare,
   Package,
   Settings,
@@ -13,6 +14,7 @@ import {
 const registry = {
   dashboard: LayoutDashboard,
   workers: Users2,
+  marketMap: Map,
   projects: FolderKanban,
   materials: Package,
   calendar: CalendarDays,
@@ -22,10 +24,20 @@ const registry = {
   settings: Settings
 };
 
-const employeeItems = ["dashboard", "calendar", "tasks", "chat", "settings"];
+const pathRegistry = {
+  dashboard: "/dashboard",
+  marketMap: "/market-map"
+};
+
+const fallbackLabels = {
+  marketMap: "Market Map"
+};
+
+const employeeItems = ["dashboard", "calendar", "tasks", "marketMap", "chat", "settings"];
 const adminItems = [
   "dashboard",
   "workers",
+  "marketMap",
   "projects",
   "calendar",
   "materials",
@@ -39,8 +51,8 @@ export function getNavigation(role, t) {
 
   return keys.map((key) => ({
     key,
-    label: t(`nav.${key}`),
-    path: key === "dashboard" ? "/dashboard" : `/${key}`,
+    label: t(`nav.${key}`, fallbackLabels[key] ?? key),
+    path: pathRegistry[key] ?? `/${key}`,
     icon: registry[key]
   }));
 }

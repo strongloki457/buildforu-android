@@ -9,6 +9,7 @@ import ChatPage from "./pages/ChatPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import FinancePage from "./pages/FinancePage";
 import LoginPage from "./pages/LoginPage";
+import MarketMapPage from "./pages/MarketMapPage";
 import MaterialsPage from "./pages/MaterialsPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/market-map" element={<MarketMapPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route
             path="/workers"
