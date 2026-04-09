@@ -1,0 +1,44 @@
+<svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="42" y1="28" x2="236" y2="246" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17733B" />
+      <stop offset="0.52" stop-color="#2FAF5A" />
+      <stop offset="1" stop-color="#6DDB75" />
+    </linearGradient>
+    <linearGradient id="bars" x1="140" y1="66" x2="140" y2="172" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBFFFB" stop-opacity="0.98" />
+      <stop offset="1" stop-color="#B8F7C0" stop-opacity="0.94" />
+    </linearGradient>
+  </defs>
+
+  <rect x="18" y="18" width="244" height="244" rx="60" fill="url(#bg)" />
+  <path
+    d="M81 110L140 57L199 110"
+    stroke="white"
+    stroke-width="20"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M98 182V118L140 85L182 118V182"
+    stroke="white"
+    stroke-width="18"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <rect x="116" y="144" width="16" height="38" rx="4.2" fill="url(#bars)" />
+  <rect x="139" y="124" width="16" height="58" rx="4.2" fill="url(#bars)" />
+  <rect x="162" y="148" width="16" height="34" rx="4.2" fill="url(#bars)" />
+  <text
+    x="140"
+    y="230"
+    text-anchor="middle"
+    fill="white"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="34"
+    font-weight="700"
+    letter-spacing="-1.6"
+  >
+    BuildForU
+  </text>
+</svg>

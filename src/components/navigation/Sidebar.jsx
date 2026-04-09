@@ -1,7 +1,7 @@
 import { Sparkles, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
-import logoMark from "../../assets/logo-mark.svg";
+import logoFull from "../../assets/logo-full.svg";
 
 export default function Sidebar({ navItems, user, isOpen, onClose }) {
   const { t } = useI18n();
@@ -21,11 +21,10 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
         }`}
       >
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={logoMark} alt={t("app.name")} className="h-11 w-11 rounded-2xl" />
+          <div className="min-w-0">
+            <img src={logoFull} alt={t("app.name")} className="h-10 w-auto sm:h-11" />
             <div>
-              <p className="text-lg">{t("app.name")}</p>
-              <p className="text-xs text-white/50">
+              <p className="mt-2 pl-1 text-xs text-white/50">
                 {user?.role === "admin" ? t("sidebar.controlTower") : t("sidebar.fieldWorkspace")}
               </p>
             </div>
