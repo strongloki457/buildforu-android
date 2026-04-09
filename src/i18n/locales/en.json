@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Construction operations, with a cleaner view."
+  },
+  "roles": {
+    "employee": "Employee",
+    "admin": "Boss"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "workers": "Workers",
+    "projects": "Projects",
+    "materials": "Materials",
+    "calendar": "Calendar",
+    "finance": "Finance",
+    "tasks": "Tasks",
+    "chat": "Chat",
+    "settings": "Settings"
+  },
+  "common": {
+    "search": "Search workspace",
+    "today": "Today",
+    "overview": "Overview",
+    "save": "Save",
+    "status": "Status",
+    "location": "Location",
+    "date": "Date",
+    "assignedTo": "Assigned to",
+    "priority": "Priority",
+    "send": "Send",
+    "logout": "Log out",
+    "welcomeBack": "Welcome back",
+    "notifications": "Notifications",
+    "language": "Language",
+    "loading": "Loading interface..."
+  },
+  "login": {
+    "title": "Run every project with confidence.",
+    "subtitle": "A polished command center for field teams, schedules, materials and client delivery.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "helper": "Use the demo accounts below to preview both experiences.",
+    "employeeHint": "Employee preview",
+    "adminHint": "Boss preview",
+    "mockPassword": "Any password works in this prototype.",
+    "detectedRole": "Detected role"
+  },
+  "dashboard": {
+    "employeeTitle": "Field coordination dashboard",
+    "adminTitle": "Company operations dashboard",
+    "upcomingTasks": "Upcoming tasks",
+    "calendarOverview": "Calendar overview",
+    "teamMessages": "Team messages",
+    "workerPulse": "Worker pulse",
+    "assignTask": "Assign a new task",
+    "projectHealth": "Project health",
+    "todayFocus": "Today focus",
+    "activeProjects": "Active projects",
+    "crewAvailability": "Crew availability",
+    "completionRate": "Completion rate",
+    "monthlyRevenue": "Monthly revenue"
+  },
+  "calendar": {
+    "title": "Schedule calendar",
+    "subtitle": "Review assignments and site activity across the month."
+  },
+  "tasks": {
+    "title": "Task management",
+    "subtitle": "Track assignments, statuses and delivery pace.",
+    "pending": "Pending",
+    "completed": "Completed",
+    "all": "All tasks"
+  },
+  "chat": {
+    "title": "Team chat",
+    "subtitle": "Stay aligned with the office and crews in real time.",
+    "placeholder": "Type your message..."
+  },
+  "workers": {
+    "title": "Workers",
+    "subtitle": "Monitor crew performance, availability and next shifts."
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Watch delivery momentum and risk across active sites."
+  },
+  "materials": {
+    "title": "Materials",
+    "subtitle": "Track stock, suppliers and restocking signals."
+  },
+  "finance": {
+    "title": "Finance",
+    "subtitle": "Review revenue, expenses and invoice progress."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Personalize language, alerts and workspace preferences."
+  }
+}

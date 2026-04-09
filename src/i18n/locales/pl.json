@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Zarządzanie budową w przejrzystym widoku."
+  },
+  "roles": {
+    "employee": "Pracownik",
+    "admin": "Szef"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "workers": "Pracownicy",
+    "projects": "Projekty",
+    "materials": "Materiały",
+    "calendar": "Kalendarz",
+    "finance": "Finanse",
+    "tasks": "Zadania",
+    "chat": "Czat",
+    "settings": "Ustawienia"
+  },
+  "common": {
+    "search": "Szukaj w aplikacji",
+    "today": "Dzisiaj",
+    "overview": "Przegląd",
+    "save": "Zapisz",
+    "status": "Status",
+    "location": "Lokalizacja",
+    "date": "Data",
+    "assignedTo": "Przypisano do",
+    "priority": "Priorytet",
+    "send": "Wyślij",
+    "logout": "Wyloguj",
+    "welcomeBack": "Witaj ponownie",
+    "notifications": "Powiadomienia",
+    "language": "Język",
+    "loading": "Ładowanie interfejsu..."
+  },
+  "login": {
+    "title": "Prowadź każdy projekt z pełną kontrolą.",
+    "subtitle": "Nowoczesne centrum zarządzania ekipą, harmonogramem, materiałami i realizacją.",
+    "email": "Email",
+    "password": "Hasło",
+    "button": "Zaloguj się",
+    "helper": "Użyj kont demo poniżej, aby zobaczyć oba widoki.",
+    "employeeHint": "Podgląd pracownika",
+    "adminHint": "Podgląd szefa",
+    "mockPassword": "W tym prototypie zadziała dowolne hasło.",
+    "detectedRole": "Wykryta rola"
+  },
+  "dashboard": {
+    "employeeTitle": "Panel koordynacji pracy w terenie",
+    "adminTitle": "Panel operacyjny firmy",
+    "upcomingTasks": "Nadchodzące zadania",
+    "calendarOverview": "Przegląd kalendarza",
+    "teamMessages": "Wiadomości zespołu",
+    "workerPulse": "Stan zespołu",
+    "assignTask": "Przypisz nowe zadanie",
+    "projectHealth": "Stan projektów",
+    "todayFocus": "Plan na dziś",
+    "activeProjects": "Aktywne projekty",
+    "crewAvailability": "Dostępność ekipy",
+    "completionRate": "Poziom realizacji",
+    "monthlyRevenue": "Miesięczny przychód"
+  },
+  "calendar": {
+    "title": "Kalendarz harmonogramu",
+    "subtitle": "Sprawdzaj zadania i aktywność na budowach w skali miesiąca."
+  },
+  "tasks": {
+    "title": "Zarządzanie zadaniami",
+    "subtitle": "Śledź przydziały, statusy i tempo realizacji.",
+    "pending": "W toku",
+    "completed": "Zakończone",
+    "all": "Wszystkie zadania"
+  },
+  "chat": {
+    "title": "Czat zespołu",
+    "subtitle": "Utrzymuj stały kontakt z biurem i pracownikami.",
+    "placeholder": "Napisz wiadomość..."
+  },
+  "workers": {
+    "title": "Pracownicy",
+    "subtitle": "Monitoruj wydajność, dostępność i kolejne zmiany."
+  },
+  "projects": {
+    "title": "Projekty",
+    "subtitle": "Kontroluj postęp i ryzyko na aktywnych inwestycjach."
+  },
+  "materials": {
+    "title": "Materiały",
+    "subtitle": "Śledź zapasy, dostawców i potrzeby uzupełnienia."
+  },
+  "finance": {
+    "title": "Finanse",
+    "subtitle": "Analizuj przychody, koszty i płatności."
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "subtitle": "Dopasuj język, alerty i preferencje pracy."
+  }
+}

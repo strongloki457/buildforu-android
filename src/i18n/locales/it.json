@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Gestione cantieri in una vista pulita e moderna."
+  },
+  "roles": {
+    "employee": "Dipendente",
+    "admin": "Capo"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "workers": "Lavoratori",
+    "projects": "Progetti",
+    "materials": "Materiali",
+    "calendar": "Calendario",
+    "finance": "Finanza",
+    "tasks": "Attivita",
+    "chat": "Chat",
+    "settings": "Impostazioni"
+  },
+  "common": {
+    "search": "Cerca nell'area",
+    "today": "Oggi",
+    "overview": "Panoramica",
+    "save": "Salva",
+    "status": "Stato",
+    "location": "Luogo",
+    "date": "Data",
+    "assignedTo": "Assegnato a",
+    "priority": "Priorita",
+    "send": "Invia",
+    "logout": "Esci",
+    "welcomeBack": "Bentornato",
+    "notifications": "Notifiche",
+    "language": "Lingua",
+    "loading": "Caricamento interfaccia..."
+  },
+  "login": {
+    "title": "Gestisci ogni progetto con sicurezza.",
+    "subtitle": "Un centro operativo elegante per squadre, calendari, materiali e consegne.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Accedi",
+    "helper": "Usa gli account demo qui sotto per vedere entrambe le esperienze.",
+    "employeeHint": "Anteprima dipendente",
+    "adminHint": "Anteprima capo",
+    "mockPassword": "In questo prototipo funziona qualsiasi password.",
+    "detectedRole": "Ruolo rilevato"
+  },
+  "dashboard": {
+    "employeeTitle": "Dashboard coordinamento cantiere",
+    "adminTitle": "Dashboard operativa aziendale",
+    "upcomingTasks": "Attivita imminenti",
+    "calendarOverview": "Panoramica calendario",
+    "teamMessages": "Messaggi del team",
+    "workerPulse": "Stato squadra",
+    "assignTask": "Assegna una nuova attivita",
+    "projectHealth": "Salute progetti",
+    "todayFocus": "Focus di oggi",
+    "activeProjects": "Progetti attivi",
+    "crewAvailability": "Disponibilita squadre",
+    "completionRate": "Tasso di completamento",
+    "monthlyRevenue": "Ricavi mensili"
+  },
+  "calendar": {
+    "title": "Calendario",
+    "subtitle": "Controlla assegnazioni e attivita del cantiere durante il mese."
+  },
+  "tasks": {
+    "title": "Gestione attivita",
+    "subtitle": "Monitora assegnazioni, stati e ritmo di consegna.",
+    "pending": "In sospeso",
+    "completed": "Completate",
+    "all": "Tutte le attivita"
+  },
+  "chat": {
+    "title": "Chat del team",
+    "subtitle": "Resta allineato con ufficio e squadre in tempo reale.",
+    "placeholder": "Scrivi il tuo messaggio..."
+  },
+  "workers": {
+    "title": "Lavoratori",
+    "subtitle": "Monitora performance, disponibilita e prossimi turni."
+  },
+  "projects": {
+    "title": "Progetti",
+    "subtitle": "Controlla avanzamento e rischio nei cantieri attivi."
+  },
+  "materials": {
+    "title": "Materiali",
+    "subtitle": "Controlla stock, fornitori e segnali di riordino."
+  },
+  "finance": {
+    "title": "Finanza",
+    "subtitle": "Consulta ricavi, costi e progresso fatture."
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "subtitle": "Personalizza lingua, avvisi e preferenze."
+  }
+}

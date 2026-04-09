@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Baumanagement in einer klaren, modernen Ansicht."
+  },
+  "roles": {
+    "employee": "Mitarbeiter",
+    "admin": "Chef"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "workers": "Mitarbeiter",
+    "projects": "Projekte",
+    "materials": "Materialien",
+    "calendar": "Kalender",
+    "finance": "Finanzen",
+    "tasks": "Aufgaben",
+    "chat": "Chat",
+    "settings": "Einstellungen"
+  },
+  "common": {
+    "search": "Arbeitsbereich durchsuchen",
+    "today": "Heute",
+    "overview": "Ubersicht",
+    "save": "Speichern",
+    "status": "Status",
+    "location": "Ort",
+    "date": "Datum",
+    "assignedTo": "Zugewiesen an",
+    "priority": "Prioritat",
+    "send": "Senden",
+    "logout": "Abmelden",
+    "welcomeBack": "Willkommen zuruck",
+    "notifications": "Benachrichtigungen",
+    "language": "Sprache",
+    "loading": "Oberflache wird geladen..."
+  },
+  "login": {
+    "title": "Steuern Sie jedes Projekt mit Sicherheit.",
+    "subtitle": "Ein elegantes Zentrum fur Teams, Zeitplane, Materialien und Auslieferung.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "button": "Anmelden",
+    "helper": "Nutzen Sie die Demo-Konten unten, um beide Ansichten zu sehen.",
+    "employeeHint": "Mitarbeiter-Vorschau",
+    "adminHint": "Chef-Vorschau",
+    "mockPassword": "In diesem Prototyp funktioniert jedes Passwort.",
+    "detectedRole": "Erkannte Rolle"
+  },
+  "dashboard": {
+    "employeeTitle": "Dashboard fur die Einsatzkoordination",
+    "adminTitle": "Dashboard fur den Firmenbetrieb",
+    "upcomingTasks": "Bevorstehende Aufgaben",
+    "calendarOverview": "Kalenderubersicht",
+    "teamMessages": "Teamnachrichten",
+    "workerPulse": "Teamstatus",
+    "assignTask": "Neue Aufgabe zuweisen",
+    "projectHealth": "Projektstatus",
+    "todayFocus": "Fokus heute",
+    "activeProjects": "Aktive Projekte",
+    "crewAvailability": "Teamverfugbarkeit",
+    "completionRate": "Erfullungsquote",
+    "monthlyRevenue": "Monatsumsatz"
+  },
+  "calendar": {
+    "title": "Kalender",
+    "subtitle": "Prufen Sie Aufgaben und Baustellenaktivitaten im Monatsverlauf."
+  },
+  "tasks": {
+    "title": "Aufgabenverwaltung",
+    "subtitle": "Behalten Sie Zuweisungen, Status und Fortschritt im Blick.",
+    "pending": "Offen",
+    "completed": "Erledigt",
+    "all": "Alle Aufgaben"
+  },
+  "chat": {
+    "title": "Team-Chat",
+    "subtitle": "Bleiben Sie in Echtzeit mit Buro und Teams abgestimmt.",
+    "placeholder": "Nachricht schreiben..."
+  },
+  "workers": {
+    "title": "Mitarbeiter",
+    "subtitle": "Leistung, Verfugbarkeit und Schichten im Blick."
+  },
+  "projects": {
+    "title": "Projekte",
+    "subtitle": "Lieferdynamik und Risiken laufender Baustellen verfolgen."
+  },
+  "materials": {
+    "title": "Materialien",
+    "subtitle": "Bestande, Lieferanten und Nachbestellungen verfolgen."
+  },
+  "finance": {
+    "title": "Finanzen",
+    "subtitle": "Umsatze, Kosten und Rechnungsstatus prufen."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Sprache, Hinweise und Arbeitsbereich anpassen."
+  }
+}

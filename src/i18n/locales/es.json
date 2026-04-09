@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Gestion de obra en una vista clara y moderna."
+  },
+  "roles": {
+    "employee": "Empleado",
+    "admin": "Jefe"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "workers": "Trabajadores",
+    "projects": "Proyectos",
+    "materials": "Materiales",
+    "calendar": "Calendario",
+    "finance": "Finanzas",
+    "tasks": "Tareas",
+    "chat": "Chat",
+    "settings": "Configuracion"
+  },
+  "common": {
+    "search": "Buscar en el espacio",
+    "today": "Hoy",
+    "overview": "Resumen",
+    "save": "Guardar",
+    "status": "Estado",
+    "location": "Ubicacion",
+    "date": "Fecha",
+    "assignedTo": "Asignado a",
+    "priority": "Prioridad",
+    "send": "Enviar",
+    "logout": "Cerrar sesion",
+    "welcomeBack": "Bienvenido de nuevo",
+    "notifications": "Notificaciones",
+    "language": "Idioma",
+    "loading": "Cargando interfaz..."
+  },
+  "login": {
+    "title": "Gestiona cada proyecto con confianza.",
+    "subtitle": "Un centro de control elegante para cuadrillas, horarios, materiales y entrega.",
+    "email": "Correo",
+    "password": "Contrasena",
+    "button": "Iniciar sesion",
+    "helper": "Usa las cuentas demo de abajo para ver ambas experiencias.",
+    "employeeHint": "Vista de empleado",
+    "adminHint": "Vista de jefe",
+    "mockPassword": "Cualquier contrasena funciona en este prototipo.",
+    "detectedRole": "Rol detectado"
+  },
+  "dashboard": {
+    "employeeTitle": "Panel de coordinacion de campo",
+    "adminTitle": "Panel de operaciones de la empresa",
+    "upcomingTasks": "Proximas tareas",
+    "calendarOverview": "Vista del calendario",
+    "teamMessages": "Mensajes del equipo",
+    "workerPulse": "Pulso del personal",
+    "assignTask": "Asignar una nueva tarea",
+    "projectHealth": "Salud de proyectos",
+    "todayFocus": "Enfoque de hoy",
+    "activeProjects": "Proyectos activos",
+    "crewAvailability": "Disponibilidad de cuadrillas",
+    "completionRate": "Nivel de avance",
+    "monthlyRevenue": "Ingresos mensuales"
+  },
+  "calendar": {
+    "title": "Calendario",
+    "subtitle": "Revisa asignaciones y actividad de obra durante el mes."
+  },
+  "tasks": {
+    "title": "Gestion de tareas",
+    "subtitle": "Sigue asignaciones, estados y ritmo de entrega.",
+    "pending": "Pendientes",
+    "completed": "Completadas",
+    "all": "Todas las tareas"
+  },
+  "chat": {
+    "title": "Chat del equipo",
+    "subtitle": "Mantente alineado con la oficina y las cuadrillas en tiempo real.",
+    "placeholder": "Escribe tu mensaje..."
+  },
+  "workers": {
+    "title": "Trabajadores",
+    "subtitle": "Supervisa rendimiento, disponibilidad y proximos turnos."
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Observa el avance y el riesgo en obras activas."
+  },
+  "materials": {
+    "title": "Materiales",
+    "subtitle": "Controla stock, proveedores y necesidades de reposicion."
+  },
+  "finance": {
+    "title": "Finanzas",
+    "subtitle": "Revisa ingresos, gastos y avance de facturas."
+  },
+  "settings": {
+    "title": "Configuracion",
+    "subtitle": "Personaliza idioma, alertas y preferencias."
+  }
+}

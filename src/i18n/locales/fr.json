@@ -1,0 +1,101 @@
+{
+  "app": {
+    "name": "BuildForU",
+    "tagline": "La gestion de chantier dans une interface claire."
+  },
+  "roles": {
+    "employee": "Employe",
+    "admin": "Patron"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "workers": "Employes",
+    "projects": "Projets",
+    "materials": "Materiaux",
+    "calendar": "Calendrier",
+    "finance": "Finances",
+    "tasks": "Taches",
+    "chat": "Chat",
+    "settings": "Parametres"
+  },
+  "common": {
+    "search": "Rechercher dans l'espace",
+    "today": "Aujourd'hui",
+    "overview": "Vue d'ensemble",
+    "save": "Enregistrer",
+    "status": "Statut",
+    "location": "Lieu",
+    "date": "Date",
+    "assignedTo": "Attribue a",
+    "priority": "Priorite",
+    "send": "Envoyer",
+    "logout": "Se deconnecter",
+    "welcomeBack": "Bon retour",
+    "notifications": "Notifications",
+    "language": "Langue",
+    "loading": "Chargement de l'interface..."
+  },
+  "login": {
+    "title": "Pilotez chaque projet avec assurance.",
+    "subtitle": "Un centre de commande elegant pour les equipes, le planning, les materiaux et la livraison.",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "button": "Connexion",
+    "helper": "Utilisez les comptes demo ci-dessous pour voir les deux experiences.",
+    "employeeHint": "Apercu employe",
+    "adminHint": "Apercu patron",
+    "mockPassword": "N'importe quel mot de passe fonctionne dans ce prototype.",
+    "detectedRole": "Role detecte"
+  },
+  "dashboard": {
+    "employeeTitle": "Tableau de coordination terrain",
+    "adminTitle": "Tableau de pilotage de l'entreprise",
+    "upcomingTasks": "Taches a venir",
+    "calendarOverview": "Vue calendrier",
+    "teamMessages": "Messages d'equipe",
+    "workerPulse": "Etat des equipes",
+    "assignTask": "Attribuer une nouvelle tache",
+    "projectHealth": "Sante des projets",
+    "todayFocus": "Priorite du jour",
+    "activeProjects": "Projets actifs",
+    "crewAvailability": "Disponibilite des equipes",
+    "completionRate": "Taux d'achevement",
+    "monthlyRevenue": "Revenu mensuel"
+  },
+  "calendar": {
+    "title": "Calendrier",
+    "subtitle": "Consultez les taches et l'activite des chantiers sur le mois."
+  },
+  "tasks": {
+    "title": "Gestion des taches",
+    "subtitle": "Suivez les affectations, statuts et rythme d'execution.",
+    "pending": "En attente",
+    "completed": "Terminees",
+    "all": "Toutes les taches"
+  },
+  "chat": {
+    "title": "Chat d'equipe",
+    "subtitle": "Restez aligne avec le bureau et les equipes en temps reel.",
+    "placeholder": "Ecrivez votre message..."
+  },
+  "workers": {
+    "title": "Employes",
+    "subtitle": "Surveillez performance, disponibilite et prochaines prises de poste."
+  },
+  "projects": {
+    "title": "Projets",
+    "subtitle": "Suivez l'avancement et les risques sur les sites actifs."
+  },
+  "materials": {
+    "title": "Materiaux",
+    "subtitle": "Suivez les stocks, fournisseurs et signaux de reapprovisionnement."
+  },
+  "finance": {
+    "title": "Finances",
+    "subtitle": "Consultez revenus, depenses et avancement des factures."
+  },
+  "settings": {
+    "title": "Parametres",
+    "subtitle": "Personnalisez la langue, les alertes et l'espace de travail."
+  }
+}
