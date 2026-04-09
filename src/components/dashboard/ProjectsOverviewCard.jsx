@@ -1,8 +1,11 @@
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
+import { useI18n } from "../../hooks/useI18n";
 
 export default function ProjectsOverviewCard({ title, subtitle, projects }) {
+  const { t } = useI18n();
+
   return (
     <Card>
       <SectionHeader title={title} subtitle={subtitle} />
@@ -26,7 +29,7 @@ export default function ProjectsOverviewCard({ title, subtitle, projects }) {
             </div>
 
             <div className="mt-3 flex items-center justify-between text-sm text-slate-500">
-              <span>{project.progress}% complete</span>
+              <span>{t("projects.progressComplete", { value: project.progress })}</span>
               <span>{project.budget}</span>
             </div>
           </div>

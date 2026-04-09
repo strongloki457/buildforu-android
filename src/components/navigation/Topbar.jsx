@@ -13,10 +13,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
     <header className="glass-nav sticky top-4 z-20 rounded-[24px] p-3 sm:rounded-[28px] sm:p-4">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={onMenuOpen}
-            className="rounded-2xl bg-slate-900 px-3 py-3 text-white lg:hidden"
-          >
+          <button onClick={onMenuOpen} className="rounded-2xl bg-slate-900 px-3 py-3 text-white lg:hidden" aria-label={t("common.openMenu")}>
             <Menu size={18} />
           </button>
 
@@ -39,6 +36,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
             <button
               onClick={() => setShowNotifications((current) => !current)}
               className="relative rounded-2xl bg-white/80 p-3 text-slate-700 transition hover:bg-white"
+              aria-label={t("common.notifications")}
             >
               <Bell size={18} />
               <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-brand-500" />
@@ -50,8 +48,8 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
                 <div className="mt-4 space-y-3">
                   {notifications.map((notification) => (
                     <div key={notification.id} className="rounded-2xl bg-slate-50 p-3">
-                      <p className="text-sm text-slate-800">{notification.title}</p>
-                      <p className="mt-1 text-xs text-slate-400">{notification.time}</p>
+                      <p className="text-sm text-slate-800">{t(notification.titleKey, notification.title)}</p>
+                      <p className="mt-1 text-xs text-slate-400">{t(notification.timeKey, notification.time)}</p>
                     </div>
                   ))}
                 </div>

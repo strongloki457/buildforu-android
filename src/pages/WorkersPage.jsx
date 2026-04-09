@@ -32,6 +32,7 @@ const emptyWorkerForm = {
 const statusOptions = ["On site", "In transit", "Off shift"];
 
 function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions }) {
+  const { t } = useI18n();
   const [form, setForm] = useState(initialValues);
 
   const handleChange = (key, value) => {
@@ -46,68 +47,68 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
   return (
     <Modal
       onClose={onClose}
-      title={mode === "edit" ? "Edit worker" : "Add new worker"}
-      description="Update crew details in local mock state without affecting the current auth flow."
+      title={mode === "edit" ? t("workers.editWorkerTitle") : t("workers.addWorkerTitle")}
+      description={t("workers.workerModalDescription")}
     >
       <form onSubmit={handleSubmit} className="grid gap-4">
         <div className="grid gap-4 md:grid-cols-2">
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Full name</span>
+            <span className="text-sm text-slate-600">{t("workers.fullName")}</span>
             <input
               type="text"
               value={form.name}
               onChange={(event) => handleChange("name", event.target.value)}
-              placeholder="Emma Schneider"
+              placeholder={t("workers.placeholderName")}
               required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Email</span>
+            <span className="text-sm text-slate-600">{t("login.email")}</span>
             <input
               type="email"
               value={form.email}
               onChange={(event) => handleChange("email", event.target.value)}
-              placeholder="emma@buildforu.com"
+              placeholder={t("workers.placeholderEmail")}
               required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Phone</span>
+            <span className="text-sm text-slate-600">{t("workers.phone")}</span>
             <input
               type="tel"
               value={form.phone}
               onChange={(event) => handleChange("phone", event.target.value)}
-              placeholder="+49 151 555 0111"
+              placeholder={t("workers.placeholderPhone")}
               required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Position</span>
+            <span className="text-sm text-slate-600">{t("workers.position")}</span>
             <input
               type="text"
               value={form.position}
               onChange={(event) => handleChange("position", event.target.value)}
-              placeholder="Site Engineer"
+              placeholder={t("workers.placeholderPosition")}
               required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Assigned project</span>
+            <span className="text-sm text-slate-600">{t("workers.assignedProject")}</span>
             <select
               value={form.assignedProject}
               onChange={(event) => handleChange("assignedProject", event.target.value)}
               required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             >
-              <option value="">Select a project</option>
+              <option value="">{t("workers.selectProject")}</option>
               {projectOptions.map((project) => (
                 <option key={project} value={project}>
                   {project}
@@ -117,7 +118,7 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm text-slate-600">Status</span>
+            <span className="text-sm text-slate-600">{t("common.status")}</span>
             <select
               value={form.status}
               onChange={(event) => handleChange("status", event.target.value)}
@@ -126,7 +127,7 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
-                  {status}
+                  {t(`statusLabels.${status.toLowerCase()}`, status)}
                 </option>
               ))}
             </select>
@@ -135,10 +136,10 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
 
         <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button type="submit" className="w-full sm:w-auto">
-            {mode === "edit" ? "Save changes" : "Add worker"}
+            {mode === "edit" ? t("workers.saveChanges") : t("workers.addWorker")}
           </Button>
         </div>
       </form>
@@ -147,18 +148,20 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
 }
 
 function DeleteWorkerModal({ worker, onClose, onConfirm }) {
+  const { t } = useI18n();
+
   return (
     <Modal
       onClose={onClose}
-      title="Delete worker"
-      description={`Are you sure you want to remove ${worker.name} from the crew list? This only affects local mock data.`}
+      title={t("workers.deleteWorkerTitle")}
+      description={t("workers.deleteWorkerDescription", { name: worker.name })}
     >
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
-          Keep worker
+          {t("workers.keepWorker")}
         </Button>
         <Button onClick={onConfirm} className="w-full bg-rose-600 text-white hover:bg-rose-500 sm:w-auto">
-          Delete worker
+          {t("workers.deleteWorkerConfirm")}
         </Button>
       </div>
     </Modal>
@@ -182,14 +185,9 @@ export default function WorkersPage() {
     return workers.filter((worker) => {
       const matchesSearch =
         !normalizedSearch ||
-        [
-          worker.name,
-          worker.email,
-          worker.phone,
-          worker.position ?? worker.trade,
-          worker.assignedProject,
-          worker.status
-        ].some((value) => String(value).toLowerCase().includes(normalizedSearch));
+        [worker.name, worker.email, worker.phone, worker.position ?? worker.trade, worker.assignedProject, worker.status].some((value) =>
+          String(value).toLowerCase().includes(normalizedSearch)
+        );
       const matchesStatus = statusFilter === "all" || String(worker.status).toLowerCase() === statusFilter;
       const matchesProject = projectFilter === "all" || worker.assignedProject === projectFilter;
 
@@ -253,15 +251,15 @@ export default function WorkersPage() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard icon={Users} label="Active workers" value={workers.length} detail="All visible in the command center." />
+        <MetricCard icon={Users} label={t("workers.activeWorkers")} value={workers.length} detail={t("workers.activeWorkersDetail")} />
         <MetricCard
           icon={BadgeCheck}
-          label="Available now"
+          label={t("workers.availableNow")}
           value={availableCount}
-          detail="Crew members ready to accept additional work."
+          detail={t("workers.availableNowDetail")}
         />
-        <MetricCard icon={Activity} label="Avg. performance" value={averageCompletionRate} detail="Based on current mock completion rates." />
-        <MetricCard icon={BriefcaseBusiness} label="Off shift" value={offShiftCount} detail="Workers currently outside the active site rotation." />
+        <MetricCard icon={Activity} label={t("workers.averagePerformance")} value={averageCompletionRate} detail={t("workers.averagePerformanceDetail")} />
+        <MetricCard icon={BriefcaseBusiness} label={t("workers.offShift")} value={offShiftCount} detail={t("workers.offShiftDetail")} />
       </div>
 
       <Card>
@@ -271,7 +269,7 @@ export default function WorkersPage() {
           action={
             <Button className="w-full gap-2 sm:w-auto" onClick={openCreateModal}>
               <Plus size={16} />
-              Add worker
+              {t("workers.addWorker")}
             </Button>
           }
         />
@@ -282,7 +280,7 @@ export default function WorkersPage() {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search workers by name, email, project or status"
+              placeholder={t("workers.searchPlaceholder")}
               className="w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
             />
           </label>
@@ -292,10 +290,12 @@ export default function WorkersPage() {
             onChange={(event) => setStatusFilter(event.target.value)}
             className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none"
           >
-            <option value="all">All statuses</option>
-            <option value="on site">On site</option>
-            <option value="in transit">In transit</option>
-            <option value="off shift">Off shift</option>
+            <option value="all">{t("workers.allStatuses")}</option>
+            {statusOptions.map((status) => (
+              <option key={status} value={status.toLowerCase()}>
+                {t(`statusLabels.${status.toLowerCase()}`, status)}
+              </option>
+            ))}
           </select>
 
           <select
@@ -303,7 +303,7 @@ export default function WorkersPage() {
             onChange={(event) => setProjectFilter(event.target.value)}
             className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none"
           >
-            <option value="all">All projects</option>
+            <option value="all">{t("workers.allProjects")}</option>
             {projectOptions.map((project) => (
               <option key={project} value={project}>
                 {project}
@@ -343,7 +343,7 @@ export default function WorkersPage() {
                   <div className="flex w-full gap-2 sm:w-auto">
                     <Button variant="secondary" className="flex-1 gap-2 px-3 py-2 sm:flex-none" onClick={() => openEditModal(worker)}>
                       <UserRoundPen size={16} />
-                      Edit
+                      {t("common.edit")}
                     </Button>
                     <Button
                       variant="ghost"
@@ -351,14 +351,14 @@ export default function WorkersPage() {
                       onClick={() => setWorkerToDelete(worker)}
                     >
                       <Trash2 size={16} />
-                      Delete
+                      {t("common.delete")}
                     </Button>
                   </div>
                 </div>
 
                 <div className="mt-5 grid gap-3 text-sm text-slate-500">
                   <div className="rounded-[22px] bg-slate-50/90 px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Contact</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("workers.contact")}</p>
                     <div className="mt-3 grid gap-2">
                       <div className="flex items-center gap-2">
                         <Mail size={14} className="text-brand-600" />
@@ -372,19 +372,20 @@ export default function WorkersPage() {
                   </div>
 
                   <div className="rounded-[22px] bg-slate-50/90 px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Operations</p>
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("workers.operations")}</p>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2">
                       <p>
-                        <span className="text-slate-400">Assigned project:</span> {worker.assignedProject}
+                        <span className="text-slate-400">{t("workers.assignedProject")}:</span> {worker.assignedProject}
                       </p>
                       <p>
-                        <span className="text-slate-400">Next shift:</span> {worker.nextShift}
+                        <span className="text-slate-400">{t("workers.nextShift")}:</span>{" "}
+                        {worker.nextShift === "Not scheduled" ? t("workers.notScheduled") : worker.nextShift}
                       </p>
                       <p>
-                        <span className="text-slate-400">Location:</span> {worker.location}
+                        <span className="text-slate-400">{t("common.location")}:</span> {worker.location}
                       </p>
                       <p>
-                        <span className="text-slate-400">Completion rate:</span> {worker.completionRate}%
+                        <span className="text-slate-400">{t("workers.completionRate")}:</span> {worker.completionRate}%
                       </p>
                     </div>
                   </div>
@@ -395,13 +396,11 @@ export default function WorkersPage() {
         ) : (
           <div className="rounded-[28px] border border-dashed border-slate-200 bg-white/60 px-6 py-16 text-center">
             <Users size={28} className="mx-auto text-brand-600" />
-            <h3 className="mt-4 text-2xl text-slate-900">No workers found</h3>
-            <p className="mt-2 text-sm text-slate-500">
-              Try another filter combination or add a new crew member to get started.
-            </p>
+            <h3 className="mt-4 text-2xl text-slate-900">{t("workers.noWorkersFound")}</h3>
+            <p className="mt-2 text-sm text-slate-500">{t("workers.noWorkersSubtitle")}</p>
             <Button className="mt-6 gap-2" onClick={openCreateModal}>
               <Plus size={16} />
-              Add first worker
+              {t("workers.addFirstWorker")}
             </Button>
           </div>
         )}

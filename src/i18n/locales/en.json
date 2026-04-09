@@ -1,7 +1,9 @@
 {
   "app": {
     "name": "BuildForU",
-    "tagline": "Construction operations, with a cleaner view."
+    "tagline": "Construction operations, with a cleaner view.",
+    "commandCenter": "BuildForU Command Center",
+    "preparing": "Preparing BuildForU..."
   },
   "roles": {
     "employee": "Employee",
@@ -16,7 +18,8 @@
     "finance": "Finance",
     "tasks": "Tasks",
     "chat": "Chat",
-    "settings": "Settings"
+    "settings": "Settings",
+    "marketMap": "Market Map"
   },
   "common": {
     "search": "Search workspace",
@@ -33,7 +36,54 @@
     "welcomeBack": "Welcome back",
     "notifications": "Notifications",
     "language": "Language",
-    "loading": "Loading interface..."
+    "loading": "Loading interface...",
+    "cancel": "Cancel",
+    "close": "Close",
+    "closeModal": "Close modal",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "account": "Account",
+    "openMenu": "Open menu",
+    "viewOnMap": "View on map",
+    "viewProfile": "View profile",
+    "toggleStatus": "Toggle status",
+    "all": "All"
+  },
+  "statusLabels": {
+    "pending": "Pending",
+    "completed": "Completed",
+    "healthy": "Healthy",
+    "at risk": "At risk",
+    "available": "Available",
+    "busy": "Busy",
+    "on site": "On site",
+    "in transit": "In transit",
+    "off shift": "Off shift",
+    "in stock": "In stock",
+    "low stock": "Low stock",
+    "limited": "Limited",
+    "preorder": "Preorder",
+    "out of stock": "Out of stock"
+  },
+  "priorityLabels": {
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "notifications": {
+    "n-1": {
+      "title": "New task assigned to Mia",
+      "time": "5 min ago"
+    },
+    "n-2": {
+      "title": "Concrete delivery confirmed",
+      "time": "18 min ago"
+    },
+    "n-3": {
+      "title": "Invoice #204 approved",
+      "time": "1 hour ago"
+    }
   },
   "login": {
     "title": "Run every project with confidence.",
@@ -42,10 +92,21 @@
     "password": "Password",
     "button": "Login",
     "helper": "Use the demo accounts below to preview both experiences.",
-    "employeeHint": "Employee preview",
-    "adminHint": "Boss preview",
     "mockPassword": "Any password works in this prototype.",
-    "detectedRole": "Detected role"
+    "requiredError": "Email and password are required.",
+    "detectedRole": "Detected role",
+    "previewAccess": "Preview access",
+    "liveAssignments": "Live field assignments",
+    "projectsInDelivery": "Projects in delivery",
+    "scheduleReliability": "Schedule reliability",
+    "loading": "Loading..."
+  },
+  "sidebar": {
+    "controlTower": "Control tower",
+    "fieldWorkspace": "Field workspace",
+    "crewRhythmTitle": "Crew rhythm is stable",
+    "crewRhythmSubtitle": "Site updates are syncing smoothly today.",
+    "shiftProfile": "Shift profile"
   },
   "dashboard": {
     "employeeTitle": "Field coordination dashboard",
@@ -60,42 +121,212 @@
     "activeProjects": "Active projects",
     "crewAvailability": "Crew availability",
     "completionRate": "Completion rate",
-    "monthlyRevenue": "Monthly revenue"
+    "monthlyRevenue": "Monthly revenue",
+    "adminHeroBody": "Today's operation board surfaces workforce coverage, task pressure, live schedules and delivery health in one streamlined view.",
+    "adminCrewDetail": "Three teams active today",
+    "adminOpenAssignments": "Assignments currently open",
+    "adminProjectDetail": "2 healthy, 1 at risk",
+    "adminRevenueDetail": "Profit tracking remains positive",
+    "workerPulseSubtitle": "Crew visibility across sites",
+    "calendarSubtitle": "Company-wide task coverage for the current month.",
+    "projectSubtitle": "Delivery pulse across your flagship projects.",
+    "chatSubtitle": "Coordinate quickly with workers and supervisors.",
+    "employeeHeroBody": "Your schedule is aligned for the week. The next site checkpoint is already pinned and your boss chat stays a tap away.",
+    "employeePendingDetail": "Pending assignments",
+    "employeeCompletedDetail": "Finished this week",
+    "employeeNextSiteLabel": "Next site",
+    "employeeNextSiteValue": "North River",
+    "employeeNextSiteDetail": "Inspection at 09:30",
+    "employeeCalendarSubtitle": "See your assigned work blocks and site visits for the current month.",
+    "employeeTaskSubtitle": "Your personal assignments",
+    "employeeEmptyTasks": "No assignments are waiting right now.",
+    "quickPulse": "Quick pulse",
+    "quickPulseSubtitle": "A concise read on your workload and schedule quality.",
+    "scheduleConfidence": "Schedule confidence",
+    "scheduleConfidenceDetail": "No conflicts detected in your next five shifts.",
+    "siteRhythm": "Site rhythm",
+    "siteRhythmDetail": "Material delivery and inspection timing are both on track.",
+    "employeeChatSubtitle": "Fast chat with your boss"
   },
   "calendar": {
     "title": "Schedule calendar",
-    "subtitle": "Review assignments and site activity across the month."
+    "subtitle": "Review assignments and site activity across the month.",
+    "scheduledThisMonth": "Scheduled this month",
+    "scheduledThisMonthDetail": "Assignments currently visible on the board.",
+    "coverage": "Coverage",
+    "coverageAllCrews": "All crews",
+    "coveragePersonal": "Personal",
+    "coverageDetail": "Switches automatically based on login role.",
+    "nextCheckpoint": "Next checkpoint",
+    "nextCheckpointDetail": "The closest pending assignment starts tomorrow.",
+    "upcomingTimeline": "Upcoming timeline",
+    "upcomingTimelineSubtitle": "A quick scroll of the next scheduled activities.",
+    "noUpcoming": "No scheduled activities are visible right now.",
+    "addTask": "Add task",
+    "addTaskSubtitle": "Create and schedule new work directly from the calendar.",
+    "monthlyEyebrow": "Monthly",
+    "emptyMonth": "No scheduled items for this month.",
+    "formTitle": "Assign a new task",
+    "formSubtitle": "Create a mock assignment directly from the calendar view.",
+    "worker": "Worker",
+    "unknownWorker": "Unknown worker",
+    "emptyWorker": "Add a worker to assign tasks",
+    "taskTitle": "Task title",
+    "taskLocation": "Site location",
+    "assignTaskButton": "Assign task"
   },
   "tasks": {
     "title": "Task management",
     "subtitle": "Track assignments, statuses and delivery pace.",
     "pending": "Pending",
     "completed": "Completed",
-    "all": "All tasks"
+    "all": "All tasks",
+    "task": "Task",
+    "prioritySuffix": "{{priority}} priority",
+    "filterHint": "Filter view is mocked on the frontend and ready for backend integration later."
   },
   "chat": {
     "title": "Team chat",
     "subtitle": "Stay aligned with the office and crews in real time.",
-    "placeholder": "Type your message..."
+    "placeholder": "Type your message...",
+    "emptyTitle": "No chat thread selected",
+    "emptySubtitle": "Choose a thread to review updates and send new messages.",
+    "attachFile": "File",
+    "attachImage": "Image",
+    "takePhoto": "Camera",
+    "attachments": "Attachments",
+    "removeAttachment": "Remove attachment",
+    "attachmentReady": "Ready to send",
+    "cameraReady": "Camera-ready on mobile",
+    "messageWithAttachments": "Message with attachments",
+    "messages": {
+      "m-1": "Morning Alex, please prioritize the slab inspection today.",
+      "m-2": "On it. I will upload notes after the walkthrough.",
+      "m-3": "Can you confirm the cabling team arrival for Skyline?",
+      "m-4": "Confirmed. We start at 09:00 and should finish the east wing by noon.",
+      "m-5": "Pressure test is scheduled for 14:30. Awaiting valve delivery."
+    }
   },
   "workers": {
     "title": "Workers",
-    "subtitle": "Monitor crew performance, availability and next shifts."
+    "subtitle": "Monitor crew performance, availability and next shifts.",
+    "activeWorkers": "Active workers",
+    "activeWorkersDetail": "All visible in the command center.",
+    "availableNow": "Available now",
+    "availableNowDetail": "Crew members ready to accept additional work.",
+    "averagePerformance": "Avg. performance",
+    "averagePerformanceDetail": "Based on current mock completion rates.",
+    "offShift": "Off shift",
+    "offShiftDetail": "Workers currently outside the active site rotation.",
+    "addWorker": "Add worker",
+    "addFirstWorker": "Add first worker",
+    "editWorker": "Edit worker",
+    "addWorkerTitle": "Add new worker",
+    "editWorkerTitle": "Edit worker",
+    "workerModalDescription": "Update crew details in local mock state without affecting the current auth flow.",
+    "fullName": "Full name",
+    "placeholderName": "Emma Schneider",
+    "placeholderEmail": "emma@buildforu.com",
+    "placeholderPhone": "+49 151 555 0111",
+    "placeholderPosition": "Site Engineer",
+    "phone": "Phone",
+    "position": "Position",
+    "assignedProject": "Assigned project",
+    "selectProject": "Select a project",
+    "searchPlaceholder": "Search workers by name, email, project or status",
+    "allStatuses": "All statuses",
+    "allProjects": "All projects",
+    "contact": "Contact",
+    "operations": "Operations",
+    "nextShift": "Next shift",
+    "notScheduled": "Not scheduled",
+    "completionRate": "Completion rate",
+    "noWorkersFound": "No workers found",
+    "noWorkersSubtitle": "Try another filter combination or add a new crew member to get started.",
+    "deleteWorkerTitle": "Delete worker",
+    "deleteWorkerDescription": "Are you sure you want to remove {{name}} from the crew list? This only affects local mock data.",
+    "keepWorker": "Keep worker",
+    "deleteWorkerConfirm": "Delete worker",
+    "saveChanges": "Save changes"
   },
   "projects": {
     "title": "Projects",
-    "subtitle": "Watch delivery momentum and risk across active sites."
+    "subtitle": "Watch delivery momentum and risk across active sites.",
+    "activeBuilds": "Active builds",
+    "activeBuildsDetail": "Current live portfolio.",
+    "atRisk": "At risk",
+    "atRiskDetail": "One site requires closer monitoring.",
+    "averageProgress": "Avg. progress",
+    "averageProgressDetail": "Portfolio completion midpoint.",
+    "progressComplete": "{{value}}% complete"
   },
   "materials": {
     "title": "Materials",
-    "subtitle": "Track stock, suppliers and restocking signals."
+    "subtitle": "Track stock, suppliers and restocking signals.",
+    "trackedItems": "Tracked items",
+    "trackedItemsDetail": "Core materials monitored in the prototype.",
+    "inStock": "In stock",
+    "inStockDetail": "Adequate inventory for immediate tasks.",
+    "supplierSync": "Supplier sync",
+    "supplierSyncValue": "Live",
+    "supplierSyncDetail": "Procurement status is visually mocked."
   },
   "finance": {
     "title": "Finance",
-    "subtitle": "Review revenue, expenses and invoice progress."
+    "subtitle": "Review revenue, expenses and invoice progress.",
+    "revenue": "Revenue",
+    "revenueDetail": "Current mocked revenue snapshot.",
+    "expenses": "Expenses",
+    "expensesDetail": "Operating spend across projects.",
+    "profit": "Profit",
+    "profitDetail": "Positive margin this cycle.",
+    "openInvoices": "Open invoices",
+    "openInvoicesDetail": "Ready for live backend data later.",
+    "cashFlowOutlook": "Cash flow outlook",
+    "monthOverMonth": "+12.4% month-over-month",
+    "weekLabel": "W{{number}}"
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Personalize language, alerts and workspace preferences."
+    "subtitle": "Personalize language, alerts and workspace preferences.",
+    "alertsTitle": "Push notifications",
+    "alertsDescription": "Receive task assignments and shift changes instantly.",
+    "summariesTitle": "Daily summaries",
+    "summariesDescription": "See one concise recap of activity every evening.",
+    "privacyTitle": "Enhanced privacy mode",
+    "privacyDescription": "Reduce visible operational detail on shared screens.",
+    "workspaceSaved": "Workspace preferences saved locally",
+    "workspaceSavedDetail": "This screen is UI-only for now and ready to connect to your future backend settings service."
+  },
+  "marketMap": {
+    "title": "Market Map",
+    "subtitle": "Compare nearby stores, scan mock prices and jump between the best supply options.",
+    "eyebrow": "Market intelligence",
+    "searchPlaceholder": "Search for materials (e.g. toilet, cement, tiles...)",
+    "price": "Price",
+    "distance": "Distance",
+    "category": "Category",
+    "availability": "Availability",
+    "lowestFirst": "Lowest first",
+    "highestFirst": "Highest first",
+    "nearestFirst": "Nearest first",
+    "farthestFirst": "Farthest first",
+    "allCategories": "All categories",
+    "allAvailability": "All availability",
+    "cheapestOption": "Cheapest option",
+    "nearestOption": "Nearest option",
+    "bestOverallOption": "Best overall option",
+    "noOption": "No option available",
+    "resultsTitle": "Nearby store results",
+    "resultsSubtitle": "{{count}} mock options ready for comparison and map preview.",
+    "mapPreview": "Map preview",
+    "mapPreviewSubtitle": "A styled mock map showing where each matching option is located.",
+    "noStoresTitle": "No stores match this search",
+    "noStoresSubtitle": "Try another material name or switch the selected filters.",
+    "focusedStore": "Focused store",
+    "storeSupplyCheck": "Store supply check with mock location data.",
+    "cheapestDetail": "{{price}} at {{store}}",
+    "nearestDetail": "{{distance}} km from {{store}}",
+    "bestOverallDetail": "{{store}} balances price, distance and stock."
   }
 }

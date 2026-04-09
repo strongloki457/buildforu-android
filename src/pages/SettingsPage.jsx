@@ -14,31 +14,18 @@ export default function SettingsPage() {
 
   const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));
 
+  const settingsItems = [
+    { key: "alerts", title: t("settings.alertsTitle"), description: t("settings.alertsDescription"), icon: Bell },
+    { key: "summaries", title: t("settings.summariesTitle"), description: t("settings.summariesDescription"), icon: Globe },
+    { key: "privacy", title: t("settings.privacyTitle"), description: t("settings.privacyDescription"), icon: Shield }
+  ];
+
   return (
     <Card>
       <SectionHeader title={t("settings.title")} subtitle={t("settings.subtitle")} />
 
       <div className="grid gap-4 xl:grid-cols-2">
-        {[
-          {
-            key: "alerts",
-            title: "Push notifications",
-            description: "Receive task assignments and shift changes instantly.",
-            icon: Bell
-          },
-          {
-            key: "summaries",
-            title: "Daily summaries",
-            description: "See one concise recap of activity every evening.",
-            icon: Globe
-          },
-          {
-            key: "privacy",
-            title: "Enhanced privacy mode",
-            description: "Reduce visible operational detail on shared screens.",
-            icon: Shield
-          }
-        ].map((item) => {
+        {settingsItems.map((item) => {
           const Icon = item.icon;
 
           return (
@@ -77,8 +64,8 @@ export default function SettingsPage() {
             <SlidersHorizontal size={18} />
           </div>
           <div>
-            <p className="text-lg">Workspace preferences saved locally</p>
-            <p className="text-sm text-white/60">This screen is UI-only for now and ready to connect to your future backend settings service.</p>
+            <p className="text-lg">{t("settings.workspaceSaved")}</p>
+            <p className="text-sm text-white/60">{t("settings.workspaceSavedDetail")}</p>
           </div>
         </div>
       </div>

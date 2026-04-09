@@ -12,14 +12,14 @@ export default function FinancePage() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <MetricCard icon={Landmark} label="Revenue" value={finance.revenue} detail="Current mocked revenue snapshot." />
-        <MetricCard icon={CreditCard} label="Expenses" value={finance.expenses} detail="Operating spend across projects." />
-        <MetricCard icon={CircleDollarSign} label="Profit" value={finance.profit} detail="Positive margin this cycle." />
+        <MetricCard icon={Landmark} label={t("finance.revenue")} value={finance.revenue} detail={t("finance.revenueDetail")} />
+        <MetricCard icon={CreditCard} label={t("finance.expenses")} value={finance.expenses} detail={t("finance.expensesDetail")} />
+        <MetricCard icon={CircleDollarSign} label={t("finance.profit")} value={finance.profit} detail={t("finance.profitDetail")} />
         <MetricCard
           icon={Receipt}
-          label="Open invoices"
+          label={t("finance.openInvoices")}
           value={String(finance.outstandingInvoices)}
-          detail="Ready for live backend data later."
+          detail={t("finance.openInvoicesDetail")}
         />
       </div>
       <Card>
@@ -27,10 +27,10 @@ export default function FinancePage() {
         <div className="rounded-[28px] bg-white/80 p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-sm text-slate-500">Cash flow outlook</p>
+              <p className="text-sm text-slate-500">{t("finance.cashFlowOutlook")}</p>
               <p className="mt-2 text-4xl text-slate-900">{finance.profit}</p>
             </div>
-            <div className="rounded-2xl bg-emerald-100 px-4 py-2 text-sm text-emerald-700">+12.4% month-over-month</div>
+            <div className="rounded-2xl bg-emerald-100 px-4 py-2 text-sm text-emerald-700">{t("finance.monthOverMonth")}</div>
           </div>
           <div className="mt-6 h-64 rounded-[28px] bg-[linear-gradient(180deg,rgba(34,197,94,0.14),rgba(255,255,255,0.7))] p-6">
             <div className="flex h-full items-end gap-4">
@@ -40,7 +40,7 @@ export default function FinancePage() {
                     className="w-full rounded-t-[20px] bg-gradient-to-t from-brand-700 to-brand-500"
                     style={{ height: `${value * 2}px` }}
                   />
-                  <span className="text-xs text-slate-400">W{index + 1}</span>
+                  <span className="text-xs text-slate-400">{t("finance.weekLabel", { number: index + 1 })}</span>
                 </div>
               ))}
             </div>

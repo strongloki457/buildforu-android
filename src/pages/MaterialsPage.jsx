@@ -13,9 +13,9 @@ export default function MaterialsPage() {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-3">
-        <MetricCard icon={Boxes} label="Tracked items" value={materials.length} detail="Core materials monitored in the prototype." />
-        <MetricCard icon={Package} label="In stock" value="2" detail="Adequate inventory for immediate tasks." />
-        <MetricCard icon={Truck} label="Supplier sync" value="Live" detail="Procurement status is visually mocked." />
+        <MetricCard icon={Boxes} label={t("materials.trackedItems")} value={materials.length} detail={t("materials.trackedItemsDetail")} />
+        <MetricCard icon={Package} label={t("materials.inStock")} value="2" detail={t("materials.inStockDetail")} />
+        <MetricCard icon={Truck} label={t("materials.supplierSync")} value={t("materials.supplierSyncValue")} detail={t("materials.supplierSyncDetail")} />
       </div>
       <Card>
         <SectionHeader title={t("materials.title")} subtitle={t("materials.subtitle")} />

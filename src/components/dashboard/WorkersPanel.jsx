@@ -2,8 +2,11 @@ import { ArrowRight, Clock3, MapPin } from "lucide-react";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
+import { useI18n } from "../../hooks/useI18n";
 
 export default function WorkersPanel({ title, subtitle, workers }) {
+  const { t } = useI18n();
+
   return (
     <Card>
       <SectionHeader title={title} subtitle={subtitle} />
@@ -27,14 +30,19 @@ export default function WorkersPanel({ title, subtitle, workers }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock3 size={14} />
-                  <span>Next shift {worker.nextShift}</span>
+                  <span>
+                    {t("workers.nextShift")}{" "}
+                    {worker.nextShift === "Not scheduled" ? t("workers.notScheduled") : worker.nextShift}
+                  </span>
                 </div>
               </div>
 
               <div className="mt-4 flex items-center justify-between">
-                <div className="text-sm text-slate-500">{worker.completionRate}% completion rate</div>
+                <div className="text-sm text-slate-500">
+                  {t("workers.completionRate")}: {worker.completionRate}%
+                </div>
                 <button className="inline-flex items-center gap-2 text-sm text-brand-700">
-                  View profile
+                  {t("common.viewProfile")}
                   <ArrowRight size={15} />
                 </button>
               </div>
@@ -43,7 +51,7 @@ export default function WorkersPanel({ title, subtitle, workers }) {
         </div>
       ) : (
         <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/60 px-5 py-10 text-center text-sm text-slate-500">
-          No workers are available right now.
+          {t("workers.noWorkersFound")}
         </div>
       )}
     </Card>

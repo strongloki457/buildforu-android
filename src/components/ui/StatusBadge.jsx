@@ -1,3 +1,5 @@
+import { useI18n } from "../../hooks/useI18n";
+
 const styles = {
   pending: "bg-amber-100 text-amber-700",
   completed: "bg-emerald-100 text-emerald-700",
@@ -19,12 +21,14 @@ const styles = {
 };
 
 export default function StatusBadge({ value }) {
+  const { t } = useI18n();
   const key = String(value).toLowerCase();
+
   return (
     <span
       className={`inline-flex rounded-full px-3 py-1 text-xs ${styles[key] ?? "bg-slate-100 text-slate-700"}`}
     >
-      {value}
+      {t(`statusLabels.${key}`, value)}
     </span>
   );
 }

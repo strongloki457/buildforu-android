@@ -2,8 +2,11 @@ import { CheckCircle2, MapPin } from "lucide-react";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
+import { useI18n } from "../../hooks/useI18n";
 
 export default function TaskListCard({ title, subtitle, tasks, onToggleStatus, emptyText }) {
+  const { t } = useI18n();
+
   return (
     <Card>
       <SectionHeader title={title} subtitle={subtitle} />
@@ -34,7 +37,7 @@ export default function TaskListCard({ title, subtitle, tasks, onToggleStatus, e
                     className="inline-flex items-center gap-2 rounded-2xl bg-brand-50 px-3 py-2 text-xs text-brand-700 transition hover:bg-brand-100"
                   >
                     <CheckCircle2 size={14} />
-                    Toggle status
+                    {t("common.toggleStatus")}
                   </button>
                 ) : null}
               </div>

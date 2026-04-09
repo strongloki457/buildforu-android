@@ -30,7 +30,7 @@ export default function AppLayout() {
         <div className="dashboard-grid rounded-[32px] border border-white/60 p-3 sm:p-4">
           <Topbar
             navItems={navItems}
-            pageTitle={activeItem?.label ?? "Dashboard"}
+            pageTitle={activeItem?.label ?? t("nav.dashboard")}
             notifications={notifications}
             onMenuOpen={() => setSidebarOpen(true)}
           />

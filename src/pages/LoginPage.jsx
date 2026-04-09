@@ -41,7 +41,7 @@ export default function LoginPage() {
       const destination = location.state?.from?.pathname || "/dashboard";
       navigate(destination, { replace: true });
     } catch (issue) {
-      setError(issue.message);
+      setError(t(issue.message, issue.message));
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +54,7 @@ export default function LoginPage() {
         <section className="rounded-[36px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl sm:p-10">
           <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
             <Sparkles size={16} />
-            BuildForU Command Center
+            {t("app.commandCenter")}
           </div>
 
           <div className="mt-8 max-w-2xl">
@@ -66,32 +66,27 @@ export default function LoginPage() {
             <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
               <HardHat className="text-brand-300" size={22} />
               <p className="mt-5 text-2xl">126</p>
-              <p className="mt-2 text-sm text-white/60">Live field assignments</p>
+              <p className="mt-2 text-sm text-white/60">{t("login.liveAssignments")}</p>
             </div>
             <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
               <Building2 className="text-brand-300" size={22} />
               <p className="mt-5 text-2xl">18</p>
-              <p className="mt-2 text-sm text-white/60">Projects in delivery</p>
+              <p className="mt-2 text-sm text-white/60">{t("login.projectsInDelivery")}</p>
             </div>
             <div className="rounded-[28px] border border-white/10 bg-white/6 p-5">
               <ShieldCheck className="text-brand-300" size={22} />
               <p className="mt-5 text-2xl">98%</p>
-              <p className="mt-2 text-sm text-white/60">Schedule reliability</p>
+              <p className="mt-2 text-sm text-white/60">{t("login.scheduleReliability")}</p>
             </div>
           </div>
 
           <div className="mt-10 rounded-[32px] border border-white/10 bg-gradient-to-br from-brand-700/50 via-brand-800/50 to-slate-950/70 p-6 soft-ring">
-            <p className="text-xs uppercase tracking-[0.3em] text-brand-200">Preview access</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-brand-200">{t("login.previewAccess")}</p>
             <div className="mt-4 flex flex-wrap gap-3">
               {demoAccounts.map((account) => (
                 <button
                   key={account.label}
-                  onClick={() =>
-                    setForm({
-                      email: account.label,
-                      password: "buildforu"
-                    })
-                  }
+                  onClick={() => setForm({ email: account.label, password: "buildforu" })}
                   className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm transition hover:bg-white/15"
                 >
                   {account.label}
@@ -139,7 +134,7 @@ export default function LoginPage() {
               {error ? <p className="text-sm text-rose-600">{error}</p> : null}
 
               <Button type="submit" className="w-full py-4" disabled={isSubmitting}>
-                {isSubmitting ? "Loading..." : t("login.button")}
+                {isSubmitting ? t("login.loading") : t("login.button")}
               </Button>
             </form>
           </div>

@@ -15,13 +15,24 @@ const languageOptions = [
   { value: "en", label: "English" },
   { value: "pl", label: "Polski" },
   { value: "de", label: "Deutsch" },
-  { value: "fr", label: "Français" },
-  { value: "es", label: "Español" },
+  { value: "fr", label: "Francais" },
+  { value: "es", label: "Espanol" },
   { value: "it", label: "Italiano" }
 ];
 
 function resolvePath(object, path) {
   return path.split(".").reduce((accumulator, segment) => accumulator?.[segment], object);
+}
+
+function interpolate(template, params) {
+  if (typeof template !== "string" || !params) {
+    return template;
+  }
+
+  return Object.entries(params).reduce(
+    (result, [key, value]) => result.replaceAll(`{{${key}}}`, String(value)),
+    template
+  );
 }
 
 export function I18nProvider({ children }) {
@@ -33,9 +44,21 @@ export function I18nProvider({ children }) {
     window.localStorage.setItem(STORAGE_KEY, nextLocale);
   };
 
-  const t = (key, fallback) => {
+  const t = (key, paramsOrFallback, maybeFallback) => {
     const dictionary = dictionaries[locale] || dictionaries.en;
-    return resolvePath(dictionary, key) ?? fallback ?? key;
+    const fallbackDictionaryValue = resolvePath(dictionaries.en, key);
+    const params =
+      paramsOrFallback && typeof paramsOrFallback === "object" && !Array.isArray(paramsOrFallback)
+        ? paramsOrFallback
+        : undefined;
+    const fallback =
+      typeof paramsOrFallback === "string"
+        ? paramsOrFallback
+        : typeof maybeFallback === "string"
+          ? maybeFallback
+          : undefined;
+    const value = resolvePath(dictionary, key) ?? fallbackDictionaryValue ?? fallback ?? key;
+    return interpolate(value, params);
   };
 
   const value = useMemo(

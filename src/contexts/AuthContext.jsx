@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
 
   const login = async ({ email, password }) => {
     if (!email || !password) {
-      throw new Error("Email and password are required.");
+      throw new Error("login.requiredError");
     }
 
     const matchedUser = resolveUser(email);

@@ -77,10 +77,7 @@ export default function MarketMapPage() {
   const [selectedStoreId, setSelectedStoreId] = useState(mockStores[0]?.id ?? "");
 
   const categories = useMemo(() => ["all", ...new Set(mockStores.map((store) => store.category))], []);
-  const availabilityOptions = useMemo(
-    () => ["all", ...new Set(mockStores.map((store) => store.availability))],
-    []
-  );
+  const availabilityOptions = useMemo(() => ["all", ...new Set(mockStores.map((store) => store.availability))], []);
 
   const filteredStores = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -89,9 +86,7 @@ export default function MarketMapPage() {
       .filter((store) => {
         const matchesQuery =
           !normalizedQuery ||
-          [store.productName, store.storeName, store.address].some((value) =>
-            value.toLowerCase().includes(normalizedQuery)
-          );
+          [store.productName, store.storeName, store.address].some((value) => value.toLowerCase().includes(normalizedQuery));
         const matchesCategory = category === "all" || store.category === category;
         const matchesAvailability = availability === "all" || store.availability === availability;
         return matchesQuery && matchesCategory && matchesAvailability;
@@ -107,34 +102,32 @@ export default function MarketMapPage() {
   }, [availability, category, distanceSort, priceSort, query]);
 
   const selectedStore = filteredStores.find((store) => store.id === selectedStoreId) ?? filteredStores[0] ?? null;
-  const cheapestStore = filteredStores.reduce(
-    (best, store) => (best === null || store.price < best.price ? store : best),
-    null
-  );
-  const nearestStore = filteredStores.reduce(
-    (best, store) => (best === null || store.distance < best.distance ? store : best),
-    null
-  );
+  const cheapestStore = filteredStores.reduce((best, store) => (best === null || store.price < best.price ? store : best), null);
+  const nearestStore = filteredStores.reduce((best, store) => (best === null || store.distance < best.distance ? store : best), null);
   const bestOverallStore = useMemo(() => getBestOverallStore(filteredStores), [filteredStores]);
 
   const comparisonCards = [
     {
-      title: "Cheapest option",
+      title: t("marketMap.cheapestOption"),
       icon: BadgeEuro,
       store: cheapestStore,
-      detail: cheapestStore ? `${formatPrice(cheapestStore.price)} at ${cheapestStore.storeName}` : "No option available"
+      detail: cheapestStore
+        ? t("marketMap.cheapestDetail", { price: formatPrice(cheapestStore.price), store: cheapestStore.storeName })
+        : t("marketMap.noOption")
     },
     {
-      title: "Nearest option",
+      title: t("marketMap.nearestOption"),
       icon: Compass,
       store: nearestStore,
-      detail: nearestStore ? `${nearestStore.distance.toFixed(1)} km from ${nearestStore.storeName}` : "No option available"
+      detail: nearestStore
+        ? t("marketMap.nearestDetail", { distance: nearestStore.distance.toFixed(1), store: nearestStore.storeName })
+        : t("marketMap.noOption")
     },
     {
-      title: "Best overall option",
+      title: t("marketMap.bestOverallOption"),
       icon: Trophy,
       store: bestOverallStore,
-      detail: bestOverallStore ? `${bestOverallStore.storeName} balances price, distance and stock.` : "No option available"
+      detail: bestOverallStore ? t("marketMap.bestOverallDetail", { store: bestOverallStore.storeName }) : t("marketMap.noOption")
     }
   ];
 
@@ -143,14 +136,9 @@ export default function MarketMapPage() {
       <Card className="overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 text-white">
         <div className="relative">
           <div className="absolute inset-y-0 right-0 hidden w-72 rounded-full bg-white/10 blur-3xl lg:block" />
-          <p className="text-xs uppercase tracking-[0.25em] text-white/55">Market intelligence</p>
-          <h2 className="mt-3 text-3xl text-white sm:text-4xl">{t("marketMap.title", "Market Map")}</h2>
-          <p className="mt-3 max-w-3xl text-sm text-white/72 sm:text-base">
-            {t(
-              "marketMap.subtitle",
-              "Compare nearby stores, scan mock prices and jump between the best supply options."
-            )}
-          </p>
+          <p className="text-xs uppercase tracking-[0.25em] text-white/55">{t("marketMap.eyebrow")}</p>
+          <h2 className="mt-3 text-3xl text-white sm:text-4xl">{t("marketMap.title")}</h2>
+          <p className="mt-3 max-w-3xl text-sm text-white/72 sm:text-base">{t("marketMap.subtitle")}</p>
         </div>
 
         <div className="mt-6 grid gap-4 xl:grid-cols-[1.25fr_0.75fr]">
@@ -159,7 +147,7 @@ export default function MarketMapPage() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search for materials (e.g. toilet, cement, tiles...)"
+              placeholder={t("marketMap.searchPlaceholder")}
               className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/55"
             />
           </label>
@@ -168,54 +156,34 @@ export default function MarketMapPage() {
             <label className="rounded-[24px] border border-white/15 bg-white/10 px-4 py-3 text-sm text-white/80">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/55">
                 <BadgeEuro size={14} />
-                Price
+                {t("marketMap.price")}
               </span>
-              <select
-                value={priceSort}
-                onChange={(event) => setPriceSort(event.target.value)}
-                className="w-full bg-transparent text-white outline-none"
-              >
-                <option value="low" className="text-slate-900">
-                  Lowest first
-                </option>
-                <option value="high" className="text-slate-900">
-                  Highest first
-                </option>
+              <select value={priceSort} onChange={(event) => setPriceSort(event.target.value)} className="w-full bg-transparent text-white outline-none">
+                <option value="low" className="text-slate-900">{t("marketMap.lowestFirst")}</option>
+                <option value="high" className="text-slate-900">{t("marketMap.highestFirst")}</option>
               </select>
             </label>
 
             <label className="rounded-[24px] border border-white/15 bg-white/10 px-4 py-3 text-sm text-white/80">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/55">
                 <MapPinned size={14} />
-                Distance
+                {t("marketMap.distance")}
               </span>
-              <select
-                value={distanceSort}
-                onChange={(event) => setDistanceSort(event.target.value)}
-                className="w-full bg-transparent text-white outline-none"
-              >
-                <option value="near" className="text-slate-900">
-                  Nearest first
-                </option>
-                <option value="far" className="text-slate-900">
-                  Farthest first
-                </option>
+              <select value={distanceSort} onChange={(event) => setDistanceSort(event.target.value)} className="w-full bg-transparent text-white outline-none">
+                <option value="near" className="text-slate-900">{t("marketMap.nearestFirst")}</option>
+                <option value="far" className="text-slate-900">{t("marketMap.farthestFirst")}</option>
               </select>
             </label>
 
             <label className="rounded-[24px] border border-white/15 bg-white/10 px-4 py-3 text-sm text-white/80">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/55">
                 <SlidersHorizontal size={14} />
-                Category
+                {t("marketMap.category")}
               </span>
-              <select
-                value={category}
-                onChange={(event) => setCategory(event.target.value)}
-                className="w-full bg-transparent text-white outline-none"
-              >
+              <select value={category} onChange={(event) => setCategory(event.target.value)} className="w-full bg-transparent text-white outline-none">
                 {categories.map((option) => (
                   <option key={option} value={option} className="text-slate-900">
-                    {option === "all" ? "All categories" : option}
+                    {option === "all" ? t("marketMap.allCategories") : option}
                   </option>
                 ))}
               </select>
@@ -224,16 +192,12 @@ export default function MarketMapPage() {
             <label className="rounded-[24px] border border-white/15 bg-white/10 px-4 py-3 text-sm text-white/80">
               <span className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/55">
                 <Layers3 size={14} />
-                Availability
+                {t("marketMap.availability")}
               </span>
-              <select
-                value={availability}
-                onChange={(event) => setAvailability(event.target.value)}
-                className="w-full bg-transparent text-white outline-none"
-              >
+              <select value={availability} onChange={(event) => setAvailability(event.target.value)} className="w-full bg-transparent text-white outline-none">
                 {availabilityOptions.map((option) => (
                   <option key={option} value={option} className="text-slate-900">
-                    {option === "all" ? "All availability" : option}
+                    {option === "all" ? t("marketMap.allAvailability") : t(`statusLabels.${option.toLowerCase()}`, option)}
                   </option>
                 ))}
               </select>
@@ -245,7 +209,6 @@ export default function MarketMapPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {comparisonCards.map((card) => {
           const Icon = card.icon;
-
           return (
             <Card key={card.title} className="bg-white/80">
               <div className="flex items-start gap-4">
@@ -254,7 +217,7 @@ export default function MarketMapPage() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm uppercase tracking-[0.22em] text-slate-400">{card.title}</p>
-                  <p className="mt-2 truncate text-lg text-slate-900">{card.store?.productName ?? "No match"}</p>
+                  <p className="mt-2 truncate text-lg text-slate-900">{card.store?.productName ?? t("marketMap.noOption")}</p>
                   <p className="mt-1 text-sm text-slate-500">{card.detail}</p>
                 </div>
               </div>
@@ -265,10 +228,7 @@ export default function MarketMapPage() {
 
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <Card>
-          <SectionHeader
-            title="Nearby store results"
-            subtitle={`${filteredStores.length} mock options ready for comparison and map preview.`}
-          />
+          <SectionHeader title={t("marketMap.resultsTitle")} subtitle={t("marketMap.resultsSubtitle", { count: filteredStores.length })} />
 
           {filteredStores.length ? (
             <div className="space-y-4">
@@ -290,36 +250,34 @@ export default function MarketMapPage() {
                         <p className="mt-1 text-sm text-slate-500">{store.storeName}</p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">
-                          {store.category}
-                        </span>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">{store.category}</span>
                         <StatusBadge value={store.availability} />
                       </div>
                     </div>
 
                     <div className="mt-4 grid gap-3 text-sm text-slate-500 sm:grid-cols-3">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Price</p>
+                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("marketMap.price")}</p>
                         <p className="mt-1 text-base text-slate-900">{formatPrice(store.price)}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Distance</p>
+                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("marketMap.distance")}</p>
                         <p className="mt-1 text-base text-slate-900">{store.distance.toFixed(1)} km</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Address</p>
+                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("common.location")}</p>
                         <p className="mt-1 text-base text-slate-900">{store.address}</p>
                       </div>
                     </div>
 
                     <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="text-sm text-slate-500">Store supply check with mock location data.</div>
+                      <div className="text-sm text-slate-500">{t("marketMap.storeSupplyCheck")}</div>
                       <Button
                         variant={isSelected ? "primary" : "secondary"}
                         className="w-full gap-2 sm:w-auto"
                         onClick={() => setSelectedStoreId(store.id)}
                       >
-                        View on map
+                        {t("common.viewOnMap")}
                         <ArrowRight size={16} />
                       </Button>
                     </div>
@@ -330,17 +288,14 @@ export default function MarketMapPage() {
           ) : (
             <div className="rounded-[28px] border border-dashed border-slate-200 bg-white/60 px-6 py-16 text-center">
               <Search size={26} className="mx-auto text-brand-600" />
-              <h3 className="mt-4 text-xl text-slate-900">No stores match this search</h3>
-              <p className="mt-2 text-sm text-slate-500">Try another material name or switch the selected filters.</p>
+              <h3 className="mt-4 text-xl text-slate-900">{t("marketMap.noStoresTitle")}</h3>
+              <p className="mt-2 text-sm text-slate-500">{t("marketMap.noStoresSubtitle")}</p>
             </div>
           )}
         </Card>
 
         <Card className="overflow-hidden">
-          <SectionHeader
-            title="Map preview"
-            subtitle="A styled mock map showing where each matching option is located."
-          />
+          <SectionHeader title={t("marketMap.mapPreview")} subtitle={t("marketMap.mapPreviewSubtitle")} />
 
           <div className="relative h-[320px] rounded-[28px] border border-emerald-100 bg-[radial-gradient(circle_at_top_left,_rgba(22,163,74,0.22),_transparent_34%),linear-gradient(135deg,_rgba(240,253,244,0.95),_rgba(220,252,231,0.9)_45%,_rgba(187,247,208,0.7))] p-4 sm:h-[380px]">
             <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(15,23,42,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.08)_1px,transparent_1px)] [background-size:40px_40px]" />
@@ -361,7 +316,7 @@ export default function MarketMapPage() {
                   className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white p-2 shadow-lg transition ${
                     isSelected ? "scale-110 bg-brand-700 text-white" : "bg-white text-brand-700 hover:scale-105"
                   }`}
-                  aria-label={`Show ${store.storeName} on map`}
+                  aria-label={`${t("common.viewOnMap")} ${store.storeName}`}
                 >
                   <Store size={16} />
                 </button>
@@ -370,14 +325,14 @@ export default function MarketMapPage() {
 
             {selectedStore ? (
               <div className="absolute bottom-4 left-4 right-4 rounded-[24px] border border-white/60 bg-white/85 p-4 shadow-soft backdrop-blur">
-                <p className="text-xs uppercase tracking-[0.22em] text-brand-600">Focused store</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-brand-600">{t("marketMap.focusedStore")}</p>
                 <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <p className="truncate text-lg text-slate-900">{selectedStore.storeName}</p>
                     <p className="truncate text-sm text-slate-500">{selectedStore.productName}</p>
                   </div>
                   <div className="sm:text-right">
-                    <p className="text-sm text-slate-500">{selectedStore.distance.toFixed(1)} km away</p>
+                    <p className="text-sm text-slate-500">{selectedStore.distance.toFixed(1)} km</p>
                     <p className="text-base text-slate-900">{formatPrice(selectedStore.price)}</p>
                   </div>
                 </div>

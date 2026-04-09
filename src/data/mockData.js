@@ -200,9 +200,9 @@ export const mockFinance = {
 };
 
 export const mockNotifications = [
-  { id: "n-1", title: "New task assigned to Mia", time: "5 min ago" },
-  { id: "n-2", title: "Concrete delivery confirmed", time: "18 min ago" },
-  { id: "n-3", title: "Invoice #204 approved", time: "1 hour ago" }
+  { id: "n-1", titleKey: "notifications.n-1.title", timeKey: "notifications.n-1.time" },
+  { id: "n-2", titleKey: "notifications.n-2.title", timeKey: "notifications.n-2.time" },
+  { id: "n-3", titleKey: "notifications.n-3.title", timeKey: "notifications.n-3.time" }
 ];
 
 export const mockThreads = [
@@ -214,13 +214,13 @@ export const mockThreads = [
       {
         id: "m-1",
         senderId: "u-admin-1",
-        text: "Morning Alex, please prioritize the slab inspection today.",
+        textKey: "chat.messages.m-1",
         timestamp: "08:12"
       },
       {
         id: "m-2",
         senderId: "u-employee-1",
-        text: "On it. I will upload notes after the walkthrough.",
+        textKey: "chat.messages.m-2",
         timestamp: "08:24"
       }
     ]
@@ -233,13 +233,13 @@ export const mockThreads = [
       {
         id: "m-3",
         senderId: "u-admin-1",
-        text: "Can you confirm the cabling team arrival for Skyline?",
+        textKey: "chat.messages.m-3",
         timestamp: "07:48"
       },
       {
         id: "m-4",
         senderId: "u-employee-2",
-        text: "Confirmed. We start at 09:00 and should finish the east wing by noon.",
+        textKey: "chat.messages.m-4",
         timestamp: "08:01"
       }
     ]
@@ -252,7 +252,7 @@ export const mockThreads = [
       {
         id: "m-5",
         senderId: "u-employee-3",
-        text: "Pressure test is scheduled for 14:30. Awaiting valve delivery.",
+        textKey: "chat.messages.m-5",
         timestamp: "08:05"
       }
     ]

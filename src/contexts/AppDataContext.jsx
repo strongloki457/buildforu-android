@@ -69,8 +69,8 @@ export function AppDataProvider({ children }) {
     );
   };
 
-  const sendMessage = ({ threadId, senderId, text }) => {
-    if (!text.trim()) {
+  const sendMessage = ({ threadId, senderId, text, attachments = [] }) => {
+    if (!text.trim() && !attachments.length) {
       return;
     }
 
@@ -90,7 +90,8 @@ export function AppDataProvider({ children }) {
                   id: `m-${Date.now()}`,
                   senderId,
                   text: text.trim(),
-                  timestamp
+                  timestamp,
+                  attachments
                 }
               ]
             }

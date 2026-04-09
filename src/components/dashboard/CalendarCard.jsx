@@ -1,8 +1,7 @@
 import { CalendarDays } from "lucide-react";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
-
-const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+import { useI18n } from "../../hooks/useI18n";
 
 function getCalendarCells(tasks) {
   const today = new Date();
@@ -27,20 +26,28 @@ function getCalendarCells(tasks) {
   return cells;
 }
 
-export default function CalendarCard({ title, subtitle, tasks }) {
+export default function CalendarCard({ title, subtitle, tasks, action }) {
+  const { locale, t } = useI18n();
   const cells = getCalendarCells(tasks);
   const upcomingTasks = [...tasks].sort((left, right) => left.date.localeCompare(right.date)).slice(0, 6);
+  const dayLabels = Array.from({ length: 7 }, (_, index) =>
+    new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, { weekday: "short" }).format(
+      new Date(Date.UTC(2026, 0, 5 + index))
+    )
+  );
 
   return (
     <Card>
       <SectionHeader
-        eyebrow="Monthly"
+        eyebrow={t("calendar.monthlyEyebrow")}
         title={title}
         subtitle={subtitle}
         action={
-          <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
-            <CalendarDays size={18} />
-          </div>
+          action ?? (
+            <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
+              <CalendarDays size={18} />
+            </div>
+          )
         }
       />
 
@@ -59,7 +66,7 @@ export default function CalendarCard({ title, subtitle, tasks }) {
           ))
         ) : (
           <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/50 p-6 text-sm text-slate-500">
-            No scheduled items for this month.
+            {t("calendar.emptyMonth")}
           </div>
         )}
       </div>

@@ -1,6 +1,5 @@
 import { Briefcase, CircleDollarSign, ClipboardCheck, Users2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import AssignmentPanel from "../components/dashboard/AssignmentPanel";
 import CalendarCard from "../components/dashboard/CalendarCard";
 import ChatPanel from "../components/dashboard/ChatPanel";
 import ProjectsOverviewCard from "../components/dashboard/ProjectsOverviewCard";
@@ -13,7 +12,7 @@ import { useI18n } from "../hooks/useI18n";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-  const { tasks, threads, workers, finance, projects, addTask, sendMessage } = useAppData();
+  const { tasks, threads, workers, finance, projects, sendMessage } = useAppData();
   const { t } = useI18n();
   const [ready, setReady] = useState(false);
 
@@ -35,9 +34,7 @@ export default function AdminDashboard() {
         <div className="mt-4 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
           <div>
             <h2 className="text-3xl sm:text-4xl">{t("dashboard.adminTitle")}</h2>
-            <p className="mt-3 max-w-2xl text-white/70">
-              Today’s operation board surfaces workforce coverage, task pressure, live schedules and delivery health in one streamlined view.
-            </p>
+            <p className="mt-3 max-w-2xl text-white/70">{t("dashboard.adminHeroBody")}</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -45,56 +42,44 @@ export default function AdminDashboard() {
               icon={Users2}
               label={t("dashboard.crewAvailability")}
               value={`${workers.length} crews`}
-              detail="Three teams active today"
+              detail={t("dashboard.adminCrewDetail")}
             />
             <MetricCard
               icon={ClipboardCheck}
               label={t("dashboard.upcomingTasks")}
               value={pendingCount}
-              detail="Assignments currently open"
+              detail={t("dashboard.adminOpenAssignments")}
             />
             <MetricCard
               icon={Briefcase}
               label={t("dashboard.activeProjects")}
               value={projects.length}
-              detail="2 healthy, 1 at risk"
+              detail={t("dashboard.adminProjectDetail")}
             />
             <MetricCard
               icon={CircleDollarSign}
               label={t("dashboard.monthlyRevenue")}
               value={finance.revenue}
-              detail="Profit tracking remains positive"
+              detail={t("dashboard.adminRevenueDetail")}
             />
           </div>
         </div>
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <WorkersPanel title={t("dashboard.workerPulse")} subtitle="Crew visibility across sites" workers={workers} />
-        <AssignmentPanel
-          title={t("dashboard.assignTask")}
-          subtitle="Mock task assignment flow for the prototype"
-          workers={workers}
-          onAssign={addTask}
-        />
-      </div>
+      <WorkersPanel title={t("dashboard.workerPulse")} subtitle={t("dashboard.workerPulseSubtitle")} workers={workers} />
 
       <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
-        <CalendarCard
-          title={t("dashboard.calendarOverview")}
-          subtitle="Company-wide task coverage for the current month."
-          tasks={tasks}
-        />
+        <CalendarCard title={t("dashboard.calendarOverview")} subtitle={t("dashboard.calendarSubtitle")} tasks={tasks} />
         <ProjectsOverviewCard
           title={t("dashboard.projectHealth")}
-          subtitle="Delivery pulse across your flagship projects."
+          subtitle={t("dashboard.projectSubtitle")}
           projects={projects}
         />
       </div>
 
       <ChatPanel
         title={t("dashboard.teamMessages")}
-        subtitle="Coordinate quickly with workers and supervisors."
+        subtitle={t("dashboard.chatSubtitle")}
         threads={threads}
         user={user}
         onSendMessage={sendMessage}

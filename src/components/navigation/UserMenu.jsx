@@ -28,11 +28,11 @@ export default function UserMenu() {
         <div className="absolute right-0 z-30 mt-3 w-56 rounded-3xl border border-white/70 bg-white/95 p-3 shadow-soft backdrop-blur-xl">
           <div className="rounded-2xl bg-slate-50 p-3">
             <p className="text-sm text-slate-900">{user?.email}</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-brand-600">{user?.role}</p>
+            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-brand-600">{t(`roles.${user?.role}`, user?.role)}</p>
           </div>
           <button className="mt-3 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50">
             <UserCircle size={16} />
-            Account
+            {t("common.account")}
           </button>
           <button
             onClick={logout}
