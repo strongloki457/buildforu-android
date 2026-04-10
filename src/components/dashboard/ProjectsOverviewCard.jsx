@@ -2,6 +2,7 @@ import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 import { useI18n } from "../../hooks/useI18n";
+import { getProjectPhase } from "../../utils/localizedValue";
 
 export default function ProjectsOverviewCard({ title, subtitle, projects }) {
   const { t } = useI18n();
@@ -16,7 +17,7 @@ export default function ProjectsOverviewCard({ title, subtitle, projects }) {
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-base text-slate-900">{project.name}</p>
-                <p className="text-sm text-slate-500">{project.phase}</p>
+                <p className="text-sm text-slate-500">{getProjectPhase(t, project)}</p>
               </div>
               <StatusBadge value={project.health} />
             </div>

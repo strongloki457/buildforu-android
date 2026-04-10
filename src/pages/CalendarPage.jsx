@@ -1,5 +1,5 @@
 import { CalendarDays, Clock3, Layers3, Plus } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AssignmentPanel from "../components/dashboard/AssignmentPanel";
 import CalendarCard from "../components/dashboard/CalendarCard";
 import Button from "../components/ui/Button";
@@ -10,14 +10,60 @@ import SectionHeader from "../components/ui/SectionHeader";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { getLocalDateKey, getUpcomingItemsByDate, isDateKeyInMonth, sortByDateKey } from "../utils/date";
+import { getTaskLocation, getTaskTitle } from "../utils/localizedValue";
+
+function formatShortDate(dateKey, locale) {
+  if (!dateKey) {
+    return "--";
+  }
+
+  const [year, month, day] = String(dateKey).split("-").map(Number);
+
+  if (!Number.isFinite(year) || !Number.isFinite(month) || !Number.isFinite(day)) {
+    return "--";
+  }
+
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, {
+    day: "2-digit",
+    month: "short"
+  }).format(new Date(year, month - 1, day));
+}
 
 export default function CalendarPage() {
   const { user } = useAuth();
   const { tasks, workers, addTask } = useAppData();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [showTaskModal, setShowTaskModal] = useState(false);
+  const [visibleDate, setVisibleDate] = useState(() => new Date());
 
-  const scopedTasks = user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === user.id);
+  const scopedTasks = useMemo(
+    () => (user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === user.id)),
+    [tasks, user.id, user.role]
+  );
+  const upcomingTasks = useMemo(() => getUpcomingItemsByDate(scopedTasks), [scopedTasks]);
+  const tasksInVisibleMonth = useMemo(
+    () => sortByDateKey(scopedTasks.filter((task) => isDateKeyInMonth(task.date, visibleDate))),
+    [scopedTasks, visibleDate]
+  );
+  const nextUpcomingTask = upcomingTasks[0] ?? null;
+  const monthLabel = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, {
+        month: "long",
+        year: "numeric"
+      }).format(visibleDate),
+    [locale, visibleDate]
+  );
+  const initialTaskDate = useMemo(() => {
+    const today = new Date();
+    const sameMonth =
+      today.getFullYear() === visibleDate.getFullYear() && today.getMonth() === visibleDate.getMonth();
+
+    return sameMonth
+      ? getLocalDateKey(today)
+      : getLocalDateKey(new Date(visibleDate.getFullYear(), visibleDate.getMonth(), 1));
+  }, [visibleDate]);
 
   return (
     <div className="space-y-6">
@@ -25,7 +71,11 @@ export default function CalendarPage() {
         <CalendarCard
           title={t("calendar.title")}
           subtitle={t("calendar.subtitle")}
-          tasks={scopedTasks}
+          tasks={tasksInVisibleMonth}
+          currentDate={visibleDate}
+          onPrevMonth={() => setVisibleDate((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1))}
+          onNextMonth={() => setVisibleDate((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1))}
+          onToday={() => setVisibleDate(new Date())}
           action={
             user.role === "admin" ? (
               <Button className="w-full gap-2 sm:w-auto" onClick={() => setShowTaskModal(true)}>
@@ -38,9 +88,9 @@ export default function CalendarPage() {
         <div className="grid gap-4">
           <MetricCard
             icon={CalendarDays}
-            label={t("calendar.scheduledThisMonth")}
-            value={scopedTasks.length}
-            detail={t("calendar.scheduledThisMonthDetail")}
+            label={t("calendar.scheduledInView", "Scheduled in view")}
+            value={tasksInVisibleMonth.length}
+            detail={t("calendar.scheduledInViewDetail", { month: monthLabel }, monthLabel)}
           />
           <MetricCard
             icon={Layers3}
@@ -51,28 +101,36 @@ export default function CalendarPage() {
           <MetricCard
             icon={Clock3}
             label={t("calendar.nextCheckpoint")}
-            value="09:30"
-            detail={t("calendar.nextCheckpointDetail")}
+            value={nextUpcomingTask ? formatShortDate(nextUpcomingTask.date, locale) : "--"}
+            detail={
+              nextUpcomingTask
+                ? `${getTaskTitle(t, nextUpcomingTask)} - ${getTaskLocation(t, nextUpcomingTask)}`
+                : t("calendar.nextCheckpointDetail")
+            }
           />
         </div>
       </div>
 
       <Card>
-        <SectionHeader title={t("calendar.upcomingTimeline")} subtitle={t("calendar.upcomingTimelineSubtitle")} />
+        <SectionHeader
+          eyebrow={t("calendar.scheduleList", "Schedule list")}
+          title={monthLabel}
+          subtitle={t("calendar.scheduleListSubtitle", "Tasks planned for the selected month.")}
+        />
         <div className="grid gap-3">
-          {scopedTasks.length ? (
-            scopedTasks.map((task) => (
+          {tasksInVisibleMonth.length ? (
+            tasksInVisibleMonth.map((task) => (
               <div key={task.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] bg-white/80 p-4">
                 <div>
-                  <p className="text-slate-900">{task.title}</p>
-                  <p className="text-sm text-slate-500">{task.location}</p>
+                  <p className="text-slate-900">{getTaskTitle(t, task)}</p>
+                  <p className="text-sm text-slate-500">{getTaskLocation(t, task)}</p>
                 </div>
                 <div className="rounded-2xl bg-brand-50 px-4 py-2 text-sm text-brand-700">{task.date}</div>
               </div>
             ))
           ) : (
             <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/50 p-6 text-sm text-slate-500">
-              {t("calendar.noUpcoming")}
+              {t("calendar.noTasksInView", "No tasks are scheduled in this month.")}
             </div>
           )}
         </div>
@@ -86,9 +144,13 @@ export default function CalendarPage() {
         >
           <AssignmentPanel
             workers={workers}
+            initialDate={initialTaskDate}
             onAssign={(payload) => {
-              addTask(payload);
-              setShowTaskModal(false);
+              const createdTask = addTask(payload);
+
+              if (createdTask) {
+                setShowTaskModal(false);
+              }
             }}
             embedded
           />

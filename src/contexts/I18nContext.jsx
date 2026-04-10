@@ -21,6 +21,10 @@ const languageOptions = [
 ];
 
 function resolvePath(object, path) {
+  if (!object || typeof path !== "string" || !path.length) {
+    return undefined;
+  }
+
   return path.split(".").reduce((accumulator, segment) => accumulator?.[segment], object);
 }
 

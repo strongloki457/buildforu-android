@@ -64,7 +64,14 @@
     "low stock": "Wenig Bestand",
     "limited": "Begrenzt",
     "preorder": "Vorbestellung",
-    "out of stock": "Nicht auf Lager"
+    "out of stock": "Nicht auf Lager",
+    "off site": "Nicht vor Ort",
+    "in progress": "In Arbeit",
+    "not started": "Nicht gestartet",
+    "on hold": "Pausiert",
+    "ordered": "Bestellt",
+    "purchased": "Gekauft",
+    "rejected": "Abgelehnt"
   },
   "priorityLabels": {
     "high": "Hoch",
@@ -72,9 +79,18 @@
     "low": "Niedrig"
   },
   "notifications": {
-    "n-1": { "title": "Neue Aufgabe an Mia zugewiesen", "time": "vor 5 Min." },
-    "n-2": { "title": "Betonlieferung bestätigt", "time": "vor 18 Min." },
-    "n-3": { "title": "Rechnung #204 genehmigt", "time": "vor 1 Std." }
+    "n-1": {
+      "title": "Neue Aufgabe an Mia zugewiesen",
+      "time": "vor 5 Min."
+    },
+    "n-2": {
+      "title": "Betonlieferung bestätigt",
+      "time": "vor 18 Min."
+    },
+    "n-3": {
+      "title": "Rechnung #204 genehmigt",
+      "time": "vor 1 Std."
+    }
   },
   "login": {
     "title": "Jedes Projekt souverän steuern.",
@@ -90,7 +106,15 @@
     "liveAssignments": "Aktive Feldeinsätze",
     "projectsInDelivery": "Projekte in Ausführung",
     "scheduleReliability": "Terminzuverlässigkeit",
-    "loading": "Lädt..."
+    "loading": "Lädt...",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "accessNote": "Sicherer Zugang fur BuildForU Buros und Feldteams.",
+    "workspaceEyebrow": "Plattform fur Bauablaufe",
+    "featureAdmin": "Arbeitsbereiche fur Admin und Mitarbeiter",
+    "featureOps": "Aufgaben, Plane und Team-Chat",
+    "featureI18n": "Mehrsprachige Oberflache mit Mock-Daten",
+    "demoAccounts": "Beispielkonten"
   },
   "sidebar": {
     "controlTower": "Leitstand",
@@ -164,7 +188,15 @@
     "emptyWorker": "Fügen Sie einen Mitarbeiter hinzu, um eine Aufgabe zuzuweisen",
     "taskTitle": "Aufgabentitel",
     "taskLocation": "Baustellenstandort",
-    "assignTaskButton": "Aufgabe zuweisen"
+    "assignTaskButton": "Aufgabe zuweisen",
+    "scheduledInView": "Geplant in Ansicht",
+    "scheduledInViewDetail": "{{month}} ist aktuell im Kalender geladen.",
+    "scheduleList": "Terminliste",
+    "scheduleListSubtitle": "Aufgaben fur den ausgewahlten Monat.",
+    "noTasksInView": "In diesem Monat sind keine Aufgaben geplant.",
+    "selectedMonth": "Gewahlter Monat",
+    "previousMonth": "Vorheriger Monat",
+    "nextMonth": "Nachster Monat"
   },
   "tasks": {
     "title": "Aufgabenverwaltung",
@@ -238,7 +270,11 @@
     "deleteWorkerDescription": "Möchten Sie {{name}} wirklich aus der Teamliste entfernen? Das betrifft nur lokale Mock-Daten.",
     "keepWorker": "Behalten",
     "deleteWorkerConfirm": "Mitarbeiter löschen",
-    "saveChanges": "Änderungen speichern"
+    "saveChanges": "Änderungen speichern",
+    "offSite": "Nicht vor Ort",
+    "offSiteDetail": "Mitarbeiter sind aktuell als nicht vor Ort markiert.",
+    "attendanceManagedByEmployee": "Der Anwesenheitsstatus wird vom Mitarbeiter im eigenen Arbeitsbereich erfasst.",
+    "notProvided": "Nicht angegeben"
   },
   "projects": {
     "title": "Projekte",
@@ -249,7 +285,26 @@
     "atRiskDetail": "Ein Standort benötigt genauere Überwachung.",
     "averageProgress": "Durchschn. Fortschritt",
     "averageProgressDetail": "Mittlerer Fertigstellungsgrad des Portfolios.",
-    "progressComplete": "{{value}}% abgeschlossen"
+    "progressComplete": "{{value}}% abgeschlossen",
+    "totalProjects": "Alle Projekte",
+    "totalProjectsDetail": "Jedes aktuell im Arbeitsbereich verfolgte Projekt.",
+    "inProgressProjects": "In Arbeit",
+    "inProgressProjectsDetail": "Projekte, die aktuell auf der Baustelle oder in der Lieferung laufen.",
+    "completedProjects": "Abgeschlossen",
+    "completedProjectsDetail": "Bereits ausgelieferte oder vollstandig geschlossene Projekte.",
+    "peopleAssigned": "Zugewiesene Personen",
+    "peopleAssignedDetail": "Mitarbeiter, die aktuell Projektarbeit zugeordnet sind.",
+    "detailsDescription": "Projektteam, Zeitplan und operative Notizen an einem Ort.",
+    "currentPhase": "Aktuelle Phase",
+    "projectLocation": "Standort",
+    "budget": "Budget",
+    "startDate": "Startdatum",
+    "deadline": "Frist",
+    "progressLabel": "Fortschritt",
+    "teamAssigned": "Zugewiesenes Team",
+    "noAssignedWorkers": "Diesem Projekt sind noch keine Mitarbeiter zugewiesen.",
+    "notes": "Notizen",
+    "viewDetails": "Details ansehen"
   },
   "materials": {
     "title": "Materialien",
@@ -260,7 +315,36 @@
     "inStockDetail": "Ausreichender Bestand für aktuelle Aufgaben.",
     "supplierSync": "Lieferanten-Sync",
     "supplierSyncValue": "Live",
-    "supplierSyncDetail": "Der Beschaffungsstatus ist visuell gemockt."
+    "supplierSyncDetail": "Der Beschaffungsstatus ist visuell gemockt.",
+    "requestsVisible": "Anfragen",
+    "requestsVisibleDetail": "Anfragen, die im aktuellen Arbeitsbereich sichtbar sind.",
+    "pendingRequests": "Offen",
+    "pendingRequestsDetail": "Warten auf Prufung oder Einkauf.",
+    "orderedRequests": "Bestellt",
+    "orderedRequestsDetail": "Bereits an Lieferanten oder Markte gesendet.",
+    "purchasedRequests": "Gekauft",
+    "purchasedRequestsDetail": "Bereit fur Team oder Baustelle.",
+    "requestFormTitle": "Materialanfrage erstellen",
+    "requestFormSubtitle": "Melden Sie, was fur die Arbeit benotigt wird, damit das Buro es verfolgen und einkaufen kann.",
+    "yourProject": "Zugewiesenes Projekt",
+    "noProjectAssigned": "Aktuell kein Projekt zugewiesen.",
+    "itemName": "Artikelname",
+    "itemPlaceholder": "Farbe, Schrauben, Zement, Toilette, Fliesen...",
+    "quantity": "Menge",
+    "quantityPlaceholder": "Optional, z. B. 20 Sack oder 2 Kartons",
+    "note": "Notiz",
+    "notePlaceholder": "Optionaler Kontext fur Buro oder Einkauf",
+    "submitRequest": "Anfrage senden",
+    "requestedBy": "Angefragt von",
+    "createdOn": "Erstellt",
+    "updateStatus": "Status aktualisieren",
+    "adminScope": "Materialboard fur Admin",
+    "adminScopeSubtitle": "Prufen Sie Anfragen vom Feld und bewegen Sie sie durch die Einkaufsstatus.",
+    "requestsBoardTitle": "Materialanfragen-Board",
+    "requestsBoardSubtitle": "Verfolgen Sie Anfragen, filtern Sie die Warteschlange und aktualisieren Sie den Fortschritt.",
+    "searchPlaceholder": "Nach Artikel, Person, Notiz oder Projekt suchen",
+    "emptyTitle": "Keine Anfragen gefunden",
+    "emptySubtitle": "Versuchen Sie eine andere Suche oder einen anderen Statusfilter oder erstellen Sie eine neue Anfrage."
   },
   "finance": {
     "title": "Finanzen",
@@ -287,7 +371,10 @@
     "privacyTitle": "Erweiterter Datenschutzmodus",
     "privacyDescription": "Reduzieren Sie sichtbare operative Details auf gemeinsam genutzten Bildschirmen.",
     "workspaceSaved": "Arbeitsbereich lokal gespeichert",
-    "workspaceSavedDetail": "Dieser Bildschirm ist derzeit nur UI und bereit für eine spätere Backend-Anbindung."
+    "workspaceSavedDetail": "Dieser Bildschirm ist derzeit nur UI und bereit für eine spätere Backend-Anbindung.",
+    "billingTitle": "Abrechnung und Abo",
+    "billingDescription": "Offnen Sie die Abo-Ansicht, um Plan, Mitarbeiterzahl und Mock-Abrechnungsdaten zu prufen.",
+    "manageBilling": "Abrechnung verwalten"
   },
   "marketMap": {
     "title": "Marktkarte",
@@ -319,5 +406,411 @@
     "cheapestDetail": "{{price}} bei {{store}}",
     "nearestDetail": "{{distance}} km von {{store}}",
     "bestOverallDetail": "{{store}} bietet die beste Balance aus Preis, Entfernung und Bestand."
+  },
+  "plans": {
+    "starter": "Starter",
+    "pro": "Pro",
+    "enterprise": "Enterprise"
+  },
+  "publicNav": {
+    "home": "Start",
+    "pricing": "Preise",
+    "register": "Registrieren",
+    "openDashboard": "Dashboard offnen",
+    "startTrial": "Kostenlos testen",
+    "footer": "Entwickelt fur wachsende Bauunternehmen, die einen klareren und vernetzteren Arbeitsbereich brauchen."
+  },
+  "attendance": {
+    "title": "Arbeitsstatus",
+    "subtitle": "Erfassen Sie Beginn und Ende der Arbeit mit Zeit und optionalem Standort.",
+    "currentStatus": "Aktueller Status",
+    "startWork": "Arbeit starten",
+    "endWork": "Arbeit beenden",
+    "startingWork": "Arbeit wird gestartet...",
+    "endingWork": "Arbeit wird beendet...",
+    "lastStart": "Letzter Start",
+    "lastEnd": "Letztes Ende",
+    "startLocation": "Startort",
+    "endLocation": "Endort",
+    "locationHint": "Die App versucht beim Start oder Ende der Arbeit den Standort zu erfassen, die Aktion funktioniert aber auch ohne Standort.",
+    "locationDenied": "Standortfreigabe verweigert",
+    "locationUnavailable": "Standort nicht verfugbar",
+    "locationUnavailableShort": "Standort nicht verfugbar",
+    "locationCaptured": "Standort erfasst",
+    "locationIndicator": "Standorterfassung",
+    "startSaved": "Arbeitsbeginn gespeichert.",
+    "endSaved": "Arbeitsende gespeichert.",
+    "startSavedWithoutLocation": "Arbeitsbeginn gespeichert. {{reason}}.",
+    "endSavedWithoutLocation": "Arbeitsende gespeichert. {{reason}}.",
+    "noRecord": "Noch kein Eintrag",
+    "noWorkerProfile": "Fur dieses Konto wurde noch kein verknupftes Mitarbeiterprofil gefunden.",
+    "viewDetails": "Anwesenheit",
+    "detailsTitle": "Anwesenheit von {{name}}",
+    "detailsDescription": "Sehen Sie den erfassten Anwesenheitsstatus, Zeitstempel und optionale Standortkoordinaten."
+  },
+  "landing": {
+    "eyebrow": "SaaS fur Bauablaufe",
+    "title": "Steuern Sie Teams, Plane und Baustellenkommunikation aus einem BuildForU-Arbeitsbereich.",
+    "subtitle": "BuildForU hilft Bauunternehmen, Mitarbeiter, Aufgaben, Planung, Team-Chat und Beschaffungstools in einem hochwertigen Dashboard fur Buro und Feld zu verwalten.",
+    "featuresEyebrow": "Kernfunktionen",
+    "featuresTitle": "Auf den taglichen Rhythmus eines Bauunternehmens zugeschnitten.",
+    "ctaEyebrow": "Bereit fur den Start",
+    "ctaTitle": "Starten Sie Ihre BuildForU-Testphase und richten Sie den Arbeitsbereich Ihres Unternehmens in wenigen Minuten ein.",
+    "ctaSubtitle": "Entdecken Sie das Produkt, prufen Sie Plane und wechseln Sie ohne Backend-Setup in das bestehende Dashboard.",
+    "stats": {
+      "roles": {
+        "label": "Gebaut fur",
+        "value": "Chef + Mitarbeiter"
+      },
+      "deployment": {
+        "label": "Bereitstellung",
+        "value": "Frontend zuerst"
+      },
+      "focus": {
+        "label": "Fokus",
+        "value": "Tagliche Ablaufe"
+      }
+    },
+    "features": {
+      "workers": {
+        "title": "Mitarbeiterverwaltung",
+        "description": "Behalten Sie Teams, Vorarbeiter und Zuweisungen in einem operativen Arbeitsbereich im Blick."
+      },
+      "calendar": {
+        "title": "Kalenderplanung",
+        "description": "Koordinieren Sie Arbeitstage, Besuche und Schichtzeiten in einer klareren Planungsansicht."
+      },
+      "chat": {
+        "title": "Team-Chat",
+        "description": "Reduzieren Sie Telefonchaos mit schnellen Updates zwischen Buro und Feldteams."
+      },
+      "marketMap": {
+        "title": "Marktkarte",
+        "description": "Vergleichen Sie nahe Geschafte und Bezugsquellen, bevor Teams Zeit bei der Beschaffung verlieren."
+      }
+    },
+    "preview": {
+      "eyebrow": "Produktvorschau",
+      "title": "Ein naherer Blick darauf, wie Teams BuildForU nutzen",
+      "badge": "Live-Produktmodule",
+      "glanceEyebrow": "Heute im Uberblick",
+      "glanceTitle": "Personal, Planung, Chat und Beschaffung in einer operativen Ansicht.",
+      "pills": {
+        "workers": "18 aktive Mitarbeiter",
+        "tasks": "12 Aufgaben heute",
+        "threads": "4 Live-Threads"
+      },
+      "workers": {
+        "label": "Mitarbeiter",
+        "title": "Teamstatus",
+        "badge": "Live-Sync"
+      },
+      "calendar": {
+        "label": "Kalender",
+        "title": "Heutiger Plan"
+      },
+      "chat": {
+        "label": "Chat",
+        "title": "Updates vom Buro aufs Feld",
+        "badge": "2 ungelesen",
+        "message-1": {
+          "author": "Sophie",
+          "text": "Bitte bestatige die Notizen zur Plattenprufung nach dem Rundgang."
+        },
+        "message-2": {
+          "author": "Alex",
+          "text": "Bestatigt. Ich lade das Update vor Mittag hoch."
+        }
+      },
+      "market": {
+        "label": "Marktkarte",
+        "title": "Suche nach naher Versorgung",
+        "search": "Suche: Fassadenpaneele",
+        "result-1": {
+          "store": "Nordic Build Store",
+          "meta": "Fassadenpaneele - 3.1 km",
+          "price": "$86",
+          "badge": "Bester Preis"
+        },
+        "result-2": {
+          "store": "Voltix Supply Hub",
+          "meta": "Verkabelung - 5.4 km",
+          "price": "$42",
+          "badge": "Auf Lager"
+        }
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Preise",
+    "title": "Wahlen Sie den Plan, der zur Phase Ihres Unternehmens passt.",
+    "subtitle": "Starten Sie mit einem einfachen Team-Setup und wachsen Sie in einen vollstandigen operativen Arbeitsbereich hinein.",
+    "mostPopular": "Am beliebtesten",
+    "perMonth": "pro Monat",
+    "choosePlan": "Plan wahlen",
+    "plans": {
+      "starter": {
+        "price": "$29",
+        "subtitle": "Fur kleine Teams, die Struktur schaffen wollen.",
+        "workers": "Bis zu 5 Mitarbeiter",
+        "features": {
+          "1": "Rollenbasiertes Login",
+          "2": "Aufgaben- und Kalenderansichten",
+          "3": "Team-Chat",
+          "4": "Zugang zur Marktkarte"
+        }
+      },
+      "pro": {
+        "price": "$99",
+        "subtitle": "Fur aktive Firmen mit mehreren Teams.",
+        "workers": "Bis zu 25 Mitarbeiter",
+        "features": {
+          "1": "Alles aus Starter",
+          "2": "Mitarbeiterverwaltung",
+          "3": "Operatives Admin-Dashboard",
+          "4": "Priorisierter Onboarding-Support"
+        }
+      },
+      "enterprise": {
+        "price": "Individuell",
+        "subtitle": "Fur grossere Ablaufe und individuelle Einfuhrung.",
+        "workers": "Unbegrenzte Mitarbeiter",
+        "features": {
+          "1": "Alles aus Pro",
+          "2": "Unbegrenzte Skalierung",
+          "3": "Individuelle Einfuhrung",
+          "4": "Zukunftige API-fahige Einfuhrung"
+        }
+      }
+    }
+  },
+  "register": {
+    "eyebrow": "Unternehmen registrieren",
+    "title": "Erstellen Sie Ihren Unternehmens-Arbeitsbereich",
+    "subtitle": "Starten Sie mit Ihren Unternehmensdaten, wahlen Sie einen Plan und wechseln Sie in wenigen Minuten zu BuildForU.",
+    "companyName": "Unternehmensname",
+    "ownerName": "Name des Inhabers",
+    "plan": "Plan",
+    "creatingWorkspace": "Arbeitsbereich wird erstellt...",
+    "createAccount": "Unternehmenskonto erstellen",
+    "alreadyTesting": "Testen Sie das Produkt bereits?",
+    "goToSignIn": "Zur Anmeldung",
+    "onboardingEyebrow": "Onboarding",
+    "onboardingTitle": "Richten Sie Ihre Ablaufe mit weniger Reibung ein.",
+    "onboardingSubtitle": "BuildForU ist darauf ausgelegt, Ihr Unternehmen schnell in einen funktionierenden Operations-Bereich zu bringen, ohne uberfordernde Einrichtungsschritte.",
+    "selectedPlan": "Ausgewahlter Plan",
+    "workspaceSignIn": "Anmeldung im Arbeitsbereich",
+    "dashboardPreviewNote": "Nach der Registrierung landen Sie im bestehenden Dashboard, um das volle BuildForU-Erlebnis zu sehen.",
+    "steps": {
+      "1": {
+        "title": "Plan wahlen und starten",
+        "description": "Abrechnung und Abo-Details konnen Sie spater anpassen."
+      },
+      "2": {
+        "title": "Team spater einladen",
+        "description": "Starten Sie mit dem Eigentumer-Konto und bauen Sie von dort aus auf."
+      },
+      "3": {
+        "title": "Vertrauenswurdiger Onboarding-Ablauf",
+        "description": "Dieser Prototyp halt die Registrierungsreise klar und fokussiert."
+      }
+    },
+    "planCards": {
+      "starter": {
+        "price": "$29/Monat",
+        "workers": "Bis zu 5 Mitarbeiter",
+        "note": "Ein leichter Startpunkt fur kleinere Bauteams."
+      },
+      "pro": {
+        "price": "$99/Monat",
+        "workers": "Bis zu 25 Mitarbeiter",
+        "note": "Passt am besten zu aktiven Firmen mit mehreren Teams und Projekten."
+      },
+      "enterprise": {
+        "price": "Individuelle Preise",
+        "workers": "Unbegrenzte Mitarbeiter",
+        "note": "Fur grossere Organisationen mit Flexibilitat und Rollout-Unterstutzung."
+      }
+    }
+  },
+  "billing": {
+    "title": "Abrechnung und Abo",
+    "subtitle": "Prufen Sie Ihr aktuelles Abo, Mock-Abrechnungsdaten und Upgrade-Optionen.",
+    "currentPlan": "Aktueller Plan",
+    "mockSubscriptionData": "Mock-Abo-Daten",
+    "workerLimit": "Mitarbeiterlimit",
+    "workerLimitDetail": "Basierend auf der gewahlten Planstufe",
+    "usage": "Nutzung",
+    "usageWorkers": "{{count}} Mitarbeiter",
+    "usageDetail": "Im aktuellen Tarif verfolgt",
+    "upgradePlan": "Plan upgraden",
+    "subscriptionOverview": "Abo-Uberblick",
+    "uiOnly": "Nur UI fur jetzt",
+    "workerUsage": "Mitarbeiternutzung",
+    "workerUsageHint": "Fuhren Sie ein Upgrade durch, wenn Ihre Teamgroesse die Kapazitat des aktuellen Plans uberschreitet.",
+    "nextInvoice": "Nachste Rechnung",
+    "billingContact": "Abrechnungs-Kontakt",
+    "billingContactHint": "Mock-Kontakt fur UI-Vorschau",
+    "paymentMethod": "Zahlungsmethode",
+    "cardLabel": "Visa endet auf 2048",
+    "cardHint": "Gultig bis 09/28 - Mock-Kartendaten fur die Abo-Vorschau",
+    "recentActivity": "Letzte Abrechnungsaktivitat",
+    "unlimitedWorkers": "Unbegrenzt",
+    "planDescriptions": {
+      "starter": "Ein leichter Arbeitsbereich fur kleine Firmen.",
+      "pro": "Gebaut fur aktive Firmen mit mehreren Teams.",
+      "enterprise": "Bereit fur grossere Organisationen und Rollout-Unterstutzung."
+    },
+    "activity": {
+      "invoiceTitle": "Rechnung INV-2026-041",
+      "invoiceBody": "Erfolgreich bezahlt - $99.00",
+      "renewalTitle": "Erinnerung an Abo-Verlangerung",
+      "renewalBody": "Die automatische Verlangerung ist fur das Monatsende geplant.",
+      "growthTitle": "Hinweis zum Sitzplatzwachstum",
+      "growthBody": "Sie liegen innerhalb des aktuellen Planlimits und haben noch Platz fur weitere Mitarbeiter."
+    }
+  },
+  "seed": {
+    "common": {
+      "hq": "BuildForU HQ"
+    },
+    "users": {
+      "u-admin-1": {
+        "title": "Leiter Betrieb"
+      },
+      "u-employee-1": {
+        "title": "Bauleiter"
+      },
+      "u-employee-2": {
+        "title": "Elektriker"
+      },
+      "u-employee-3": {
+        "title": "Leiter Sanit ar"
+      }
+    },
+    "tasks": {
+      "task-101": {
+        "title": "Prufung der Betonplatte"
+      },
+      "task-102": {
+        "title": "Sicherheitsbriefing mit Subunternehmern"
+      },
+      "task-103": {
+        "title": "Lichtkreise installieren"
+      },
+      "task-104": {
+        "title": "Druckprufung der Rohre"
+      },
+      "task-105": {
+        "title": "Kontrolle der Fassadenlieferung"
+      },
+      "task-106": {
+        "title": "Audit der Panelkennzeichnung"
+      }
+    },
+    "projects": {
+      "project-1": {
+        "name": "North River Residences",
+        "phase": "Konstruktiver Ausbau",
+        "location": "Berlin - Prenzlauer Berg",
+        "notes": "Die Fassadenkoordination liegt im Plan, aber die Plattenprufung braucht noch die finale Freigabe."
+      },
+      "project-2": {
+        "name": "Skyline Offices",
+        "phase": "MEP-Installation",
+        "location": "Berlin - Mitte",
+        "notes": "Die Elektroarbeiten sind pausiert, bis der Lieferant die fehlenden Schaltschranke bestatigt."
+      },
+      "project-3": {
+        "name": "Harbor Villas",
+        "phase": "Innenausbau-Details",
+        "location": "Potsdam Waterfront",
+        "notes": "Alle Punkte der Restarbeiten wurden geschlossen und das Ubergabepaket fur den Kunden wurde geliefert."
+      },
+      "project-4": {
+        "name": "Greenpoint Warehouse",
+        "phase": "Planung vor Baubeginn",
+        "location": "Brandenburg Logistics Park",
+        "notes": "Der Kick-off ist nach Genehmigung und Bestatigung der Baustellenabsperrung geplant."
+      }
+    },
+    "materialRequests": {
+      "request-1": {
+        "itemName": "Zementsacke",
+        "note": "Benotigt fur die Plattenvorbereitung bei Turm B."
+      },
+      "request-2": {
+        "itemName": "Kabelclips",
+        "note": "Fur die Kabelfuhrung im Ostflugel."
+      },
+      "request-3": {
+        "itemName": "Mobile Baustellentoilette",
+        "note": "Benotigt, bevor das Sanit ar-Team den ganzen Tag vor Ort bleibt."
+      },
+      "request-4": {
+        "itemName": "Weisse Innenfarbe",
+        "note": "Die Spezifikation hat sich nach der letzten Kundenprufung geandert."
+      }
+    },
+    "stores": {
+      "store-item-1": {
+        "productName": "Zement 25 kg",
+        "category": "Beton",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-2": {
+        "productName": "Keramikfliesen 60x60",
+        "category": "Ausbau",
+        "address": "88 Tempelhof Road, Berlin"
+      },
+      "store-item-3": {
+        "productName": "WC-Kompaktset",
+        "category": "Sanitar",
+        "address": "7 Linden Markt, Berlin"
+      },
+      "store-item-4": {
+        "productName": "Elektrokabel 100 m",
+        "category": "Elektrik",
+        "address": "104 Solaris Strasse, Berlin"
+      },
+      "store-item-5": {
+        "productName": "Bodenkleber 20 kg",
+        "category": "Ausbau",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-6": {
+        "productName": "Wanddammrolle",
+        "category": "Dammung",
+        "address": "41 Hafenblick Alley, Berlin"
+      }
+    },
+    "previewWorkers": {
+      "u-employee-1": {
+        "name": "Alex Novak",
+        "role": "Bauleiter"
+      },
+      "u-employee-2": {
+        "name": "Mia Berger",
+        "role": "Elektriker"
+      },
+      "u-employee-3": {
+        "name": "Luca Moretti",
+        "role": "Leiter Sanit ar"
+      }
+    },
+    "previewSchedule": {
+      "task-101": {
+        "time": "09:30",
+        "site": "North River Residences"
+      },
+      "task-102": {
+        "time": "12:00",
+        "site": "BuildForU HQ"
+      },
+      "task-105": {
+        "time": "16:30",
+        "site": "Skyline Offices"
+      }
+    }
   }
 }

@@ -9,6 +9,19 @@
     "employee": "Employee",
     "admin": "Boss"
   },
+  "plans": {
+    "starter": "Starter",
+    "pro": "Pro",
+    "enterprise": "Enterprise"
+  },
+  "publicNav": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "register": "Register",
+    "openDashboard": "Open dashboard",
+    "startTrial": "Start free trial",
+    "footer": "Built for growing construction companies that need a cleaner, more connected operations workspace."
+  },
   "nav": {
     "dashboard": "Dashboard",
     "workers": "Workers",
@@ -65,7 +78,13 @@
     "low stock": "Low stock",
     "limited": "Limited",
     "preorder": "Preorder",
-    "out of stock": "Out of stock"
+    "out of stock": "Out of stock",
+    "in progress": "In Progress",
+    "not started": "Not Started",
+    "on hold": "On Hold",
+    "ordered": "Ordered",
+    "purchased": "Purchased",
+    "rejected": "Rejected"
   },
   "priorityLabels": {
     "high": "High",
@@ -173,6 +192,8 @@
     "noUpcoming": "No scheduled activities are visible right now.",
     "addTask": "Add task",
     "addTaskSubtitle": "Create and schedule new work directly from the calendar.",
+    "scheduledInView": "Scheduled in view",
+    "scheduledInViewDetail": "{{month}} is currently loaded in the calendar.",
     "monthlyEyebrow": "Monthly",
     "emptyMonth": "No scheduled items for this month.",
     "formTitle": "Assign a new task",
@@ -182,7 +203,13 @@
     "emptyWorker": "Add a worker to assign tasks",
     "taskTitle": "Task title",
     "taskLocation": "Site location",
-    "assignTaskButton": "Assign task"
+    "assignTaskButton": "Assign task",
+    "scheduleList": "Schedule list",
+    "scheduleListSubtitle": "Tasks planned for the selected month.",
+    "noTasksInView": "No tasks are scheduled in this month.",
+    "selectedMonth": "Selected month",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
   },
   "tasks": {
     "title": "Task management",
@@ -299,7 +326,26 @@
     "atRiskDetail": "One site requires closer monitoring.",
     "averageProgress": "Avg. progress",
     "averageProgressDetail": "Portfolio completion midpoint.",
-    "progressComplete": "{{value}}% complete"
+    "progressComplete": "{{value}}% complete",
+    "totalProjects": "Total projects",
+    "totalProjectsDetail": "Every project currently tracked in the workspace.",
+    "inProgressProjects": "In progress",
+    "inProgressProjectsDetail": "Projects currently moving on site or in delivery.",
+    "completedProjects": "Completed",
+    "completedProjectsDetail": "Projects already delivered or fully closed.",
+    "peopleAssigned": "People assigned",
+    "peopleAssignedDetail": "Workers currently mapped to active project work.",
+    "detailsDescription": "Project team, timeline and operational notes in one place.",
+    "currentPhase": "Current phase",
+    "projectLocation": "Location",
+    "budget": "Budget",
+    "startDate": "Start date",
+    "deadline": "Deadline",
+    "progressLabel": "Progress",
+    "teamAssigned": "Assigned team",
+    "noAssignedWorkers": "No workers are assigned to this project yet.",
+    "notes": "Notes",
+    "viewDetails": "View details"
   },
   "materials": {
     "title": "Materials",
@@ -310,7 +356,36 @@
     "inStockDetail": "Adequate inventory for immediate tasks.",
     "supplierSync": "Supplier sync",
     "supplierSyncValue": "Live",
-    "supplierSyncDetail": "Procurement status is visually mocked."
+    "supplierSyncDetail": "Procurement status is visually mocked.",
+    "requestsVisible": "Requests",
+    "requestsVisibleDetail": "Requests visible in your current workspace.",
+    "pendingRequests": "Pending",
+    "pendingRequestsDetail": "Waiting for admin review or purchasing action.",
+    "orderedRequests": "Ordered",
+    "orderedRequestsDetail": "Already sent to suppliers or stores.",
+    "purchasedRequests": "Purchased",
+    "purchasedRequestsDetail": "Ready to reach the crew or site.",
+    "requestFormTitle": "Create a material request",
+    "requestFormSubtitle": "Submit what you need for work so the office can track and purchase it.",
+    "yourProject": "Assigned project",
+    "noProjectAssigned": "No project assigned right now.",
+    "itemName": "Item name",
+    "itemPlaceholder": "Paint, screws, cement, toilet, tiles...",
+    "quantity": "Quantity",
+    "quantityPlaceholder": "Optional, e.g. 20 bags or 2 boxes",
+    "note": "Note",
+    "notePlaceholder": "Optional context for the office or purchasing flow",
+    "submitRequest": "Submit request",
+    "requestedBy": "Requested by",
+    "createdOn": "Created",
+    "updateStatus": "Update request status",
+    "adminScope": "Admin material board",
+    "adminScopeSubtitle": "Review requests from the field and move them through purchasing statuses.",
+    "requestsBoardTitle": "Material request board",
+    "requestsBoardSubtitle": "Track requests, filter the queue, and update request progress.",
+    "searchPlaceholder": "Search by item, requester, note or project",
+    "emptyTitle": "No requests found",
+    "emptySubtitle": "Try a different search or status filter, or create a new request to get started."
   },
   "finance": {
     "title": "Finance",
@@ -372,5 +447,316 @@
     "cheapestDetail": "{{price}} at {{store}}",
     "nearestDetail": "{{distance}} km from {{store}}",
     "bestOverallDetail": "{{store}} balances price, distance and stock."
+  },
+  "landing": {
+    "eyebrow": "Construction operations SaaS",
+    "title": "Run crews, schedules and site communication from one BuildForU workspace.",
+    "subtitle": "BuildForU helps construction companies manage workers, tasks, planning, team chat and sourcing tools with a polished dashboard experience for office teams and field staff.",
+    "featuresEyebrow": "Core capabilities",
+    "featuresTitle": "Built around the daily rhythm of a construction company.",
+    "ctaEyebrow": "Ready to launch",
+    "ctaTitle": "Start your BuildForU trial and set up your company workspace in minutes.",
+    "ctaSubtitle": "Explore the product, preview plans, and move into the existing operations dashboard without backend setup.",
+    "stats": {
+      "roles": { "label": "Built for", "value": "Boss + Employee" },
+      "deployment": { "label": "Deployment", "value": "Frontend-first" },
+      "focus": { "label": "Focus", "value": "Daily operations" }
+    },
+    "features": {
+      "workers": {
+        "title": "Workers management",
+        "description": "Keep crews, supervisors and assignments visible in one operational workspace."
+      },
+      "calendar": {
+        "title": "Calendar scheduling",
+        "description": "Coordinate workdays, visits and shift timing with a cleaner planning view."
+      },
+      "chat": {
+        "title": "Team chat",
+        "description": "Reduce phone-call chaos with fast updates between office staff and field teams."
+      },
+      "marketMap": {
+        "title": "Market map",
+        "description": "Compare nearby stores and supply options before teams lose time on sourcing."
+      }
+    },
+    "preview": {
+      "eyebrow": "Product preview",
+      "title": "A closer look at how teams use BuildForU",
+      "badge": "Live product modules",
+      "glanceEyebrow": "Today at a glance",
+      "glanceTitle": "Workforce, planning, chat and sourcing in one operational view.",
+      "pills": {
+        "workers": "18 active workers",
+        "tasks": "12 tasks today",
+        "threads": "4 live threads"
+      },
+      "workers": { "label": "Workers", "title": "Crew status", "badge": "Live sync" },
+      "calendar": { "label": "Calendar", "title": "Today's schedule" },
+      "chat": {
+        "label": "Chat",
+        "title": "Office to field updates",
+        "badge": "2 unread",
+        "message-1": {
+          "author": "Sophie",
+          "text": "Please confirm the slab inspection notes after the walkthrough."
+        },
+        "message-2": {
+          "author": "Alex",
+          "text": "Confirmed. I will upload the update before noon."
+        }
+      },
+      "market": {
+        "label": "Market Map",
+        "title": "Nearby supply search",
+        "search": "Search: facade panels",
+        "result-1": {
+          "store": "Nordic Build Store",
+          "meta": "Facade panels - 3.1 km",
+          "price": "$86",
+          "badge": "Best price"
+        },
+        "result-2": {
+          "store": "Voltix Supply Hub",
+          "meta": "Cabling - 5.4 km",
+          "price": "$42",
+          "badge": "In stock"
+        }
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Choose the plan that fits your company stage.",
+    "subtitle": "Start with a simple team setup and move toward a full operational workspace as your crews and projects grow.",
+    "mostPopular": "Most popular",
+    "perMonth": "per month",
+    "choosePlan": "Choose plan",
+    "plans": {
+      "starter": {
+        "price": "$29",
+        "subtitle": "For small teams getting organized.",
+        "workers": "Up to 5 workers",
+        "features": {
+          "1": "Role-based login",
+          "2": "Task and calendar views",
+          "3": "Team chat",
+          "4": "Market map access"
+        }
+      },
+      "pro": {
+        "price": "$99",
+        "subtitle": "For active companies with multiple crews.",
+        "workers": "Up to 25 workers",
+        "features": {
+          "1": "Everything in Starter",
+          "2": "Workers management",
+          "3": "Admin operations dashboard",
+          "4": "Priority onboarding"
+        }
+      },
+      "enterprise": {
+        "price": "Custom",
+        "subtitle": "For larger operations and custom rollout needs.",
+        "workers": "Unlimited workers",
+        "features": {
+          "1": "Everything in Pro",
+          "2": "Unlimited worker scaling",
+          "3": "Custom onboarding support",
+          "4": "Future API-ready rollout"
+        }
+      }
+    }
+  },
+  "register": {
+    "eyebrow": "Register your company",
+    "title": "Create your company workspace",
+    "subtitle": "Start with your company details, choose a plan, and move into BuildForU in a few minutes.",
+    "companyName": "Company name",
+    "ownerName": "Owner name",
+    "plan": "Plan",
+    "creatingWorkspace": "Creating workspace...",
+    "createAccount": "Create company account",
+    "alreadyTesting": "Already testing the product?",
+    "goToSignIn": "Go to sign in",
+    "onboardingEyebrow": "Onboarding",
+    "onboardingTitle": "Set up your operations with less friction.",
+    "onboardingSubtitle": "BuildForU is designed to get your company into a working operations space quickly, without overwhelming setup steps.",
+    "selectedPlan": "Selected plan",
+    "workspaceSignIn": "Workspace sign-in",
+    "dashboardPreviewNote": "You will land in the existing dashboard after registration to preview the full BuildForU experience.",
+    "steps": {
+      "1": {
+        "title": "Choose your plan and get started",
+        "description": "You can adjust billing and subscription details later."
+      },
+      "2": {
+        "title": "Invite your team later",
+        "description": "Start with the company owner account and grow from there."
+      },
+      "3": {
+        "title": "Trusted onboarding flow",
+        "description": "This prototype keeps the sign-up journey clear and focused."
+      }
+    },
+    "planCards": {
+      "starter": {
+        "price": "$29/mo",
+        "workers": "Up to 5 workers",
+        "note": "A lightweight starting point for smaller construction teams."
+      },
+      "pro": {
+        "price": "$99/mo",
+        "workers": "Up to 25 workers",
+        "note": "Best fit for active companies managing several crews and projects."
+      },
+      "enterprise": {
+        "price": "Custom pricing",
+        "workers": "Unlimited workers",
+        "note": "For larger organizations that need flexibility and rollout support."
+      }
+    }
+  },
+  "billing": {
+    "title": "Billing & Subscription",
+    "subtitle": "Review your current subscription, mock billing details, and upgrade options.",
+    "currentPlan": "Current plan",
+    "mockSubscriptionData": "Mock subscription data",
+    "workerLimit": "Worker limit",
+    "workerLimitDetail": "Based on selected plan tier",
+    "usage": "Usage",
+    "usageWorkers": "{{count}} workers",
+    "usageDetail": "Tracked against current tier",
+    "upgradePlan": "Upgrade plan",
+    "subscriptionOverview": "Subscription overview",
+    "uiOnly": "UI only for now",
+    "workerUsage": "Worker usage",
+    "workerUsageHint": "Upgrade when your crew count grows beyond the current plan capacity.",
+    "nextInvoice": "Next invoice",
+    "billingContact": "Billing contact",
+    "billingContactHint": "Mock contact shown for UI preview",
+    "paymentMethod": "Payment method",
+    "cardLabel": "Visa ending in 2048",
+    "cardHint": "Expires 09/28 - Mock card details for subscription preview",
+    "recentActivity": "Recent billing activity",
+    "unlimitedWorkers": "Unlimited",
+    "planDescriptions": {
+      "starter": "A lightweight workspace for small companies.",
+      "pro": "Built for active companies with multiple teams.",
+      "enterprise": "Ready for larger organizations and rollout support."
+    },
+    "activity": {
+      "invoiceTitle": "Invoice INV-2026-041",
+      "invoiceBody": "Paid successfully - $99.00",
+      "renewalTitle": "Subscription renewal reminder",
+      "renewalBody": "Automatic renewal is scheduled for the end of the month.",
+      "growthTitle": "Seat growth insight",
+      "growthBody": "You are within the current plan limit with room for additional workers."
+    }
+  },
+  "seed": {
+    "common": {
+      "hq": "BuildForU HQ"
+    },
+    "users": {
+      "u-admin-1": { "title": "Operations Director" },
+      "u-employee-1": { "title": "Site Supervisor" },
+      "u-employee-2": { "title": "Electrician" },
+      "u-employee-3": { "title": "Plumbing Lead" }
+    },
+    "tasks": {
+      "task-101": { "title": "Concrete slab inspection" },
+      "task-102": { "title": "Safety briefing with subcontractors" },
+      "task-103": { "title": "Install lighting circuits" },
+      "task-104": { "title": "Pipe pressure test" },
+      "task-105": { "title": "Facade delivery check-in" },
+      "task-106": { "title": "Panel labeling audit" }
+    },
+    "projects": {
+      "project-1": {
+        "name": "North River Residences",
+        "phase": "Structural finish",
+        "location": "Berlin - Prenzlauer Berg",
+        "notes": "Facade coordination is on track, but the slab inspection still needs final sign-off."
+      },
+      "project-2": {
+        "name": "Skyline Offices",
+        "phase": "MEP installation",
+        "location": "Berlin - Mitte",
+        "notes": "Electrical works are paused until supplier confirmation for the missing control panels."
+      },
+      "project-3": {
+        "name": "Harbor Villas",
+        "phase": "Interior detailing",
+        "location": "Potsdam Waterfront",
+        "notes": "All punch-list items have been closed and the client handover package was delivered."
+      },
+      "project-4": {
+        "name": "Greenpoint Warehouse",
+        "phase": "Pre-construction planning",
+        "location": "Brandenburg Logistics Park",
+        "notes": "Kick-off is scheduled after permit approval and site fencing confirmation."
+      }
+    },
+    "materialRequests": {
+      "request-1": {
+        "itemName": "Cement bags",
+        "note": "Needed for slab prep near tower B."
+      },
+      "request-2": {
+        "itemName": "Cable clips",
+        "note": "For east wing cable routing."
+      },
+      "request-3": {
+        "itemName": "Portable site toilet",
+        "note": "Needed before the plumbing crew stays on site all day."
+      },
+      "request-4": {
+        "itemName": "White interior paint",
+        "note": "Spec changed after latest client review."
+      }
+    },
+    "stores": {
+      "store-item-1": {
+        "productName": "Cement 25kg",
+        "category": "Concrete",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-2": {
+        "productName": "Ceramic Tiles 60x60",
+        "category": "Finishing",
+        "address": "88 Tempelhof Road, Berlin"
+      },
+      "store-item-3": {
+        "productName": "Toilet Compact Set",
+        "category": "Sanitary",
+        "address": "7 Linden Markt, Berlin"
+      },
+      "store-item-4": {
+        "productName": "Electrical Cable 100m",
+        "category": "Electrical",
+        "address": "104 Solaris Strasse, Berlin"
+      },
+      "store-item-5": {
+        "productName": "Floor Adhesive 20kg",
+        "category": "Finishing",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-6": {
+        "productName": "Wall Insulation Roll",
+        "category": "Insulation",
+        "address": "41 Hafenblick Alley, Berlin"
+      }
+    },
+    "previewWorkers": {
+      "u-employee-1": { "name": "Alex Novak", "role": "Site Supervisor" },
+      "u-employee-2": { "name": "Mia Berger", "role": "Electrician" },
+      "u-employee-3": { "name": "Luca Moretti", "role": "Plumbing Lead" }
+    },
+    "previewSchedule": {
+      "task-101": { "time": "09:30", "site": "North River Residences" },
+      "task-102": { "time": "12:00", "site": "BuildForU HQ" },
+      "task-105": { "time": "16:30", "site": "Skyline Offices" }
+    }
   }
 }

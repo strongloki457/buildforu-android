@@ -41,7 +41,7 @@ export default function AdminDashboard() {
             <MetricCard
               icon={Users2}
               label={t("dashboard.crewAvailability")}
-              value={`${workers.length} crews`}
+              value={workers.length}
               detail={t("dashboard.adminCrewDetail")}
             />
             <MetricCard

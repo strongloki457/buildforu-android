@@ -9,13 +9,14 @@ import {
   Store,
   Trophy
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import { mockStores } from "../data/mockStores";
 import { useI18n } from "../hooks/useI18n";
+import { getStoreAddress, getStoreCategory, getStoreProductName } from "../utils/localizedValue";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-GB", {
@@ -76,7 +77,7 @@ export default function MarketMapPage() {
   const [availability, setAvailability] = useState("all");
   const [selectedStoreId, setSelectedStoreId] = useState(mockStores[0]?.id ?? "");
 
-  const categories = useMemo(() => ["all", ...new Set(mockStores.map((store) => store.category))], []);
+  const categories = useMemo(() => ["all", ...new Set(mockStores.map((store) => getStoreCategory(t, store)))], [t]);
   const availabilityOptions = useMemo(() => ["all", ...new Set(mockStores.map((store) => store.availability))], []);
 
   const filteredStores = useMemo(() => {
@@ -86,8 +87,10 @@ export default function MarketMapPage() {
       .filter((store) => {
         const matchesQuery =
           !normalizedQuery ||
-          [store.productName, store.storeName, store.address].some((value) => value.toLowerCase().includes(normalizedQuery));
-        const matchesCategory = category === "all" || store.category === category;
+          [getStoreProductName(t, store), store.storeName, getStoreAddress(t, store)].some((value) =>
+            String(value ?? "").toLowerCase().includes(normalizedQuery)
+          );
+        const matchesCategory = category === "all" || getStoreCategory(t, store) === category;
         const matchesAvailability = availability === "all" || store.availability === availability;
         return matchesQuery && matchesCategory && matchesAvailability;
       })
@@ -99,7 +102,13 @@ export default function MarketMapPage() {
 
         return distanceSort === "far" ? right.distance - left.distance : left.distance - right.distance;
       });
-  }, [availability, category, distanceSort, priceSort, query]);
+  }, [availability, category, distanceSort, priceSort, query, t]);
+
+  useEffect(() => {
+    if (!filteredStores.some((store) => store.id === selectedStoreId)) {
+      setSelectedStoreId(filteredStores[0]?.id ?? "");
+    }
+  }, [filteredStores, selectedStoreId]);
 
   const selectedStore = filteredStores.find((store) => store.id === selectedStoreId) ?? filteredStores[0] ?? null;
   const cheapestStore = filteredStores.reduce((best, store) => (best === null || store.price < best.price ? store : best), null);
@@ -217,7 +226,7 @@ export default function MarketMapPage() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm uppercase tracking-[0.22em] text-slate-400">{card.title}</p>
-                  <p className="mt-2 truncate text-lg text-slate-900">{card.store?.productName ?? t("marketMap.noOption")}</p>
+                  <p className="mt-2 truncate text-lg text-slate-900">{card.store ? getStoreProductName(t, card.store) : t("marketMap.noOption")}</p>
                   <p className="mt-1 text-sm text-slate-500">{card.detail}</p>
                 </div>
               </div>
@@ -246,11 +255,11 @@ export default function MarketMapPage() {
                   >
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="min-w-0">
-                        <p className="text-lg text-slate-900">{store.productName}</p>
+                        <p className="text-lg text-slate-900">{getStoreProductName(t, store)}</p>
                         <p className="mt-1 text-sm text-slate-500">{store.storeName}</p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">{store.category}</span>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">{getStoreCategory(t, store)}</span>
                         <StatusBadge value={store.availability} />
                       </div>
                     </div>
@@ -266,7 +275,7 @@ export default function MarketMapPage() {
                       </div>
                       <div>
                         <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("common.location")}</p>
-                        <p className="mt-1 text-base text-slate-900">{store.address}</p>
+                        <p className="mt-1 text-base text-slate-900">{getStoreAddress(t, store)}</p>
                       </div>
                     </div>
 
@@ -329,7 +338,7 @@ export default function MarketMapPage() {
                 <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <p className="truncate text-lg text-slate-900">{selectedStore.storeName}</p>
-                    <p className="truncate text-sm text-slate-500">{selectedStore.productName}</p>
+                    <p className="truncate text-sm text-slate-500">{getStoreProductName(t, selectedStore)}</p>
                   </div>
                   <div className="sm:text-right">
                     <p className="text-sm text-slate-500">{selectedStore.distance.toFixed(1)} km</p>

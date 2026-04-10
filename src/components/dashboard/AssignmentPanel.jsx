@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
+import { getLocalDateKey } from "../../utils/date";
+import { getWorkerPosition } from "../../utils/localizedValue";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 
-export default function AssignmentPanel({ title, subtitle, workers, onAssign, embedded = false }) {
+export default function AssignmentPanel({
+  title,
+  subtitle,
+  workers,
+  onAssign,
+  initialDate = getLocalDateKey(),
+  embedded = false
+}) {
   const { t } = useI18n();
   const [form, setForm] = useState({
     employeeId: workers[0]?.id ?? "",
     title: "",
     location: "",
-    date: "2026-04-18"
+    date: initialDate
   });
 
   const handleChange = (key, value) => {
@@ -26,7 +35,10 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!form.employeeId) {
+    const title = form.title.trim();
+    const location = form.location.trim();
+
+    if (!form.employeeId || !title || !location || !form.date) {
       return;
     }
 
@@ -34,6 +46,8 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
 
     onAssign({
       ...form,
+      title,
+      location,
       assignee: assignee?.name ?? t("calendar.unknownWorker")
     });
 
@@ -58,7 +72,7 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
           {workers.length ? (
             workers.map((worker) => (
               <option key={worker.id} value={worker.id}>
-                {worker.name} - {worker.trade}
+                {worker.name} - {getWorkerPosition(t, worker)}
               </option>
             ))
           ) : (
@@ -70,6 +84,7 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
           value={form.title}
           onChange={(event) => handleChange("title", event.target.value)}
           placeholder={t("calendar.taskTitle")}
+          required
           className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
@@ -77,6 +92,7 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
           value={form.location}
           onChange={(event) => handleChange("location", event.target.value)}
           placeholder={t("calendar.taskLocation")}
+          required
           className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
@@ -84,6 +100,7 @@ export default function AssignmentPanel({ title, subtitle, workers, onAssign, em
           type="date"
           value={form.date}
           onChange={(event) => handleChange("date", event.target.value)}
+          required
           className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
         />
 

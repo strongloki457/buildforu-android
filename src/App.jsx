@@ -63,7 +63,7 @@ export default function App() {
           <Route
             path="/materials"
             element={
-              <RoleGuard allowedRoles={["admin"]}>
+              <RoleGuard allowedRoles={["admin", "employee"]}>
                 <MaterialsPage />
               </RoleGuard>
             }

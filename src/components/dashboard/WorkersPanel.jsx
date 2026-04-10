@@ -1,9 +1,11 @@
 import { ArrowRight, Clock3, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 import { useI18n } from "../../hooks/useI18n";
 import { formatAttendanceDateTime, hasAttendanceLocation } from "../../utils/attendance";
+import { getLocalizedValue, getWorkerPosition } from "../../utils/localizedValue";
 
 export default function WorkersPanel({ title, subtitle, workers }) {
   const { locale, t } = useI18n();
@@ -19,7 +21,7 @@ export default function WorkersPanel({ title, subtitle, workers }) {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-base text-slate-900">{worker.name}</p>
-                  <p className="text-sm text-slate-500">{worker.position ?? worker.trade}</p>
+                  <p className="text-sm text-slate-500">{getWorkerPosition(t, worker)}</p>
                 </div>
                 <StatusBadge value={worker.status} />
               </div>
@@ -27,7 +29,7 @@ export default function WorkersPanel({ title, subtitle, workers }) {
               <div className="mt-4 grid gap-3 text-sm text-slate-500 sm:grid-cols-2">
                 <div className="flex items-center gap-2">
                   <MapPin size={14} />
-                  <span>{worker.location}</span>
+                  <span>{getLocalizedValue(t, worker.locationKey, worker.location)}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock3 size={14} />
@@ -57,10 +59,10 @@ export default function WorkersPanel({ title, subtitle, workers }) {
                 <div className="text-sm text-slate-500">
                   {t("workers.completionRate")}: {worker.completionRate}%
                 </div>
-                <button className="inline-flex items-center gap-2 text-sm text-brand-700">
+                <Link to="/workers" className="inline-flex items-center gap-2 text-sm text-brand-700">
                   {t("common.viewProfile")}
                   <ArrowRight size={15} />
-                </button>
+                </Link>
               </div>
             </div>
           ))}

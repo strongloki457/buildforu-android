@@ -6,6 +6,7 @@ import StatusBadge from "../components/ui/StatusBadge";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { getTaskLocation, getTaskTitle } from "../utils/localizedValue";
 
 const filters = ["all", "pending", "completed"];
 
@@ -58,7 +59,7 @@ export default function TasksPage() {
                   <ClipboardList size={16} />
                 </div>
                 <div>
-                  <p className="text-sm text-slate-900">{task.title}</p>
+                  <p className="text-sm text-slate-900">{getTaskTitle(t, task)}</p>
                   <p className="text-xs text-slate-400">
                     {t("tasks.prioritySuffix", { priority: t(`priorityLabels.${task.priority}`, task.priority) })}
                   </p>
@@ -67,13 +68,13 @@ export default function TasksPage() {
 
               <div className="mt-3 grid gap-2 text-sm text-slate-500 md:mt-0 md:block">
                 <p className="md:hidden">
-                  <span className="text-slate-400">{t("common.location")}:</span> {task.location}
+                  <span className="text-slate-400">{t("common.location")}:</span> {getTaskLocation(t, task)}
                 </p>
                 <p className="md:hidden">
                   <span className="text-slate-400">{user.role === "admin" ? t("common.assignedTo") : t("common.date")}:</span>{" "}
                   {user.role === "admin" ? task.assignee : task.date}
                 </p>
-                <p className="hidden md:block">{task.location}</p>
+                <p className="hidden md:block">{getTaskLocation(t, task)}</p>
               </div>
 
               <p className="hidden text-sm text-slate-500 md:block">{user.role === "admin" ? task.assignee : task.date}</p>

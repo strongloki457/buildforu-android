@@ -2,6 +2,7 @@ import { Sparkles, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
 import logoFull from "../../assets/logo-full.svg";
+import { getUserTitle } from "../../utils/localizedValue";
 
 export default function Sidebar({ navItems, user, isOpen, onClose }) {
   const { t } = useI18n();
@@ -73,7 +74,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
         <div className="mt-auto rounded-[28px] border border-white/10 bg-white/5 p-5">
           <p className="text-xs uppercase tracking-[0.25em] text-white/40">{t("sidebar.shiftProfile")}</p>
           <p className="mt-3 text-lg">{user?.name}</p>
-          <p className="text-sm text-white/55">{user?.title}</p>
+          <p className="text-sm text-white/55">{getUserTitle(t, user)}</p>
           <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
             <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-brand-500 to-emerald-300" />
           </div>

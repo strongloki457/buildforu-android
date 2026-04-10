@@ -1,7 +1,7 @@
 import { createContext, useMemo, useState } from "react";
 import {
   mockFinance,
-  mockMaterials,
+  mockMaterialRequests,
   mockNotifications,
   mockProjects,
   mockTasks,
@@ -10,6 +10,18 @@ import {
 } from "../data/mockData";
 
 export const AppDataContext = createContext(null);
+
+function createEntityId(prefix) {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `${prefix}-${crypto.randomUUID()}`;
+  }
+
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function hasOwnProperty(object, key) {
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
 
 function normalizeAttendanceStatus(value) {
   const normalizedValue = String(value ?? "")
@@ -64,25 +76,40 @@ function buildAttendanceRecord(worker, currentAttendance) {
 }
 
 function buildWorkerRecord(worker, currentWorker) {
-  const assignedProject =
-    worker.assignedProject?.trim() ||
-    currentWorker?.assignedProject ||
-    currentWorker?.location ||
-    "";
-  const position = worker.position?.trim() || currentWorker?.position || currentWorker?.trade || "";
+  const name = hasOwnProperty(worker, "name") ? String(worker.name ?? "").trim() : currentWorker?.name ?? "";
+  const email = hasOwnProperty(worker, "email") ? String(worker.email ?? "").trim() : currentWorker?.email ?? "";
+  const phone = hasOwnProperty(worker, "phone") ? String(worker.phone ?? "").trim() : currentWorker?.phone ?? "";
+  const position = hasOwnProperty(worker, "position")
+    ? String(worker.position ?? "").trim()
+    : currentWorker?.position ?? currentWorker?.trade ?? "";
+  const assignedProject = hasOwnProperty(worker, "assignedProject")
+    ? String(worker.assignedProject ?? "").trim()
+    : currentWorker?.assignedProject ?? currentWorker?.location ?? "";
   const attendance = buildAttendanceRecord(worker, currentWorker?.attendance);
+  const positionKey = hasOwnProperty(worker, "position")
+    ? null
+    : worker.positionKey ?? worker.tradeKey ?? currentWorker?.positionKey ?? currentWorker?.tradeKey ?? null;
+  const assignedProjectKey = hasOwnProperty(worker, "assignedProject")
+    ? null
+    : worker.assignedProjectKey ?? worker.locationKey ?? currentWorker?.assignedProjectKey ?? currentWorker?.locationKey ?? null;
 
   return {
-    id: currentWorker?.id ?? `worker-${Date.now()}`,
-    name: worker.name.trim(),
-    email: worker.email?.trim() || currentWorker?.email || "",
-    phone: worker.phone?.trim() || currentWorker?.phone || "",
+    id: currentWorker?.id ?? createEntityId("worker"),
+    name: name || currentWorker?.name || "",
+    email,
+    phone,
     position,
+    positionKey,
     trade: position,
+    tradeKey: positionKey,
     assignedProject,
+    assignedProjectKey,
     location: assignedProject,
+    locationKey: assignedProjectKey,
     status: attendance.currentStatus,
-    availability: worker.availability?.trim() || currentWorker?.availability || "Available",
+    availability: hasOwnProperty(worker, "availability")
+      ? String(worker.availability ?? "").trim() || "Available"
+      : currentWorker?.availability || "Available",
     completionRate: currentWorker?.completionRate ?? 0,
     nextShift: currentWorker?.nextShift ?? "Not scheduled",
     attendance
@@ -93,14 +120,22 @@ export function AppDataProvider({ children }) {
   const [tasks, setTasks] = useState(mockTasks);
   const [threads, setThreads] = useState(mockThreads);
   const [workers, setWorkers] = useState(() => mockWorkers.map((worker) => buildWorkerRecord(worker)));
+  const [materialRequests, setMaterialRequests] = useState(mockMaterialRequests);
 
   const addTask = ({ employeeId, assignee, title, location, date }) => {
+    const normalizedTitle = String(title ?? "").trim();
+    const normalizedLocation = String(location ?? "").trim();
+
+    if (!employeeId || !normalizedTitle || !normalizedLocation || !date) {
+      return null;
+    }
+
     const newTask = {
-      id: `task-${Date.now()}`,
+      id: createEntityId("task"),
       employeeId,
       assignee,
-      title,
-      location,
+      title: normalizedTitle,
+      location: normalizedLocation,
       date,
       status: "pending",
       priority: "medium"
@@ -141,7 +176,7 @@ export function AppDataProvider({ children }) {
               messages: [
                 ...thread.messages,
                 {
-                  id: `m-${Date.now()}`,
+                  id: createEntityId("m"),
                   senderId,
                   text: text.trim(),
                   timestamp,
@@ -179,6 +214,58 @@ export function AppDataProvider({ children }) {
 
   const deleteWorker = (workerId) => {
     setWorkers((currentWorkers) => currentWorkers.filter((worker) => worker.id !== workerId));
+  };
+
+  const addMaterialRequest = ({ itemName, quantity = "", note = "", requestedById, requestedBy, projectName = "" }) => {
+    const normalizedItemName = String(itemName ?? "").trim();
+    const normalizedQuantity = String(quantity ?? "").trim();
+    const normalizedNote = String(note ?? "").trim();
+    const normalizedProjectName = String(projectName ?? "").trim();
+
+    if (!normalizedItemName || !requestedById || !requestedBy) {
+      return null;
+    }
+
+    const newRequest = {
+      id: createEntityId("request"),
+      itemName: normalizedItemName,
+      quantity: normalizedQuantity,
+      note: normalizedNote,
+      status: "Pending",
+      requestedById,
+      requestedBy,
+      projectName: normalizedProjectName,
+      createdAt: new Date().toISOString()
+    };
+
+    setMaterialRequests((currentRequests) => [newRequest, ...currentRequests]);
+    return newRequest;
+  };
+
+  const updateMaterialRequestStatus = (requestId, status) => {
+    const normalizedStatus = String(status ?? "").trim();
+    let updatedRequest = null;
+
+    if (!normalizedStatus) {
+      return null;
+    }
+
+    setMaterialRequests((currentRequests) =>
+      currentRequests.map((request) => {
+        if (request.id !== requestId) {
+          return request;
+        }
+
+        updatedRequest = {
+          ...request,
+          status: normalizedStatus
+        };
+
+        return updatedRequest;
+      })
+    );
+
+    return updatedRequest;
   };
 
   const startWork = (workerId, options = {}) => {
@@ -246,20 +333,22 @@ export function AppDataProvider({ children }) {
       tasks,
       threads,
       workers,
+      materialRequests,
       projects: mockProjects,
-      materials: mockMaterials,
       finance: mockFinance,
       notifications: mockNotifications,
       addTask,
       addWorker,
       updateWorker,
       deleteWorker,
+      addMaterialRequest,
+      updateMaterialRequestStatus,
       startWork,
       endWork,
       toggleTaskStatus,
       sendMessage
     }),
-    [tasks, threads, workers]
+    [tasks, threads, workers, materialRequests]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

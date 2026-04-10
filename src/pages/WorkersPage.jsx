@@ -24,6 +24,7 @@ import StatusBadge from "../components/ui/StatusBadge";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { formatAttendanceCoordinates, formatAttendanceDateTime, hasAttendanceLocation } from "../utils/attendance";
+import { getLocalizedValue, getWorkerPosition } from "../utils/localizedValue";
 
 const emptyWorkerForm = {
   name: "",
@@ -234,8 +235,8 @@ export default function WorkersPage() {
           worker.name,
           worker.email,
           worker.phone,
-          worker.position ?? worker.trade,
-          worker.assignedProject,
+          getWorkerPosition(t, worker),
+          getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject),
           workerStatus
         ].some((value) => String(value ?? "").toLowerCase().includes(normalizedSearch));
       const matchesStatus = statusFilter === "all" || workerStatus === statusFilter;
@@ -243,7 +244,7 @@ export default function WorkersPage() {
 
       return matchesSearch && matchesStatus && matchesProject;
     });
-  }, [projectFilter, search, statusFilter, workers]);
+  }, [projectFilter, search, statusFilter, t, workers]);
 
   const availableCount = useMemo(
     () => workers.filter((worker) => String(worker.availability).toLowerCase() === "available").length,
@@ -383,7 +384,7 @@ export default function WorkersPage() {
                       <p className="truncate text-lg text-slate-900">{worker.name}</p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
                         <span className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
-                          {worker.position ?? worker.trade ?? t("workers.notProvided")}
+                          {getWorkerPosition(t, worker) || t("workers.notProvided")}
                         </span>
                         <StatusBadge value={worker.attendance?.currentStatus ?? worker.status} />
                         <StatusBadge value={worker.availability} />
@@ -431,7 +432,7 @@ export default function WorkersPage() {
                     <div className="mt-3 grid gap-2 sm:grid-cols-2">
                       <p>
                         <span className="text-slate-400">{t("workers.assignedProject")}:</span>{" "}
-                        {worker.assignedProject || t("workers.notProvided")}
+                        {getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject) || t("workers.notProvided")}
                       </p>
                       <p>
                         <span className="text-slate-400">{t("workers.nextShift")}:</span>{" "}
@@ -439,7 +440,7 @@ export default function WorkersPage() {
                       </p>
                       <p>
                         <span className="text-slate-400">{t("common.location")}:</span>{" "}
-                        {worker.location || t("workers.notProvided")}
+                        {getLocalizedValue(t, worker.locationKey, worker.location) || t("workers.notProvided")}
                       </p>
                       <p>
                         <span className="text-slate-400">{t("workers.completionRate")}:</span> {worker.completionRate}%
@@ -484,7 +485,12 @@ export default function WorkersPage() {
                         <MapPin size={14} className="mt-0.5 text-brand-600" />
                         <div>
                           <p className="text-xs text-slate-400">{t("attendance.currentStatus")}</p>
-                          <p className="text-sm text-slate-600">{worker.attendance?.currentStatus ?? worker.status}</p>
+                          <p className="text-sm text-slate-600">
+                            {t(
+                              `statusLabels.${String(worker.attendance?.currentStatus ?? worker.status).toLowerCase()}`,
+                              worker.attendance?.currentStatus ?? worker.status
+                            )}
+                          </p>
                         </div>
                       </div>
                     </div>

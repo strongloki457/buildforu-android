@@ -2,16 +2,17 @@ import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logoFull from "../../assets/logo-full.svg";
 import { useAuth } from "../../hooks/useAuth";
-
-const navItems = [
-  { label: "Home", path: "/" },
-  { label: "Pricing", path: "/pricing" },
-  { label: "Register", path: "/register-company" }
-];
+import { useI18n } from "../../hooks/useI18n";
 
 export default function PublicShell({ children }) {
   const { user } = useAuth();
+  const { t } = useI18n();
   const location = useLocation();
+  const navItems = [
+    { label: t("publicNav.home"), path: "/" },
+    { label: t("publicNav.pricing"), path: "/pricing" },
+    { label: t("publicNav.register"), path: "/register-company" }
+  ];
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f3f7f3] text-slate-900">
@@ -48,13 +49,13 @@ export default function PublicShell({ children }) {
                 to={user ? "/dashboard" : "/login"}
                 className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
               >
-                {user ? "Open dashboard" : "Sign in"}
+                {user ? t("publicNav.openDashboard") : t("login.button")}
               </Link>
               <Link
                 to="/register-company"
                 className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-4 py-2.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600"
               >
-                Start free trial
+                {t("publicNav.startTrial")}
                 <ArrowRight size={15} />
               </Link>
             </div>
@@ -64,7 +65,7 @@ export default function PublicShell({ children }) {
         <main className="flex-1 py-8 sm:py-10">{children}</main>
 
         <footer className="border-t border-white/60 px-2 py-6 text-sm text-slate-500">
-          Built for growing construction companies that need a cleaner, more connected operations workspace.
+          {t("publicNav.footer")}
         </footer>
       </div>
     </div>

@@ -33,7 +33,7 @@ const fallbackLabels = {
   marketMap: "Market Map"
 };
 
-const employeeItems = ["dashboard", "calendar", "tasks", "marketMap", "chat", "settings"];
+const employeeItems = ["dashboard", "calendar", "tasks", "materials", "marketMap", "chat", "settings"];
 const adminItems = [
   "dashboard",
   "workers",

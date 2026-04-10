@@ -3,6 +3,7 @@ import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 import { useI18n } from "../../hooks/useI18n";
+import { getTaskLocation, getTaskTitle } from "../../utils/localizedValue";
 
 export default function TaskListCard({ title, subtitle, tasks, onToggleStatus, emptyText }) {
   const { t } = useI18n();
@@ -20,10 +21,10 @@ export default function TaskListCard({ title, subtitle, tasks, onToggleStatus, e
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <p className="text-base text-slate-900">{task.title}</p>
+                  <p className="text-base text-slate-900">{getTaskTitle(t, task)}</p>
                   <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
                     <MapPin size={14} />
-                    <span>{task.location}</span>
+                    <span>{getTaskLocation(t, task)}</span>
                   </div>
                 </div>
                 <StatusBadge value={task.status} />

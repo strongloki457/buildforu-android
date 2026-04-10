@@ -31,7 +31,9 @@ export function AuthProvider({ children }) {
       window.sessionStorage.getItem(SESSION_STORAGE_KEY);
 
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      const resolvedUser = parsedUser?.email ? resolveUser(parsedUser.email) : null;
+      setUser(resolvedUser ? { ...parsedUser, ...resolvedUser } : parsedUser);
     }
 
     setIsBooting(false);

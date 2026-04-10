@@ -2,6 +2,7 @@ import { ChevronDown, LogOut, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useI18n } from "../../hooks/useI18n";
+import { getUserTitle } from "../../utils/localizedValue";
 
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function UserMenu() {
         </div>
         <div className="hidden text-left lg:block">
           <p className="text-sm text-slate-900">{user?.name}</p>
-          <p className="text-xs text-slate-500">{user?.title}</p>
+          <p className="text-xs text-slate-500">{getUserTitle(t, user)}</p>
         </div>
         <ChevronDown size={16} className="text-slate-400" />
       </button>
