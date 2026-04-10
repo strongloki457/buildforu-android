@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import CalendarCard from "../components/dashboard/CalendarCard";
 import ChatPanel from "../components/dashboard/ChatPanel";
 import TaskListCard from "../components/dashboard/TaskListCard";
+import WorkStatusCard from "../components/dashboard/WorkStatusCard";
 import { DashboardSkeleton } from "../components/ui/LoadingSkeleton";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
@@ -75,24 +76,28 @@ export default function EmployeeDashboard() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        <section className="glass-panel rounded-[32px] p-6">
-          <SectionHeader title={t("dashboard.quickPulse")} subtitle={t("dashboard.quickPulseSubtitle")} />
-          <div className="grid gap-4">
-            <MetricCard
-              icon={CalendarClock}
-              label={t("dashboard.scheduleConfidence")}
-              value="94%"
-              detail={t("dashboard.scheduleConfidenceDetail")}
-            />
-            <div className="rounded-[28px] bg-white/75 p-5">
-              <p className="text-sm text-slate-500">{t("dashboard.siteRhythm")}</p>
-              <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-100">
-                <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-brand-700 to-brand-500" />
+        <div className="grid gap-6">
+          <WorkStatusCard />
+
+          <section className="glass-panel rounded-[32px] p-6">
+            <SectionHeader title={t("dashboard.quickPulse")} subtitle={t("dashboard.quickPulseSubtitle")} />
+            <div className="grid gap-4">
+              <MetricCard
+                icon={CalendarClock}
+                label={t("dashboard.scheduleConfidence")}
+                value="94%"
+                detail={t("dashboard.scheduleConfidenceDetail")}
+              />
+              <div className="rounded-[28px] bg-white/75 p-5">
+                <p className="text-sm text-slate-500">{t("dashboard.siteRhythm")}</p>
+                <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-100">
+                  <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-brand-700 to-brand-500" />
+                </div>
+                <p className="mt-3 text-sm text-slate-500">{t("dashboard.siteRhythmDetail")}</p>
               </div>
-              <p className="mt-3 text-sm text-slate-500">{t("dashboard.siteRhythmDetail")}</p>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         <ChatPanel
           title={t("dashboard.teamMessages")}

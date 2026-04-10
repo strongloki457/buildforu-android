@@ -3,9 +3,10 @@ import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 import { useI18n } from "../../hooks/useI18n";
+import { formatAttendanceDateTime, hasAttendanceLocation } from "../../utils/attendance";
 
 export default function WorkersPanel({ title, subtitle, workers }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
 
   return (
     <Card>
@@ -33,6 +34,21 @@ export default function WorkersPanel({ title, subtitle, workers }) {
                   <span>
                     {t("workers.nextShift")}{" "}
                     {worker.nextShift === "Not scheduled" ? t("workers.notScheduled") : worker.nextShift}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock3 size={14} />
+                  <span>
+                    {t("attendance.lastStart")}{" "}
+                    {formatAttendanceDateTime(worker.attendance?.workStartTime, locale) ?? t("attendance.noRecord")}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin size={14} />
+                  <span>
+                    {hasAttendanceLocation(worker.attendance?.workStartLocation)
+                      ? t("attendance.locationCaptured")
+                      : t("attendance.locationUnavailableShort")}
                   </span>
                 </div>
               </div>

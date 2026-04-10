@@ -15,7 +15,10 @@ export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems = useMemo(() => getNavigation(user?.role, t), [user?.role, t]);
-  const activeItem = navItems.find((item) => item.path === location.pathname) ?? navItems[0];
+  const activeItem =
+    navItems
+      .filter((item) => location.pathname === item.path || location.pathname.startsWith(`${item.path}/`))
+      .sort((left, right) => right.path.length - left.path.length)[0] ?? navItems[0];
 
   return (
     <div className="min-h-screen px-4 py-4 lg:px-5 lg:py-5">

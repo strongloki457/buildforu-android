@@ -11,6 +11,7 @@ const styles = {
   available: "bg-emerald-100 text-emerald-700",
   busy: "bg-slate-200 text-slate-700",
   "on site": "bg-emerald-100 text-emerald-700",
+  "off site": "bg-slate-100 text-slate-700",
   "in transit": "bg-blue-100 text-blue-700",
   "off shift": "bg-slate-100 text-slate-700",
   "in stock": "bg-emerald-100 text-emerald-700",

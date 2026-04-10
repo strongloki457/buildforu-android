@@ -2,12 +2,32 @@
 > buildforu-frontend@0.0.0 dev
 > vite --host 127.0.0.1 --port 4173
 
-Port 4173 is in use, trying another one...
 
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m240[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m224[22m[2m[0m ms[22m
 
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4174[22m/[39m
-[2m01:10:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/Sidebar.jsx, /src/index.css[22m
-[2m01:10:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/Sidebar.jsx, /src/index.css[22m
-[2m01:10:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/LoginPage.jsx, /src/index.css[22m
-[2m01:10:36[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m4173[22m/[39m
+[2m11:53:27[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx, /src/index.css, /src/contexts/AppDataContext.jsx[22m
+[2m11:53:27[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:53:27[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m11:53:27[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:53:27[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m11:53:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m11:53:53[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:53:53[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m11:54:57[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/EmployeeDashboard.jsx, /src/index.css[22m
+[2m11:55:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/WorkersPanel.jsx, /src/index.css[22m
+[2m11:55:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ui/StatusBadge.jsx, /src/index.css[22m
+[2m11:57:07[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/WorkersPage.jsx, /src/index.css[22m
+[2m11:57:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m11:57:11[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:57:11[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m11:57:22[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m11:57:23[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m11:57:23[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m12:14:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:14:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/layouts/AppLayout.jsx, /src/index.css[22m
+[2m12:14:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/SettingsPage.jsx, /src/index.css[22m
+[2m12:14:24[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m12:14:24[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:14:24[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m12:14:54[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/BillingPage.jsx, /src/index.css[22m

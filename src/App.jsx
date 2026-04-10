@@ -8,10 +8,14 @@ import CalendarPage from "./pages/CalendarPage";
 import ChatPage from "./pages/ChatPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import FinancePage from "./pages/FinancePage";
+import BillingPage from "./pages/BillingPage";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import MarketMapPage from "./pages/MarketMapPage";
 import MaterialsPage from "./pages/MaterialsPage";
+import PricingPage from "./pages/PricingPage";
 import ProjectsPage from "./pages/ProjectsPage";
+import RegisterCompanyPage from "./pages/RegisterCompanyPage";
 import SettingsPage from "./pages/SettingsPage";
 import TasksPage from "./pages/TasksPage";
 import WorkersPage from "./pages/WorkersPage";
@@ -21,13 +25,20 @@ function DashboardRouter() {
   return user?.role === "admin" ? <AdminDashboard /> : <EmployeeDashboard />;
 }
 
+function FallbackRouter() {
+  const { user } = useAuth();
+  return <Navigate to={user ? "/dashboard" : "/"} replace />;
+}
+
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
+      <Route path="/register-company" element={<RegisterCompanyPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<DashboardRouter />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/tasks" element={<TasksPage />} />
@@ -66,9 +77,10 @@ export default function App() {
             }
           />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings/billing" element={<BillingPage />} />
         </Route>
       </Route>
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<FallbackRouter />} />
     </Routes>
   );
 }

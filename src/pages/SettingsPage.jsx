@@ -1,5 +1,6 @@
-import { Bell, Globe, Shield, SlidersHorizontal } from "lucide-react";
+import { ArrowUpRight, Bell, CreditCard, Globe, Shield, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useI18n } from "../hooks/useI18n";
@@ -67,6 +68,28 @@ export default function SettingsPage() {
             <p className="text-lg">{t("settings.workspaceSaved")}</p>
             <p className="text-sm text-white/60">{t("settings.workspaceSavedDetail")}</p>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-[28px] bg-white/82 p-6">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
+              <CreditCard size={18} />
+            </div>
+            <div>
+              <p className="text-lg text-slate-900">{t("settings.billingTitle")}</p>
+              <p className="mt-2 max-w-2xl text-sm text-slate-500">{t("settings.billingDescription")}</p>
+            </div>
+          </div>
+
+          <Link
+            to="/settings/billing"
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-sm text-white transition hover:bg-brand-600"
+          >
+            {t("settings.manageBilling")}
+            <ArrowUpRight size={16} />
+          </Link>
         </div>
       </div>
     </Card>

@@ -3,7 +3,8 @@ import { mockUsers } from "../data/mockData";
 
 export const AuthContext = createContext(null);
 
-const STORAGE_KEY = "buildforu-auth";
+const LOCAL_STORAGE_KEY = "buildforu-auth";
+const SESSION_STORAGE_KEY = "buildforu-auth-session";
 
 function resolveUser(email) {
   const normalizedEmail = email.trim().toLowerCase();
@@ -25,7 +26,9 @@ export function AuthProvider({ children }) {
   const [isBooting, setIsBooting] = useState(true);
 
   useEffect(() => {
-    const savedUser = window.localStorage.getItem(STORAGE_KEY);
+    const savedUser =
+      window.localStorage.getItem(LOCAL_STORAGE_KEY) ||
+      window.sessionStorage.getItem(SESSION_STORAGE_KEY);
 
     if (savedUser) {
       setUser(JSON.parse(savedUser));
@@ -34,7 +37,7 @@ export function AuthProvider({ children }) {
     setIsBooting(false);
   }, []);
 
-  const login = async ({ email, password }) => {
+  const login = async ({ email, password, rememberMe = true }) => {
     if (!email || !password) {
       throw new Error("login.requiredError");
     }
@@ -43,14 +46,20 @@ export function AuthProvider({ children }) {
 
     await new Promise((resolve) => window.setTimeout(resolve, 900));
     setUser(matchedUser);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(matchedUser));
+    window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+    window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
+
+    const storage = rememberMe ? window.localStorage : window.sessionStorage;
+    const storageKey = rememberMe ? LOCAL_STORAGE_KEY : SESSION_STORAGE_KEY;
+    storage.setItem(storageKey, JSON.stringify(matchedUser));
 
     return matchedUser;
   };
 
   const logout = () => {
     setUser(null);
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+    window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
   };
 
   const value = useMemo(

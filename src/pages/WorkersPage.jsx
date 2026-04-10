@@ -2,7 +2,11 @@ import {
   Activity,
   BadgeCheck,
   BriefcaseBusiness,
+  Clock3,
+  Crosshair,
+  Eye,
   Mail,
+  MapPin,
   Phone,
   Plus,
   Search,
@@ -19,17 +23,17 @@ import SectionHeader from "../components/ui/SectionHeader";
 import StatusBadge from "../components/ui/StatusBadge";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { formatAttendanceCoordinates, formatAttendanceDateTime, hasAttendanceLocation } from "../utils/attendance";
 
 const emptyWorkerForm = {
   name: "",
   email: "",
   phone: "",
   position: "",
-  assignedProject: "",
-  status: "On site"
+  assignedProject: ""
 };
 
-const statusOptions = ["On site", "In transit", "Off shift"];
+const attendanceStatusOptions = ["On Site", "Off Site"];
 
 function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions }) {
   const { t } = useI18n();
@@ -71,7 +75,6 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
               value={form.email}
               onChange={(event) => handleChange("email", event.target.value)}
               placeholder={t("workers.placeholderEmail")}
-              required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
@@ -83,7 +86,6 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
               value={form.phone}
               onChange={(event) => handleChange("phone", event.target.value)}
               placeholder={t("workers.placeholderPhone")}
-              required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
@@ -95,17 +97,15 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
               value={form.position}
               onChange={(event) => handleChange("position", event.target.value)}
               placeholder={t("workers.placeholderPosition")}
-              required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
-          <label className="grid gap-2">
+          <label className="grid gap-2 md:col-span-2">
             <span className="text-sm text-slate-600">{t("workers.assignedProject")}</span>
             <select
               value={form.assignedProject}
               onChange={(event) => handleChange("assignedProject", event.target.value)}
-              required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             >
               <option value="">{t("workers.selectProject")}</option>
@@ -116,23 +116,9 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
               ))}
             </select>
           </label>
-
-          <label className="grid gap-2">
-            <span className="text-sm text-slate-600">{t("common.status")}</span>
-            <select
-              value={form.status}
-              onChange={(event) => handleChange("status", event.target.value)}
-              required
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
-            >
-              {statusOptions.map((status) => (
-                <option key={status} value={status}>
-                  {t(`statusLabels.${status.toLowerCase()}`, status)}
-                </option>
-              ))}
-            </select>
-          </label>
         </div>
+
+        <p className="text-sm text-slate-500">{t("workers.attendanceManagedByEmployee")}</p>
 
         <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
@@ -143,6 +129,63 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
           </Button>
         </div>
       </form>
+    </Modal>
+  );
+}
+
+function AttendanceDetailsModal({ worker, onClose }) {
+  const { locale, t } = useI18n();
+  const attendance = worker.attendance ?? {};
+
+  return (
+    <Modal
+      onClose={onClose}
+      title={t("attendance.detailsTitle", { name: worker.name })}
+      description={t("attendance.detailsDescription")}
+    >
+      <div className="grid gap-4">
+        <div className="rounded-[24px] bg-slate-50/90 p-4">
+          <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("attendance.currentStatus")}</p>
+          <div className="mt-3">
+            <StatusBadge value={attendance.currentStatus ?? worker.status} />
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-[24px] bg-slate-50/90 p-4">
+            <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("attendance.lastStart")}</p>
+            <p className="mt-3 text-sm text-slate-700">
+              {formatAttendanceDateTime(attendance.workStartTime, locale) ?? t("attendance.noRecord")}
+            </p>
+            <p className="mt-2 text-xs text-slate-500">
+              {formatAttendanceCoordinates(attendance.workStartLocation) ?? t("attendance.locationUnavailableShort")}
+            </p>
+          </div>
+
+          <div className="rounded-[24px] bg-slate-50/90 p-4">
+            <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("attendance.lastEnd")}</p>
+            <p className="mt-3 text-sm text-slate-700">
+              {formatAttendanceDateTime(attendance.workEndTime, locale) ?? t("attendance.noRecord")}
+            </p>
+            <p className="mt-2 text-xs text-slate-500">
+              {formatAttendanceCoordinates(attendance.workEndLocation) ?? t("attendance.locationUnavailableShort")}
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-[24px] bg-slate-50/90 p-4">
+          <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("attendance.locationIndicator")}</p>
+          <div className="mt-3">
+            <StatusBadge
+              value={
+                hasAttendanceLocation(attendance.workStartLocation) || hasAttendanceLocation(attendance.workEndLocation)
+                  ? t("attendance.locationCaptured")
+                  : t("attendance.locationUnavailableShort")
+              }
+            />
+          </div>
+        </div>
+      </div>
     </Modal>
   );
 }
@@ -170,12 +213,13 @@ function DeleteWorkerModal({ worker, onClose, onConfirm }) {
 
 export default function WorkersPage() {
   const { workers, projects, addWorker, updateWorker, deleteWorker } = useAppData();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [projectFilter, setProjectFilter] = useState("all");
   const [formModal, setFormModal] = useState(null);
   const [workerToDelete, setWorkerToDelete] = useState(null);
+  const [attendanceWorker, setAttendanceWorker] = useState(null);
 
   const projectOptions = useMemo(() => projects.map((project) => project.name), [projects]);
 
@@ -183,12 +227,18 @@ export default function WorkersPage() {
     const normalizedSearch = search.trim().toLowerCase();
 
     return workers.filter((worker) => {
+      const workerStatus = String(worker.attendance?.currentStatus ?? worker.status).toLowerCase();
       const matchesSearch =
         !normalizedSearch ||
-        [worker.name, worker.email, worker.phone, worker.position ?? worker.trade, worker.assignedProject, worker.status].some((value) =>
-          String(value).toLowerCase().includes(normalizedSearch)
-        );
-      const matchesStatus = statusFilter === "all" || String(worker.status).toLowerCase() === statusFilter;
+        [
+          worker.name,
+          worker.email,
+          worker.phone,
+          worker.position ?? worker.trade,
+          worker.assignedProject,
+          workerStatus
+        ].some((value) => String(value ?? "").toLowerCase().includes(normalizedSearch));
+      const matchesStatus = statusFilter === "all" || workerStatus === statusFilter;
       const matchesProject = projectFilter === "all" || worker.assignedProject === projectFilter;
 
       return matchesSearch && matchesStatus && matchesProject;
@@ -209,8 +259,10 @@ export default function WorkersPage() {
     return `${Math.round(total / workers.length)}%`;
   }, [workers]);
 
-  const offShiftCount = useMemo(
-    () => workers.filter((worker) => String(worker.status).toLowerCase() === "off shift").length,
+  const offSiteCount = useMemo(
+    () =>
+      workers.filter((worker) => String(worker.attendance?.currentStatus ?? worker.status).toLowerCase() === "off site")
+        .length,
     [workers]
   );
 
@@ -224,8 +276,7 @@ export default function WorkersPage() {
         email: worker.email ?? "",
         phone: worker.phone ?? "",
         position: worker.position ?? worker.trade ?? "",
-        assignedProject: worker.assignedProject ?? worker.location ?? "",
-        status: worker.status ?? "On site"
+        assignedProject: worker.assignedProject ?? worker.location ?? ""
       }
     });
 
@@ -259,7 +310,7 @@ export default function WorkersPage() {
           detail={t("workers.availableNowDetail")}
         />
         <MetricCard icon={Activity} label={t("workers.averagePerformance")} value={averageCompletionRate} detail={t("workers.averagePerformanceDetail")} />
-        <MetricCard icon={BriefcaseBusiness} label={t("workers.offShift")} value={offShiftCount} detail={t("workers.offShiftDetail")} />
+        <MetricCard icon={BriefcaseBusiness} label={t("workers.offSite")} value={offSiteCount} detail={t("workers.offSiteDetail")} />
       </div>
 
       <Card>
@@ -291,7 +342,7 @@ export default function WorkersPage() {
             className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none"
           >
             <option value="all">{t("workers.allStatuses")}</option>
-            {statusOptions.map((status) => (
+            {attendanceStatusOptions.map((status) => (
               <option key={status} value={status.toLowerCase()}>
                 {t(`statusLabels.${status.toLowerCase()}`, status)}
               </option>
@@ -332,15 +383,19 @@ export default function WorkersPage() {
                       <p className="truncate text-lg text-slate-900">{worker.name}</p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
                         <span className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
-                          {worker.position ?? worker.trade}
+                          {worker.position ?? worker.trade ?? t("workers.notProvided")}
                         </span>
-                        <StatusBadge value={worker.status} />
+                        <StatusBadge value={worker.attendance?.currentStatus ?? worker.status} />
                         <StatusBadge value={worker.availability} />
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex w-full gap-2 sm:w-auto">
+                  <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+                    <Button variant="ghost" className="flex-1 gap-2 px-3 py-2 sm:flex-none" onClick={() => setAttendanceWorker(worker)}>
+                      <Eye size={16} />
+                      {t("attendance.viewDetails")}
+                    </Button>
                     <Button variant="secondary" className="flex-1 gap-2 px-3 py-2 sm:flex-none" onClick={() => openEditModal(worker)}>
                       <UserRoundPen size={16} />
                       {t("common.edit")}
@@ -362,11 +417,11 @@ export default function WorkersPage() {
                     <div className="mt-3 grid gap-2">
                       <div className="flex items-center gap-2">
                         <Mail size={14} className="text-brand-600" />
-                        <span className="min-w-0 truncate">{worker.email}</span>
+                        <span className="min-w-0 truncate">{worker.email || t("workers.notProvided")}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Phone size={14} className="text-brand-600" />
-                        <span>{worker.phone}</span>
+                        <span>{worker.phone || t("workers.notProvided")}</span>
                       </div>
                     </div>
                   </div>
@@ -375,18 +430,63 @@ export default function WorkersPage() {
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("workers.operations")}</p>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2">
                       <p>
-                        <span className="text-slate-400">{t("workers.assignedProject")}:</span> {worker.assignedProject}
+                        <span className="text-slate-400">{t("workers.assignedProject")}:</span>{" "}
+                        {worker.assignedProject || t("workers.notProvided")}
                       </p>
                       <p>
                         <span className="text-slate-400">{t("workers.nextShift")}:</span>{" "}
                         {worker.nextShift === "Not scheduled" ? t("workers.notScheduled") : worker.nextShift}
                       </p>
                       <p>
-                        <span className="text-slate-400">{t("common.location")}:</span> {worker.location}
+                        <span className="text-slate-400">{t("common.location")}:</span>{" "}
+                        {worker.location || t("workers.notProvided")}
                       </p>
                       <p>
                         <span className="text-slate-400">{t("workers.completionRate")}:</span> {worker.completionRate}%
                       </p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[22px] bg-slate-50/90 px-4 py-3">
+                    <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("attendance.title")}</p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      <div className="flex items-start gap-2">
+                        <Clock3 size={14} className="mt-0.5 text-brand-600" />
+                        <div>
+                          <p className="text-xs text-slate-400">{t("attendance.lastStart")}</p>
+                          <p className="text-sm text-slate-600">
+                            {formatAttendanceDateTime(worker.attendance?.workStartTime, locale) ?? t("attendance.noRecord")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Clock3 size={14} className="mt-0.5 text-brand-600" />
+                        <div>
+                          <p className="text-xs text-slate-400">{t("attendance.lastEnd")}</p>
+                          <p className="text-sm text-slate-600">
+                            {formatAttendanceDateTime(worker.attendance?.workEndTime, locale) ?? t("attendance.noRecord")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Crosshair size={14} className="mt-0.5 text-brand-600" />
+                        <div>
+                          <p className="text-xs text-slate-400">{t("attendance.locationIndicator")}</p>
+                          <p className="text-sm text-slate-600">
+                            {hasAttendanceLocation(worker.attendance?.workStartLocation) ||
+                            hasAttendanceLocation(worker.attendance?.workEndLocation)
+                              ? t("attendance.locationCaptured")
+                              : t("attendance.locationUnavailableShort")}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <MapPin size={14} className="mt-0.5 text-brand-600" />
+                        <div>
+                          <p className="text-xs text-slate-400">{t("attendance.currentStatus")}</p>
+                          <p className="text-sm text-slate-600">{worker.attendance?.currentStatus ?? worker.status}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -422,6 +522,10 @@ export default function WorkersPage() {
           onClose={() => setWorkerToDelete(null)}
           onConfirm={handleDeleteWorker}
         />
+      ) : null}
+
+      {attendanceWorker ? (
+        <AttendanceDetailsModal worker={attendanceWorker} onClose={() => setAttendanceWorker(null)} />
       ) : null}
     </div>
   );
