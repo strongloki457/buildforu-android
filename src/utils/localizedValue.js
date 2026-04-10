@@ -10,12 +10,20 @@ export function getWorkerPosition(t, worker) {
   return getLocalizedValue(t, worker?.positionKey ?? worker?.tradeKey, worker?.position ?? worker?.trade ?? "");
 }
 
+export function getProjectName(t, project) {
+  return getLocalizedValue(t, project?.nameKey, project?.name ?? "");
+}
+
 export function getTaskTitle(t, task) {
   return getLocalizedValue(t, task?.titleKey, task?.title ?? "");
 }
 
 export function getTaskLocation(t, task) {
   return getLocalizedValue(t, task?.locationKey, task?.location ?? "");
+}
+
+export function getTaskProjectName(t, task) {
+  return getLocalizedValue(t, task?.projectNameKey, task?.projectName ?? "");
 }
 
 export function getProjectPhase(t, project) {
@@ -32,6 +40,10 @@ export function getMaterialRequestItem(t, request) {
 
 export function getMaterialRequestNote(t, request) {
   return getLocalizedValue(t, request?.noteKey, request?.note ?? "");
+}
+
+export function getMaterialRequestProjectName(t, request) {
+  return getLocalizedValue(t, request?.projectNameKey, request?.projectName ?? "");
 }
 
 export function getStoreProductName(t, store) {

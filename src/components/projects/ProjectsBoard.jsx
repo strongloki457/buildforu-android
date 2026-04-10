@@ -6,7 +6,7 @@ import Card from "../ui/Card";
 import Modal from "../ui/Modal";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
-import { getLocalizedValue, getProjectNotes, getProjectPhase, getWorkerPosition } from "../../utils/localizedValue";
+import { getLocalizedValue, getProjectName, getProjectNotes, getProjectPhase, getWorkerPosition } from "../../utils/localizedValue";
 
 function formatProjectDate(value, locale) {
   if (!value) {
@@ -30,7 +30,7 @@ function ProjectDetailsModal({ project, onClose }) {
   return (
     <Modal
       onClose={onClose}
-      title={project.name}
+      title={getProjectName(t, project)}
       description={t("projects.detailsDescription", "Project team, timeline and operational notes in one place.")}
     >
       <div className="grid gap-4">
@@ -118,18 +118,11 @@ function ProjectDetailsModal({ project, onClose }) {
   );
 }
 
-export default function ProjectsBoard({ title, subtitle, projects, workers }) {
+export default function ProjectsBoard({ title, subtitle, projects }) {
   const { locale, t } = useI18n();
   const [activeProjectId, setActiveProjectId] = useState("");
 
-  const projectsWithAssignments = useMemo(
-    () =>
-      projects.map((project) => ({
-        ...project,
-        assignedWorkers: workers.filter((worker) => worker.assignedProject === project.name)
-      })),
-    [projects, workers]
-  );
+  const projectsWithAssignments = useMemo(() => projects, [projects]);
 
   const activeProject = projectsWithAssignments.find((project) => project.id === activeProjectId) ?? null;
 
@@ -145,7 +138,7 @@ export default function ProjectsBoard({ title, subtitle, projects, workers }) {
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-lg text-slate-950">{project.name}</p>
+                <p className="text-lg text-slate-950">{getProjectName(t, project)}</p>
                 <p className="mt-1 text-sm text-slate-500">{getProjectPhase(t, project)}</p>
               </div>
               <StatusBadge value={project.status} />

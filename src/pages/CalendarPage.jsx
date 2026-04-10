@@ -11,7 +11,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { getLocalDateKey, getUpcomingItemsByDate, isDateKeyInMonth, sortByDateKey } from "../utils/date";
-import { getTaskLocation, getTaskTitle } from "../utils/localizedValue";
+import { getTaskLocation, getTaskProjectName, getTaskTitle } from "../utils/localizedValue";
 
 function formatShortDate(dateKey, locale) {
   if (!dateKey) {
@@ -32,7 +32,7 @@ function formatShortDate(dateKey, locale) {
 
 export default function CalendarPage() {
   const { user } = useAuth();
-  const { tasks, workers, addTask } = useAppData();
+  const { tasks, workers, projects, addTask } = useAppData();
   const { locale, t } = useI18n();
   const [showTaskModal, setShowTaskModal] = useState(false);
   const [visibleDate, setVisibleDate] = useState(() => new Date());
@@ -123,6 +123,11 @@ export default function CalendarPage() {
               <div key={task.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] bg-white/80 p-4">
                 <div>
                   <p className="text-slate-900">{getTaskTitle(t, task)}</p>
+                  {getTaskProjectName(t, task) ? (
+                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">
+                      {t("common.project")}: {getTaskProjectName(t, task)}
+                    </p>
+                  ) : null}
                   <p className="text-sm text-slate-500">{getTaskLocation(t, task)}</p>
                 </div>
                 <div className="rounded-2xl bg-brand-50 px-4 py-2 text-sm text-brand-700">{task.date}</div>
@@ -144,6 +149,7 @@ export default function CalendarPage() {
         >
           <AssignmentPanel
             workers={workers}
+            projects={projects}
             initialDate={initialTaskDate}
             onAssign={(payload) => {
               const createdTask = addTask(payload);

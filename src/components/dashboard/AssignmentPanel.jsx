@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
 import { getLocalDateKey } from "../../utils/date";
-import { getWorkerPosition } from "../../utils/localizedValue";
+import { getProjectName, getWorkerPosition } from "../../utils/localizedValue";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
@@ -10,6 +10,7 @@ export default function AssignmentPanel({
   title,
   subtitle,
   workers,
+  projects,
   onAssign,
   initialDate = getLocalDateKey(),
   embedded = false
@@ -17,10 +18,17 @@ export default function AssignmentPanel({
   const { t } = useI18n();
   const [form, setForm] = useState({
     employeeId: workers[0]?.id ?? "",
+    projectId: workers[0]?.projectIds?.[0] ?? projects[0]?.id ?? "",
     title: "",
     location: "",
     date: initialDate
   });
+
+  const selectedWorker = useMemo(
+    () => workers.find((worker) => worker.id === form.employeeId) ?? null,
+    [form.employeeId, workers]
+  );
+  const suggestedProjectId = selectedWorker?.projectIds?.[0] ?? projects[0]?.id ?? "";
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -29,26 +37,44 @@ export default function AssignmentPanel({
   useEffect(() => {
     setForm((current) => ({
       ...current,
-      employeeId: workers.some((worker) => worker.id === current.employeeId) ? current.employeeId : workers[0]?.id ?? ""
+      employeeId: workers.some((worker) => worker.id === current.employeeId) ? current.employeeId : workers[0]?.id ?? "",
+      projectId: projects.some((project) => project.id === current.projectId)
+        ? current.projectId
+        : workers[0]?.projectIds?.[0] ?? projects[0]?.id ?? ""
     }));
-  }, [workers]);
+  }, [projects, workers]);
+
+  useEffect(() => {
+    if (!selectedWorker) {
+      return;
+    }
+
+    if (!form.projectId && suggestedProjectId) {
+      setForm((current) => ({
+        ...current,
+        projectId: suggestedProjectId
+      }));
+    }
+  }, [form.projectId, selectedWorker, suggestedProjectId]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const title = form.title.trim();
     const location = form.location.trim();
 
-    if (!form.employeeId || !title || !location || !form.date) {
+    if (!form.employeeId || !form.projectId || !title || !location || !form.date) {
       return;
     }
 
     const assignee = workers.find((worker) => worker.id === form.employeeId);
+    const project = projects.find((item) => item.id === form.projectId);
 
     onAssign({
       ...form,
       title,
       location,
-      assignee: assignee?.name ?? t("calendar.unknownWorker")
+      assignee: assignee?.name ?? t("calendar.unknownWorker"),
+      projectName: project?.name ?? ""
     });
 
     setForm((current) => ({
@@ -80,6 +106,26 @@ export default function AssignmentPanel({
           )}
         </select>
 
+        <select
+          value={form.projectId}
+          onChange={(event) => handleChange("projectId", event.target.value)}
+          disabled={!projects.length}
+          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
+        >
+          {projects.length ? (
+            <>
+              <option value="">{t("calendar.selectProject")}</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {getProjectName(t, project)}
+                </option>
+              ))}
+            </>
+          ) : (
+            <option value="">{t("workers.noProjectsAvailable")}</option>
+          )}
+        </select>
+
         <input
           value={form.title}
           onChange={(event) => handleChange("title", event.target.value)}
@@ -104,7 +150,11 @@ export default function AssignmentPanel({
           className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
-        <Button type="submit" className="w-full disabled:cursor-not-allowed disabled:opacity-60" disabled={!workers.length}>
+        <Button
+          type="submit"
+          className="w-full disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={!workers.length || !projects.length}
+        >
           {t("calendar.assignTaskButton")}
         </Button>
       </form>

@@ -1,16 +1,15 @@
-import { ClipboardList, PackageCheck, PackagePlus, Search, ShoppingCart } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ClipboardList, PackageCheck, PackagePlus, Search, ShoppingCart, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
 import StatusBadge from "../components/ui/StatusBadge";
+import { materialRequestStatusOptions } from "../data/mockMaterials";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
-import { getMaterialRequestItem, getMaterialRequestNote } from "../utils/localizedValue";
-
-const requestStatusOptions = ["Pending", "Ordered", "Purchased", "Rejected"];
+import { getMaterialRequestItem, getMaterialRequestNote, getMaterialRequestProjectName, getProjectName } from "../utils/localizedValue";
 
 function formatRequestDate(value, locale) {
   const date = value instanceof Date ? value : new Date(value);
@@ -25,13 +24,21 @@ function formatRequestDate(value, locale) {
   }).format(date);
 }
 
-function MaterialRequestForm({ projectName, onSubmit }) {
+function MaterialRequestForm({ projectName, projectOptions, defaultProjectId, onSubmit }) {
   const { t } = useI18n();
   const [form, setForm] = useState({
     itemName: "",
     quantity: "",
-    note: ""
+    note: "",
+    projectId: defaultProjectId ?? ""
   });
+
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      projectId: projectOptions.some((project) => project.id === current.projectId) ? current.projectId : defaultProjectId ?? ""
+    }));
+  }, [defaultProjectId, projectOptions]);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -51,14 +58,16 @@ function MaterialRequestForm({ projectName, onSubmit }) {
     const createdRequest = onSubmit({
       itemName,
       quantity,
-      note
+      note,
+      projectId: form.projectId
     });
 
     if (createdRequest) {
       setForm({
         itemName: "",
         quantity: "",
-        note: ""
+        note: "",
+        projectId: defaultProjectId ?? ""
       });
     }
   };
@@ -76,12 +85,28 @@ function MaterialRequestForm({ projectName, onSubmit }) {
       <form onSubmit={handleSubmit} className="grid gap-4">
         <div className="rounded-[24px] bg-slate-50/90 p-4">
           <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
-            {t("materials.yourProject", "Assigned project")}
+            {t("workers.assignedProjects", "Assigned projects")}
           </p>
           <p className="mt-3 text-sm text-slate-700">
             {projectName || t("materials.noProjectAssigned", "No project assigned right now.")}
           </p>
         </div>
+
+        <label className="grid gap-2">
+          <span className="text-sm text-slate-600">{t("common.project")}</span>
+          <select
+            value={form.projectId}
+            onChange={(event) => handleChange("projectId", event.target.value)}
+            className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
+          >
+            <option value="">{t("materials.noProjectLink", "No project link")}</option>
+            {projectOptions.map((project) => (
+              <option key={project.id} value={project.id}>
+                {getProjectName(t, project)}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <label className="grid gap-2">
           <span className="text-sm text-slate-600">{t("materials.itemName", "Item name")}</span>
@@ -124,7 +149,7 @@ function MaterialRequestForm({ projectName, onSubmit }) {
   );
 }
 
-function MaterialRequestCard({ request, isAdmin, locale, onStatusChange }) {
+function MaterialRequestCard({ request, isAdmin, locale, onDelete, onStatusChange }) {
   const { t } = useI18n();
 
   return (
@@ -136,13 +161,25 @@ function MaterialRequestCard({ request, isAdmin, locale, onStatusChange }) {
             {t("materials.requestedBy", "Requested by")}: {request.requestedBy}
           </p>
         </div>
-        <StatusBadge value={request.status} />
+        <div className="flex items-center gap-2">
+          <StatusBadge value={request.status} />
+          {!isAdmin ? (
+            <Button
+              variant="ghost"
+              className="gap-2 bg-rose-50 px-3 py-2 text-rose-700 hover:bg-rose-100"
+              onClick={() => onDelete(request.id)}
+            >
+              <Trash2 size={14} />
+              {t("common.delete")}
+            </Button>
+          ) : null}
+        </div>
       </div>
 
       <div className="mt-5 grid gap-3 text-sm text-slate-500 sm:grid-cols-2">
         {request.projectName ? (
           <div className="rounded-[20px] bg-slate-50/90 px-4 py-3">
-            <span className="text-slate-400">{t("workers.assignedProject")}:</span> {request.projectName}
+            <span className="text-slate-400">{t("common.project")}:</span> {getMaterialRequestProjectName(t, request)}
           </div>
         ) : null}
 
@@ -173,7 +210,7 @@ function MaterialRequestCard({ request, isAdmin, locale, onStatusChange }) {
             onChange={(event) => onStatusChange(request.id, event.target.value)}
             className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-brand-300 focus:ring-2 focus:ring-brand-100"
           >
-            {requestStatusOptions.map((status) => (
+            {materialRequestStatusOptions.map((status) => (
               <option key={status} value={status}>
                 {t(`statusLabels.${status.toLowerCase()}`, status)}
               </option>
@@ -199,7 +236,7 @@ function MaterialWorkflowCard() {
       />
 
       <div className="grid gap-3">
-        {requestStatusOptions.map((status) => (
+        {materialRequestStatusOptions.map((status) => (
           <div key={status} className="rounded-[22px] bg-slate-50/90 px-4 py-4">
             <div className="flex items-center justify-between gap-3">
               <p className="text-sm text-slate-900">{t(`statusLabels.${status.toLowerCase()}`, status)}</p>
@@ -214,13 +251,21 @@ function MaterialWorkflowCard() {
 
 export default function MaterialsPage() {
   const { user } = useAuth();
-  const { workers, materialRequests, addMaterialRequest, updateMaterialRequestStatus } = useAppData();
+  const { workers, projects, materialRequests, addMaterialRequest, deleteMaterialRequest, updateMaterialRequestStatus } = useAppData();
   const { locale, t } = useI18n();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
   const isAdmin = user.role === "admin";
   const linkedWorker = useMemo(() => workers.find((worker) => worker.id === user.id) ?? null, [user.id, workers]);
+  const workerProjects = useMemo(
+    () => projects.filter((project) => linkedWorker?.projectIds?.includes(project.id)),
+    [linkedWorker?.projectIds, projects]
+  );
+  const workerProjectLabel = useMemo(
+    () => workerProjects.map((project) => getProjectName(t, project)).join(", "),
+    [t, workerProjects]
+  );
   const scopedRequests = useMemo(() => {
     const requests = isAdmin
       ? materialRequests
@@ -239,7 +284,7 @@ export default function MaterialsPage() {
         [
           getMaterialRequestItem(t, request),
           request.requestedBy,
-          request.projectName,
+          getMaterialRequestProjectName(t, request),
           request.quantity,
           getMaterialRequestNote(t, request),
           request.status
@@ -267,7 +312,7 @@ export default function MaterialsPage() {
       ...payload,
       requestedById: user.id,
       requestedBy: user.name,
-      projectName: linkedWorker?.assignedProject ?? ""
+      projectName: payload.projectId ? projects.find((project) => project.id === payload.projectId)?.name ?? "" : ""
     });
 
   return (
@@ -306,7 +351,12 @@ export default function MaterialsPage() {
         {isAdmin ? (
           <MaterialWorkflowCard />
         ) : (
-          <MaterialRequestForm projectName={linkedWorker?.assignedProject ?? ""} onSubmit={handleCreateRequest} />
+          <MaterialRequestForm
+            projectName={workerProjectLabel}
+            projectOptions={workerProjects}
+            defaultProjectId={workerProjects[0]?.id ?? ""}
+            onSubmit={handleCreateRequest}
+          />
         )}
 
         <Card>
@@ -337,7 +387,7 @@ export default function MaterialsPage() {
               className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none"
             >
               <option value="all">{t("common.all")}</option>
-              {requestStatusOptions.map((status) => (
+              {materialRequestStatusOptions.map((status) => (
                 <option key={status} value={status.toLowerCase()}>
                   {t(`statusLabels.${status.toLowerCase()}`, status)}
                 </option>
@@ -353,6 +403,7 @@ export default function MaterialsPage() {
                   request={request}
                   isAdmin={isAdmin}
                   locale={locale}
+                  onDelete={deleteMaterialRequest}
                   onStatusChange={updateMaterialRequestStatus}
                 />
               ))}

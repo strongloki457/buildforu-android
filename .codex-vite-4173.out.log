@@ -142,3 +142,64 @@
 [2m16:45:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
 [2m16:45:17[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
 [2m16:45:17[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:17:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx, /src/index.css, /src/contexts/AppDataContext.jsx[22m
+[2m17:17:50[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:17:50[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m17:17:50[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:17:50[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m17:20:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m17:20:53[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:20:53[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m17:21:08[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/navigation/Sidebar.jsx, /src/components/dashboard/WorkersPanel.jsx, /src/components/navigation/UserMenu.jsx, /src/components/dashboard/TaskListCard.jsx, /src/components/dashboard/ProjectsOverviewCard.jsx, /src/pages/WorkersPage.jsx, /src/pages/TasksPage.jsx, /src/components/dashboard/CalendarCard.jsx, /src/pages/CalendarPage.jsx, /src/components/dashboard/AssignmentPanel.jsx, /src/components/projects/ProjectsBoard.jsx, /src/pages/MaterialsPage.jsx, /src/pages/MarketMapPage.jsx[22m
+[2m17:21:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectsBoard.jsx, /src/index.css[22m
+[2m17:21:26[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/ProjectsPage.jsx, /src/index.css[22m
+[2m17:21:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/ProjectsOverviewCard.jsx, /src/index.css[22m
+[2m17:21:45[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/WorkStatusCard.jsx, /src/index.css[22m
+[2m17:21:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/TaskListCard.jsx, /src/index.css[22m
+[2m17:22:00[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/TasksPage.jsx, /src/index.css[22m
+[2m17:22:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx, /src/index.css[22m
+[2m17:22:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/AssignmentPanel.jsx, /src/index.css[22m
+[2m17:23:18[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/MaterialsPage.jsx, /src/index.css[22m
+[2m17:23:57[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/WorkersPage.jsx, /src/index.css[22m
+[2m17:24:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/MaterialsPage.jsx, /src/index.css[22m
+[2m17:24:27[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/MaterialsPage.jsx, /src/index.css[22m
+[2m17:24:32[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/AssignmentPanel.jsx, /src/index.css[22m
+[2m17:24:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m17:24:42[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:24:42[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:26:55[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:26:55[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:44:26[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m17:44:26[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:44:26[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:15[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:55:16[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:55:16[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:56:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:56:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:56:06[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:56:06[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:56:12[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:56:12[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:56:12[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:57:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:57:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:57:37[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:57:37[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m17:59:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:59:52[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m17:59:52[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m17:59:52[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m

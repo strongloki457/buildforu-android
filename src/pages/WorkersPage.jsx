@@ -21,20 +21,19 @@ import MetricCard from "../components/ui/MetricCard";
 import Modal from "../components/ui/Modal";
 import SectionHeader from "../components/ui/SectionHeader";
 import StatusBadge from "../components/ui/StatusBadge";
+import { attendanceStatusOptions } from "../data/options";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { formatAttendanceCoordinates, formatAttendanceDateTime, hasAttendanceLocation } from "../utils/attendance";
-import { getLocalizedValue, getWorkerPosition } from "../utils/localizedValue";
+import { getLocalizedValue, getProjectName, getWorkerPosition } from "../utils/localizedValue";
 
 const emptyWorkerForm = {
   name: "",
   email: "",
   phone: "",
   position: "",
-  assignedProject: ""
+  projectIds: []
 };
-
-const attendanceStatusOptions = ["On Site", "Off Site"];
 
 function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions }) {
   const { t } = useI18n();
@@ -42,6 +41,15 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleProjectToggle = (projectId) => {
+    setForm((current) => ({
+      ...current,
+      projectIds: current.projectIds.includes(projectId)
+        ? current.projectIds.filter((item) => item !== projectId)
+        : [...current.projectIds, projectId]
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -102,21 +110,39 @@ function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions 
             />
           </label>
 
-          <label className="grid gap-2 md:col-span-2">
-            <span className="text-sm text-slate-600">{t("workers.assignedProject")}</span>
-            <select
-              value={form.assignedProject}
-              onChange={(event) => handleChange("assignedProject", event.target.value)}
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
-            >
-              <option value="">{t("workers.selectProject")}</option>
-              {projectOptions.map((project) => (
-                <option key={project} value={project}>
-                  {project}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div className="grid gap-3 md:col-span-2">
+            <span className="text-sm text-slate-600">{t("workers.assignedProjects", "Assigned projects")}</span>
+            {projectOptions.length ? (
+              <div className="flex flex-wrap gap-2 rounded-[24px] border border-white/70 bg-white/75 p-3">
+                {projectOptions.map((project) => {
+                  const isSelected = form.projectIds.includes(project.id);
+
+                  return (
+                    <button
+                      key={project.id}
+                      type="button"
+                      onClick={() => handleProjectToggle(project.id)}
+                      className={`rounded-full px-4 py-2 text-sm transition ${
+                        isSelected ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      {getProjectName(t, project)}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="rounded-[24px] border border-dashed border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-500">
+                {t("workers.noProjectsAvailable", "Add a project first to connect this worker.")}
+              </div>
+            )}
+            <p className="text-sm text-slate-500">
+              {t(
+                "workers.projectSelectionHint",
+                "Select one or more projects to connect the worker with active jobs."
+              )}
+            </p>
+          </div>
         </div>
 
         <p className="text-sm text-slate-500">{t("workers.attendanceManagedByEmployee")}</p>
@@ -222,7 +248,7 @@ export default function WorkersPage() {
   const [workerToDelete, setWorkerToDelete] = useState(null);
   const [attendanceWorker, setAttendanceWorker] = useState(null);
 
-  const projectOptions = useMemo(() => projects.map((project) => project.name), [projects]);
+  const projectOptions = useMemo(() => projects, [projects]);
 
   const filteredWorkers = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -236,11 +262,11 @@ export default function WorkersPage() {
           worker.email,
           worker.phone,
           getWorkerPosition(t, worker),
-          getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject),
+          worker.assignedProjects.map((project) => getProjectName(t, project)).join(" "),
           workerStatus
         ].some((value) => String(value ?? "").toLowerCase().includes(normalizedSearch));
       const matchesStatus = statusFilter === "all" || workerStatus === statusFilter;
-      const matchesProject = projectFilter === "all" || worker.assignedProject === projectFilter;
+      const matchesProject = projectFilter === "all" || worker.projectIds.includes(projectFilter);
 
       return matchesSearch && matchesStatus && matchesProject;
     });
@@ -277,7 +303,7 @@ export default function WorkersPage() {
         email: worker.email ?? "",
         phone: worker.phone ?? "",
         position: worker.position ?? worker.trade ?? "",
-        assignedProject: worker.assignedProject ?? worker.location ?? ""
+        projectIds: worker.projectIds ?? []
       }
     });
 
@@ -357,8 +383,8 @@ export default function WorkersPage() {
           >
             <option value="all">{t("workers.allProjects")}</option>
             {projectOptions.map((project) => (
-              <option key={project} value={project}>
-                {project}
+              <option key={project.id} value={project.id}>
+                {getProjectName(t, project)}
               </option>
             ))}
           </select>
@@ -429,11 +455,21 @@ export default function WorkersPage() {
 
                   <div className="rounded-[22px] bg-slate-50/90 px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("workers.operations")}</p>
-                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                      <p>
-                        <span className="text-slate-400">{t("workers.assignedProject")}:</span>{" "}
-                        {getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject) || t("workers.notProvided")}
-                      </p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      <div className="sm:col-span-2">
+                        <p className="text-slate-400">{t("workers.assignedProjects", "Assigned projects")}:</p>
+                        {worker.assignedProjects.length ? (
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {worker.assignedProjects.map((project) => (
+                              <span key={project.id} className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
+                                {getProjectName(t, project)}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="mt-2">{t("workers.notProvided")}</p>
+                        )}
+                      </div>
                       <p>
                         <span className="text-slate-400">{t("workers.nextShift")}:</span>{" "}
                         {worker.nextShift === "Not scheduled" ? t("workers.notScheduled") : worker.nextShift}

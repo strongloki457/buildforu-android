@@ -18,7 +18,7 @@ export default function ProjectsPage() {
     [projects]
   );
   const assignedPeopleCount = useMemo(
-    () => workers.filter((worker) => String(worker.assignedProject ?? "").trim().length > 0).length,
+    () => workers.filter((worker) => Array.isArray(worker.projectIds) && worker.projectIds.length > 0).length,
     [workers]
   );
 
@@ -58,7 +58,6 @@ export default function ProjectsPage() {
           "Watch delivery momentum and risk across active sites."
         )}
         projects={projects}
-        workers={workers}
       />
     </div>
   );

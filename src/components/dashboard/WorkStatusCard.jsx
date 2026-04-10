@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useAppData } from "../../hooks/useAppData";
 import { useI18n } from "../../hooks/useI18n";
 import { formatAttendanceCoordinates, formatAttendanceDateTime, hasAttendanceLocation } from "../../utils/attendance";
+import { getLocalizedValue } from "../../utils/localizedValue";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
@@ -135,7 +136,9 @@ export default function WorkStatusCard() {
             <p className="text-sm text-slate-500">{t("attendance.currentStatus")}</p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <StatusBadge value={currentStatus} />
-              <span className="text-sm text-slate-500">{worker.assignedProject || t("workers.notProvided")}</span>
+              <span className="text-sm text-slate-500">
+                {getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject) || t("workers.notProvided")}
+              </span>
             </div>
           </div>
 
