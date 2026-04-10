@@ -1,4 +1,14 @@
-import { ArrowRight, CalendarDays, Map, MessageSquare, Users2 } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  Map,
+  MapPin,
+  MessageSquare,
+  Search,
+  Users2
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import PublicShell from "../components/marketing/PublicShell";
 
@@ -23,6 +33,28 @@ const features = [
     description: "Compare nearby stores and supply options before teams lose time on sourcing.",
     icon: Map
   }
+];
+
+const workerPreview = [
+  { name: "Alex Novak", role: "Site Supervisor", status: "On Site" },
+  { name: "Mia Berger", role: "Electrician", status: "Off Site" },
+  { name: "Luca Moretti", role: "Plumbing Lead", status: "On Site" }
+];
+
+const schedulePreview = [
+  { title: "Concrete slab inspection", time: "09:30", site: "North River Residences" },
+  { title: "Safety briefing", time: "12:00", site: "BuildForU HQ" },
+  { title: "Facade delivery check", time: "16:30", site: "Skyline Offices" }
+];
+
+const chatPreview = [
+  { author: "Sophie", text: "Please confirm the slab inspection notes after the walkthrough.", tone: "muted" },
+  { author: "Alex", text: "Confirmed. I will upload the update before noon.", tone: "accent" }
+];
+
+const marketPreview = [
+  { store: "Nordic Build Store", price: "$86", meta: "Facade panels - 3.1 km" },
+  { store: "Voltix Supply Hub", price: "$42", meta: "Cabling - 5.4 km" }
 ];
 
 export default function LandingPage() {
@@ -72,66 +104,160 @@ export default function LandingPage() {
         </div>
 
         <div className="glass-panel rounded-[36px] p-5 sm:p-6">
-          <div className="rounded-[30px] border border-slate-200/80 bg-slate-950 p-4 text-white">
-            <div className="flex items-center justify-between gap-3">
+          <div className="rounded-[30px] border border-slate-200/80 bg-slate-950 p-4 text-white sm:p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.24em] text-brand-300">Dashboard preview</p>
-                <h2 className="mt-2 text-2xl">BuildForU Command Center</h2>
+                <p className="text-xs uppercase tracking-[0.24em] text-brand-300">Product preview</p>
+                <h2 className="mt-2 text-2xl">A closer look at how teams use BuildForU</h2>
               </div>
-              <div className="rounded-2xl bg-white/10 px-3 py-2 text-xs text-white/70">Live mock</div>
+              <div className="rounded-2xl bg-white/10 px-3 py-2 text-xs text-white/70">Live product modules</div>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
-              <div className="rounded-[26px] border border-white/10 bg-white/5 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-white/45">Navigation</p>
-                <div className="mt-4 space-y-2 text-sm text-white/75">
-                  <div className="rounded-2xl bg-brand-600 px-3 py-2 text-white">Dashboard</div>
-                  <div className="rounded-2xl bg-white/5 px-3 py-2">Workers</div>
-                  <div className="rounded-2xl bg-white/5 px-3 py-2">Calendar</div>
-                  <div className="rounded-2xl bg-white/5 px-3 py-2">Chat</div>
-                  <div className="rounded-2xl bg-white/5 px-3 py-2">Market Map</div>
+            <div className="mt-5 rounded-[24px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-white/60">Today at a glance</p>
+                  <p className="mt-2 text-lg">Workforce, planning, chat and sourcing in one operational view.</p>
+                </div>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <span className="rounded-full bg-white/15 px-3 py-1.5">18 active workers</span>
+                  <span className="rounded-full bg-white/15 px-3 py-1.5">12 tasks today</span>
+                  <span className="rounded-full bg-white/15 px-3 py-1.5">4 live threads</span>
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-4">
-                <div className="rounded-[26px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-5">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/60">Operations overview</p>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-white/10 p-4">
-                      <p className="text-sm text-white/60">Active crews</p>
-                      <p className="mt-3 text-2xl">18</p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <article className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-2xl bg-brand-500/15 p-2.5 text-brand-300">
+                      <Users2 size={18} />
                     </div>
-                    <div className="rounded-2xl bg-white/10 p-4">
-                      <p className="text-sm text-white/60">Open tasks</p>
-                      <p className="mt-3 text-2xl">42</p>
-                    </div>
-                    <div className="rounded-2xl bg-white/10 p-4">
-                      <p className="text-sm text-white/60">Coverage</p>
-                      <p className="mt-3 text-2xl">96%</p>
+                    <div>
+                      <p className="text-sm text-white/60">Workers</p>
+                      <p className="text-base">Crew status</p>
                     </div>
                   </div>
+                  <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs text-emerald-300">Live sync</span>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-[26px] border border-white/10 bg-white/5 p-5">
+                <div className="mt-4 space-y-3">
+                  {workerPreview.map((worker) => (
+                    <div key={worker.name} className="flex items-center justify-between gap-3 rounded-2xl bg-white/5 px-3 py-3">
+                      <div>
+                        <p className="text-sm">{worker.name}</p>
+                        <p className="mt-1 text-xs text-white/45">{worker.role}</p>
+                      </div>
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs ${
+                          worker.status === "On Site"
+                            ? "bg-emerald-500/15 text-emerald-300"
+                            : "bg-slate-500/20 text-slate-300"
+                        }`}
+                      >
+                        {worker.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-2xl bg-brand-500/15 p-2.5 text-brand-300">
+                    <CalendarDays size={18} />
+                  </div>
+                  <div>
                     <p className="text-sm text-white/60">Calendar</p>
-                    <div className="mt-4 space-y-3 text-sm text-white/75">
-                      <div className="rounded-2xl bg-white/5 px-3 py-3">Site inspection • 09:30</div>
-                      <div className="rounded-2xl bg-white/5 px-3 py-3">Crew delivery check • 12:00</div>
-                      <div className="rounded-2xl bg-white/5 px-3 py-3">Safety wrap-up • 16:30</div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[26px] border border-white/10 bg-white/5 p-5">
-                    <p className="text-sm text-white/60">Team chat</p>
-                    <div className="mt-4 space-y-3 text-sm text-white/75">
-                      <div className="rounded-2xl bg-white/5 px-3 py-3">Morning update from North River team</div>
-                      <div className="rounded-2xl bg-brand-500/20 px-3 py-3">Electrical crew arrival confirmed</div>
-                      <div className="rounded-2xl bg-white/5 px-3 py-3">Material pricing sync ready</div>
-                    </div>
+                    <p className="text-base">Today's schedule</p>
                   </div>
                 </div>
-              </div>
+
+                <div className="mt-4 space-y-3">
+                  {schedulePreview.map((item) => (
+                    <div key={`${item.title}-${item.time}`} className="rounded-2xl bg-white/5 px-3 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm">{item.title}</p>
+                        <div className="inline-flex items-center gap-1.5 text-xs text-brand-300">
+                          <Clock3 size={12} />
+                          {item.time}
+                        </div>
+                      </div>
+                      <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-white/45">
+                        <MapPin size={12} />
+                        {item.site}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-2xl bg-brand-500/15 p-2.5 text-brand-300">
+                      <MessageSquare size={18} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-white/60">Chat</p>
+                      <p className="text-base">Office to field updates</p>
+                    </div>
+                  </div>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/60">2 unread</span>
+                </div>
+
+                <div className="mt-4 space-y-3">
+                  {chatPreview.map((message) => (
+                    <div
+                      key={`${message.author}-${message.text}`}
+                      className={`rounded-2xl px-3 py-3 text-sm ${
+                        message.tone === "accent" ? "bg-brand-500/15 text-white" : "bg-white/5 text-white/75"
+                      }`}
+                    >
+                      <p className="text-xs uppercase tracking-[0.18em] text-white/45">{message.author}</p>
+                      <p className="mt-2 leading-6">{message.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-2xl bg-brand-500/15 p-2.5 text-brand-300">
+                    <Map size={18} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-white/60">Market Map</p>
+                    <p className="text-base">Nearby supply search</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-2xl bg-white/5 px-3 py-3">
+                  <div className="flex items-center gap-2 text-sm text-white/60">
+                    <Search size={14} />
+                    <span>Search: facade panels</span>
+                  </div>
+                </div>
+
+                <div className="mt-3 space-y-3">
+                  {marketPreview.map((result, index) => (
+                    <div key={result.store} className="rounded-2xl bg-white/5 px-3 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm">{result.store}</p>
+                        <div className="inline-flex items-center gap-1.5 text-xs text-emerald-300">
+                          <CheckCircle2 size={12} />
+                          {index === 0 ? "Best price" : "In stock"}
+                        </div>
+                      </div>
+                      <div className="mt-2 flex items-center justify-between gap-3 text-xs text-white/45">
+                        <span>{result.meta}</span>
+                        <span>{result.price}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
             </div>
           </div>
         </div>
