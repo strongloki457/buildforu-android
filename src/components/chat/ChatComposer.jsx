@@ -1,0 +1,125 @@
+import { Camera, ImagePlus, Paperclip, Send } from "lucide-react";
+import { useRef } from "react";
+import { useI18n } from "../../hooks/useI18n";
+import AttachmentPreview from "./AttachmentPreview";
+
+export default function ChatComposer({
+  attachments,
+  message,
+  onFilesSelected,
+  onMessageChange,
+  onRemoveAttachment,
+  onSend,
+  placeholder
+}) {
+  const { t } = useI18n();
+  const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
+  const handleFilesSelected = (event, source) => {
+    onFilesSelected(event.target.files ?? [], source);
+    event.target.value = "";
+  };
+
+  return (
+    <div className="mt-4 rounded-[28px] border border-white/70 bg-white/85 p-3 shadow-soft">
+      {attachments.length ? (
+        <div className="mb-3">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("chat.attachments")}</p>
+            <p className="text-xs text-slate-400">{t("chat.attachmentReady")}</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {attachments.map((attachment) => (
+              <AttachmentPreview
+                key={attachment.id}
+                attachment={attachment}
+                onRemove={onRemoveAttachment}
+                removable
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <form onSubmit={onSend} className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <textarea
+            value={message}
+            onChange={(event) => onMessageChange(event.target.value)}
+            placeholder={placeholder}
+            rows={3}
+            className="min-h-[108px] flex-1 rounded-[22px] border border-white/70 bg-white px-4 py-3 text-sm outline-none transition focus:border-brand-300"
+          />
+
+          <div className="flex gap-2 sm:flex-col">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-200 sm:w-12 sm:flex-none sm:px-0"
+              title={t("chat.attachFile")}
+            >
+              <Paperclip size={18} />
+              <span className="sm:hidden">{t("chat.attachFile")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => imageInputRef.current?.click()}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-200 sm:w-12 sm:flex-none sm:px-0"
+              title={t("chat.attachImage")}
+            >
+              <ImagePlus size={18} />
+              <span className="sm:hidden">{t("chat.attachImage")}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => cameraInputRef.current?.click()}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700 transition hover:bg-slate-200 sm:w-12 sm:flex-none sm:px-0"
+              title={t("chat.takePhoto")}
+            >
+              <Camera size={18} />
+              <span className="sm:hidden">{t("chat.takePhoto")}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-400">{t("chat.cameraReady")}</p>
+          <button
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-700 to-brand-500 px-5 py-3 text-white transition hover:-translate-y-0.5"
+            disabled={!message.trim() && !attachments.length}
+          >
+            <Send size={18} />
+            {t("common.send")}
+          </button>
+        </div>
+      </form>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip"
+        className="hidden"
+        onChange={(event) => handleFilesSelected(event, "file")}
+      />
+      <input
+        ref={imageInputRef}
+        type="file"
+        multiple
+        accept="image/*"
+        className="hidden"
+        onChange={(event) => handleFilesSelected(event, "image")}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={(event) => handleFilesSelected(event, "camera")}
+      />
+    </div>
+  );
+}

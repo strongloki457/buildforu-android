@@ -6,7 +6,11 @@ export default function Modal({ children, onClose, title, description }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-8">
-      <div className="glass-panel relative max-h-[calc(100vh-2rem)] w-full max-w-2xl overflow-y-auto rounded-[28px] p-5 sm:max-h-[calc(100vh-4rem)] sm:rounded-[32px] sm:p-7">
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="glass-panel relative max-h-[calc(100vh-2rem)] w-full max-w-2xl overflow-y-auto rounded-[28px] p-5 sm:max-h-[calc(100vh-4rem)] sm:rounded-[32px] sm:p-7"
+      >
         <button
           type="button"
           onClick={onClose}

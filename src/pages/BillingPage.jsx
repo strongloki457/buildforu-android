@@ -80,7 +80,7 @@ export default function BillingPage() {
               </div>
               <div className="rounded-[24px] border border-slate-200/80 bg-slate-50/85 p-5">
                 <p className="text-sm text-slate-500">{t("billing.billingContact")}</p>
-                <p className="mt-3 text-2xl text-slate-950">finance@buildforu.com</p>
+                <p className="mt-3 text-2xl text-slate-950">{t("billing.billingContactEmail")}</p>
                 <p className="mt-2 text-sm text-slate-500">{t("billing.billingContactHint")}</p>
               </div>
             </div>

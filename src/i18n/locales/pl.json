@@ -656,6 +656,7 @@
                     "workerUsageHint":  "Zmien plan, gdy liczba pracownikow przekroczy pojemnosc obecnego pakietu.",
                     "nextInvoice":  "Nastepna faktura",
                     "billingContact":  "Kontakt rozliczeńiowy",
+                    "billingContactEmail":  "finance@buildforu.com",
                     "billingContactHint":  "Mockowany kontakt pokazany do podgladu interfejsu",
                     "paymentMethod":  "Metoda platnosci",
                     "cardLabel":  "Visa konczaca sie na 2048",

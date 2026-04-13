@@ -471,6 +471,7 @@
                     "workerUsageHint":  "Cambia de plan cuando tu equipo supere la capacidad actual.",
                     "nextInvoice":  "Proxima factura",
                     "billingContact":  "Contacto de facturacion",
+                    "billingContactEmail":  "finance@buildforu.com",
                     "billingContactHint":  "Contacto mock mostrado para la vista previa",
                     "paymentMethod":  "Metodo de pago",
                     "cardLabel":  "Visa terminada en 2048",

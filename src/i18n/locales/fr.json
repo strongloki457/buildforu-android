@@ -656,6 +656,7 @@
                     "workerUsageHint":  "Passez au plan superieur quand votre effectif depasse la capacite actuelle.",
                     "nextInvoice":  "Prochaine facture",
                     "billingContact":  "Contact de facturation",
+                    "billingContactEmail":  "finance@buildforu.com",
                     "billingContactHint":  "Contact mock affiche pour lapercu de linterface",
                     "paymentMethod":  "Methode de paiement",
                     "cardLabel":  "Visa se terminant par 2048",

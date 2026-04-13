@@ -656,6 +656,7 @@
                     "workerUsageHint":  "Upgrade when your crew count grows beyond the current plan capacity.",
                     "nextInvoice":  "Next invoice",
                     "billingContact":  "Billing contact",
+                    "billingContactEmail":  "finance@buildforu.com",
                     "billingContactHint":  "Mock contact shown for UI preview",
                     "paymentMethod":  "Payment method",
                     "cardLabel":  "Visa ending in 2048",

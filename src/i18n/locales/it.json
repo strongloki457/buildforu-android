@@ -471,6 +471,7 @@
                     "workerUsageHint":  "Cambia piano quando il numero di lavoratori supera la capacita attuale.",
                     "nextInvoice":  "Prossima fattura",
                     "billingContact":  "Contatto fatturazione",
+                    "billingContactEmail":  "finance@buildforu.com",
                     "billingContactHint":  "Contatto mock mostrato per lanteprima interfaccia",
                     "paymentMethod":  "Metodo di pagamento",
                     "cardLabel":  "Visa finale 2048",
