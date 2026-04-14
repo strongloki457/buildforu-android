@@ -13,13 +13,13 @@ export default function LoginHeroPanel() {
 
       <div className="mt-8 grid gap-3 text-sm text-slate-600 sm:grid-cols-3">
         <div className="rounded-3xl border border-white/70 bg-white/75 px-4 py-4 shadow-soft">
-          {t("login.featureAdmin")}
+          {t("login.featureWorkspaceAccess", "One company workspace with admin access.")}
         </div>
         <div className="rounded-3xl border border-white/70 bg-white/75 px-4 py-4 shadow-soft">
-          {t("login.featureOps")}
+          {t("login.featureEmployeeCredentials", "Separate employee logins for each crew member.")}
         </div>
         <div className="rounded-3xl border border-white/70 bg-white/75 px-4 py-4 shadow-soft">
-          {t("login.featureI18n")}
+          {t("login.featureRoleViews", "Each role opens its own working view after sign-in.")}
         </div>
       </div>
     </section>

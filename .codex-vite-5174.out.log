@@ -1,0 +1,125 @@
+
+> buildforu-frontend@0.0.0 dev
+> vite --host 127.0.0.1 --port 5174
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m300[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5174[22m/[39m
+[2m15:34:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/contexts/AuthContext.jsx[22m
+[2m15:34:11[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:34:11[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m15:34:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx, /src/index.css[22m
+[2m15:34:14[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:34:14[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m15:34:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/RegisterCompanyPage.jsx, /src/components/auth/RegisterFormPanel.jsx, /src/components/auth/LoginFormCard.jsx[22m
+[2m15:34:34[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx, /src/index.css[22m
+[2m15:34:59[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx[22m
+[2m15:34:59[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:34:59[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m15:35:12[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/LoginPage.jsx, /src/index.css[22m
+[2m15:35:19[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/auth/LoginFormCard.jsx, /src/index.css[22m
+[2m15:35:26[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/RegisterCompanyPage.jsx, /src/index.css[22m
+[2m15:35:29[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/RegisterCompanyPage.jsx, /src/index.css[22m
+[2m15:35:36[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/UserMenu.jsx, /src/index.css[22m
+[2m15:35:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/SettingsPage.jsx, /src/index.css[22m
+[2m15:36:13[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx, /src/index.css[22m
+[2m15:36:17[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx, /src/index.css[22m
+[2m15:36:22[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/options.js[22m
+[2m15:36:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/contexts/AppDataContext.jsx[22m
+[2m15:36:30[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:36:30[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:36:35[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:36:39[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:36:39[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:36:39[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:36:44[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:36:44[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:36:44[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:36:52[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockProjects.js[22m
+[2m15:36:57[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/ui/StatusBadge.jsx, /src/index.css[22m
+[2m15:37:18[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/ProjectsPage.jsx, /src/index.css[22m
+[2m15:37:21[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectsBoard.jsx, /src/index.css[22m
+[2m15:37:32[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectsBoard.jsx[22m
+[2m15:37:34[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectCard.jsx, /src/index.css[22m
+[2m15:37:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectCard.jsx[22m
+[2m15:37:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectDetailsModal.jsx, /src/index.css[22m
+[2m15:38:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectDetailsModal.jsx[22m
+[2m15:38:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/ProjectsOverviewCard.jsx, /src/index.css[22m
+[2m15:38:24[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/ProjectsOverviewCard.jsx[22m
+[2m15:38:40[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AdminDashboard.jsx, /src/index.css[22m
+[2m15:38:45[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectsBoard.jsx, /src/index.css[22m
+[2m15:38:54[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AuthContext.jsx, /src/index.css[22m
+[2m15:38:54[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AuthContext.jsx[22m Could not Fast Refresh ("AuthContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:38:54[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AuthContext.jsx[22m
+[2m15:39:08[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockWorkers.js[22m
+[2m15:39:14[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockTasks.js[22m
+[2m15:39:20[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockProjects.js[22m
+[2m15:40:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/contexts/AppDataContext.jsx[22m
+[2m15:40:06[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:40:06[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:40:12[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:40:12[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:40:12[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:40:18[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:40:18[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:40:18[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:40:24[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockCompanyDirectory.js[22m
+[2m15:40:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/SettingsPage.jsx, /src/index.css[22m
+[2m15:40:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx, /src/index.css[22m
+[2m15:40:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/auth/LoginHeroPanel.jsx, /src/index.css[22m
+[2m15:54:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:54:58[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:54:58[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:55:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:55:04[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:55:04[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:55:08[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:55:08[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:55:08[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:55:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m15:55:12[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m15:55:12[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m15:55:20[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/data/mockTasks.js[22m
+[2m15:55:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/WorkersPanel.jsx, /src/index.css[22m
+[2m15:55:31[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/WorkersPanel.jsx[22m
+[2m15:55:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/ProjectsOverviewCard.jsx, /src/index.css[22m
+[2m15:55:41[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/ProjectsOverviewCard.jsx[22m
+[2m15:55:43[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/TaskListCard.jsx, /src/index.css[22m
+[2m15:55:55[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/TaskListCard.jsx[22m
+[2m15:56:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AdminDashboard.jsx, /src/index.css[22m
+[2m15:56:25[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AdminDashboard.jsx[22m
+[2m15:56:32[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/EmployeeDashboard.jsx, /src/index.css[22m
+[2m15:56:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/EmployeeDashboard.jsx[22m
+[2m15:56:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AdminDashboard.jsx, /src/index.css[22m
+[2m15:57:00[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/dashboard/WorkersPanel.jsx, /src/index.css[22m
+[2m16:04:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/contexts/AppDataContext.jsx[22m
+[2m16:04:42[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:04:42[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m16:04:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m16:04:46[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:04:46[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m16:05:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx, /src/index.css[22m
+[2m16:05:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/CalendarPage.jsx[22m
+[2m16:06:07[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/projects/ProjectCard.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/layouts/AppLayout.jsx[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/Sidebar.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/WorkersPage.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/workers/WorkersMetrics.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/AppDataContext.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/workers/WorkerOperationsSection.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/workers/WorkerCard.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/workers/WorkerFormModal.jsx, /src/index.css[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/WorkersPage.jsx, /src/pages/AdminDashboard.jsx[22m
+[2m16:25:14[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/AppDataContext.jsx[22m Could not Fast Refresh ("AppDataContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:25:14[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/AppDataContext.jsx[22m
+[2m16:25:39[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/Sidebar.jsx, /src/index.css[22m
+[2m16:25:49[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m16:25:50[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:25:50[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m16:25:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m16:25:53[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:25:53[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m
+[2m16:26:21[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/contexts/I18nContext.jsx, /src/index.css[22m
+[2m16:26:21[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/contexts/I18nContext.jsx[22m Could not Fast Refresh ("I18nContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m16:26:21[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/contexts/I18nContext.jsx[22m

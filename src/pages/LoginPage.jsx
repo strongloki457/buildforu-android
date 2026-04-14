@@ -1,37 +1,45 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { demoAccounts } from "../components/auth/authData";
 import LoginFormCard from "../components/auth/LoginFormCard";
 import LoginHeroPanel from "../components/auth/LoginHeroPanel";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, previewAccount } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
+  const defaultAccount = demoAccounts[0];
   const [form, setForm] = useState({
-    email: "boss@buildforu.com",
-    password: "buildforu",
+    email: defaultAccount?.email ?? "",
+    password: defaultAccount?.password ?? "",
     rememberMe: true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const detectedRole = useMemo(() => {
+    const previewUser = previewAccount(form.email);
     const value = form.email.toLowerCase();
+
+    if (previewUser?.role) {
+      return previewUser.role;
+    }
+
     return value.includes("boss") || value.includes("admin") ? "admin" : "employee";
-  }, [form.email]);
+  }, [form.email, previewAccount]);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
   };
 
-  const handleSelectDemoAccount = (email) => {
+  const handleSelectDemoAccount = (account) => {
     setForm((current) => ({
       ...current,
-      email,
-      password: "buildforu"
+      email: account.email,
+      password: account.password
     }));
   };
 
@@ -45,7 +53,11 @@ export default function LoginPage() {
       const destination = location.state?.from?.pathname || "/dashboard";
       navigate(destination, { replace: true });
     } catch (issue) {
-      setError(t(issue.message, issue.message));
+      setError(
+        issue.message === "login.invalidCredentials"
+          ? t("login.invalidCredentials", "Use one of the listed email and password pairs.")
+          : t(issue.message, issue.message)
+      );
     } finally {
       setIsSubmitting(false);
     }

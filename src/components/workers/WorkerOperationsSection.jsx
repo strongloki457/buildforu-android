@@ -30,9 +30,11 @@ export default function WorkerOperationsSection({ worker }) {
           <span className="text-slate-400">{t("common.location")}:</span>{" "}
           {getLocalizedValue(t, worker.locationKey, worker.location) || t("workers.notProvided")}
         </p>
-        <p>
-          <span className="text-slate-400">{t("workers.completionRate")}:</span> {worker.completionRate}%
-        </p>
+        {worker.notes ? (
+          <p className="sm:col-span-2">
+            <span className="text-slate-400">{t("projects.notes")}:</span> {worker.notes}
+          </p>
+        ) : null}
       </div>
     </div>
   );

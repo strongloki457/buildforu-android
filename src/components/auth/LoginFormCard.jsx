@@ -93,20 +93,27 @@ export default function LoginFormCard({
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {demoAccounts.map((account) => (
               <button
-                key={account.label}
+                key={account.email}
                 type="button"
-                onClick={() => onSelectDemoAccount(account.label)}
+                onClick={() => onSelectDemoAccount(account)}
                 className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 transition hover:border-brand-200 hover:bg-brand-50"
               >
-                <span className="block text-slate-950">{account.label}</span>
-                <span className="mt-1 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                <span className="block text-slate-950">{account.email}</span>
+                <span className="mt-1 block text-xs text-slate-500">{account.name}</span>
+                <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
                   {t(`roles.${account.role}`)}
+                </span>
+                <span className="mt-1 block text-xs text-slate-500">{account.companyName}</span>
+                <span className="mt-3 inline-flex rounded-full bg-brand-50 px-3 py-1 text-[11px] text-brand-700">
+                  {t("login.password", "Password")}: {account.password}
                 </span>
               </button>
             ))}
           </div>
 
-          <p className="mt-4 text-xs text-slate-500">{t("login.mockPassword")}</p>
+          <p className="mt-4 text-xs text-slate-500">
+            {t("login.mockCredentialsHint", "Each mock account has its own login and password.")}
+          </p>
         </div>
       </div>
     </section>

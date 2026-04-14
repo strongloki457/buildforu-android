@@ -2,7 +2,25 @@ import { projectStatusOptions } from "../../data/options";
 import { clampProgress, hasOwnProperty, normalizeOptionValue, normalizeText } from "./domainUtils";
 import { createEntityId } from "./ids";
 
+function normalizeProjectStatus(value, fallback = "To Start") {
+  const normalizedValue = normalizeText(value);
+  const legacyStatusMap = {
+    "not started": "To Start",
+    "on hold": "In Progress"
+  };
+  const resolvedValue = legacyStatusMap[normalizedValue.toLowerCase()] ?? normalizedValue;
+  const resolvedFallback = legacyStatusMap[normalizeText(fallback).toLowerCase()] ?? fallback;
+
+  return normalizeOptionValue(resolvedValue, projectStatusOptions, resolvedFallback);
+}
+
 export function normalizeProjectRecord(project = {}, currentProject) {
+  const companyId = hasOwnProperty(project, "companyId")
+    ? normalizeText(project.companyId)
+    : currentProject?.companyId ?? "company-1";
+  const workspaceId = hasOwnProperty(project, "workspaceId")
+    ? normalizeText(project.workspaceId)
+    : currentProject?.workspaceId ?? "workspace-1";
   const name = hasOwnProperty(project, "name") ? normalizeText(project.name) : currentProject?.name ?? "";
   const phase = hasOwnProperty(project, "phase") ? normalizeText(project.phase) : currentProject?.phase ?? "";
   const budget = hasOwnProperty(project, "budget") ? normalizeText(project.budget) : currentProject?.budget ?? "";
@@ -15,14 +33,15 @@ export function normalizeProjectRecord(project = {}, currentProject) {
     ? normalizeText(project.deadline)
     : currentProject?.deadline ?? "";
   const notes = hasOwnProperty(project, "notes") ? normalizeText(project.notes) : currentProject?.notes ?? "";
-  const status = normalizeOptionValue(
+  const status = normalizeProjectStatus(
     hasOwnProperty(project, "status") ? project.status : currentProject?.status,
-    projectStatusOptions,
-    currentProject?.status ?? "Not Started"
+    currentProject?.status ?? "To Start"
   );
 
   return {
     id: currentProject?.id ?? project.id ?? createEntityId("project"),
+    companyId,
+    workspaceId,
     name,
     nameKey: hasOwnProperty(project, "name") && currentProject ? null : project.nameKey ?? currentProject?.nameKey ?? null,
     status,

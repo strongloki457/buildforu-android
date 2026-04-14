@@ -1,16 +1,26 @@
-import { CalendarDays, ClipboardList, MapPin, Users2 } from "lucide-react";
+import { ClipboardList, Users2 } from "lucide-react";
+import { projectStatusOptions } from "../../data/options";
+import { useI18n } from "../../hooks/useI18n";
+import { getProjectName, getProjectNotes, getProjectPhase } from "../../utils/localizedValue";
+import { getInitials } from "../../utils/people";
 import Button from "../ui/Button";
 import StatusBadge from "../ui/StatusBadge";
-import { useI18n } from "../../hooks/useI18n";
-import { getLocalizedValue, getProjectName, getProjectPhase } from "../../utils/localizedValue";
-import { getInitials } from "../../utils/people";
 import { formatProjectDate } from "./projectUtils";
 
-export default function ProjectCard({ locale, onViewDetails, project }) {
-  const { t } = useI18n();
+function getNotePreview(value) {
+  if (!value) {
+    return "";
+  }
+
+  return value.length > 120 ? `${value.slice(0, 117)}...` : value;
+}
+
+export default function ProjectCard({ onStatusChange, onViewDetails, project }) {
+  const { locale, t } = useI18n();
+  const notePreview = getNotePreview(getProjectNotes(t, project));
 
   return (
-    <article className="rounded-[28px] border border-white/60 bg-white/85 p-5 shadow-soft transition hover:-translate-y-0.5">
+    <article className="rounded-[24px] border border-white/70 bg-white/92 p-5 shadow-soft">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-lg text-slate-950">{getProjectName(t, project)}</p>
@@ -19,19 +29,16 @@ export default function ProjectCard({ locale, onViewDetails, project }) {
         <StatusBadge value={project.status} />
       </div>
 
-      <div className="mt-4 grid gap-3 text-sm text-slate-500 sm:grid-cols-2">
-        <div className="flex items-center gap-2 rounded-[20px] bg-slate-50/90 px-4 py-3">
-          <MapPin size={14} className="text-brand-600" />
-          <span>{getLocalizedValue(t, project.locationKey, project.location) || "-"}</span>
-        </div>
-        <div className="flex items-center gap-2 rounded-[20px] bg-slate-50/90 px-4 py-3">
-          <CalendarDays size={14} className="text-brand-600" />
-          <span>{formatProjectDate(project.deadline, locale)}</span>
-        </div>
-      </div>
+      {notePreview ? <p className="mt-4 text-sm leading-6 text-slate-600">{notePreview}</p> : null}
+
+      {project.startDate ? (
+        <p className="mt-3 text-sm text-slate-500">
+          {t("projects.startDate", "Start date")}: {formatProjectDate(project.startDate, locale)}
+        </p>
+      ) : null}
 
       <div className="mt-5">
-        <div className="mb-2 flex items-center justify-between gap-3">
+        <div className="mb-3 flex items-center justify-between gap-3">
           <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
             {t("projects.teamAssigned", "Assigned team")}
           </p>
@@ -62,27 +69,25 @@ export default function ProjectCard({ locale, onViewDetails, project }) {
         )}
       </div>
 
-      <div className="mt-5 rounded-[22px] bg-slate-50/90 p-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 text-sm text-slate-500">
+      <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+        <label className="grid gap-2 text-sm text-slate-500">
+          <span className="inline-flex items-center gap-2">
             <ClipboardList size={14} className="text-brand-600" />
-            <span>{t("projects.progressLabel", "Progress")}</span>
-          </div>
-          <span className="text-sm text-slate-700">{t("projects.progressComplete", { value: project.progress })}</span>
-        </div>
+            {t("common.status", "Status")}
+          </span>
+          <select
+            value={project.status}
+            onChange={(event) => onStatusChange?.(project.id, event.target.value)}
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+          >
+            {projectStatusOptions.map((status) => (
+              <option key={status} value={status}>
+                {t(`statusLabels.${status.toLowerCase()}`, status)}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-200">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-brand-700 to-brand-500"
-            style={{ width: `${project.progress}%` }}
-          />
-        </div>
-      </div>
-
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm text-slate-500">
-          {t("projects.startDate", "Start date")}: {formatProjectDate(project.startDate, locale)}
-        </div>
         <Button variant="secondary" className="gap-2" onClick={() => onViewDetails(project.id)}>
           {t("projects.viewDetails", "View details")}
         </Button>

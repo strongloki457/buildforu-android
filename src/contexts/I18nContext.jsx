@@ -15,8 +15,8 @@ const languageOptions = [
   { value: "en", label: "English" },
   { value: "pl", label: "Polski" },
   { value: "de", label: "Deutsch" },
-  { value: "fr", label: "Français" },
-  { value: "es", label: "Español" },
+  { value: "fr", label: "Fran\u00e7ais" },
+  { value: "es", label: "Espa\u00f1ol" },
   { value: "it", label: "Italiano" }
 ];
 

@@ -1,6 +1,8 @@
 export const mockProjects = [
   {
     id: "project-1",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "North River Residences",
     nameKey: "seed.projects.project-1.name",
     status: "In Progress",
@@ -19,9 +21,11 @@ export const mockProjects = [
   },
   {
     id: "project-2",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Skyline Offices",
     nameKey: "seed.projects.project-2.name",
-    status: "On Hold",
+    status: "In Progress",
     phase: "MEP installation",
     phaseKey: "seed.projects.project-2.phase",
     progress: 58,
@@ -37,6 +41,8 @@ export const mockProjects = [
   },
   {
     id: "project-3",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Harbor Villas",
     nameKey: "seed.projects.project-3.name",
     status: "Completed",
@@ -55,9 +61,11 @@ export const mockProjects = [
   },
   {
     id: "project-4",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Greenpoint Warehouse",
     nameKey: "seed.projects.project-4.name",
-    status: "Not Started",
+    status: "To Start",
     phase: "Pre-construction planning",
     phaseKey: "seed.projects.project-4.phase",
     progress: 0,

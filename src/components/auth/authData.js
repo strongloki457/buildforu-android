@@ -1,6 +1,5 @@
-export const demoAccounts = [
-  { label: "boss@buildforu.com", role: "admin" },
-  { label: "worker@buildforu.com", role: "employee" }
-];
+import { mockDemoAccounts } from "../../data/mockCompanyDirectory";
+
+export const demoAccounts = mockDemoAccounts;
 
 export const availablePlans = ["starter", "pro", "enterprise"];

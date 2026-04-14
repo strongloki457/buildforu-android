@@ -35,6 +35,7 @@ export default function WorkersPage() {
           worker.name,
           worker.email,
           worker.phone,
+          worker.notes,
           getWorkerPosition(t, worker),
           worker.assignedProjects.map((project) => getProjectName(t, project)).join(" "),
           workerStatus
@@ -56,6 +57,7 @@ export default function WorkersPage() {
         email: worker.email ?? "",
         phone: worker.phone ?? "",
         position: worker.position ?? worker.trade ?? "",
+        notes: worker.notes ?? "",
         projectIds: worker.projectIds ?? []
       }
     });

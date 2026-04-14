@@ -5,6 +5,12 @@ const TASK_STATUS_OPTIONS = ["pending", "completed"];
 const TASK_PRIORITY_OPTIONS = ["high", "medium", "low"];
 
 export function normalizeTaskRecord(task = {}, workers, projects, currentTask) {
+  const companyId = hasOwnProperty(task, "companyId")
+    ? normalizeText(task.companyId)
+    : currentTask?.companyId ?? "company-1";
+  const workspaceId = hasOwnProperty(task, "workspaceId")
+    ? normalizeText(task.workspaceId)
+    : currentTask?.workspaceId ?? "workspace-1";
   const employeeId = hasOwnProperty(task, "employeeId") ? normalizeText(task.employeeId) : currentTask?.employeeId ?? "";
   const linkedWorker = workers.find((worker) => worker.id === employeeId);
   const projectId =
@@ -30,6 +36,8 @@ export function normalizeTaskRecord(task = {}, workers, projects, currentTask) {
 
   return {
     id: currentTask?.id ?? task.id ?? createEntityId("task"),
+    companyId,
+    workspaceId,
     employeeId,
     assignee: linkedWorker?.name ?? (hasOwnProperty(task, "assignee") ? normalizeText(task.assignee) : currentTask?.assignee ?? ""),
     title,

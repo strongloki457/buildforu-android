@@ -24,7 +24,6 @@ export default function WorkerCard({ locale, onDelete, onEdit, onViewAttendance,
                 {getWorkerPosition(t, worker) || t("workers.notProvided")}
               </span>
               <StatusBadge value={worker.attendance?.currentStatus ?? worker.status} />
-              <StatusBadge value={worker.availability} />
             </div>
           </div>
         </div>

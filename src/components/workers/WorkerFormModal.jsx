@@ -109,6 +109,16 @@ export default function WorkerFormModal({ initialValues, mode, onClose, onSave, 
               {t("workers.projectSelectionHint", "Select one or more projects to connect the worker with active jobs.")}
             </p>
           </div>
+
+          <label className="grid gap-2 md:col-span-2">
+            <span className="text-sm text-slate-600">{t("projects.notes")}</span>
+            <textarea
+              rows={4}
+              value={form.notes ?? ""}
+              onChange={(event) => handleChange("notes", event.target.value)}
+              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
+            />
+          </label>
         </div>
 
         <p className="text-sm text-slate-500">{t("workers.attendanceManagedByEmployee")}</p>

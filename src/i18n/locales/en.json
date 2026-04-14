@@ -247,7 +247,7 @@
              },
     "workers":  {
                     "title":  "Workers",
-                    "subtitle":  "Monitor crew performance, availability and next shifts.",
+                    "subtitle":  "Manage worker profiles, attendance and project assignments.",
                     "activeWorkers":  "Active workers",
                     "activeWorkersDetail":  "All visible in the command center.",
                     "availableNow":  "Available now",

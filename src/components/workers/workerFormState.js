@@ -3,5 +3,6 @@ export const emptyWorkerForm = {
   email: "",
   phone: "",
   position: "",
+  notes: "",
   projectIds: []
 };

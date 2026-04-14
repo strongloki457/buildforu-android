@@ -1,6 +1,8 @@
 export const mockWorkers = [
   {
     id: "u-employee-1",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Alex Novak",
     email: "alex@buildforu.com",
     phone: "+49 151 555 0131",
@@ -13,6 +15,8 @@ export const mockWorkers = [
   },
   {
     id: "u-employee-2",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Mia Berger",
     email: "mia@buildforu.com",
     phone: "+49 151 555 0182",
@@ -25,6 +29,8 @@ export const mockWorkers = [
   },
   {
     id: "u-employee-3",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     name: "Luca Moretti",
     email: "luca@buildforu.com",
     phone: "+49 151 555 0197",

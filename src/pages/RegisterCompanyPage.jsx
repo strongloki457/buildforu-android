@@ -10,7 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 export default function RegisterCompanyPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { registerCompany } = useAuth();
   const [form, setForm] = useState({
     companyName: "",
     ownerName: "",
@@ -25,7 +25,7 @@ export default function RegisterCompanyPage() {
       return form.email.trim();
     }
 
-    return `boss+${sanitizeCompanyName(form.companyName)}@buildforu.com`;
+    return `admin+${sanitizeCompanyName(form.companyName)}@buildforu.com`;
   }, [form.companyName, form.email]);
 
   const handleChange = (key, value) => {
@@ -36,16 +36,13 @@ export default function RegisterCompanyPage() {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const adminTrialEmail =
-      form.email.toLowerCase().includes("boss") || form.email.toLowerCase().includes("admin")
-        ? form.email
-        : `boss+${sanitizeCompanyName(form.companyName)}@buildforu.com`;
-
     try {
-      await login({
-        email: adminTrialEmail,
-        password: form.password || "buildforu",
-        rememberMe: true
+      await registerCompany({
+        companyName: form.companyName,
+        ownerName: form.ownerName,
+        email: form.email || helperEmail,
+        password: form.password,
+        plan: form.plan
       });
 
       navigate("/dashboard", { replace: true });

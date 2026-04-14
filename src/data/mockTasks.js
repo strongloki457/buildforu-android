@@ -1,6 +1,8 @@
 export const mockTasks = [
   {
     id: "task-101",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-1",
     assignee: "Alex Novak",
     title: "Concrete slab inspection",
@@ -16,6 +18,8 @@ export const mockTasks = [
   },
   {
     id: "task-102",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-1",
     assignee: "Alex Novak",
     title: "Safety briefing with subcontractors",
@@ -31,6 +35,8 @@ export const mockTasks = [
   },
   {
     id: "task-103",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-2",
     assignee: "Mia Berger",
     title: "Install lighting circuits",
@@ -46,6 +52,8 @@ export const mockTasks = [
   },
   {
     id: "task-104",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-3",
     assignee: "Luca Moretti",
     title: "Pipe pressure test",
@@ -61,6 +69,8 @@ export const mockTasks = [
   },
   {
     id: "task-105",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-1",
     assignee: "Alex Novak",
     title: "Facade delivery check-in",
@@ -76,6 +86,8 @@ export const mockTasks = [
   },
   {
     id: "task-106",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
     employeeId: "u-employee-2",
     assignee: "Mia Berger",
     title: "Panel labeling audit",
@@ -88,5 +100,53 @@ export const mockTasks = [
     date: "2026-04-17",
     status: "completed",
     priority: "low"
+  },
+  {
+    id: "task-107",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
+    employeeId: "u-employee-1",
+    assignee: "Alex Novak",
+    title: "Morning site walk",
+    projectId: "project-1",
+    projectName: "North River Residences",
+    projectNameKey: "seed.projects.project-1.name",
+    location: "North River Residences",
+    locationKey: "seed.projects.project-1.name",
+    date: "2026-04-14",
+    status: "pending",
+    priority: "medium"
+  },
+  {
+    id: "task-108",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
+    employeeId: "u-employee-2",
+    assignee: "Mia Berger",
+    title: "Electrical panel delivery check",
+    projectId: "project-2",
+    projectName: "Skyline Offices",
+    projectNameKey: "seed.projects.project-2.name",
+    location: "Skyline Offices",
+    locationKey: "seed.projects.project-2.name",
+    date: "2026-04-14",
+    status: "pending",
+    priority: "high"
+  },
+  {
+    id: "task-109",
+    companyId: "company-1",
+    workspaceId: "workspace-1",
+    employeeId: "u-employee-3",
+    assignee: "Luca Moretti",
+    title: "Plumbing riser inspection",
+    projectId: "project-3",
+    projectName: "Harbor Villas",
+    projectNameKey: "seed.projects.project-3.name",
+    location: "Harbor Villas",
+    locationKey: "seed.projects.project-3.name",
+    date: "2026-04-14",
+    status: "pending",
+    priority: "medium"
   }
 ];

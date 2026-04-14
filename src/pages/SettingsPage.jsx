@@ -1,17 +1,21 @@
-import { ArrowUpRight, Bell, CreditCard, Globe, Shield, SlidersHorizontal } from "lucide-react";
+import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Shield, Users2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
+import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function SettingsPage() {
+  const { company, companyUsers } = useAuth();
   const { t } = useI18n();
   const [toggles, setToggles] = useState({
     alerts: true,
     summaries: true,
     privacy: false
   });
+  const adminCount = companyUsers.filter((member) => member.role === "admin").length;
+  const employeeCount = companyUsers.filter((member) => member.role === "employee").length;
 
   const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));
 
@@ -59,14 +63,44 @@ export default function SettingsPage() {
         })}
       </div>
 
-      <div className="mt-6 rounded-[28px] bg-gradient-to-r from-slate-900 to-slate-800 p-6 text-white">
-        <div className="flex items-center gap-3">
-          <div className="rounded-2xl bg-white/10 p-3">
-            <SlidersHorizontal size={18} />
+      <div className="mt-6 rounded-[28px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-6 text-white">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-2xl bg-white/10 p-3">
+              <Building2 size={18} />
+            </div>
+            <div>
+              <p className="text-lg">{company?.name || t("settings.workspaceSaved")}</p>
+              <p className="text-sm text-white/70">
+                {company
+                  ? t(
+                      "settings.workspaceAccessHint",
+                      {
+                        plan: t(`plans.${company.plan}`, company.plan)
+                      },
+                      "Company workspace, subscription plan and seat structure for {{plan}}."
+                    )
+                  : t("settings.workspaceSavedDetail")}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-lg">{t("settings.workspaceSaved")}</p>
-            <p className="text-sm text-white/60">{t("settings.workspaceSavedDetail")}</p>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-[22px] bg-white/10 px-4 py-3">
+              <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("settings.planLabel", "Plan")}</p>
+              <p className="mt-2 text-sm text-white">{company ? t(`plans.${company.plan}`, company.plan) : "-"}</p>
+            </div>
+            <div className="rounded-[22px] bg-white/10 px-4 py-3">
+              <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("roles.admin", "Admin")}</p>
+              <p className="mt-2 text-sm text-white">{adminCount}</p>
+            </div>
+            <div className="rounded-[22px] bg-white/10 px-4 py-3">
+              <div className="flex items-center gap-2 text-white/60">
+                <Users2 size={14} />
+                <p className="text-xs uppercase tracking-[0.18em]">{t("roles.employee", "Employee")}</p>
+              </div>
+              <p className="mt-2 text-sm text-white">{employeeCount}</p>
+            </div>
           </div>
         </div>
       </div>

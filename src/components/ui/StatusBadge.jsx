@@ -9,6 +9,7 @@ const styles = {
   healthy: "bg-emerald-100 text-emerald-700",
   "at risk": "bg-amber-100 text-amber-700",
   "in progress": "bg-emerald-100 text-emerald-700",
+  "to start": "bg-slate-100 text-slate-700",
   "not started": "bg-slate-100 text-slate-700",
   "on hold": "bg-amber-100 text-amber-700",
   ordered: "bg-blue-100 text-blue-700",

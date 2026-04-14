@@ -14,7 +14,7 @@ export function finalizeCoreState(state) {
   const syncedProjects = syncProjectsWithWorkers(projects, workers);
   const tasks = state.tasks
     .map((task) => normalizeTaskRecord(task, workers, syncedProjects))
-    .filter((task) => task.employeeId && task.title && task.date);
+    .filter((task) => task.title && task.date);
   const materialRequests = state.materialRequests
     .map((request) => normalizeMaterialRequestRecord(request, workers, syncedProjects))
     .filter((request) => request.itemName && request.requestedById);
@@ -43,6 +43,21 @@ export function createInitialAppState() {
 
 export function appDataReducer(state, action) {
   switch (action.type) {
+    case "ADD_PROJECT":
+      return finalizeCoreState({
+        ...state,
+        projects: [action.payload, ...state.projects],
+        workers: action.payload.assignedWorkerIds?.length
+          ? state.workers.map((worker) =>
+              action.payload.assignedWorkerIds.includes(worker.id) && !worker.projectIds.includes(action.payload.id)
+                ? {
+                    ...worker,
+                    projectIds: [...worker.projectIds, action.payload.id]
+                  }
+                : worker
+            )
+          : state.workers
+      });
     case "ADD_WORKER":
       return finalizeCoreState({
         ...state,
@@ -71,6 +86,18 @@ export function appDataReducer(state, action) {
               )
             : state.workers,
         tasks: [action.payload, ...state.tasks]
+      });
+    case "UPDATE_PROJECT_STATUS":
+      return finalizeCoreState({
+        ...state,
+        projects: state.projects.map((project) =>
+          project.id === action.payload.projectId
+            ? {
+                ...project,
+                status: action.payload.status
+              }
+            : project
+        )
       });
     case "TOGGLE_TASK_STATUS":
       return finalizeCoreState({

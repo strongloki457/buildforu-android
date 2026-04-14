@@ -4,7 +4,7 @@ export function createTaskActions({ dispatch, projectsById, state, workersById }
   const addTask = (task) => {
     const normalizedTask = normalizeTaskRecord(task, state.workers, state.projects);
 
-    if (!normalizedTask.employeeId || !normalizedTask.title || !normalizedTask.date || !normalizedTask.projectId) {
+    if (!normalizedTask.title || !normalizedTask.date) {
       return null;
     }
 

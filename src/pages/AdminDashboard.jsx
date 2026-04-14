@@ -1,27 +1,85 @@
-import { Briefcase, CircleDollarSign, ClipboardCheck, Users2 } from "lucide-react";
+import { CalendarDays, ClipboardPlus, FolderPlus, UserPlus } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import CalendarCard from "../components/dashboard/CalendarCard";
-import ChatPanel from "../components/dashboard/ChatPanel";
+import { Link } from "react-router-dom";
+import AssignmentPanel from "../components/dashboard/AssignmentPanel";
+import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
+import MaterialsSummaryCard from "../components/dashboard/MaterialsSummaryCard";
 import ProjectsOverviewCard from "../components/dashboard/ProjectsOverviewCard";
+import TaskListCard from "../components/dashboard/TaskListCard";
 import WorkersPanel from "../components/dashboard/WorkersPanel";
+import ProjectFormModal from "../components/projects/ProjectFormModal";
+import WorkerFormModal from "../components/workers/WorkerFormModal";
+import { emptyWorkerForm } from "../components/workers/workerFormState";
 import { DashboardSkeleton } from "../components/ui/LoadingSkeleton";
-import MetricCard from "../components/ui/MetricCard";
-import { useAuth } from "../hooks/useAuth";
+import Modal from "../components/ui/Modal";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { getLocalDateKey, sortByDateKey } from "../utils/date";
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
-  const { tasks, threads, workers, finance, projects, sendMessage } = useAppData();
+  const {
+    addProject,
+    addTask,
+    addWorker,
+    materialRequests,
+    projects,
+    tasks,
+    workers
+  } = useAppData();
   const { t } = useI18n();
   const [ready, setReady] = useState(false);
+  const [showWorkerModal, setShowWorkerModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const todayKey = getLocalDateKey();
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setReady(true), 700);
+    const timeout = window.setTimeout(() => setReady(true), 500);
     return () => window.clearTimeout(timeout);
   }, []);
 
-  const pendingCount = useMemo(() => tasks.filter((task) => task.status === "pending").length, [tasks]);
+  const quickActions = [
+    {
+      key: "add-worker",
+      label: t("workers.addWorker"),
+      description: t("dashboard.quickAddWorker", "Create a worker profile and assign current projects."),
+      icon: UserPlus,
+      onClick: () => setShowWorkerModal(true)
+    },
+    {
+      key: "add-project",
+      label: t("projects.addProjectAction", "Add project"),
+      description: t("dashboard.quickAddProject", "Start a new project card for the company workspace."),
+      icon: FolderPlus,
+      onClick: () => setShowProjectModal(true)
+    },
+    {
+      key: "add-task",
+      label: t("calendar.addTask"),
+      description: t("dashboard.quickAddTask", "Assign work for today or upcoming site activity."),
+      icon: ClipboardPlus,
+      onClick: () => setShowTaskModal(true)
+    },
+    {
+      key: "open-calendar",
+      label: t("dashboard.openCalendarAction", "Open calendar"),
+      description: t("dashboard.quickOpenCalendar", "Jump to the full company schedule and planning view."),
+      icon: CalendarDays,
+      to: "/calendar"
+    }
+  ];
+
+  const todayTasks = useMemo(
+    () => sortByDateKey(tasks.filter((task) => task.date === todayKey)),
+    [tasks, todayKey]
+  );
+  const recentMaterialRequests = useMemo(
+    () =>
+      [...materialRequests]
+        .sort((left, right) => String(right.createdAt).localeCompare(String(left.createdAt)))
+        .slice(0, 4),
+    [materialRequests]
+  );
 
   if (!ready) {
     return <DashboardSkeleton />;
@@ -29,62 +87,104 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <section className="glass-panel rounded-[28px] bg-gradient-to-r from-brand-800 via-brand-700 to-brand-500 p-6 text-white sm:rounded-[32px] sm:p-8">
-        <p className="text-sm uppercase tracking-[0.3em] text-white/60">{t("dashboard.activeProjects")}</p>
-        <div className="mt-4 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <h2 className="text-3xl sm:text-4xl">{t("dashboard.adminTitle")}</h2>
-            <p className="mt-3 max-w-2xl text-white/70">{t("dashboard.adminHeroBody")}</p>
-          </div>
+      <DashboardQuickActions
+        title={t("dashboard.quickActions", "Quick actions")}
+        subtitle={t(
+          "dashboard.adminQuickActionsSubtitle",
+          "Shortcuts for the most common daily updates in the workspace."
+        )}
+        actions={quickActions}
+      />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <MetricCard
-              icon={Users2}
-              label={t("dashboard.crewAvailability")}
-              value={workers.length}
-              detail={t("dashboard.adminCrewDetail")}
-            />
-            <MetricCard
-              icon={ClipboardCheck}
-              label={t("dashboard.upcomingTasks")}
-              value={pendingCount}
-              detail={t("dashboard.adminOpenAssignments")}
-            />
-            <MetricCard
-              icon={Briefcase}
-              label={t("dashboard.activeProjects")}
-              value={projects.length}
-              detail={t("dashboard.adminProjectDetail")}
-            />
-            <MetricCard
-              icon={CircleDollarSign}
-              label={t("dashboard.monthlyRevenue")}
-              value={finance.revenue}
-              detail={t("dashboard.adminRevenueDetail")}
-            />
-          </div>
-        </div>
-      </section>
-
-      <WorkersPanel title={t("dashboard.workerPulse")} subtitle={t("dashboard.workerPulseSubtitle")} workers={workers} />
-
-      <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
-        <CalendarCard title={t("dashboard.calendarOverview")} subtitle={t("dashboard.calendarSubtitle")} tasks={tasks} />
+      <div className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
+        <WorkersPanel
+          title={t("dashboard.workersSummary", "Workers overview")}
+          subtitle={t(
+            "dashboard.workersSummarySubtitle",
+            "See who is on site, off site and which project each worker is linked to."
+          )}
+          workers={workers}
+        />
         <ProjectsOverviewCard
-          title={t("dashboard.projectHealth")}
-          subtitle={t("dashboard.projectSubtitle")}
+          title={t("dashboard.projectBoardLabel", "Projects overview")}
+          subtitle={t(
+            "dashboard.projectBoardSubtitle",
+            "Track active projects, assigned workers and current project status."
+          )}
           projects={projects}
         />
       </div>
 
-      <ChatPanel
-        title={t("dashboard.teamMessages")}
-        subtitle={t("dashboard.chatSubtitle")}
-        threads={threads}
-        user={user}
-        onSendMessage={sendMessage}
-        placeholder={t("chat.placeholder")}
-      />
+      <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+        <MaterialsSummaryCard requests={recentMaterialRequests} />
+
+        <TaskListCard
+          title={t("dashboard.todaySchedule", "Today's schedule")}
+          subtitle={t(
+            "dashboard.todayScheduleSubtitle",
+            "Assignments planned for today across the company team."
+          )}
+          tasks={todayTasks}
+          showAssignee
+          emptyText={t("dashboard.noTasksToday", "No tasks are scheduled for today.")}
+          action={
+            <Link to="/calendar" className="inline-flex items-center gap-2 text-sm text-brand-700">
+              {t("dashboard.openCalendarAction", "Open calendar")}
+            </Link>
+          }
+        />
+      </div>
+
+      {showWorkerModal ? (
+        <WorkerFormModal
+          initialValues={emptyWorkerForm}
+          mode="create"
+          onClose={() => setShowWorkerModal(false)}
+          onSave={(payload) => {
+            const createdWorker = addWorker(payload);
+
+            if (createdWorker) {
+              setShowWorkerModal(false);
+            }
+          }}
+          projectOptions={projects}
+        />
+      ) : null}
+
+      {showProjectModal ? (
+        <ProjectFormModal
+          onClose={() => setShowProjectModal(false)}
+          onSave={(payload) => {
+            const createdProject = addProject(payload);
+
+            if (createdProject) {
+              setShowProjectModal(false);
+            }
+          }}
+        />
+      ) : null}
+
+      {showTaskModal ? (
+        <Modal
+          onClose={() => setShowTaskModal(false)}
+          title={t("calendar.formTitle")}
+          description={t("calendar.formSubtitle")}
+        >
+          <AssignmentPanel
+            workers={workers}
+            projects={projects}
+            initialDate={todayKey}
+            onAssign={(payload) => {
+              const createdTask = addTask(payload);
+
+              if (createdTask) {
+                setShowTaskModal(false);
+              }
+            }}
+            embedded
+          />
+        </Modal>
+      ) : null}
     </div>
   );
 }

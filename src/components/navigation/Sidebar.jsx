@@ -1,4 +1,4 @@
-import { Sparkles, X } from "lucide-react";
+import { Building2, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
 import logoFull from "../../assets/logo-full.svg";
@@ -39,11 +39,13 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
         <div className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-5">
           <div className="flex items-center gap-3">
             <div className="rounded-2xl bg-brand-500/20 p-3 text-brand-300">
-              <Sparkles size={18} />
+              <Building2 size={18} />
             </div>
-            <div>
-              <p className="text-sm text-white">{t("sidebar.crewRhythmTitle")}</p>
-              <p className="text-xs text-white/50">{t("sidebar.crewRhythmSubtitle")}</p>
+            <div className="min-w-0">
+              <p className="truncate text-sm text-white">{user?.companyName || t("app.name")}</p>
+              <p className="text-xs text-white/50">
+                {user?.role === "admin" ? t("sidebar.controlTower") : t("sidebar.fieldWorkspace")}
+              </p>
             </div>
           </div>
         </div>
@@ -72,12 +74,10 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
         </nav>
 
         <div className="mt-auto rounded-[28px] border border-white/10 bg-white/5 p-5">
-          <p className="text-xs uppercase tracking-[0.25em] text-white/40">{t("sidebar.shiftProfile")}</p>
+          <p className="text-xs uppercase tracking-[0.25em] text-white/40">{t(`roles.${user?.role}`, user?.role)}</p>
           <p className="mt-3 text-lg">{user?.name}</p>
           <p className="text-sm text-white/55">{getUserTitle(t, user)}</p>
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-            <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-brand-500 to-emerald-300" />
-          </div>
+          {user?.email ? <p className="mt-4 text-sm text-white/50">{user.email}</p> : null}
         </div>
       </aside>
     </>
