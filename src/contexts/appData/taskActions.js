@@ -1,8 +1,20 @@
 import { hydrateTaskRecord, normalizeTaskRecord } from "./tasks";
 
-export function createTaskActions({ dispatch, projectsById, state, workersById }) {
+function applyWorkspaceScope(payload, currentUser) {
+  return {
+    ...payload,
+    companyId: payload.companyId ?? currentUser?.companyId,
+    workspaceId: payload.workspaceId ?? currentUser?.workspaceId
+  };
+}
+
+export function createTaskActions({ currentUser, dispatch, projectsById, state, workersById }) {
   const addTask = (task) => {
-    const normalizedTask = normalizeTaskRecord(task, state.workers, state.projects);
+    if (currentUser?.role && currentUser.role !== "admin") {
+      return null;
+    }
+
+    const normalizedTask = normalizeTaskRecord(applyWorkspaceScope(task, currentUser), state.workers, state.projects);
 
     if (!normalizedTask.title || !normalizedTask.date) {
       return null;
@@ -17,6 +29,14 @@ export function createTaskActions({ dispatch, projectsById, state, workersById }
   };
 
   const toggleTaskStatus = (taskId) => {
+    if (currentUser?.role === "employee") {
+      const task = state.tasks.find((item) => item.id === taskId);
+
+      if (!task || task.employeeId !== currentUser.workerId) {
+        return null;
+      }
+    }
+
     dispatch({
       type: "TOGGLE_TASK_STATUS",
       payload: { taskId }

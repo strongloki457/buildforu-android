@@ -8,13 +8,19 @@ import ProjectsOverviewCard from "../components/dashboard/ProjectsOverviewCard";
 import TaskListCard from "../components/dashboard/TaskListCard";
 import WorkersPanel from "../components/dashboard/WorkersPanel";
 import ProjectFormModal from "../components/projects/ProjectFormModal";
+import WorkerAccessModal from "../components/workers/WorkerAccessModal";
 import WorkerFormModal from "../components/workers/WorkerFormModal";
 import { emptyWorkerForm } from "../components/workers/workerFormState";
 import { DashboardSkeleton } from "../components/ui/LoadingSkeleton";
 import Modal from "../components/ui/Modal";
+import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { getLocalDateKey, sortByDateKey } from "../utils/date";
+
+function normalizeEmail(value) {
+  return String(value ?? "").trim().toLowerCase();
+}
 
 export default function AdminDashboard() {
   const {
@@ -26,9 +32,12 @@ export default function AdminDashboard() {
     tasks,
     workers
   } = useAppData();
+  const { companyUsers, syncWorkerUser } = useAuth();
   const { t } = useI18n();
   const [ready, setReady] = useState(false);
   const [showWorkerModal, setShowWorkerModal] = useState(false);
+  const [workerFormError, setWorkerFormError] = useState("");
+  const [workerAccess, setWorkerAccess] = useState(null);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
   const todayKey = getLocalDateKey();
@@ -137,13 +146,46 @@ export default function AdminDashboard() {
 
       {showWorkerModal ? (
         <WorkerFormModal
+          errorMessage={workerFormError}
           initialValues={emptyWorkerForm}
           mode="create"
-          onClose={() => setShowWorkerModal(false)}
+          onClose={() => {
+            setWorkerFormError("");
+            setShowWorkerModal(false);
+          }}
           onSave={(payload) => {
+            const normalizedEmail = normalizeEmail(payload.email);
+            const conflictingUser = companyUsers.find((member) => normalizeEmail(member.email) === normalizedEmail);
+
+            if (!normalizedEmail) {
+              setWorkerFormError(t("workers.workerEmailRequired", "Email is required to create an employee login."));
+              return;
+            }
+
+            if (conflictingUser) {
+              setWorkerFormError(t("workers.workerEmailDuplicate", "This email is already used by another company user."));
+              return;
+            }
+
             const createdWorker = addWorker(payload);
 
             if (createdWorker) {
+              const access = syncWorkerUser({
+                companyId: createdWorker.companyId,
+                workspaceId: createdWorker.workspaceId,
+                workerId: createdWorker.id,
+                name: createdWorker.name,
+                email: normalizedEmail
+              });
+
+              if (access?.temporaryPassword) {
+                setWorkerAccess({
+                  email: normalizedEmail,
+                  temporaryPassword: access.temporaryPassword
+                });
+              }
+
+              setWorkerFormError("");
               setShowWorkerModal(false);
             }
           }}
@@ -185,6 +227,8 @@ export default function AdminDashboard() {
           />
         </Modal>
       ) : null}
+
+      {workerAccess ? <WorkerAccessModal access={workerAccess} onClose={() => setWorkerAccess(null)} /> : null}
     </div>
   );
 }

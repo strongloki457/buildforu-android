@@ -37,19 +37,20 @@ export default function CalendarPage() {
   const { locale, t } = useI18n();
   const [showEntryModal, setShowEntryModal] = useState(false);
   const [visibleDate, setVisibleDate] = useState(() => new Date());
+  const currentWorkerId = user.workerId || user.id;
 
   const scopedTasks = useMemo(
-    () => (user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === user.id)),
-    [tasks, user.id, user.role]
+    () => (user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === currentWorkerId)),
+    [currentWorkerId, tasks, user.role]
   );
   const scopedProjectEvents = useMemo(() => {
     const visibleProjects =
       user.role === "admin"
         ? projects
-        : projects.filter((project) => project.assignedWorkers.some((worker) => worker.id === user.id));
+        : projects.filter((project) => project.assignedWorkers.some((worker) => worker.id === currentWorkerId));
 
     return visibleProjects.filter((project) => project.startDate).map((project) => buildProjectCalendarEvent(project));
-  }, [projects, user.id, user.role]);
+  }, [currentWorkerId, projects, user.role]);
   const scopedCalendarEntries = useMemo(
     () => sortByDateKey([...scopedTasks.map((task) => ({ ...task, entryType: "task" })), ...scopedProjectEvents]),
     [scopedProjectEvents, scopedTasks]

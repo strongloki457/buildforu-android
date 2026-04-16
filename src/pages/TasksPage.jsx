@@ -15,11 +15,12 @@ export default function TasksPage() {
   const { tasks, toggleTaskStatus } = useAppData();
   const { t } = useI18n();
   const [activeFilter, setActiveFilter] = useState("all");
+  const currentWorkerId = user.workerId || user.id;
 
   const scopedTasks = useMemo(() => {
-    const byRole = user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === user.id);
+    const byRole = user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === currentWorkerId);
     return activeFilter === "all" ? byRole : byRole.filter((task) => task.status === activeFilter);
-  }, [activeFilter, tasks, user.id, user.role]);
+  }, [activeFilter, currentWorkerId, tasks, user.role]);
 
   return (
     <Card>

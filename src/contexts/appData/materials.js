@@ -3,6 +3,12 @@ import { hasOwnProperty, normalizeOptionValue, normalizeText, resolveProjectId }
 import { createEntityId } from "./ids";
 
 export function normalizeMaterialRequestRecord(request = {}, workers, projects, currentRequest) {
+  const companyId = hasOwnProperty(request, "companyId")
+    ? normalizeText(request.companyId)
+    : currentRequest?.companyId ?? "company-1";
+  const workspaceId = hasOwnProperty(request, "workspaceId")
+    ? normalizeText(request.workspaceId)
+    : currentRequest?.workspaceId ?? "workspace-1";
   const requestedById = hasOwnProperty(request, "requestedById")
     ? normalizeText(request.requestedById)
     : currentRequest?.requestedById ?? "";
@@ -20,6 +26,8 @@ export function normalizeMaterialRequestRecord(request = {}, workers, projects, 
 
   return {
     id: currentRequest?.id ?? request.id ?? createEntityId("request"),
+    companyId,
+    workspaceId,
     itemName: hasOwnProperty(request, "itemName") ? normalizeText(request.itemName) : currentRequest?.itemName ?? "",
     itemNameKey:
       hasOwnProperty(request, "itemName") && currentRequest

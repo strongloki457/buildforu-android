@@ -19,8 +19,9 @@ export default function WorkStatusCard() {
   const { locale, t } = useI18n();
   const [activeAction, setActiveAction] = useState("");
   const [feedback, setFeedback] = useState(null);
+  const currentWorkerId = user?.workerId || user?.id;
 
-  const worker = useMemo(() => workers.find((item) => item.id === user?.id), [workers, user?.id]);
+  const worker = useMemo(() => workers.find((item) => item.id === currentWorkerId), [currentWorkerId, workers]);
   const attendance = worker?.attendance;
   const currentStatus = attendance?.currentStatus ?? worker?.status ?? "Off Site";
   const isOnSite = currentStatus === "On Site";

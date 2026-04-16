@@ -21,8 +21,8 @@ const seedUsers = [
     titleKey: "seed.users.u-admin-1.title",
     avatar: "SC",
     credentials: {
-      email: "boss@buildforu.com",
-      password: "build-admin"
+      email: "admin@buildforu.com",
+      password: "admin123"
     }
   },
   {
@@ -36,38 +36,8 @@ const seedUsers = [
     titleKey: "seed.users.u-employee-1.title",
     avatar: "AN",
     credentials: {
-      email: "alex@buildforu.com",
-      password: "build-alex"
-    }
-  },
-  {
-    id: "u-employee-2",
-    companyId: "company-1",
-    workspaceId: "workspace-1",
-    role: "employee",
-    workerId: "u-employee-2",
-    name: "Mia Berger",
-    title: "Electrician",
-    titleKey: "seed.users.u-employee-2.title",
-    avatar: "MB",
-    credentials: {
-      email: "mia@buildforu.com",
-      password: "build-mia"
-    }
-  },
-  {
-    id: "u-employee-3",
-    companyId: "company-1",
-    workspaceId: "workspace-1",
-    role: "employee",
-    workerId: "u-employee-3",
-    name: "Luca Moretti",
-    title: "Plumbing Lead",
-    titleKey: "seed.users.u-employee-3.title",
-    avatar: "LM",
-    credentials: {
-      email: "luca@buildforu.com",
-      password: "build-luca"
+      email: "worker@buildforu.com",
+      password: "worker123"
     }
   }
 ];
@@ -107,6 +77,14 @@ function createInitials(name) {
 function normalizePlan(value) {
   const normalizedValue = normalizeText(value).toLowerCase();
   return ["starter", "pro", "enterprise"].includes(normalizedValue) ? normalizedValue : "pro";
+}
+
+function normalizeIdList(values) {
+  return Array.isArray(values) ? Array.from(new Set(values.map((value) => normalizeText(value)).filter(Boolean))) : [];
+}
+
+function createTemporaryPassword() {
+  return Math.random().toString(36).slice(2, 8).padEnd(6, "0");
 }
 
 function buildCompanyMembership(directory, companyId) {
@@ -184,10 +162,15 @@ function normalizeStoredUser(user) {
   };
 }
 
+function createMap(items) {
+  return new Map(items.map((item) => [item.id, item]));
+}
+
 export function getSeedCompanyDirectory() {
   return {
     companies: cloneValue(seedCompanies),
-    users: cloneValue(seedUsers)
+    users: cloneValue(seedUsers),
+    removedUserIds: []
   };
 }
 
@@ -198,17 +181,28 @@ export function mergeCompanyDirectory(storedDirectory = {}) {
   const normalizedUsers = Array.isArray(storedDirectory.users)
     ? storedDirectory.users.map((user) => normalizeStoredUser(user)).filter(Boolean)
     : [];
+  const removedUserIds = normalizeIdList(storedDirectory.removedUserIds);
+  const removedUserIdSet = new Set(removedUserIds);
   const seedDirectory = getSeedCompanyDirectory();
-  const companyIds = new Set(seedDirectory.companies.map((company) => company.id));
+  const companyMap = createMap(seedDirectory.companies);
 
-  normalizedCompanies.forEach((company) => companyIds.add(company.id));
+  normalizedCompanies.forEach((company) => {
+    companyMap.set(company.id, company);
+  });
+
+  const validCompanyIds = new Set(companyMap.keys());
+  const userMap = createMap(seedDirectory.users.filter((user) => !removedUserIdSet.has(user.id)));
+
+  normalizedUsers.forEach((user) => {
+    if (validCompanyIds.has(user.companyId) && !removedUserIdSet.has(user.id)) {
+      userMap.set(user.id, user);
+    }
+  });
 
   return {
-    companies: [...seedDirectory.companies, ...normalizedCompanies],
-    users: [
-      ...seedDirectory.users,
-      ...normalizedUsers.filter((user) => companyIds.has(user.companyId))
-    ]
+    companies: [...companyMap.values()],
+    users: [...userMap.values()],
+    removedUserIds
   };
 }
 
@@ -248,6 +242,25 @@ export function findAccountByEmail(directory, email) {
   return {
     company,
     publicCompany: company ? buildPublicCompany(directory, company) : null,
+    publicUser: buildPublicUser(directory, user),
+    user
+  };
+}
+
+export function findUserByWorkerId(directory, workerId) {
+  const normalizedWorkerId = normalizeText(workerId);
+
+  if (!normalizedWorkerId) {
+    return null;
+  }
+
+  const user = directory.users.find((item) => item.role === "employee" && normalizeText(item.workerId) === normalizedWorkerId);
+
+  if (!user) {
+    return null;
+  }
+
+  return {
     publicUser: buildPublicUser(directory, user),
     user
   };
@@ -309,6 +322,27 @@ export function createProvisionedCompanyAccount({ companyName, ownerName, email,
   return {
     company,
     user
+  };
+}
+
+export function createEmployeeDirectoryUser({ companyId, email, name, password, workerId, workspaceId }) {
+  const normalizedName = normalizeText(name) || "Employee";
+  const normalizedWorkerId = normalizeText(workerId);
+
+  return {
+    id: normalizedWorkerId || `u-employee-${Date.now().toString(36)}`,
+    companyId: normalizeText(companyId) || "company-1",
+    workspaceId: normalizeText(workspaceId) || "workspace-1",
+    role: "employee",
+    workerId: normalizedWorkerId,
+    name: normalizedName,
+    title: "Employee",
+    titleKey: null,
+    avatar: createInitials(normalizedName),
+    credentials: {
+      email: normalizeEmail(email),
+      password: normalizeText(password) || createTemporaryPassword()
+    }
   };
 }
 

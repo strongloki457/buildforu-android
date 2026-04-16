@@ -5,13 +5,13 @@ import { createProjectActions } from "./projectActions";
 import { createTaskActions } from "./taskActions";
 import { createWorkerActions } from "./workerActions";
 
-export function createAppDataActions({ attendanceByWorkerId, dispatch, projectsById, state, workersById }) {
+export function createAppDataActions({ attendanceByWorkerId, currentUser, dispatch, projectsById, state, workersById }) {
   return {
-    ...createAttendanceActions({ attendanceByWorkerId, dispatch }),
+    ...createAttendanceActions({ attendanceByWorkerId, currentUser, dispatch }),
     ...createChatActions({ dispatch }),
-    ...createMaterialActions({ dispatch, projectsById, state, workersById }),
-    ...createProjectActions({ dispatch, projectsById }),
-    ...createTaskActions({ dispatch, projectsById, state, workersById }),
-    ...createWorkerActions({ attendanceByWorkerId, dispatch, projectsById, state })
+    ...createMaterialActions({ currentUser, dispatch, projectsById, state, workersById }),
+    ...createProjectActions({ currentUser, dispatch, projectsById }),
+    ...createTaskActions({ currentUser, dispatch, projectsById, state, workersById }),
+    ...createWorkerActions({ attendanceByWorkerId, currentUser, dispatch, projectsById, state })
   };
 }

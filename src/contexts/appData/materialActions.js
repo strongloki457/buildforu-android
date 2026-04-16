@@ -2,9 +2,21 @@ import { materialRequestStatusOptions } from "../../data/mockMaterials";
 import { normalizeOptionValue } from "./domainUtils";
 import { hydrateMaterialRequestRecord, normalizeMaterialRequestRecord } from "./materials";
 
-export function createMaterialActions({ dispatch, projectsById, state, workersById }) {
+function applyWorkspaceScope(payload, currentUser) {
+  return {
+    ...payload,
+    companyId: payload.companyId ?? currentUser?.companyId,
+    workspaceId: payload.workspaceId ?? currentUser?.workspaceId
+  };
+}
+
+export function createMaterialActions({ currentUser, dispatch, projectsById, state, workersById }) {
   const addMaterialRequest = (request) => {
-    const normalizedRequest = normalizeMaterialRequestRecord(request, state.workers, state.projects);
+    const normalizedRequest = normalizeMaterialRequestRecord(
+      applyWorkspaceScope(request, currentUser),
+      state.workers,
+      state.projects
+    );
 
     if (!normalizedRequest.itemName || !normalizedRequest.requestedById) {
       return null;
@@ -19,6 +31,14 @@ export function createMaterialActions({ dispatch, projectsById, state, workersBy
   };
 
   const deleteMaterialRequest = (requestId) => {
+    if (currentUser?.role === "employee") {
+      const request = state.materialRequests.find((item) => item.id === requestId);
+
+      if (!request || request.requestedById !== currentUser.workerId) {
+        return null;
+      }
+    }
+
     dispatch({
       type: "DELETE_MATERIAL_REQUEST",
       payload: { requestId }
@@ -26,6 +46,10 @@ export function createMaterialActions({ dispatch, projectsById, state, workersBy
   };
 
   const updateMaterialRequestStatus = (requestId, status) => {
+    if (currentUser?.role && currentUser.role !== "admin") {
+      return null;
+    }
+
     const normalizedStatus = normalizeOptionValue(status, materialRequestStatusOptions, "");
 
     if (!normalizedStatus) {

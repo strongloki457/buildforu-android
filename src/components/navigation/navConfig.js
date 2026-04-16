@@ -1,5 +1,6 @@
 import {
   CalendarDays,
+  ClipboardList,
   FolderKanban,
   LayoutDashboard,
   MessageSquare,
@@ -12,6 +13,7 @@ const registry = {
   dashboard: LayoutDashboard,
   workers: Users2,
   projects: FolderKanban,
+  tasks: ClipboardList,
   materials: Package,
   calendar: CalendarDays,
   chat: MessageSquare,
@@ -22,8 +24,8 @@ const pathRegistry = {
   dashboard: "/dashboard"
 };
 
-const employeeItems = ["dashboard", "calendar", "materials", "chat", "settings"];
-const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "settings"];
+const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "settings"];
+const adminItems = ["dashboard", "workers", "projects", "tasks", "calendar", "materials", "chat", "settings"];
 
 export function getNavigation(role, t) {
   const keys = role === "admin" ? adminItems : employeeItems;

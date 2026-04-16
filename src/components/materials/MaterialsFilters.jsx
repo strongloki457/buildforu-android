@@ -1,12 +1,26 @@
 import { Search } from "lucide-react";
 import { materialRequestStatusOptions } from "../../data/mockMaterials";
 import { useI18n } from "../../hooks/useI18n";
+import { getProjectName } from "../../utils/localizedValue";
 
-export default function MaterialsFilters({ search, setSearch, setStatusFilter, statusFilter }) {
+export default function MaterialsFilters({
+  projectFilter,
+  projectOptions = [],
+  search,
+  setProjectFilter,
+  setSearch,
+  setStatusFilter,
+  showProjectFilter = false,
+  statusFilter
+}) {
   const { t } = useI18n();
 
   return (
-    <div className="mb-6 grid gap-3 xl:grid-cols-[minmax(0,1fr)_220px]">
+    <div
+      className={`mb-6 grid gap-3 ${
+        showProjectFilter ? "xl:grid-cols-[minmax(0,1fr)_220px_220px]" : "xl:grid-cols-[minmax(0,1fr)_220px]"
+      }`}
+    >
       <label className="flex items-center gap-3 rounded-[24px] border border-white/70 bg-white/90 px-4 py-3">
         <Search size={18} className="text-slate-400" />
         <input
@@ -29,6 +43,21 @@ export default function MaterialsFilters({ search, setSearch, setStatusFilter, s
           </option>
         ))}
       </select>
+
+      {showProjectFilter ? (
+        <select
+          value={projectFilter}
+          onChange={(event) => setProjectFilter(event.target.value)}
+          className="rounded-[24px] border border-white/70 bg-white/90 px-4 py-3 text-sm text-slate-900 outline-none"
+        >
+          <option value="all">{t("workers.allProjects", "All projects")}</option>
+          {projectOptions.map((project) => (
+            <option key={project.id} value={project.id}>
+              {getProjectName(t, project)}
+            </option>
+          ))}
+        </select>
+      ) : null}
     </div>
   );
 }

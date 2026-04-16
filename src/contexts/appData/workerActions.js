@@ -1,9 +1,21 @@
 import { buildAttendanceStateRecord } from "./attendance";
 import { hydrateWorkerRecord, normalizeWorkerRecord } from "./workers";
 
-export function createWorkerActions({ attendanceByWorkerId, dispatch, projectsById, state }) {
+function applyWorkspaceScope(payload, currentUser) {
+  return {
+    ...payload,
+    companyId: payload.companyId ?? currentUser?.companyId,
+    workspaceId: payload.workspaceId ?? currentUser?.workspaceId
+  };
+}
+
+export function createWorkerActions({ attendanceByWorkerId, currentUser, dispatch, projectsById, state }) {
   const addWorker = (worker) => {
-    const normalizedWorker = normalizeWorkerRecord(worker, null, state.projects);
+    if (currentUser?.role && currentUser.role !== "admin") {
+      return null;
+    }
+
+    const normalizedWorker = normalizeWorkerRecord(applyWorkspaceScope(worker, currentUser), null, state.projects);
 
     if (!normalizedWorker.name) {
       return null;
@@ -22,6 +34,10 @@ export function createWorkerActions({ attendanceByWorkerId, dispatch, projectsBy
   };
 
   const updateWorker = (workerId, updates) => {
+    if (currentUser?.role && currentUser.role !== "admin") {
+      return null;
+    }
+
     const currentWorker = state.workers.find((worker) => worker.id === workerId);
 
     if (!currentWorker) {
@@ -43,6 +59,10 @@ export function createWorkerActions({ attendanceByWorkerId, dispatch, projectsBy
   };
 
   const deleteWorker = (workerId) => {
+    if (currentUser?.role && currentUser.role !== "admin") {
+      return null;
+    }
+
     dispatch({
       type: "DELETE_WORKER",
       payload: { workerId }

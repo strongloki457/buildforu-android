@@ -1,8 +1,12 @@
 import { buildAttendanceStateRecord } from "./attendance";
 import { normalizeLocation } from "./domainUtils";
 
-export function createAttendanceActions({ attendanceByWorkerId, dispatch }) {
+export function createAttendanceActions({ attendanceByWorkerId, currentUser, dispatch }) {
   const startWork = (workerId, options = {}) => {
+    if (currentUser?.role === "employee" && workerId !== currentUser.workerId) {
+      return null;
+    }
+
     const attendanceRecord = buildAttendanceStateRecord(
       {
         workerId,
@@ -24,6 +28,10 @@ export function createAttendanceActions({ attendanceByWorkerId, dispatch }) {
   };
 
   const endWork = (workerId, options = {}) => {
+    if (currentUser?.role === "employee" && workerId !== currentUser.workerId) {
+      return null;
+    }
+
     const attendanceRecord = buildAttendanceStateRecord(
       {
         workerId,

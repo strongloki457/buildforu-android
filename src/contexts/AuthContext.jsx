@@ -1,7 +1,9 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import {
+  createEmployeeDirectoryUser,
   createProvisionedCompanyAccount,
   findAccountByEmail,
+  findUserByWorkerId,
   getPublicCompanies,
   getPublicUsers,
   getUsersForCompany,
@@ -66,35 +68,35 @@ function readStoredSession() {
   return null;
 }
 
+function createEmptyDirectory() {
+  return {
+    companies: [],
+    users: [],
+    removedUserIds: []
+  };
+}
+
 function loadStoredDirectory() {
   if (typeof window === "undefined") {
-    return {
-      companies: [],
-      users: []
-    };
+    return createEmptyDirectory();
   }
 
   try {
     const rawValue = window.localStorage.getItem(DIRECTORY_STORAGE_KEY);
 
     if (!rawValue) {
-      return {
-        companies: [],
-        users: []
-      };
+      return createEmptyDirectory();
     }
 
     const parsedValue = JSON.parse(rawValue);
 
     return {
       companies: Array.isArray(parsedValue?.companies) ? parsedValue.companies : [],
-      users: Array.isArray(parsedValue?.users) ? parsedValue.users : []
+      users: Array.isArray(parsedValue?.users) ? parsedValue.users : [],
+      removedUserIds: Array.isArray(parsedValue?.removedUserIds) ? parsedValue.removedUserIds : []
     };
   } catch {
-    return {
-      companies: [],
-      users: []
-    };
+    return createEmptyDirectory();
   }
 }
 
@@ -178,7 +180,17 @@ export function AuthProvider({ children }) {
   }, [directory]);
 
   const login = useCallback(
-    async ({ email, password, rememberMe = true }) => {
+    async (credentialsOrEmail, maybePassword, maybeRememberMe = true) => {
+      const credentials =
+        credentialsOrEmail && typeof credentialsOrEmail === "object"
+          ? credentialsOrEmail
+          : {
+              email: credentialsOrEmail,
+              password: maybePassword,
+              rememberMe: maybeRememberMe
+            };
+      const { email, password, rememberMe = true } = credentials;
+
       if (!email || !password) {
         throw new Error("login.requiredError");
       }
@@ -215,6 +227,7 @@ export function AuthProvider({ children }) {
       let nextStoredDirectory = null;
       setStoredDirectory((current) => {
         nextStoredDirectory = {
+          ...current,
           companies: [...current.companies, provisionedAccess.company],
           users: [...current.users, provisionedAccess.user]
         };
@@ -253,6 +266,116 @@ export function AuthProvider({ children }) {
     [directory]
   );
 
+  const syncWorkerUser = useCallback(
+    ({ companyId, email, name, workerId, workspaceId }) => {
+      const normalizedWorkerId = normalizeText(workerId);
+      const normalizedEmail = normalizeEmail(email);
+      const normalizedName = normalizeText(name);
+
+      if (!normalizedWorkerId || !normalizedEmail || !normalizedName) {
+        return null;
+      }
+
+      let nextStoredDirectory = null;
+      let nextUserRecord = null;
+      let temporaryPassword = "";
+      let created = false;
+
+      setStoredDirectory((current) => {
+        const mergedCurrentDirectory = mergeCompanyDirectory(current);
+        const existingWorkerAccount = findUserByWorkerId(mergedCurrentDirectory, normalizedWorkerId)?.user ?? null;
+
+        if (existingWorkerAccount) {
+          nextUserRecord = {
+            ...existingWorkerAccount,
+            companyId: normalizeText(companyId) || existingWorkerAccount.companyId,
+            workspaceId: normalizeText(workspaceId) || existingWorkerAccount.workspaceId,
+            name: normalizedName,
+            avatar: existingWorkerAccount.avatar,
+            credentials: {
+              ...existingWorkerAccount.credentials,
+              email: normalizedEmail
+            }
+          };
+        } else {
+          const createdUser = createEmployeeDirectoryUser({
+            companyId,
+            email: normalizedEmail,
+            name: normalizedName,
+            workerId: normalizedWorkerId,
+            workspaceId
+          });
+
+          nextUserRecord = createdUser;
+          temporaryPassword = createdUser.credentials.password;
+          created = true;
+        }
+
+        const nextUsers = current.users.some((item) => item.id === nextUserRecord.id)
+          ? current.users.map((item) => (item.id === nextUserRecord.id ? nextUserRecord : item))
+          : [...current.users, nextUserRecord];
+
+        nextStoredDirectory = {
+          ...current,
+          users: nextUsers,
+          removedUserIds: (current.removedUserIds ?? []).filter((item) => item !== nextUserRecord.id)
+        };
+
+        return nextStoredDirectory;
+      });
+
+      const mergedDirectory = mergeCompanyDirectory(nextStoredDirectory ?? storedDirectory);
+      const publicUser = resolveSessionUser(mergedDirectory, {
+        id: nextUserRecord?.id,
+        email: nextUserRecord?.credentials?.email
+      });
+
+      return {
+        created,
+        publicUser,
+        temporaryPassword
+      };
+    },
+    [storedDirectory]
+  );
+
+  const removeWorkerUser = useCallback(
+    (workerId) => {
+      const normalizedWorkerId = normalizeText(workerId);
+
+      if (!normalizedWorkerId) {
+        return false;
+      }
+
+      let wasRemoved = false;
+
+      setStoredDirectory((current) => {
+        const mergedCurrentDirectory = mergeCompanyDirectory(current);
+        const linkedUser = findUserByWorkerId(mergedCurrentDirectory, normalizedWorkerId)?.user ?? null;
+
+        if (!linkedUser) {
+          return current;
+        }
+
+        wasRemoved = true;
+
+        return {
+          ...current,
+          users: current.users.filter((item) => item.id !== linkedUser.id),
+          removedUserIds: Array.from(new Set([...(current.removedUserIds ?? []), linkedUser.id]))
+        };
+      });
+
+      if (user?.workerId === normalizedWorkerId) {
+        setUser(null);
+        clearAuthSession();
+      }
+
+      return wasRemoved;
+    },
+    [user?.workerId]
+  );
+
   const logout = useCallback(() => {
     setUser(null);
     clearAuthSession();
@@ -261,6 +384,9 @@ export function AuthProvider({ children }) {
   const value = useMemo(
     () => ({
       user,
+      currentUser: user,
+      role: user?.role ?? null,
+      workerId: user?.workerId ?? "",
       users,
       company,
       companyUsers,
@@ -269,9 +395,24 @@ export function AuthProvider({ children }) {
       login,
       logout,
       previewAccount,
-      registerCompany
+      registerCompany,
+      syncWorkerUser,
+      removeWorkerUser
     }),
-    [companies, company, companyUsers, isBooting, login, logout, previewAccount, registerCompany, user, users]
+    [
+      companies,
+      company,
+      companyUsers,
+      isBooting,
+      login,
+      logout,
+      previewAccount,
+      registerCompany,
+      removeWorkerUser,
+      syncWorkerUser,
+      user,
+      users
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

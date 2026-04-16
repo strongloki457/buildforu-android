@@ -12,6 +12,7 @@ import { formatRequestDate } from "./materialsUtils";
 
 export default function MaterialRequestCard({ request, isAdmin, locale, onDelete, onStatusChange }) {
   const { t } = useI18n();
+  const canDelete = !isAdmin && ["pending", "rejected"].includes(String(request.status).toLowerCase());
 
   return (
     <article className="rounded-[28px] border border-white/60 bg-white/85 p-5 shadow-soft">
@@ -24,7 +25,7 @@ export default function MaterialRequestCard({ request, isAdmin, locale, onDelete
         </div>
         <div className="flex items-center gap-2">
           <MaterialStatusBadge value={request.status} />
-          {!isAdmin ? (
+          {canDelete ? (
             <Button
               variant="ghost"
               className="gap-2 bg-rose-50 px-3 py-2 text-rose-700 hover:bg-rose-100"

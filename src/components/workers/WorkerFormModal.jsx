@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
 import { useI18n } from "../../hooks/useI18n";
 import { getProjectName } from "../../utils/localizedValue";
 
-export default function WorkerFormModal({ initialValues, mode, onClose, onSave, projectOptions }) {
+export default function WorkerFormModal({ errorMessage = "", initialValues, mode, onClose, onSave, projectOptions }) {
   const { t } = useI18n();
   const [form, setForm] = useState(initialValues);
+
+  useEffect(() => {
+    setForm(initialValues);
+  }, [initialValues]);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -53,6 +57,7 @@ export default function WorkerFormModal({ initialValues, mode, onClose, onSave, 
               value={form.email}
               onChange={(event) => handleChange("email", event.target.value)}
               placeholder={t("workers.placeholderEmail")}
+              required
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
           </label>
@@ -122,6 +127,15 @@ export default function WorkerFormModal({ initialValues, mode, onClose, onSave, 
         </div>
 
         <p className="text-sm text-slate-500">{t("workers.attendanceManagedByEmployee")}</p>
+        <p className="text-sm text-slate-500">
+          {t(
+            "workers.employeeLoginProvisioning",
+            mode === "edit"
+              ? "The linked employee login will stay synced with the worker email."
+              : "A linked employee login will be created automatically with a temporary password."
+          )}
+        </p>
+        {errorMessage ? <p className="text-sm text-rose-600">{errorMessage}</p> : null}
 
         <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>

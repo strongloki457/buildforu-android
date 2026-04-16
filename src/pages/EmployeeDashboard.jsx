@@ -15,13 +15,17 @@ export default function EmployeeDashboard() {
   const { t } = useI18n();
   const [ready, setReady] = useState(false);
   const todayKey = getLocalDateKey();
+  const currentWorkerId = user.workerId || user.id;
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setReady(true), 450);
     return () => window.clearTimeout(timeout);
   }, []);
 
-  const personalTasks = useMemo(() => tasks.filter((task) => task.employeeId === user.id), [tasks, user.id]);
+  const personalTasks = useMemo(
+    () => tasks.filter((task) => task.employeeId === currentWorkerId),
+    [currentWorkerId, tasks]
+  );
   const todayTasks = useMemo(
     () => sortByDateKey(personalTasks.filter((task) => task.date === todayKey)),
     [personalTasks, todayKey]
