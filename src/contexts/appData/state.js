@@ -7,13 +7,65 @@ import { normalizeProjectRecord, syncProjectsWithWorkers } from "./projects";
 import { normalizeTaskRecord } from "./tasks";
 import { normalizeWorkerRecord } from "./workers";
 
+const SEED_TASK_DATE_OFFSETS = {
+  "task-101": 0,
+  "task-102": 0,
+  "task-103": 0,
+  "task-104": 1,
+  "task-105": 2,
+  "task-106": 3,
+  "task-107": 4,
+  "task-108": 5,
+  "task-109": 6
+};
+
+function getLocalDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function getDateWithOffset(offset) {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return getLocalDateKey(date);
+}
+
+function alignSeedTaskDate(task) {
+  if (!Object.prototype.hasOwnProperty.call(SEED_TASK_DATE_OFFSETS, task.id)) {
+    return task;
+  }
+
+  return {
+    ...task,
+    date: getDateWithOffset(SEED_TASK_DATE_OFFSETS[task.id])
+  };
+}
+
+function alignSeedAttendanceDate(record) {
+  if (!String(record.id ?? "").startsWith("attendance-u-employee-")) {
+    return record;
+  }
+
+  const today = getLocalDateKey();
+  const withToday = (value) => (value ? `${today}T${String(value).split("T")[1] ?? "08:00:00"}` : value);
+
+  return {
+    ...record,
+    workStartTime: withToday(record.workStartTime),
+    workEndTime: withToday(record.workEndTime)
+  };
+}
+
 export function finalizeCoreState(state) {
   const projects = state.projects.map((project) => normalizeProjectRecord(project));
   const workers = state.workers.map((worker) => normalizeWorkerRecord(worker, null, projects)).filter((worker) => worker.name);
-  const attendance = ensureAttendanceRecords(workers, state.attendance);
+  const attendance = ensureAttendanceRecords(workers, state.attendance.map((record) => alignSeedAttendanceDate(record)));
   const syncedProjects = syncProjectsWithWorkers(projects, workers);
   const tasks = state.tasks
-    .map((task) => normalizeTaskRecord(task, workers, syncedProjects))
+    .map((task) => normalizeTaskRecord(alignSeedTaskDate(task), workers, syncedProjects))
     .filter((task) => task.title && task.date);
   const materialRequests = state.materialRequests
     .map((request) => normalizeMaterialRequestRecord(request, workers, syncedProjects))

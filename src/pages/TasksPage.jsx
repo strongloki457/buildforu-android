@@ -6,21 +6,21 @@ import StatusBadge from "../components/ui/StatusBadge";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { useVisibleTasks } from "../hooks/useRoleData";
 import { getTaskLocation, getTaskProjectName, getTaskTitle } from "../utils/localizedValue";
 
 const filters = ["all", "pending", "completed"];
 
 export default function TasksPage() {
   const { user } = useAuth();
-  const { tasks, toggleTaskStatus } = useAppData();
+  const { toggleTaskStatus } = useAppData();
   const { t } = useI18n();
+  const visibleTasks = useVisibleTasks();
   const [activeFilter, setActiveFilter] = useState("all");
-  const currentWorkerId = user.workerId || user.id;
 
   const scopedTasks = useMemo(() => {
-    const byRole = user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === currentWorkerId);
-    return activeFilter === "all" ? byRole : byRole.filter((task) => task.status === activeFilter);
-  }, [activeFilter, currentWorkerId, tasks, user.role]);
+    return activeFilter === "all" ? visibleTasks : visibleTasks.filter((task) => task.status === activeFilter);
+  }, [activeFilter, visibleTasks]);
 
   return (
     <Card>

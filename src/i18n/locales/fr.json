@@ -1,823 +1,977 @@
 {
-    "app":  {
-                "name":  "BuildForU",
-                "tagline":  "Operations chantier avec une vue plus claire.",
-                "commandCenter":  "Centre de commande BuildForU",
-                "preparing":  "Preparation de BuildForU..."
-            },
-    "roles":  {
-                  "employee":  "Employe",
-                  "admin":  "Patron"
-              },
-    "nav":  {
-                "dashboard":  "Tableau",
-                "workers":  "Employes",
-                "projects":  "Projets",
-                "materials":  "Materiaux",
-                "calendar":  "Calendrier",
-                "finance":  "Finances",
-                "tasks":  "Taches",
-                "chat":  "Chat",
-                "settings":  "Parametres",
-                "marketMap":  "Carte des magasins"
-            },
-    "common":  {
-                   "search":  "Rechercher dans l\u0027espace",
-                   "today":  "Aujourd\u0027hui",
-                   "overview":  "Vue d\u0027ensemble",
-                   "save":  "Enregistrer",
-                   "status":  "Statut",
-                   "location":  "Lieu",
-                   "date":  "Date",
-                   "assignedTo":  "Attribue a",
-                   "priority":  "Priorite",
-                   "send":  "Envoyer",
-                   "logout":  "Se deconnecter",
-                   "welcomeBack":  "Bon retour",
-                   "notifications":  "Notifications",
-                   "language":  "Langue",
-                   "loading":  "Chargement de l\u0027interface...",
-                   "cancel":  "Annuler",
-                   "close":  "Fermer",
-                   "closeModal":  "Fermer la fenetre",
-                   "add":  "Ajouter",
-                   "edit":  "Modifier",
-                   "delete":  "Supprimer",
-                   "account":  "Compte",
-                   "openMenu":  "Ouvrir le menu",
-                   "viewOnMap":  "Voir sur la carte",
-                   "viewProfile":  "Voir le profil",
-                   "toggleStatus":  "Changer le statut",
-                   "all":  "Tous",
-                   "project":  "Projet"
-               },
-    "statusLabels":  {
-                         "pending":  "En attente",
-                         "completed":  "Termine",
-                         "healthy":  "Sain",
-                         "at risk":  "A risque",
-                         "available":  "Disponible",
-                         "busy":  "Occupe",
-                         "on site":  "Sur site",
-                         "in transit":  "En transit",
-                         "off shift":  "Hors service",
-                         "in stock":  "En stock",
-                         "low stock":  "Stock faible",
-                         "limited":  "Limite",
-                         "preorder":  "Precommande",
-                         "out of stock":  "Rupture de stock",
-                         "off site":  "Hors site",
-                         "in progress":  "En cours",
-                         "not started":  "Non commence",
-                         "on hold":  "En pause",
-                         "ordered":  "Commande",
-                         "purchased":  "Achete",
-                         "rejected":  "Refuse"
-                     },
-    "priorityLabels":  {
-                           "high":  "Haute",
-                           "medium":  "Moyenne",
-                           "low":  "Basse"
-                       },
-    "notifications":  {
-                          "n-1":  {
-                                      "title":  "Nouvelle tache attribuee a Mia",
-                                      "time":  "il y a 5 min"
-                                  },
-                          "n-2":  {
-                                      "title":  "Livraison de beton confirmee",
-                                      "time":  "il y a 18 min"
-                                  },
-                          "n-3":  {
-                                      "title":  "Facture #204 approuvee",
-                                      "time":  "il y a 1 h"
-                                  }
-                      },
-    "login":  {
-                  "title":  "Pilotez chaque projet avec assurance.",
-                  "subtitle":  "Un centre de commande premium pour les equipes, plannings, materiaux et livraisons.",
-                  "email":  "Email",
-                  "password":  "Mot de passe",
-                  "button":  "Connexion",
-                  "helper":  "Utilisez les comptes de demonstration ci-dessous pour voir les deux experiences.",
-                  "mockPassword":  "Dans ce prototype, n\u0027importe quel mot de passe fonctionne.",
-                  "requiredError":  "L\u0027e-mail et le mot de passe sont obligatoires.",
-                  "detectedRole":  "Role detecte",
-                  "previewAccess":  "Acces de demonstration",
-                  "liveAssignments":  "Interventions terrain actives",
-                  "projectsInDelivery":  "Projets en livraison",
-                  "scheduleReliability":  "Fiabilite du planning",
-                  "loading":  "Chargement...",
-                  "rememberMe":  "Se souvenir de moi",
-                  "forgotPassword":  "Mot de passe oublie ?",
-                  "accessNote":  "Acces securise pour les equipes bureau et terrain BuildForU.",
-                  "workspaceEyebrow":  "Plateforme des operations chantier",
-                  "featureAdmin":  "Espaces admin et employe",
-                  "featureOps":  "Taches, planning et chat equipe",
-                  "featureI18n":  "Interface multilingue alimentee par des donnees mock",
-                  "demoAccounts":  "Comptes exemple"
-              },
-    "sidebar":  {
-                    "controlTower":  "Tour de controle",
-                    "fieldWorkspace":  "Espace terrain",
-                    "crewRhythmTitle":  "Le rythme de l\u0027equipe est stable",
-                    "crewRhythmSubtitle":  "Les mises a jour chantier se synchronisent bien aujourd\u0027hui.",
-                    "shiftProfile":  "Profil de service"
-                },
-    "dashboard":  {
-                      "employeeTitle":  "Tableau de coordination terrain",
-                      "adminTitle":  "Tableau operationnel de l\u0027entreprise",
-                      "upcomingTasks":  "Taches a venir",
-                      "calendarOverview":  "Vue calendrier",
-                      "teamMessages":  "Messages d\u0027equipe",
-                      "workerPulse":  "Pulse equipe",
-                      "assignTask":  "Attribuer une nouvelle tache",
-                      "projectHealth":  "Sante des projets",
-                      "todayFocus":  "Focus du jour",
-                      "activeProjects":  "Projets actifs",
-                      "crewAvailability":  "Disponibilite des equipes",
-                      "completionRate":  "Taux d\u0027achevement",
-                      "monthlyRevenue":  "Revenu mensuel",
-                      "adminHeroBody":  "Le tableau du jour met en avant la couverture des equipes, la pression des taches, les horaires en direct et la sante des livraisons en un seul endroit.",
-                      "adminCrewDetail":  "Trois equipes actives aujourd\u0027hui",
-                      "adminOpenAssignments":  "Affectations actuellement ouvertes",
-                      "adminProjectDetail":  "2 sains, 1 a risque",
-                      "adminRevenueDetail":  "Le suivi du profit reste positif",
-                      "workerPulseSubtitle":  "Visibilite des equipes sur les sites",
-                      "calendarSubtitle":  "Couverture globale des taches pour le mois en cours.",
-                      "projectSubtitle":  "Pulse de livraison sur vos projets principaux.",
-                      "chatSubtitle":  "Coordonnez-vous vite avec les equipes et les superviseurs.",
-                      "employeeHeroBody":  "Votre planning de la semaine est aligne. Le prochain point de controle est deja epingle et le chat avec le patron reste a portee.",
-                      "employeePendingDetail":  "Taches en attente",
-                      "employeeCompletedDetail":  "Terminees cette semaine",
-                      "employeeNextSiteLabel":  "Prochain site",
-                      "employeeNextSiteValue":  "North River",
-                      "employeeNextSiteDetail":  "Inspection a 09:30",
-                      "employeeCalendarSubtitle":  "Consultez vos blocs de travail et visites de site pour le mois courant.",
-                      "employeeTaskSubtitle":  "Vos affectations personnelles",
-                      "employeeEmptyTasks":  "Aucune tache n\u0027attend pour le moment.",
-                      "quickPulse":  "Pulse rapide",
-                      "quickPulseSubtitle":  "Lecture concise de votre charge et de la qualite du planning.",
-                      "scheduleConfidence":  "Confiance du planning",
-                      "scheduleConfidenceDetail":  "Aucun conflit detecte dans vos cinq prochaines gardes.",
-                      "siteRhythm":  "Rythme du site",
-                      "siteRhythmDetail":  "Les livraisons et inspections sont sur la bonne trajectoire.",
-                      "employeeChatSubtitle":  "Chat rapide avec le patron"
-                  },
-    "calendar":  {
-                     "title":  "Calendrier du planning",
-                     "subtitle":  "Consultez les affectations et l\u0027activite des sites sur le mois.",
-                     "scheduledThisMonth":  "Planifie ce mois-ci",
-                     "scheduledThisMonthDetail":  "Affectations visibles sur le tableau.",
-                     "coverage":  "Couverture",
-                     "coverageAllCrews":  "Toutes les equipes",
-                     "coveragePersonal":  "Personnel",
-                     "coverageDetail":  "Change automatiquement selon le role.",
-                     "nextCheckpoint":  "Prochain point de controle",
-                     "nextCheckpointDetail":  "La prochaine tache en attente commence demain.",
-                     "upcomingTimeline":  "Chronologie a venir",
-                     "upcomingTimelineSubtitle":  "Un apercu rapide des prochaines activites planifiees.",
-                     "noUpcoming":  "Aucune activite planifiee visible pour le moment.",
-                     "addTask":  "Ajouter une tache",
-                     "addTaskSubtitle":  "Creez et planifiez une nouvelle tache directement depuis le calendrier.",
-                     "monthlyEyebrow":  "Mensuel",
-                     "emptyMonth":  "Aucun element planifie pour ce mois.",
-                     "formTitle":  "Attribuer une nouvelle tache",
-                     "formSubtitle":  "Creez une affectation mock directement depuis la vue calendrier.",
-                     "worker":  "Employe",
-                     "unknownWorker":  "Employe inconnu",
-                     "emptyWorker":  "Ajoutez un employe pour attribuer une tache",
-                     "taskTitle":  "Titre de la tache",
-                     "taskLocation":  "Lieu du chantier",
-                     "assignTaskButton":  "Attribuer la tache",
-                     "scheduledInView":  "Planifie dans la vue",
-                     "scheduledInViewDetail":  "{{month}} est actuellement charge dans le calendrier.",
-                     "scheduleList":  "Liste du planning",
-                     "scheduleListSubtitle":  "Taches prevues pour le mois selectionne.",
-                     "noTasksInView":  "Aucune tache nest planifiee ce mois-ci.",
-                     "selectedMonth":  "Mois selectionne",
-                     "previousMonth":  "Mois precedent",
-                     "nextMonth":  "Mois suivant",
-                     "selectProject":  "Selectionner un projet"
-                 },
-    "tasks":  {
-                  "title":  "Gestion des taches",
-                  "subtitle":  "Suivez les affectations, les statuts et le rythme d\u0027execution.",
-                  "pending":  "En attente",
-                  "completed":  "Terminees",
-                  "all":  "Toutes les taches",
-                  "task":  "Tache",
-                  "prioritySuffix":  "Priorite {{priority}}",
-                  "filterHint":  "La vue filtre est pour l\u0027instant un mock frontend pret pour une integration backend."
-              },
-    "chat":  {
-                 "title":  "Chat d\u0027equipe",
-                 "subtitle":  "Restez alignes avec le bureau et les equipes en temps reel.",
-                 "placeholder":  "Ecrivez votre message...",
-                 "emptyTitle":  "Aucun fil selectionne",
-                 "emptySubtitle":  "Choisissez une conversation pour voir les mises a jour et envoyer un message.",
-                 "attachFile":  "Fichier",
-                 "attachImage":  "Image",
-                 "takePhoto":  "Camera",
-                 "attachments":  "Pieces jointes",
-                 "removeAttachment":  "Retirer la piece jointe",
-                 "attachmentReady":  "Pret a envoyer",
-                 "cameraReady":  "Pret pour la camera sur mobile",
-                 "messageWithAttachments":  "Message avec pieces jointes",
-                 "messages":  {
-                                  "m-1":  "Bonjour Alex, merci de prioriser aujourd\u0027hui l\u0027inspection de la dalle beton.",
-                                  "m-2":  "Bien recu. Je televerserai les notes apres la visite.",
-                                  "m-3":  "Peux-tu confirmer l\u0027arrivee de l\u0027equipe cablage pour Skyline ?",
-                                  "m-4":  "Confirme. Nous commencons a 09:00 et devrions terminer l\u0027aile est avant midi.",
-                                  "m-5":  "Le test de pression est prevu a 14:30. J\u0027attends encore la livraison de la vanne."
-                              }
-             },
-    "workers":  {
-                    "title":  "Employes",
-                    "subtitle":  "Surveillez les performances, la disponibilite et les prochaines gardes.",
-                    "activeWorkers":  "Employes actifs",
-                    "activeWorkersDetail":  "Tous visibles dans le centre de commande.",
-                    "availableNow":  "Disponibles maintenant",
-                    "availableNowDetail":  "Membres d\u0027equipe prets a prendre plus de travail.",
-                    "averagePerformance":  "Perf. moyenne",
-                    "averagePerformanceDetail":  "Basee sur les taux d\u0027achevement mockes.",
-                    "offShift":  "Hors service",
-                    "offShiftDetail":  "Employes hors rotation active sur site.",
-                    "addWorker":  "Ajouter un employe",
-                    "addFirstWorker":  "Ajouter le premier employe",
-                    "editWorker":  "Modifier l\u0027employe",
-                    "addWorkerTitle":  "Ajouter un nouvel employe",
-                    "editWorkerTitle":  "Modifier l\u0027employe",
-                    "workerModalDescription":  "Mettez a jour les details de l\u0027equipe dans l\u0027etat local mock sans toucher a l\u0027authentification.",
-                    "fullName":  "Nom complet",
-                    "placeholderName":  "Emma Schneider",
-                    "placeholderEmail":  "emma@buildforu.com",
-                    "placeholderPhone":  "+49 151 555 0111",
-                    "placeholderPosition":  "Ingenieure chantier",
-                    "phone":  "Telephone",
-                    "position":  "Poste",
-                    "assignedProject":  "Projet assigne",
-                    "selectProject":  "Selectionner un projet",
-                    "searchPlaceholder":  "Rechercher par nom, email, projet ou statut",
-                    "allStatuses":  "Tous les statuts",
-                    "allProjects":  "Tous les projets",
-                    "contact":  "Contact",
-                    "operations":  "Operations",
-                    "nextShift":  "Prochaine garde",
-                    "notScheduled":  "Non planifie",
-                    "completionRate":  "Taux d\u0027achevement",
-                    "noWorkersFound":  "Aucun employe trouve",
-                    "noWorkersSubtitle":  "Essayez une autre combinaison de filtres ou ajoutez un nouveau membre d\u0027equipe.",
-                    "deleteWorkerTitle":  "Supprimer l\u0027employe",
-                    "deleteWorkerDescription":  "Voulez-vous vraiment retirer {{name}} de la liste de l\u0027equipe ? Cela affecte seulement les donnees mock locales.",
-                    "keepWorker":  "Conserver l\u0027employe",
-                    "deleteWorkerConfirm":  "Supprimer l\u0027employe",
-                    "saveChanges":  "Enregistrer les modifications",
-                    "offSite":  "Hors site",
-                    "offSiteDetail":  "Travailleurs marques actuellement comme hors site.",
-                    "attendanceManagedByEmployee":  "Le statut de presence est enregistre par lemploye dans son propre espace.",
-                    "notProvided":  "Non renseigne",
-                    "assignedProjects":  "Projets assignes",
-                    "projectSelectionHint":  "Selectionnez un ou plusieurs projets pour relier cet employe aux chantiers actifs.",
-                    "noProjectsAvailable":  "Ajoutez d abord un projet pour relier cet employe."
-                },
-    "projects":  {
-                     "title":  "Projets",
-                     "subtitle":  "Suivez la dynamique de livraison et le risque des sites actifs.",
-                     "activeBuilds":  "Chantiers actifs",
-                     "activeBuildsDetail":  "Portefeuille actuel en cours.",
-                     "atRisk":  "A risque",
-                     "atRiskDetail":  "Un site demande une surveillance plus proche.",
-                     "averageProgress":  "Avancement moyen",
-                     "averageProgressDetail":  "Point median d\u0027achevement du portefeuille.",
-                     "progressComplete":  "{{value}}% termine",
-                     "totalProjects":  "Tous les projets",
-                     "totalProjectsDetail":  "Chaque projet actuellement suivi dans lapplication.",
-                     "inProgressProjects":  "En cours",
-                     "inProgressProjectsDetail":  "Projets actuellement actifs sur site ou en livraison.",
-                     "completedProjects":  "Termines",
-                     "completedProjectsDetail":  "Projets deja livres ou completement clotures.",
-                     "peopleAssigned":  "Personnes affectees",
-                     "peopleAssignedDetail":  "Travailleurs actuellement relies au travail projet.",
-                     "detailsDescription":  "Equipe, calendrier et notes operationnelles du projet au meme endroit.",
-                     "currentPhase":  "Phase actuelle",
-                     "projectLocation":  "Lieu",
-                     "budget":  "Budget",
-                     "startDate":  "Date de debut",
-                     "deadline":  "Echeance",
-                     "progressLabel":  "Avancement",
-                     "teamAssigned":  "Equipe affectee",
-                     "noAssignedWorkers":  "Aucun travailleur nest encore affecte a ce projet.",
-                     "notes":  "Notes",
-                     "viewDetails":  "Voir les details"
-                 },
-    "materials":  {
-                      "title":  "Materiaux",
-                      "subtitle":  "Suivez le stock, les fournisseurs et les signaux de reapprovisionnement.",
-                      "trackedItems":  "Articles suivis",
-                      "trackedItemsDetail":  "Materiaux cles surveilles dans le prototype.",
-                      "inStock":  "En stock",
-                      "inStockDetail":  "Stock suffisant pour les taches immediates.",
-                      "supplierSync":  "Sync fournisseurs",
-                      "supplierSyncValue":  "Actif",
-                      "supplierSyncDetail":  "Le statut achats est simule visuellement.",
-                      "requestsVisible":  "Demandes",
-                      "requestsVisibleDetail":  "Demandes visibles dans votre espace actuel.",
-                      "pendingRequests":  "En attente",
-                      "pendingRequestsDetail":  "En attente de validation ou dachats.",
-                      "orderedRequests":  "Commande",
-                      "orderedRequestsDetail":  "Deja envoyees aux fournisseurs ou magasins.",
-                      "purchasedRequests":  "Achete",
-                      "purchasedRequestsDetail":  "Pret a arriver sur site ou a lequipe.",
-                      "requestFormTitle":  "Creer une demande de materiel",
-                      "requestFormSubtitle":  "Indiquez ce dont vous avez besoin pour que le bureau puisse le suivre et lacheter.",
-                      "yourProject":  "Projet affecte",
-                      "noProjectAssigned":  "Aucun projet affecte actuellement.",
-                      "itemName":  "Nom de larticle",
-                      "itemPlaceholder":  "Peinture, vis, ciment, toilette, carrelage...",
-                      "quantity":  "Quantite",
-                      "quantityPlaceholder":  "Optionnel, ex. 20 sacs ou 2 cartons",
-                      "note":  "Note",
-                      "notePlaceholder":  "Contexte optionnel pour le bureau ou le processus dachat",
-                      "submitRequest":  "Envoyer la demande",
-                      "requestedBy":  "Demande par",
-                      "createdOn":  "Cree le",
-                      "updateStatus":  "Mettre a jour le statut",
-                      "adminScope":  "Tableau materiel admin",
-                      "adminScopeSubtitle":  "Consultez les demandes terrain et faites-les avancer dans les statuts dachat.",
-                      "requestsBoardTitle":  "Tableau des demandes de materiel",
-                      "requestsBoardSubtitle":  "Suivez les demandes, filtrez la file et mettez a jour lavancement.",
-                      "searchPlaceholder":  "Rechercher par article, personne, note ou projet",
-                      "emptyTitle":  "Aucune demande trouvee",
-                      "emptySubtitle":  "Essayez une autre recherche, un autre filtre ou creez une nouvelle demande.",
-                      "noProjectLink":  "Sans lien de projet"
-                  },
-    "finance":  {
-                    "title":  "Finances",
-                    "subtitle":  "Consultez les revenus, depenses et le suivi des factures.",
-                    "revenue":  "Revenus",
-                    "revenueDetail":  "Instantane mock actuel des revenus.",
-                    "expenses":  "Depenses",
-                    "expensesDetail":  "Depenses d\u0027exploitation sur les projets.",
-                    "profit":  "Profit",
-                    "profitDetail":  "Marge positive sur ce cycle.",
-                    "openInvoices":  "Factures ouvertes",
-                    "openInvoicesDetail":  "Pret pour des donnees backend plus tard.",
-                    "cashFlowOutlook":  "Perspective de tresorerie",
-                    "monthOverMonth":  "+12,4% mois sur mois",
-                    "weekLabel":  "S{{number}}"
-                },
-    "settings":  {
-                     "title":  "Parametres",
-                     "subtitle":  "Personnalisez la langue, les alertes et l\u0027espace de travail.",
-                     "alertsTitle":  "Notifications push",
-                     "alertsDescription":  "Recevez instantanement les nouvelles taches et changements de service.",
-                     "summariesTitle":  "Resumes quotidiens",
-                     "summariesDescription":  "Consultez chaque soir un recapitulatif concis de l\u0027activite.",
-                     "privacyTitle":  "Mode confidentialite avance",
-                     "privacyDescription":  "Reduisez les details operationnels visibles sur les ecrans partages.",
-                     "workspaceSaved":  "Preferences enregistrees localement",
-                     "workspaceSavedDetail":  "Cet ecran reste purement UI pour l\u0027instant et est pret pour un futur service backend.",
-                     "billingTitle":  "Facturation et abonnement",
-                     "billingDescription":  "Ouvrez la vue abonnement pour verifier le plan, lusage des employes et les informations mock de facturation.",
-                     "manageBilling":  "Gerer la facturation"
-                 },
-    "marketMap":  {
-                      "title":  "Carte des magasins",
-                      "subtitle":  "Comparez les magasins proches, consultez les prix mockes et passez a la meilleure option d\u0027achat.",
-                      "eyebrow":  "Intelligence marche",
-                      "searchPlaceholder":  "Rechercher des materiaux (ex. toilette, ciment, carrelage...)",
-                      "price":  "Prix",
-                      "distance":  "Distance",
-                      "category":  "Categorie",
-                      "availability":  "Disponibilite",
-                      "lowestFirst":  "Du moins cher",
-                      "highestFirst":  "Du plus cher",
-                      "nearestFirst":  "Du plus proche",
-                      "farthestFirst":  "Du plus eloigne",
-                      "allCategories":  "Toutes les categories",
-                      "allAvailability":  "Toutes les disponibilites",
-                      "cheapestOption":  "Option la moins chere",
-                      "nearestOption":  "Option la plus proche",
-                      "bestOverallOption":  "Meilleure option globale",
-                      "noOption":  "Aucune option disponible",
-                      "resultsTitle":  "Resultats des magasins proches",
-                      "resultsSubtitle":  "{{count}} options mock pretes pour comparaison et apercu carte.",
-                      "mapPreview":  "Apercu carte",
-                      "mapPreviewSubtitle":  "Un conteneur de carte mock montrant les options correspondantes.",
-                      "noStoresTitle":  "Aucun magasin ne correspond a cette recherche",
-                      "noStoresSubtitle":  "Essayez un autre materiau ou changez les filtres selectionnes.",
-                      "focusedStore":  "Magasin cible",
-                      "storeSupplyCheck":  "Verification du magasin avec donnees de localisation mock.",
-                      "cheapestDetail":  "{{price}} chez {{store}}",
-                      "nearestDetail":  "{{distance}} km de {{store}}",
-                      "bestOverallDetail":  "{{store}} equilibre au mieux prix, distance et stock."
-                  },
-    "plans":  {
-                  "starter":  "Starter",
-                  "pro":  "Pro",
-                  "enterprise":  "Enterprise"
-              },
-    "publicNav":  {
-                      "home":  "Accueil",
-                      "pricing":  "Tarifs",
-                      "register":  "Inscription",
-                      "openDashboard":  "Ouvrir le tableau",
-                      "startTrial":  "Essai gratuit",
-                      "footer":  "Concu pour les entreprises du batiment en croissance qui ont besoin dun espace operationnel plus clair et plus connecte."
-                  },
-    "attendance":  {
-                       "title":  "Statut de travail",
-                       "subtitle":  "Enregistrez le debut et la fin du travail avec heure et localisation optionnelle.",
-                       "currentStatus":  "Statut actuel",
-                       "startWork":  "Commencer le travail",
-                       "endWork":  "Terminer le travail",
-                       "startingWork":  "Demarrage du travail...",
-                       "endingWork":  "Fin du travail...",
-                       "lastStart":  "Dernier debut",
-                       "lastEnd":  "Derniere fin",
-                       "startLocation":  "Lieu de debut",
-                       "endLocation":  "Lieu de fin",
-                       "locationHint":  "Lapplication tentera de capturer la localisation au debut ou a la fin du travail, mais laction fonctionne aussi sans.",
-                       "locationDenied":  "Permission de localisation refusee",
-                       "locationUnavailable":  "Localisation indisponible",
-                       "locationUnavailableShort":  "Localisation indisponible",
-                       "locationCaptured":  "Localisation capturee",
-                       "locationIndicator":  "Capture de localisation",
-                       "startSaved":  "Debut du travail enregistre.",
-                       "endSaved":  "Fin du travail enregistree.",
-                       "startSavedWithoutLocation":  "Debut du travail enregistre. {{reason}}.",
-                       "endSavedWithoutLocation":  "Fin du travail enregistree. {{reason}}.",
-                       "noRecord":  "Aucun enregistrement",
-                       "noWorkerProfile":  "Aucun profil employe lie na encore ete trouve pour ce compte.",
-                       "viewDetails":  "Presence",
-                       "detailsTitle":  "Presence de {{name}}",
-                       "detailsDescription":  "Consultez le statut de presence, les horodatages et les coordonnees optionnelles."
-                   },
-    "landing":  {
-                    "eyebrow":  "SaaS operations chantier",
-                    "title":  "Pilotez equipes, plannings et communication chantier depuis un seul espace BuildForU.",
-                    "subtitle":  "BuildForU aide les entreprises du batiment a gerer travailleurs, taches, planification, chat equipe et approvisionnement dans un tableau de bord soigne pour bureau et terrain.",
-                    "featuresEyebrow":  "Capacites principales",
-                    "featuresTitle":  "Construit autour du rythme quotidien dune entreprise du batiment.",
-                    "ctaEyebrow":  "Pret a demarrer",
-                    "ctaTitle":  "Lancez votre essai BuildForU et mettez en place lespace de votre entreprise en quelques minutes.",
-                    "ctaSubtitle":  "Explorez le produit, comparez les plans et entrez dans le tableau existant sans backend.",
-                    "stats":  {
-                                  "roles":  {
-                                                "label":  "Concu pour",
-                                                "value":  "Patron + Employe"
-                                            },
-                                  "deployment":  {
-                                                     "label":  "Deploiement",
-                                                     "value":  "Frontend dabord"
-                                                 },
-                                  "focus":  {
-                                                "label":  "Focus",
-                                                "value":  "Operations quotidiennes"
-                                            }
-                              },
-                    "features":  {
-                                     "workers":  {
-                                                     "title":  "Gestion des travailleurs",
-                                                     "description":  "Gardez equipes, superviseurs et affectations visibles dans un meme espace operationnel."
-                                                 },
-                                     "calendar":  {
-                                                      "title":  "Planification calendrier",
-                                                      "description":  "Coordonnez jours de travail, visites et horaires avec une vue de planification plus claire."
-                                                  },
-                                     "chat":  {
-                                                  "title":  "Chat equipe",
-                                                  "description":  "Reduisez le chaos des appels avec des mises a jour rapides entre bureau et terrain."
-                                              },
-                                     "marketMap":  {
-                                                       "title":  "Carte des magasins",
-                                                       "description":  "Comparez les magasins proches et les options dapprovisionnement avant que les equipes perdent du temps."
-                                                   }
-                                 },
-                    "preview":  {
-                                    "eyebrow":  "Apercu produit",
-                                    "title":  "Un regard de plus pres sur la facon dont les equipes utilisent BuildForU",
-                                    "badge":  "Modules produit en direct",
-                                    "glanceEyebrow":  "Aujourdhui en bref",
-                                    "glanceTitle":  "Main-doeuvre, planification, chat et achat dans une seule vue operationnelle.",
-                                    "pills":  {
-                                                  "workers":  "18 travailleurs actifs",
-                                                  "tasks":  "12 taches aujourdhui",
-                                                  "threads":  "4 fils actifs"
-                                              },
-                                    "workers":  {
-                                                    "label":  "Travailleurs",
-                                                    "title":  "Statut de lequipe",
-                                                    "badge":  "Sync en direct"
-                                                },
-                                    "calendar":  {
-                                                     "label":  "Calendrier",
-                                                     "title":  "Planning du jour"
-                                                 },
-                                    "chat":  {
-                                                 "label":  "Chat",
-                                                 "title":  "Mises a jour bureau vers terrain",
-                                                 "badge":  "2 non lus",
-                                                 "message-1":  {
-                                                                   "author":  "Sophie",
-                                                                   "text":  "Merci de confirmer les notes dinspection apres la visite."
-                                                               },
-                                                 "message-2":  {
-                                                                   "author":  "Alex",
-                                                                   "text":  "Confirme. Je mettrai a jour avant midi."
-                                                               }
-                                             },
-                                    "market":  {
-                                                   "label":  "Carte des magasins",
-                                                   "title":  "Recherche dapprovisionnement proche",
-                                                   "search":  "Recherche : panneaux de facade",
-                                                   "result-1":  {
-                                                                    "store":  "Nordic Build Store",
-                                                                    "meta":  "Panneaux de facade - 3.1 km",
-                                                                    "price":  "$86",
-                                                                    "badge":  "Meilleur prix"
-                                                                },
-                                                   "result-2":  {
-                                                                    "store":  "Voltix Supply Hub",
-                                                                    "meta":  "Cablage - 5.4 km",
-                                                                    "price":  "$42",
-                                                                    "badge":  "En stock"
-                                                                }
-                                               }
-                                }
-                },
-    "pricing":  {
-                    "eyebrow":  "Tarifs",
-                    "title":  "Choisissez le plan adapte a letape de votre entreprise.",
-                    "subtitle":  "Commencez avec une configuration simple et passez vers un espace operationnel complet a mesure que vos equipes grandissent.",
-                    "mostPopular":  "Le plus populaire",
-                    "perMonth":  "par mois",
-                    "choosePlan":  "Choisir ce plan",
-                    "plans":  {
-                                  "starter":  {
-                                                  "price":  "$29",
-                                                  "subtitle":  "Pour les petites equipes qui veulent se structurer.",
-                                                  "workers":  "Jusqua 5 travailleurs",
-                                                  "features":  {
-                                                                   "1":  "Connexion par role",
-                                                                   "2":  "Vues taches et calendrier",
-                                                                   "3":  "Chat equipe",
-                                                                   "4":  "Acces carte des magasins"
-                                                               }
-                                              },
-                                  "pro":  {
-                                              "price":  "$99",
-                                              "subtitle":  "Pour les entreprises actives avec plusieurs equipes.",
-                                              "workers":  "Jusqua 25 travailleurs",
-                                              "features":  {
-                                                               "1":  "Tout du Starter",
-                                                               "2":  "Gestion des travailleurs",
-                                                               "3":  "Tableau operationnel admin",
-                                                               "4":  "Onboarding prioritaire"
-                                                           }
-                                          },
-                                  "enterprise":  {
-                                                     "price":  "Sur mesure",
-                                                     "subtitle":  "Pour les operations plus grandes et un deploiement adapte.",
-                                                     "workers":  "Travailleurs illimites",
-                                                     "features":  {
-                                                                      "1":  "Tout du Pro",
-                                                                      "2":  "Montee en charge illimitee",
-                                                                      "3":  "Support onboarding personnalise",
-                                                                      "4":  "Deploiement futur pret pour API"
-                                                                  }
-                                                 }
-                              }
-                },
-    "register":  {
-                     "eyebrow":  "Inscrire votre entreprise",
-                     "title":  "Creez lespace de votre entreprise",
-                     "subtitle":  "Commencez avec les details de votre entreprise, choisissez un plan et passez sur BuildForU en quelques minutes.",
-                     "companyName":  "Nom de lentreprise",
-                     "ownerName":  "Nom du proprietaire",
-                     "plan":  "Plan",
-                     "creatingWorkspace":  "Creation de lespace...",
-                     "createAccount":  "Creer le compte entreprise",
-                     "alreadyTesting":  "Vous testez deja le produit ?",
-                     "goToSignIn":  "Aller a la connexion",
-                     "onboardingEyebrow":  "Onboarding",
-                     "onboardingTitle":  "Mettez vos operations en place avec moins de friction.",
-                     "onboardingSubtitle":  "BuildForU est concu pour installer rapidement votre entreprise dans un espace operationnel sans etapes lourdes.",
-                     "selectedPlan":  "Plan selectionne",
-                     "workspaceSignIn":  "Connexion a lespace",
-                     "dashboardPreviewNote":  "Apres inscription, vous arriverez dans le tableau existant pour voir toute lexperience BuildForU.",
-                     "steps":  {
-                                   "1":  {
-                                             "title":  "Choisissez votre plan et commencez",
-                                             "description":  "Vous pourrez ajuster la facturation plus tard."
-                                         },
-                                   "2":  {
-                                             "title":  "Invitez votre equipe plus tard",
-                                             "description":  "Commencez avec le compte du proprietaire puis developpez a partir de la."
-                                         },
-                                   "3":  {
-                                             "title":  "Parcours onboarding fiable",
-                                             "description":  "Ce prototype garde linscription claire et concentree."
-                                         }
-                               },
-                     "planCards":  {
-                                       "starter":  {
-                                                       "price":  "$29/mois",
-                                                       "workers":  "Jusqua 5 travailleurs",
-                                                       "note":  "Point de depart leger pour les petites equipes du batiment."
-                                                   },
-                                       "pro":  {
-                                                   "price":  "$99/mois",
-                                                   "workers":  "Jusqua 25 travailleurs",
-                                                   "note":  "Ideal pour les entreprises actives gerant plusieurs equipes et projets."
-                                               },
-                                       "enterprise":  {
-                                                          "price":  "Tarification personnalisee",
-                                                          "workers":  "Travailleurs illimites",
-                                                          "note":  "Pour les grandes organisations qui ont besoin de flexibilite et de support de deploiement."
-                                                      }
-                                   }
-                 },
-    "billing":  {
-                    "title":  "Facturation et abonnement",
-                    "subtitle":  "Consultez votre abonnement actuel, les donnees mock de facturation et les options de mise a niveau.",
-                    "currentPlan":  "Plan actuel",
-                    "mockSubscriptionData":  "Donnees mock dabonnement",
-                    "workerLimit":  "Limite de travailleurs",
-                    "workerLimitDetail":  "Selon le niveau de plan selectionne",
-                    "usage":  "Utilisation",
-                    "usageWorkers":  "{{count}} travailleurs",
-                    "usageDetail":  "Suivi par rapport au plan actuel",
-                    "upgradePlan":  "Changer de plan",
-                    "subscriptionOverview":  "Vue densemble de labonnement",
-                    "uiOnly":  "Interface seulement pour le moment",
-                    "workerUsage":  "Utilisation des travailleurs",
-                    "workerUsageHint":  "Passez au plan superieur quand votre effectif depasse la capacite actuelle.",
-                    "nextInvoice":  "Prochaine facture",
-                    "billingContact":  "Contact de facturation",
-                    "billingContactEmail":  "finance@buildforu.com",
-                    "billingContactHint":  "Contact mock affiche pour lapercu de linterface",
-                    "paymentMethod":  "Methode de paiement",
-                    "cardLabel":  "Visa se terminant par 2048",
-                    "cardHint":  "Expire 09/28 - details de carte mock pour lapercu abonnement",
-                    "recentActivity":  "Activite recente de facturation",
-                    "unlimitedWorkers":  "Illimite",
-                    "planDescriptions":  {
-                                             "starter":  "Un espace leger pour les petites entreprises.",
-                                             "pro":  "Concu pour les entreprises actives avec plusieurs equipes.",
-                                             "enterprise":  "Pret pour les organisations plus grandes et le support de deploiement."
-                                         },
-                    "activity":  {
-                                     "invoiceTitle":  "Facture INV-2026-041",
-                                     "invoiceBody":  "Payee avec succes - $99.00",
-                                     "renewalTitle":  "Rappel de renouvellement",
-                                     "renewalBody":  "Le renouvellement automatique est prevu pour la fin du mois.",
-                                     "growthTitle":  "Indicateur de croissance des places",
-                                     "growthBody":  "Vous restez dans la limite du plan actuel avec de la place pour dautres travailleurs."
-                                 }
-                },
-    "seed":  {
-                 "common":  {
-                                "hq":  "Siege BuildForU"
-                            },
-                 "users":  {
-                               "u-admin-1":  {
-                                                 "title":  "Directrice des operations"
-                                             },
-                               "u-employee-1":  {
-                                                    "title":  "Superviseur de chantier"
-                                                },
-                               "u-employee-2":  {
-                                                    "title":  "Electricienne"
-                                                },
-                               "u-employee-3":  {
-                                                    "title":  "Responsable plomberie"
-                                                }
-                           },
-                 "tasks":  {
-                               "task-101":  {
-                                                "title":  "Inspection de la dalle beton"
-                                            },
-                               "task-102":  {
-                                                "title":  "Brief securite avec les sous-traitants"
-                                            },
-                               "task-103":  {
-                                                "title":  "Installer les circuits declairage"
-                                            },
-                               "task-104":  {
-                                                "title":  "Test de pression des tuyaux"
-                                            },
-                               "task-105":  {
-                                                "title":  "Controle de livraison de facade"
-                                            },
-                               "task-106":  {
-                                                "title":  "Audit du marquage des panneaux"
-                                            }
-                           },
-                 "projects":  {
-                                  "project-1":  {
-                                                    "name":  "North River Residences",
-                                                    "phase":  "Finition structurelle",
-                                                    "location":  "Berlin - Prenzlauer Berg",
-                                                    "notes":  "La coordination facade avance bien, mais linspection de la dalle attend encore la validation finale."
-                                                },
-                                  "project-2":  {
-                                                    "name":  "Skyline Offices",
-                                                    "phase":  "Installation MEP",
-                                                    "location":  "Berlin - Mitte",
-                                                    "notes":  "Les travaux electriques sont en pause jusqua confirmation du fournisseur pour les panneaux manquants."
-                                                },
-                                  "project-3":  {
-                                                    "name":  "Harbor Villas",
-                                                    "phase":  "Details interieurs",
-                                                    "location":  "Potsdam Waterfront",
-                                                    "notes":  "Tous les points de reprise ont ete clotures et le dossier de remise client a ete livre."
-                                                },
-                                  "project-4":  {
-                                                    "name":  "Greenpoint Warehouse",
-                                                    "phase":  "Planification avant chantier",
-                                                    "location":  "Brandenburg Logistics Park",
-                                                    "notes":  "Le lancement est prevu apres validation du permis et confirmation de la cloture du site."
-                                                }
-                              },
-                 "materialRequests":  {
-                                          "request-1":  {
-                                                            "itemName":  "Sacs de ciment",
-                                                            "note":  "Necessaires pour preparer la dalle pres de la tour B."
-                                                        },
-                                          "request-2":  {
-                                                            "itemName":  "Clips de cable",
-                                                            "note":  "Pour le passage des cables dans laile est."
-                                                        },
-                                          "request-3":  {
-                                                            "itemName":  "Toilette de chantier mobile",
-                                                            "note":  "Necessaire avant que lequipe plomberie reste toute la journee sur site."
-                                                        },
-                                          "request-4":  {
-                                                            "itemName":  "Peinture interieure blanche",
-                                                            "note":  "La specification a change apres la derniere revue client."
-                                                        }
-                                      },
-                 "stores":  {
-                                "store-item-1":  {
-                                                     "productName":  "Ciment 25 kg",
-                                                     "category":  "Beton",
-                                                     "address":  "12 Riverstone Ave, Berlin"
-                                                 },
-                                "store-item-2":  {
-                                                     "productName":  "Carrelage ceramique 60x60",
-                                                     "category":  "Finition",
-                                                     "address":  "88 Tempelhof Road, Berlin"
-                                                 },
-                                "store-item-3":  {
-                                                     "productName":  "Set WC compact",
-                                                     "category":  "Sanitaire",
-                                                     "address":  "7 Linden Markt, Berlin"
-                                                 },
-                                "store-item-4":  {
-                                                     "productName":  "Cable electrique 100 m",
-                                                     "category":  "Electrique",
-                                                     "address":  "104 Solaris Strasse, Berlin"
-                                                 },
-                                "store-item-5":  {
-                                                     "productName":  "Colle sol 20 kg",
-                                                     "category":  "Finition",
-                                                     "address":  "12 Riverstone Ave, Berlin"
-                                                 },
-                                "store-item-6":  {
-                                                     "productName":  "Rouleau disolation murale",
-                                                     "category":  "Isolation",
-                                                     "address":  "41 Hafenblick Alley, Berlin"
-                                                 }
-                            },
-                 "previewWorkers":  {
-                                        "u-employee-1":  {
-                                                             "name":  "Alex Novak",
-                                                             "role":  "Superviseur de chantier"
-                                                         },
-                                        "u-employee-2":  {
-                                                             "name":  "Mia Berger",
-                                                             "role":  "Electricienne"
-                                                         },
-                                        "u-employee-3":  {
-                                                             "name":  "Luca Moretti",
-                                                             "role":  "Responsable plomberie"
-                                                         }
-                                    },
-                 "previewSchedule":  {
-                                         "task-101":  {
-                                                          "time":  "09:30",
-                                                          "site":  "North River Residences"
-                                                      },
-                                         "task-102":  {
-                                                          "time":  "12:00",
-                                                          "site":  "Siege BuildForU"
-                                                      },
-                                         "task-105":  {
-                                                          "time":  "16:30",
-                                                          "site":  "Skyline Offices"
-                                                      }
-                                     }
-             }
+  "app": {
+    "name": "BuildForU",
+    "tagline": "Operations chantier avec une vue plus claire.",
+    "commandCenter": "Centre de commande BuildForU",
+    "preparing": "Preparation de BuildForU..."
+  },
+  "roles": {
+    "employee": "Employe",
+    "admin": "Patron"
+  },
+  "nav": {
+    "dashboard": "Tableau",
+    "workers": "Employés",
+    "projects": "Projets",
+    "materials": "Matériaux",
+    "calendar": "Calendrier",
+    "finance": "Finances",
+    "tasks": "Tâches",
+    "chat": "Chat",
+    "settings": "Paramètres",
+    "marketMap": "Carte des magasins"
+  },
+  "common": {
+    "search": "Rechercher dans l'espace",
+    "today": "Aujourd'hui",
+    "overview": "Vue d'ensemble",
+    "save": "Enregistrer",
+    "status": "Statut",
+    "location": "Lieu",
+    "date": "Date",
+    "assignedTo": "Attribue a",
+    "priority": "Priorite",
+    "send": "Envoyer",
+    "logout": "Se deconnecter",
+    "welcomeBack": "Bon retour",
+    "notifications": "Notifications",
+    "language": "Langue",
+    "loading": "Chargement de l'interface...",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "closeModal": "Fermer la fenetre",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "account": "Compte",
+    "openMenu": "Ouvrir le menu",
+    "viewOnMap": "Voir sur la carte",
+    "viewProfile": "Voir le profil",
+    "toggleStatus": "Changer le statut",
+    "all": "Tous",
+    "project": "Projet"
+  },
+  "statusLabels": {
+    "pending": "En attente",
+    "completed": "Terminé",
+    "healthy": "Sain",
+    "at risk": "A risque",
+    "available": "Disponible",
+    "busy": "Occupe",
+    "on site": "Sur site",
+    "in transit": "En transit",
+    "off shift": "Hors service",
+    "in stock": "En stock",
+    "low stock": "Stock faible",
+    "limited": "Limite",
+    "preorder": "Precommande",
+    "out of stock": "Rupture de stock",
+    "off site": "Hors site",
+    "in progress": "En cours",
+    "not started": "Non commence",
+    "on hold": "En pause",
+    "ordered": "Commandé",
+    "purchased": "Acheté",
+    "rejected": "Rejeté",
+    "to start": "À commencer"
+  },
+  "priorityLabels": {
+    "high": "Haute",
+    "medium": "Moyenne",
+    "low": "Basse"
+  },
+  "notifications": {
+    "n-1": {
+      "title": "Nouvelle tache attribuee a Mia",
+      "time": "il y a 5 min"
+    },
+    "n-2": {
+      "title": "Livraison de beton confirmee",
+      "time": "il y a 18 min"
+    },
+    "n-3": {
+      "title": "Facture #204 approuvee",
+      "time": "il y a 1 h"
+    }
+  },
+  "login": {
+    "title": "Pilotez chaque projet avec assurance.",
+    "subtitle": "Un centre de commande premium pour les equipes, plannings, materiaux et livraisons.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "button": "Connexion",
+    "helper": "Utilisez les comptes de demonstration ci-dessous pour voir les deux experiences.",
+    "mockPassword": "Dans ce prototype, n'importe quel mot de passe fonctionne.",
+    "requiredError": "L'e-mail et le mot de passe sont obligatoires.",
+    "detectedRole": "Role detecte",
+    "previewAccess": "Acces de demonstration",
+    "liveAssignments": "Interventions terrain actives",
+    "projectsInDelivery": "Projets en livraison",
+    "scheduleReliability": "Fiabilite du planning",
+    "loading": "Chargement...",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublie ?",
+    "accessNote": "Acces securise pour les equipes bureau et terrain BuildForU.",
+    "workspaceEyebrow": "Plateforme des operations chantier",
+    "featureAdmin": "Espaces admin et employe",
+    "featureOps": "Taches, planning et chat equipe",
+    "featureI18n": "Interface multilingue alimentee par des donnees mock",
+    "demoAccounts": "Comptes exemple",
+    "featureEmployeeCredentials": "Identifiants employé",
+    "featureRoleViews": "Vues selon le rôle",
+    "featureWorkspaceAccess": "Accès à l’espace de travail",
+    "invalidCredentials": "Utilisez l’une des paires email et mot de passe indiquées.",
+    "mockCredentialsHint": "Identifiants simulés pour ce prototype frontend."
+  },
+  "sidebar": {
+    "controlTower": "Tour de controle",
+    "fieldWorkspace": "Espace terrain",
+    "crewRhythmTitle": "Le rythme de l'equipe est stable",
+    "crewRhythmSubtitle": "Les mises a jour chantier se synchronisent bien aujourd'hui.",
+    "shiftProfile": "Profil de service"
+  },
+  "dashboard": {
+    "employeeTitle": "Tableau de coordination terrain",
+    "adminTitle": "Tableau operationnel de l'entreprise",
+    "upcomingTasks": "Taches a venir",
+    "calendarOverview": "Vue calendrier",
+    "teamMessages": "Messages d'equipe",
+    "workerPulse": "Pulse equipe",
+    "assignTask": "Attribuer une nouvelle tache",
+    "projectHealth": "Sante des projets",
+    "todayFocus": "Focus du jour",
+    "activeProjects": "Projets actifs",
+    "crewAvailability": "Disponibilite des equipes",
+    "completionRate": "Taux d'achevement",
+    "monthlyRevenue": "Revenu mensuel",
+    "adminHeroBody": "Le tableau du jour met en avant la couverture des equipes, la pression des taches, les horaires en direct et la sante des livraisons en un seul endroit.",
+    "adminCrewDetail": "Trois equipes actives aujourd'hui",
+    "adminOpenAssignments": "Affectations actuellement ouvertes",
+    "adminProjectDetail": "2 sains, 1 a risque",
+    "adminRevenueDetail": "Le suivi du profit reste positif",
+    "workerPulseSubtitle": "Visibilite des equipes sur les sites",
+    "calendarSubtitle": "Couverture globale des taches pour le mois en cours.",
+    "projectSubtitle": "Pulse de livraison sur vos projets principaux.",
+    "chatSubtitle": "Coordonnez-vous vite avec les equipes et les superviseurs.",
+    "employeeHeroBody": "Votre planning de la semaine est aligne. Le prochain point de controle est deja epingle et le chat avec le patron reste a portee.",
+    "employeePendingDetail": "Taches en attente",
+    "employeeCompletedDetail": "Terminees cette semaine",
+    "employeeNextSiteLabel": "Prochain site",
+    "employeeNextSiteValue": "North River",
+    "employeeNextSiteDetail": "Inspection a 09:30",
+    "employeeCalendarSubtitle": "Consultez vos blocs de travail et visites de site pour le mois courant.",
+    "employeeTaskSubtitle": "Vos affectations personnelles",
+    "employeeEmptyTasks": "Aucune tache n'attend pour le moment.",
+    "quickPulse": "Pulse rapide",
+    "quickPulseSubtitle": "Lecture concise de votre charge et de la qualite du planning.",
+    "scheduleConfidence": "Confiance du planning",
+    "scheduleConfidenceDetail": "Aucun conflit detecte dans vos cinq prochaines gardes.",
+    "siteRhythm": "Rythme du site",
+    "siteRhythmDetail": "Les livraisons et inspections sont sur la bonne trajectoire.",
+    "employeeChatSubtitle": "Chat rapide avec le patron",
+    "quickActions": "Actions rapides",
+    "openCalendarAction": "Ouvrir le calendrier",
+    "openTasksAction": "Ouvrir les tâches",
+    "requestMaterialAction": "Demander du matériel",
+    "todayTasks": "Tâches du jour",
+    "mySchedule": "Mon planning",
+    "noTasksToday": "Aucune tâche prévue aujourd’hui.",
+    "noTasksTodayEmployee": "Aucune tâche prévue pour vous aujourd’hui.",
+    "noUpcomingTasks": "Aucune tâche à venir pour le moment.",
+    "materialRequestsLabel": "Demandes de matériaux",
+    "adminQuickActionsSubtitle": "Le chemin le plus rapide pour la planification quotidienne.",
+    "employeeQuickActionsSubtitle": "Raccourcis vers les pages les plus utilisées pendant la journée.",
+    "employeeQuickTasks": "Voir toutes les tâches attribuées.",
+    "employeeQuickMaterials": "Demander des fournitures par projet.",
+    "employeeQuickCalendar": "Voir la prochaine visite de chantier.",
+    "materialRequestsSubtitle": "Demandes récentes nécessitant un suivi du bureau ou un contrôle de statut.",
+    "materialStatusHint": "Les demandes en attente, commandées, achetées et rejetées restent visibles ici.",
+    "myScheduleSubtitle": "Prochaines tâches après aujourd’hui pour préparer la semaine.",
+    "openMaterials": "Ouvrir les matériaux",
+    "openProjects": "Ouvrir les projets",
+    "openWorkers": "Ouvrir les employés",
+    "projectBoardLabel": "Vue des projets",
+    "projectBoardSubtitle": "Suivez les projets actifs, les employés affectés et le statut actuel.",
+    "quickAddProject": "Créer la fiche du chantier.",
+    "quickAddTask": "Placer le travail dans le calendrier.",
+    "quickAddWorker": "Ajouter un accès et un projet.",
+    "quickOpenCalendar": "Consulter le planning de l’équipe.",
+    "todaySchedule": "Planning du jour",
+    "todayScheduleSubtitle": "Affectations prévues aujourd’hui pour toute l’équipe.",
+    "todayTasksSubtitle": "Vos tâches du jour avec mise à jour rapide du statut.",
+    "workersSummary": "Vue des employés",
+    "workersSummarySubtitle": "Voyez qui est sur site, hors site et à quel projet chaque employé est lié."
+  },
+  "calendar": {
+    "title": "Calendrier du planning",
+    "subtitle": "Consultez les affectations et l'activite des sites sur le mois.",
+    "scheduledThisMonth": "Planifie ce mois-ci",
+    "scheduledThisMonthDetail": "Affectations visibles sur le tableau.",
+    "coverage": "Couverture",
+    "coverageAllCrews": "Toutes les equipes",
+    "coveragePersonal": "Personnel",
+    "coverageDetail": "Change automatiquement selon le role.",
+    "nextCheckpoint": "Prochain point de controle",
+    "nextCheckpointDetail": "La prochaine tache en attente commence demain.",
+    "upcomingTimeline": "Chronologie a venir",
+    "upcomingTimelineSubtitle": "Un apercu rapide des prochaines activites planifiees.",
+    "noUpcoming": "Aucune activite planifiee visible pour le moment.",
+    "addTask": "Ajouter une tache",
+    "addTaskSubtitle": "Creez et planifiez une nouvelle tache directement depuis le calendrier.",
+    "monthlyEyebrow": "Mensuel",
+    "emptyMonth": "Aucun element planifie pour ce mois.",
+    "formTitle": "Attribuer une nouvelle tache",
+    "formSubtitle": "Creez une affectation mock directement depuis la vue calendrier.",
+    "worker": "Employe",
+    "unknownWorker": "Employe inconnu",
+    "emptyWorker": "Ajoutez un employe pour attribuer une tache",
+    "taskTitle": "Titre de la tache",
+    "taskLocation": "Lieu du chantier",
+    "assignTaskButton": "Attribuer la tache",
+    "scheduledInView": "Planifie dans la vue",
+    "scheduledInViewDetail": "{{month}} est actuellement charge dans le calendrier.",
+    "scheduleList": "Liste du planning",
+    "scheduleListSubtitle": "Taches prevues pour le mois selectionne.",
+    "noTasksInView": "Aucune tache nest planifiee ce mois-ci.",
+    "selectedMonth": "Mois selectionne",
+    "previousMonth": "Mois precedent",
+    "nextMonth": "Mois suivant",
+    "selectProject": "Selectionner un projet",
+    "selectWorker": "Sélectionner un employé",
+    "taskRequiresSetup": "Créez au moins un employé et un projet avant d’attribuer des tâches.",
+    "noProjectLink": "Aucun lien projet",
+    "unassignedWorker": "Non attribué",
+    "addEntry": "Ajouter une entrée",
+    "createProjectButton": "Créer un projet",
+    "entriesPlanned": "{{count}} entrées planifiées",
+    "entryModalTitle": "Créer une entrée de calendrier",
+    "entryModalSubtitle": "Choisissez si vous voulez ajouter une tâche ou créer un projet depuis le calendrier.",
+    "entryTypes": {
+      "task": "Tâche",
+      "project": "Projet"
+    },
+    "primarySubtitle": "Planning mensuel pour la vue d’équipe actuelle.",
+    "projectEntryDescription": "Créez un vrai projet qui apparaîtra aussi dans Projets.",
+    "scheduleListMixedSubtitle": "Tâches et dates de projets prévues pour le mois sélectionné.",
+    "taskEntryDescription": "Créez une tâche datée liée ? un projet et ? un employé."
+  },
+  "tasks": {
+    "title": "Gestion des taches",
+    "subtitle": "Suivez les affectations, les statuts et le rythme d'execution.",
+    "pending": "En attente",
+    "completed": "Terminees",
+    "all": "Toutes les taches",
+    "task": "Tache",
+    "prioritySuffix": "Priorite {{priority}}",
+    "filterHint": "La vue filtre est pour l'instant un mock frontend pret pour une integration backend.",
+    "priority": "Priorité"
+  },
+  "chat": {
+    "title": "Chat d'equipe",
+    "subtitle": "Restez alignes avec le bureau et les equipes en temps reel.",
+    "placeholder": "Ecrivez votre message...",
+    "emptyTitle": "Aucun fil selectionne",
+    "emptySubtitle": "Choisissez une conversation pour voir les mises a jour et envoyer un message.",
+    "attachFile": "Fichier",
+    "attachImage": "Image",
+    "takePhoto": "Camera",
+    "attachments": "Pieces jointes",
+    "removeAttachment": "Retirer la piece jointe",
+    "attachmentReady": "Pret a envoyer",
+    "cameraReady": "Pret pour la camera sur mobile",
+    "messageWithAttachments": "Message avec pieces jointes",
+    "messages": {
+      "m-1": "Bonjour Alex, merci de prioriser aujourd'hui l'inspection de la dalle beton.",
+      "m-2": "Bien recu. Je televerserai les notes apres la visite.",
+      "m-3": "Peux-tu confirmer l'arrivee de l'equipe cablage pour Skyline ?",
+      "m-4": "Confirme. Nous commencons a 09:00 et devrions terminer l'aile est avant midi.",
+      "m-5": "Le test de pression est prevu a 14:30. J'attends encore la livraison de la vanne."
+    }
+  },
+  "workers": {
+    "title": "Employes",
+    "subtitle": "Surveillez les performances, la disponibilite et les prochaines gardes.",
+    "activeWorkers": "Employes actifs",
+    "activeWorkersDetail": "Tous visibles dans le centre de commande.",
+    "availableNow": "Disponibles maintenant",
+    "availableNowDetail": "Membres d'equipe prets a prendre plus de travail.",
+    "averagePerformance": "Perf. moyenne",
+    "averagePerformanceDetail": "Basee sur les taux d'achevement mockes.",
+    "offShift": "Hors service",
+    "offShiftDetail": "Employes hors rotation active sur site.",
+    "addWorker": "Ajouter un employé",
+    "addFirstWorker": "Ajouter le premier employe",
+    "editWorker": "Modifier l'employe",
+    "addWorkerTitle": "Ajouter un nouvel employe",
+    "editWorkerTitle": "Modifier l'employe",
+    "workerModalDescription": "Mettez a jour les details de l'equipe dans l'etat local mock sans toucher a l'authentification.",
+    "fullName": "Nom complet",
+    "placeholderName": "Emma Schneider",
+    "placeholderEmail": "emma@buildforu.com",
+    "placeholderPhone": "+49 151 555 0111",
+    "placeholderPosition": "Ingenieure chantier",
+    "phone": "Telephone",
+    "position": "Poste",
+    "assignedProject": "Projet assigne",
+    "selectProject": "Selectionner un projet",
+    "searchPlaceholder": "Rechercher par nom, email, projet ou statut",
+    "allStatuses": "Tous les statuts",
+    "allProjects": "Tous les projets",
+    "contact": "Contact",
+    "operations": "Operations",
+    "nextShift": "Prochaine garde",
+    "notScheduled": "Non planifie",
+    "completionRate": "Taux d'achevement",
+    "noWorkersFound": "Aucun employe trouve",
+    "noWorkersSubtitle": "Essayez une autre combinaison de filtres ou ajoutez un nouveau membre d'equipe.",
+    "deleteWorkerTitle": "Supprimer l'employe",
+    "deleteWorkerDescription": "Voulez-vous vraiment retirer {{name}} de la liste de l'equipe ? Cela affecte seulement les donnees mock locales.",
+    "keepWorker": "Conserver l'employe",
+    "deleteWorkerConfirm": "Supprimer l'employe",
+    "saveChanges": "Enregistrer les modifications",
+    "offSite": "Hors site",
+    "offSiteDetail": "Travailleurs marques actuellement comme hors site.",
+    "attendanceManagedByEmployee": "Le statut de presence est enregistre par lemploye dans son propre espace.",
+    "notProvided": "Non renseigne",
+    "assignedProjects": "Projets assignes",
+    "projectSelectionHint": "Selectionnez un ou plusieurs projets pour relier cet employe aux chantiers actifs.",
+    "noProjectsAvailable": "Ajoutez d abord un projet pour relier cet employe.",
+    "workerNameRequired": "Le nom complet est obligatoire.",
+    "workerEmailRequired": "L’email est obligatoire pour créer un accès employé.",
+    "workerEmailDuplicate": "Cet email est déjà utilisé par un autre utilisateur de l’entreprise.",
+    "createEmployeeLogin": "Créer un accès employé",
+    "createEmployeeLoginHint": "Activez cette option si l’employé doit se connecter et voir ses propres tâches.",
+    "loginAlreadyLinked": "Cet employé possède déjà un accès lié.",
+    "emptyCreateHint": "Créez le premier employé pour activer les accès et les affectations.",
+    "employeeAccessSubtitle": "Transmettez à l’employé ses identifiants temporaires.",
+    "employeeAccessTitle": "Accès employé",
+    "employeeAccessHint": "L’employé pourra changer ce mot de passe lorsque l’authentification backend sera connectée.",
+    "employeeLoginProvisioning": "Un accès employé lié sera créé avec un mot de passe temporaire."
+  },
+  "projects": {
+    "title": "Projets",
+    "subtitle": "Suivez la dynamique de livraison et le risque des sites actifs.",
+    "activeBuilds": "Chantiers actifs",
+    "activeBuildsDetail": "Portefeuille actuel en cours.",
+    "atRisk": "A risque",
+    "atRiskDetail": "Un site demande une surveillance plus proche.",
+    "averageProgress": "Avancement moyen",
+    "averageProgressDetail": "Point median d'achevement du portefeuille.",
+    "progressComplete": "{{value}}% termine",
+    "totalProjects": "Tous les projets",
+    "totalProjectsDetail": "Chaque projet actuellement suivi dans lapplication.",
+    "inProgressProjects": "En cours",
+    "inProgressProjectsDetail": "Projets actuellement actifs sur site ou en livraison.",
+    "completedProjects": "Termines",
+    "completedProjectsDetail": "Projets deja livres ou completement clotures.",
+    "peopleAssigned": "Personnes affectees",
+    "peopleAssignedDetail": "Travailleurs actuellement relies au travail projet.",
+    "detailsDescription": "Equipe, calendrier et notes operationnelles du projet au meme endroit.",
+    "currentPhase": "Phase actuelle",
+    "projectLocation": "Lieu",
+    "budget": "Budget",
+    "startDate": "Date de debut",
+    "deadline": "Echeance",
+    "progressLabel": "Avancement",
+    "teamAssigned": "Equipe affectee",
+    "noAssignedWorkers": "Aucun travailleur nest encore affecte a ce projet.",
+    "notes": "Notes",
+    "viewDetails": "Voir les details",
+    "addProjectAction": "Créer un projet",
+    "addProjectTitle": "Créer un projet",
+    "addProjectSubtitle": "Créez une entrée de projet pour le tableau de l’équipe.",
+    "boardSubtitle": "Suivez les travaux actifs, les équipes affectées et le statut du projet au même endroit.",
+    "projectNameLabel": "Nom du projet",
+    "projectTypeLabel": "Type ou phase",
+    "projectTypePlaceholder": "Aménagement intérieur, électricité, planification...",
+    "projectNotesPlaceholder": "Contexte utile pour l’équipe, le périmètre ou la prochaine étape.",
+    "emptyCreateHint": "Créez un projet avant d’attribuer des tâches au calendrier.",
+    "emptyStatusGroup": "Aucun projet avec ce statut.",
+    "noTeamWarning": "Affectez au moins un employé avant de planifier des tâches.",
+    "assignedWorkersCount": "{{count}} employés affectés",
+    "projectCount": "{{count}} projets",
+    "detailsDescriptionPractical": "Périmètre, équipe et calendrier du projet au même endroit."
+  },
+  "materials": {
+    "title": "Materiaux",
+    "subtitle": "Suivez le stock, les fournisseurs et les signaux de reapprovisionnement.",
+    "trackedItems": "Articles suivis",
+    "trackedItemsDetail": "Materiaux cles surveilles dans le prototype.",
+    "inStock": "En stock",
+    "inStockDetail": "Stock suffisant pour les taches immediates.",
+    "supplierSync": "Sync fournisseurs",
+    "supplierSyncValue": "Actif",
+    "supplierSyncDetail": "Le statut achats est simule visuellement.",
+    "requestsVisible": "Demandes",
+    "requestsVisibleDetail": "Demandes visibles dans votre espace actuel.",
+    "pendingRequests": "En attente",
+    "pendingRequestsDetail": "En attente de validation ou dachats.",
+    "orderedRequests": "Commande",
+    "orderedRequestsDetail": "Deja envoyees aux fournisseurs ou magasins.",
+    "purchasedRequests": "Achete",
+    "purchasedRequestsDetail": "Pret a arriver sur site ou a lequipe.",
+    "requestFormTitle": "Creer une demande de materiel",
+    "requestFormSubtitle": "Indiquez ce dont vous avez besoin pour que le bureau puisse le suivre et lacheter.",
+    "yourProject": "Projet affecte",
+    "noProjectAssigned": "Aucun projet affecte actuellement.",
+    "itemName": "Nom de larticle",
+    "itemPlaceholder": "Peinture, vis, ciment, toilette, carrelage...",
+    "quantity": "Quantite",
+    "quantityPlaceholder": "Optionnel, ex. 20 sacs ou 2 cartons",
+    "note": "Note",
+    "notePlaceholder": "Contexte optionnel pour le bureau ou le processus dachat",
+    "submitRequest": "Envoyer la demande",
+    "requestedBy": "Demande par",
+    "createdOn": "Cree le",
+    "updateStatus": "Mettre a jour le statut",
+    "adminScope": "Tableau materiel admin",
+    "adminScopeSubtitle": "Consultez les demandes terrain et faites-les avancer dans les statuts dachat.",
+    "requestsBoardTitle": "Tableau des demandes de materiel",
+    "requestsBoardSubtitle": "Suivez les demandes, filtrez la file et mettez a jour lavancement.",
+    "searchPlaceholder": "Rechercher par article, personne, note ou projet",
+    "emptyTitle": "Aucune demande trouvee",
+    "emptySubtitle": "Essayez une autre recherche, un autre filtre ou creez une nouvelle demande.",
+    "noProjectLink": "Sans lien de projet",
+    "pageEyebrow": "Matériaux",
+    "requestsTab": "Demandes",
+    "findToBuyTab": "Trouver à acheter",
+    "dualPurposeSubtitle": "Suivez les demandes de matériaux par projet et comparez les options d’achat simulées au même endroit.",
+    "emptyRequests": "Aucune demande de matériaux dans la file.",
+    "projectRequiredHint": "Une demande de matériaux doit être liée à un projet.",
+    "findToBuyTitle": "Trouver à acheter",
+    "findToBuySubtitle": "Recherchez des magasins simulés par prix, distance, catégorie et disponibilité.",
+    "findToBuyPlaceholder": "ciment, toilettes, carrelage, vis, peinture...",
+    "findToBuyExamples": "Essayez : ciment, toilettes, carrelage, vis, peinture",
+    "sortBy": "Trier par",
+    "sortNearest": "Le plus proche",
+    "sortCheapest": "Le moins cher",
+    "sortFastest": "Disponible le plus vite",
+    "etaLabel": "Retrait / livraison",
+    "adjustFinderFilters": "Ajustez la recherche ou les filtres pour comparer les magasins.",
+    "finderMapTitle": "Aperçu de la carte",
+    "finderMapSubtitle": "Carte simulée pour comparer les options d’achat proches.",
+    "finderMockHint": "Options d’achat simulées prêtes pour de futures intégrations.",
+    "finderResultHint": "Résultat de magasin simulé prêt pour de futures données de prix et disponibilité.",
+    "finderResultsTitle": "Options d’achat",
+    "finderResultsSubtitle": "{{count}} magasins simulés correspondent à vos filtres.",
+    "focusedStore": "Option sélectionnée",
+    "noFinderMatch": "Aucune option correspondante",
+    "noFinderResultsSubtitle": "Essayez un autre produit ou assouplissez les filtres.",
+    "noFinderResultsTitle": "Aucun magasin ne correspond ? cette recherche",
+    "projectDropHint": "Zone de dépôt du projet",
+    "projectLinked": "Lié au projet",
+    "selectFinderResult": "Sélectionnez un résultat pour le mettre en avant sur la carte."
+  },
+  "finance": {
+    "title": "Finances",
+    "subtitle": "Consultez les revenus, depenses et le suivi des factures.",
+    "revenue": "Revenus",
+    "revenueDetail": "Instantane mock actuel des revenus.",
+    "expenses": "Depenses",
+    "expensesDetail": "Depenses d'exploitation sur les projets.",
+    "profit": "Profit",
+    "profitDetail": "Marge positive sur ce cycle.",
+    "openInvoices": "Factures ouvertes",
+    "openInvoicesDetail": "Pret pour des donnees backend plus tard.",
+    "cashFlowOutlook": "Perspective de tresorerie",
+    "monthOverMonth": "+12,4% mois sur mois",
+    "weekLabel": "S{{number}}"
+  },
+  "settings": {
+    "title": "Parametres",
+    "subtitle": "Personnalisez la langue, les alertes et l'espace de travail.",
+    "alertsTitle": "Notifications push",
+    "alertsDescription": "Recevez instantanement les nouvelles taches et changements de service.",
+    "summariesTitle": "Resumes quotidiens",
+    "summariesDescription": "Consultez chaque soir un recapitulatif concis de l'activite.",
+    "privacyTitle": "Mode confidentialite avance",
+    "privacyDescription": "Reduisez les details operationnels visibles sur les ecrans partages.",
+    "workspaceSaved": "Preferences enregistrees localement",
+    "workspaceSavedDetail": "Cet ecran reste purement UI pour l'instant et est pret pour un futur service backend.",
+    "billingTitle": "Facturation et abonnement",
+    "billingDescription": "Ouvrez la vue abonnement pour verifier le plan, lusage des employes et les informations mock de facturation.",
+    "manageBilling": "Gerer la facturation",
+    "planLabel": "Plan",
+    "workspaceAccessHint": "L’accès à l’espace de travail est simulé dans ce MVP frontend."
+  },
+  "marketMap": {
+    "title": "Carte des magasins",
+    "subtitle": "Comparez les magasins proches, consultez les prix mockes et passez a la meilleure option d'achat.",
+    "eyebrow": "Intelligence marche",
+    "searchPlaceholder": "Rechercher des materiaux (ex. toilette, ciment, carrelage...)",
+    "price": "Prix",
+    "distance": "Distance",
+    "category": "Categorie",
+    "availability": "Disponibilite",
+    "lowestFirst": "Du moins cher",
+    "highestFirst": "Du plus cher",
+    "nearestFirst": "Du plus proche",
+    "farthestFirst": "Du plus eloigne",
+    "allCategories": "Toutes les categories",
+    "allAvailability": "Toutes les disponibilites",
+    "cheapestOption": "Option la moins chere",
+    "nearestOption": "Option la plus proche",
+    "bestOverallOption": "Meilleure option globale",
+    "noOption": "Aucune option disponible",
+    "resultsTitle": "Resultats des magasins proches",
+    "resultsSubtitle": "{{count}} options mock pretes pour comparaison et apercu carte.",
+    "mapPreview": "Apercu carte",
+    "mapPreviewSubtitle": "Un conteneur de carte mock montrant les options correspondantes.",
+    "noStoresTitle": "Aucun magasin ne correspond a cette recherche",
+    "noStoresSubtitle": "Essayez un autre materiau ou changez les filtres selectionnes.",
+    "focusedStore": "Magasin cible",
+    "storeSupplyCheck": "Verification du magasin avec donnees de localisation mock.",
+    "cheapestDetail": "{{price}} chez {{store}}",
+    "nearestDetail": "{{distance}} km de {{store}}",
+    "bestOverallDetail": "{{store}} equilibre au mieux prix, distance et stock."
+  },
+  "plans": {
+    "starter": "Starter",
+    "pro": "Pro",
+    "enterprise": "Enterprise"
+  },
+  "publicNav": {
+    "home": "Accueil",
+    "pricing": "Tarifs",
+    "register": "Inscription",
+    "openDashboard": "Ouvrir le tableau",
+    "startTrial": "Essai gratuit",
+    "footer": "Concu pour les entreprises du batiment en croissance qui ont besoin dun espace operationnel plus clair et plus connecte."
+  },
+  "attendance": {
+    "title": "Statut de travail",
+    "subtitle": "Enregistrez le debut et la fin du travail avec heure et localisation optionnelle.",
+    "currentStatus": "Statut actuel",
+    "startWork": "Commencer le travail",
+    "endWork": "Terminer le travail",
+    "startingWork": "Demarrage du travail...",
+    "endingWork": "Fin du travail...",
+    "lastStart": "Dernier debut",
+    "lastEnd": "Derniere fin",
+    "startLocation": "Lieu de debut",
+    "endLocation": "Lieu de fin",
+    "locationHint": "Lapplication tentera de capturer la localisation au debut ou a la fin du travail, mais laction fonctionne aussi sans.",
+    "locationDenied": "Permission de localisation refusee",
+    "locationUnavailable": "Localisation indisponible",
+    "locationUnavailableShort": "Localisation indisponible",
+    "locationCaptured": "Localisation capturee",
+    "locationIndicator": "Capture de localisation",
+    "startSaved": "Debut du travail enregistre.",
+    "endSaved": "Fin du travail enregistree.",
+    "startSavedWithoutLocation": "Debut du travail enregistre. {{reason}}.",
+    "endSavedWithoutLocation": "Fin du travail enregistree. {{reason}}.",
+    "noRecord": "Aucun enregistrement",
+    "noWorkerProfile": "Aucun profil employe lie na encore ete trouve pour ce compte.",
+    "viewDetails": "Presence",
+    "detailsTitle": "Presence de {{name}}",
+    "detailsDescription": "Consultez le statut de presence, les horodatages et les coordonnees optionnelles.",
+    "notStarted": "Travail non commencé"
+  },
+  "landing": {
+    "eyebrow": "SaaS operations chantier",
+    "title": "Pilotez equipes, plannings et communication chantier depuis un seul espace BuildForU.",
+    "subtitle": "BuildForU aide les entreprises du batiment a gerer travailleurs, taches, planification, chat equipe et approvisionnement dans un tableau de bord soigne pour bureau et terrain.",
+    "featuresEyebrow": "Capacites principales",
+    "featuresTitle": "Construit autour du rythme quotidien dune entreprise du batiment.",
+    "ctaEyebrow": "Pret a demarrer",
+    "ctaTitle": "Lancez votre essai BuildForU et mettez en place lespace de votre entreprise en quelques minutes.",
+    "ctaSubtitle": "Explorez le produit, comparez les plans et entrez dans le tableau existant sans backend.",
+    "stats": {
+      "roles": {
+        "label": "Concu pour",
+        "value": "Patron + Employe"
+      },
+      "deployment": {
+        "label": "Deploiement",
+        "value": "Frontend dabord"
+      },
+      "focus": {
+        "label": "Focus",
+        "value": "Operations quotidiennes"
+      }
+    },
+    "features": {
+      "workers": {
+        "title": "Gestion des travailleurs",
+        "description": "Gardez equipes, superviseurs et affectations visibles dans un meme espace operationnel."
+      },
+      "calendar": {
+        "title": "Planification calendrier",
+        "description": "Coordonnez jours de travail, visites et horaires avec une vue de planification plus claire."
+      },
+      "chat": {
+        "title": "Chat equipe",
+        "description": "Reduisez le chaos des appels avec des mises a jour rapides entre bureau et terrain."
+      },
+      "marketMap": {
+        "title": "Carte des magasins",
+        "description": "Comparez les magasins proches et les options dapprovisionnement avant que les equipes perdent du temps."
+      }
+    },
+    "preview": {
+      "eyebrow": "Apercu produit",
+      "title": "Un regard de plus pres sur la facon dont les equipes utilisent BuildForU",
+      "badge": "Modules produit en direct",
+      "glanceEyebrow": "Aujourdhui en bref",
+      "glanceTitle": "Main-doeuvre, planification, chat et achat dans une seule vue operationnelle.",
+      "pills": {
+        "workers": "18 travailleurs actifs",
+        "tasks": "12 taches aujourdhui",
+        "threads": "4 fils actifs"
+      },
+      "workers": {
+        "label": "Travailleurs",
+        "title": "Statut de lequipe",
+        "badge": "Sync en direct"
+      },
+      "calendar": {
+        "label": "Calendrier",
+        "title": "Planning du jour"
+      },
+      "chat": {
+        "label": "Chat",
+        "title": "Mises a jour bureau vers terrain",
+        "badge": "2 non lus",
+        "message-1": {
+          "author": "Sophie",
+          "text": "Merci de confirmer les notes dinspection apres la visite."
+        },
+        "message-2": {
+          "author": "Alex",
+          "text": "Confirme. Je mettrai a jour avant midi."
+        }
+      },
+      "market": {
+        "label": "Carte des magasins",
+        "title": "Recherche dapprovisionnement proche",
+        "search": "Recherche : panneaux de facade",
+        "result-1": {
+          "store": "Nordic Build Store",
+          "meta": "Panneaux de facade - 3.1 km",
+          "price": "$86",
+          "badge": "Meilleur prix"
+        },
+        "result-2": {
+          "store": "Voltix Supply Hub",
+          "meta": "Cablage - 5.4 km",
+          "price": "$42",
+          "badge": "En stock"
+        }
+      }
+    }
+  },
+  "pricing": {
+    "eyebrow": "Tarifs",
+    "title": "Choisissez le plan adapte a letape de votre entreprise.",
+    "subtitle": "Commencez avec une configuration simple et passez vers un espace operationnel complet a mesure que vos equipes grandissent.",
+    "mostPopular": "Le plus populaire",
+    "perMonth": "par mois",
+    "choosePlan": "Choisir ce plan",
+    "plans": {
+      "starter": {
+        "price": "$29",
+        "subtitle": "Pour les petites equipes qui veulent se structurer.",
+        "workers": "Jusqua 5 travailleurs",
+        "features": {
+          "1": "Connexion par role",
+          "2": "Vues taches et calendrier",
+          "3": "Chat equipe",
+          "4": "Acces carte des magasins"
+        }
+      },
+      "pro": {
+        "price": "$99",
+        "subtitle": "Pour les entreprises actives avec plusieurs equipes.",
+        "workers": "Jusqua 25 travailleurs",
+        "features": {
+          "1": "Tout du Starter",
+          "2": "Gestion des travailleurs",
+          "3": "Tableau operationnel admin",
+          "4": "Onboarding prioritaire"
+        }
+      },
+      "enterprise": {
+        "price": "Sur mesure",
+        "subtitle": "Pour les operations plus grandes et un deploiement adapte.",
+        "workers": "Travailleurs illimites",
+        "features": {
+          "1": "Tout du Pro",
+          "2": "Montee en charge illimitee",
+          "3": "Support onboarding personnalise",
+          "4": "Deploiement futur pret pour API"
+        }
+      }
+    }
+  },
+  "register": {
+    "eyebrow": "Inscrire votre entreprise",
+    "title": "Creez lespace de votre entreprise",
+    "subtitle": "Commencez avec les details de votre entreprise, choisissez un plan et passez sur BuildForU en quelques minutes.",
+    "companyName": "Nom de lentreprise",
+    "ownerName": "Nom du proprietaire",
+    "plan": "Plan",
+    "creatingWorkspace": "Creation de lespace...",
+    "createAccount": "Creer le compte entreprise",
+    "alreadyTesting": "Vous testez deja le produit ?",
+    "goToSignIn": "Aller a la connexion",
+    "onboardingEyebrow": "Onboarding",
+    "onboardingTitle": "Mettez vos operations en place avec moins de friction.",
+    "onboardingSubtitle": "BuildForU est concu pour installer rapidement votre entreprise dans un espace operationnel sans etapes lourdes.",
+    "selectedPlan": "Plan selectionne",
+    "workspaceSignIn": "Connexion a lespace",
+    "dashboardPreviewNote": "Apres inscription, vous arriverez dans le tableau existant pour voir toute lexperience BuildForU.",
+    "steps": {
+      "1": {
+        "title": "Choisissez votre plan et commencez",
+        "description": "Vous pourrez ajuster la facturation plus tard."
+      },
+      "2": {
+        "title": "Invitez votre equipe plus tard",
+        "description": "Commencez avec le compte du proprietaire puis developpez a partir de la."
+      },
+      "3": {
+        "title": "Parcours onboarding fiable",
+        "description": "Ce prototype garde linscription claire et concentree."
+      }
+    },
+    "planCards": {
+      "starter": {
+        "price": "$29/mois",
+        "workers": "Jusqua 5 travailleurs",
+        "note": "Point de depart leger pour les petites equipes du batiment."
+      },
+      "pro": {
+        "price": "$99/mois",
+        "workers": "Jusqua 25 travailleurs",
+        "note": "Ideal pour les entreprises actives gerant plusieurs equipes et projets."
+      },
+      "enterprise": {
+        "price": "Tarification personnalisee",
+        "workers": "Travailleurs illimites",
+        "note": "Pour les grandes organisations qui ont besoin de flexibilite et de support de deploiement."
+      }
+    }
+  },
+  "billing": {
+    "title": "Facturation et abonnement",
+    "subtitle": "Consultez votre abonnement actuel, les donnees mock de facturation et les options de mise a niveau.",
+    "currentPlan": "Plan actuel",
+    "mockSubscriptionData": "Donnees mock dabonnement",
+    "workerLimit": "Limite de travailleurs",
+    "workerLimitDetail": "Selon le niveau de plan selectionne",
+    "usage": "Utilisation",
+    "usageWorkers": "{{count}} travailleurs",
+    "usageDetail": "Suivi par rapport au plan actuel",
+    "upgradePlan": "Changer de plan",
+    "subscriptionOverview": "Vue densemble de labonnement",
+    "uiOnly": "Interface seulement pour le moment",
+    "workerUsage": "Utilisation des travailleurs",
+    "workerUsageHint": "Passez au plan superieur quand votre effectif depasse la capacite actuelle.",
+    "nextInvoice": "Prochaine facture",
+    "billingContact": "Contact de facturation",
+    "billingContactEmail": "finance@buildforu.com",
+    "billingContactHint": "Contact mock affiche pour lapercu de linterface",
+    "paymentMethod": "Methode de paiement",
+    "cardLabel": "Visa se terminant par 2048",
+    "cardHint": "Expire 09/28 - details de carte mock pour lapercu abonnement",
+    "recentActivity": "Activite recente de facturation",
+    "unlimitedWorkers": "Illimite",
+    "planDescriptions": {
+      "starter": "Un espace leger pour les petites entreprises.",
+      "pro": "Concu pour les entreprises actives avec plusieurs equipes.",
+      "enterprise": "Pret pour les organisations plus grandes et le support de deploiement."
+    },
+    "activity": {
+      "invoiceTitle": "Facture INV-2026-041",
+      "invoiceBody": "Payee avec succes - $99.00",
+      "renewalTitle": "Rappel de renouvellement",
+      "renewalBody": "Le renouvellement automatique est prevu pour la fin du mois.",
+      "growthTitle": "Indicateur de croissance des places",
+      "growthBody": "Vous restez dans la limite du plan actuel avec de la place pour dautres travailleurs."
+    }
+  },
+  "seed": {
+    "common": {
+      "hq": "Siege BuildForU"
+    },
+    "users": {
+      "u-admin-1": {
+        "title": "Directrice des operations"
+      },
+      "u-employee-1": {
+        "title": "Superviseur de chantier"
+      },
+      "u-employee-2": {
+        "title": "Electricienne"
+      },
+      "u-employee-3": {
+        "title": "Responsable plomberie"
+      }
+    },
+    "tasks": {
+      "task-101": {
+        "title": "Inspection de la dalle beton"
+      },
+      "task-102": {
+        "title": "Brief securite avec les sous-traitants"
+      },
+      "task-103": {
+        "title": "Installer les circuits declairage"
+      },
+      "task-104": {
+        "title": "Test de pression des tuyaux"
+      },
+      "task-105": {
+        "title": "Controle de livraison de facade"
+      },
+      "task-106": {
+        "title": "Audit du marquage des panneaux"
+      }
+    },
+    "projects": {
+      "project-1": {
+        "name": "North River Residences",
+        "phase": "Finition structurelle",
+        "location": "Berlin - Prenzlauer Berg",
+        "notes": "La coordination facade avance bien, mais linspection de la dalle attend encore la validation finale."
+      },
+      "project-2": {
+        "name": "Skyline Offices",
+        "phase": "Installation MEP",
+        "location": "Berlin - Mitte",
+        "notes": "Les travaux electriques sont en pause jusqua confirmation du fournisseur pour les panneaux manquants."
+      },
+      "project-3": {
+        "name": "Harbor Villas",
+        "phase": "Details interieurs",
+        "location": "Potsdam Waterfront",
+        "notes": "Tous les points de reprise ont ete clotures et le dossier de remise client a ete livre."
+      },
+      "project-4": {
+        "name": "Greenpoint Warehouse",
+        "phase": "Planification avant chantier",
+        "location": "Brandenburg Logistics Park",
+        "notes": "Le lancement est prevu apres validation du permis et confirmation de la cloture du site."
+      }
+    },
+    "materialRequests": {
+      "request-1": {
+        "itemName": "Sacs de ciment",
+        "note": "Necessaires pour preparer la dalle pres de la tour B."
+      },
+      "request-2": {
+        "itemName": "Clips de cable",
+        "note": "Pour le passage des cables dans laile est."
+      },
+      "request-3": {
+        "itemName": "Toilette de chantier mobile",
+        "note": "Necessaire avant que lequipe plomberie reste toute la journee sur site."
+      },
+      "request-4": {
+        "itemName": "Peinture interieure blanche",
+        "note": "La specification a change apres la derniere revue client."
+      }
+    },
+    "stores": {
+      "store-item-1": {
+        "productName": "Ciment 25 kg",
+        "category": "Beton",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-2": {
+        "productName": "Carrelage ceramique 60x60",
+        "category": "Finition",
+        "address": "88 Tempelhof Road, Berlin"
+      },
+      "store-item-3": {
+        "productName": "Set WC compact",
+        "category": "Sanitaire",
+        "address": "7 Linden Markt, Berlin"
+      },
+      "store-item-4": {
+        "productName": "Cable electrique 100 m",
+        "category": "Electrique",
+        "address": "104 Solaris Strasse, Berlin"
+      },
+      "store-item-5": {
+        "productName": "Colle sol 20 kg",
+        "category": "Finition",
+        "address": "12 Riverstone Ave, Berlin"
+      },
+      "store-item-6": {
+        "productName": "Rouleau disolation murale",
+        "category": "Isolation",
+        "address": "41 Hafenblick Alley, Berlin"
+      },
+      "products": {
+        "cement25": "Ciment 25 kg",
+        "rapidCement25": "Ciment rapide 25 kg",
+        "toiletCompact": "Pack WC compact",
+        "ceramicTiles": "Carrelage céramique 60x60",
+        "porcelainTiles": "Carrelage grès cérame 60x60",
+        "drywallScrews": "Vis pour plaques de plâtre 5x70 (500 pcs)",
+        "whitePaint": "Peinture intérieure blanche 15 L",
+        "exteriorPaint": "Peinture façade extérieure 15 L"
+      },
+      "categories": {
+        "concrete": "Béton",
+        "sanitary": "Sanitaire",
+        "finishing": "Finition",
+        "fasteners": "Fixations",
+        "paint": "Peinture"
+      },
+      "eta": {
+        "pickup20": "Retrait dans 20 min",
+        "pickup30": "Retrait dans 30 min",
+        "pickup35": "Retrait dans 35 min",
+        "pickup40": "Retrait dans 40 min",
+        "pickup45": "Retrait dans 45 min",
+        "pickup55": "Retrait dans 55 min",
+        "pickup1h": "Retrait dans 1 heure",
+        "pickup2h": "Retrait dans 2 heures",
+        "pickup1530": "Retrait aujourd’hui après 15:30",
+        "delivery1600": "Livraison aujourd’hui avant 16:00",
+        "delivery1700": "Livraison aujourd’hui avant 17:00",
+        "deliveryTomorrow0800": "Livraison demain avant 08:00"
+      },
+      "addresses": {
+        "riverstone": "12 avenue Riverstone, Berlin",
+        "tempelhofRing": "28 Tempelhof Ring, Berlin",
+        "hafenblick": "41 allée Hafenblick, Berlin",
+        "linden": "7 Linden Markt, Berlin",
+        "werkhof": "92 Werkhof Strasse, Berlin",
+        "tempelhofRoad": "88 route Tempelhof, Berlin",
+        "kranplatz": "15 voie Kranplatz, Berlin",
+        "malerhof": "63 rue Malerhof, Berlin"
+      }
+    },
+    "previewWorkers": {
+      "u-employee-1": {
+        "name": "Alex Novak",
+        "role": "Superviseur de chantier"
+      },
+      "u-employee-2": {
+        "name": "Mia Berger",
+        "role": "Electricienne"
+      },
+      "u-employee-3": {
+        "name": "Luca Moretti",
+        "role": "Responsable plomberie"
+      }
+    },
+    "previewSchedule": {
+      "task-101": {
+        "time": "09:30",
+        "site": "North River Residences"
+      },
+      "task-102": {
+        "time": "12:00",
+        "site": "Siege BuildForU"
+      },
+      "task-105": {
+        "time": "16:30",
+        "site": "Skyline Offices"
+      }
+    }
+  }
 }

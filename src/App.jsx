@@ -1,24 +1,37 @@
+import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import RoleGuard from "./components/common/RoleGuard";
 import { useAuth } from "./hooks/useAuth";
+import { useI18n } from "./hooks/useI18n";
 import AppLayout from "./layouts/AppLayout";
-import AdminDashboard from "./pages/AdminDashboard";
-import CalendarPage from "./pages/CalendarPage";
-import ChatPage from "./pages/ChatPage";
-import EmployeeDashboard from "./pages/EmployeeDashboard";
-import FinancePage from "./pages/FinancePage";
-import BillingPage from "./pages/BillingPage";
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import MarketMapPage from "./pages/MarketMapPage";
-import MaterialsPage from "./pages/MaterialsPage";
-import PricingPage from "./pages/PricingPage";
-import ProjectsPage from "./pages/ProjectsPage";
-import RegisterCompanyPage from "./pages/RegisterCompanyPage";
-import SettingsPage from "./pages/SettingsPage";
-import TasksPage from "./pages/TasksPage";
-import WorkersPage from "./pages/WorkersPage";
+
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const BillingPage = lazy(() => import("./pages/BillingPage"));
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
+const ChatPage = lazy(() => import("./pages/ChatPage"));
+const EmployeeDashboard = lazy(() => import("./pages/EmployeeDashboard"));
+const FinancePage = lazy(() => import("./pages/FinancePage"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const MarketMapPage = lazy(() => import("./pages/MarketMapPage"));
+const MaterialsPage = lazy(() => import("./pages/MaterialsPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
+const RegisterCompanyPage = lazy(() => import("./pages/RegisterCompanyPage"));
+const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const TasksPage = lazy(() => import("./pages/TasksPage"));
+const WorkersPage = lazy(() => import("./pages/WorkersPage"));
+
+function RouteFallback() {
+  const { t } = useI18n();
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 text-sm text-slate-500">
+      {t("common.loading")}
+    </div>
+  );
+}
 
 function DashboardRouter() {
   const { user } = useAuth();
@@ -32,55 +45,57 @@ function FallbackRouter() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
-      <Route path="/register-company" element={<RegisterCompanyPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route element={<ProtectedRoute />}>
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<DashboardRouter />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/market-map" element={<MarketMapPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route
-            path="/workers"
-            element={
-              <RoleGuard allowedRoles={["admin"]}>
-                <WorkersPage />
-              </RoleGuard>
-            }
-          />
-          <Route
-            path="/projects"
-            element={
-              <RoleGuard allowedRoles={["admin"]}>
-                <ProjectsPage />
-              </RoleGuard>
-            }
-          />
-          <Route
-            path="/materials"
-            element={
-              <RoleGuard allowedRoles={["admin", "employee"]}>
-                <MaterialsPage />
-              </RoleGuard>
-            }
-          />
-          <Route
-            path="/finance"
-            element={
-              <RoleGuard allowedRoles={["admin"]}>
-                <FinancePage />
-              </RoleGuard>
-            }
-          />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/settings/billing" element={<BillingPage />} />
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/register-company" element={<RegisterCompanyPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<DashboardRouter />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="/market-map" element={<MarketMapPage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route
+              path="/workers"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <WorkersPage />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <ProjectsPage />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/materials"
+              element={
+                <RoleGuard allowedRoles={["admin", "employee"]}>
+                  <MaterialsPage />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/finance"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <FinancePage />
+                </RoleGuard>
+              }
+            />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/settings/billing" element={<BillingPage />} />
+          </Route>
         </Route>
-      </Route>
-      <Route path="*" element={<FallbackRouter />} />
-    </Routes>
+        <Route path="*" element={<FallbackRouter />} />
+      </Routes>
+    </Suspense>
   );
 }

@@ -62,6 +62,7 @@ export default function WorkersPage() {
   };
   const openEditModal = (worker) => {
     setFormError("");
+    const linkedUser = companyUsers.find((member) => member.workerId === worker.id);
     setFormModal({
       mode: "edit",
       workerId: worker.id,
@@ -71,23 +72,33 @@ export default function WorkersPage() {
         phone: worker.phone ?? "",
         position: worker.position ?? worker.trade ?? "",
         notes: worker.notes ?? "",
-        projectIds: worker.projectIds ?? []
+        projectIds: worker.projectIds ?? [],
+        createLogin: Boolean(linkedUser),
+        hasLinkedLogin: Boolean(linkedUser)
       }
     });
   };
 
   const handleSaveWorker = (payload) => {
     const normalizedEmail = normalizeEmail(payload.email);
-    const conflictingUser = companyUsers.find(
-      (member) => normalizeEmail(member.email) === normalizedEmail && member.workerId !== formModal?.workerId
-    );
+    const shouldSyncLogin = Boolean(payload.createLogin || payload.hasLinkedLogin);
+    const conflictingUser = shouldSyncLogin
+      ? companyUsers.find(
+          (member) => normalizeEmail(member.email) === normalizedEmail && member.workerId !== formModal?.workerId
+        )
+      : null;
 
-    if (!normalizedEmail) {
+    if (!String(payload.name ?? "").trim()) {
+      setFormError(t("workers.workerNameRequired", "Full name is required."));
+      return;
+    }
+
+    if (shouldSyncLogin && !normalizedEmail) {
       setFormError(t("workers.workerEmailRequired", "Email is required to create an employee login."));
       return;
     }
 
-    if (conflictingUser) {
+    if (shouldSyncLogin && conflictingUser) {
       setFormError(t("workers.workerEmailDuplicate", "This email is already used by another company user."));
       return;
     }
@@ -104,19 +115,21 @@ export default function WorkersPage() {
       return;
     }
 
-    const access = syncWorkerUser({
-      companyId: savedWorker.companyId,
-      workspaceId: savedWorker.workspaceId,
-      workerId: savedWorker.id,
-      name: savedWorker.name,
-      email: normalizedEmail
-    });
-
-    if (access?.temporaryPassword) {
-      setWorkerAccess({
-        email: normalizedEmail,
-        temporaryPassword: access.temporaryPassword
+    if (shouldSyncLogin) {
+      const access = syncWorkerUser({
+        companyId: savedWorker.companyId,
+        workspaceId: savedWorker.workspaceId,
+        workerId: savedWorker.id,
+        name: savedWorker.name,
+        email: normalizedEmail
       });
+
+      if (access?.temporaryPassword) {
+        setWorkerAccess({
+          email: normalizedEmail,
+          temporaryPassword: access.temporaryPassword
+        });
+      }
     }
 
     setFormError("");

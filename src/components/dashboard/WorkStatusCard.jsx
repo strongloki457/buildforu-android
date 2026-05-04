@@ -1,12 +1,12 @@
 import { Clock3, MapPin, Navigation } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import AttendanceActionButton from "../attendance/AttendanceActionButton";
 import AttendanceFeedback from "../attendance/AttendanceFeedback";
 import AttendanceMetaItem from "../attendance/AttendanceMetaItem";
 import { requestCurrentLocation } from "../attendance/attendanceLocation";
-import { useAuth } from "../../hooks/useAuth";
 import { useAppData } from "../../hooks/useAppData";
 import { useI18n } from "../../hooks/useI18n";
+import { useCurrentWorker } from "../../hooks/useRoleData";
 import { formatAttendanceCoordinates, formatAttendanceDateTime, hasAttendanceLocation } from "../../utils/attendance";
 import { getLocalizedValue } from "../../utils/localizedValue";
 import Card from "../ui/Card";
@@ -14,14 +14,11 @@ import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 
 export default function WorkStatusCard() {
-  const { user } = useAuth();
-  const { workers, startWork, endWork } = useAppData();
+  const { startWork, endWork } = useAppData();
   const { locale, t } = useI18n();
+  const worker = useCurrentWorker();
   const [activeAction, setActiveAction] = useState("");
   const [feedback, setFeedback] = useState(null);
-  const currentWorkerId = user?.workerId || user?.id;
-
-  const worker = useMemo(() => workers.find((item) => item.id === currentWorkerId), [currentWorkerId, workers]);
   const attendance = worker?.attendance;
   const currentStatus = attendance?.currentStatus ?? worker?.status ?? "Off Site";
   const isOnSite = currentStatus === "On Site";
@@ -60,7 +57,7 @@ export default function WorkStatusCard() {
     return (
       <Card>
         <SectionHeader title={t("attendance.title")} subtitle={t("attendance.subtitle")} />
-        <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/70 px-5 py-10 text-sm text-slate-500">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-white px-5 py-10 text-sm text-slate-500">
           {t("attendance.noWorkerProfile")}
         </div>
       </Card>
@@ -71,7 +68,7 @@ export default function WorkStatusCard() {
     <Card>
       <SectionHeader title={t("attendance.title")} subtitle={t("attendance.subtitle")} />
 
-      <div className="rounded-[28px] border border-white/70 bg-white/85 p-5">
+      <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-sm text-slate-500">{t("attendance.currentStatus")}</p>

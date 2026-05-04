@@ -7,6 +7,7 @@ import { useI18n } from "../../hooks/useI18n";
 import {
   getStoreAddress,
   getStoreCategory,
+  getStoreEta,
   getStoreProductName
 } from "../../utils/localizedValue";
 import {
@@ -71,7 +72,7 @@ export default function MaterialStoreFinderResults({
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                       {t("materials.etaLabel", "Pickup / delivery")}
                     </p>
-                    <p className="mt-1 text-base text-slate-900">{store.eta}</p>
+                    <p className="mt-1 text-base text-slate-900">{getStoreEta(t, store)}</p>
                   </div>
                   <div className="rounded-[20px] bg-slate-50/90 px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{t("common.location")}</p>

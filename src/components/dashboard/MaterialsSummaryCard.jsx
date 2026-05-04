@@ -31,7 +31,7 @@ export default function MaterialsSummaryCard({ requests }) {
       <div className="space-y-3">
         {requests.length ? (
           requests.map((request) => (
-            <div key={request.id} className="rounded-[24px] bg-white/80 p-4">
+            <div key={request.id} className="rounded-lg border border-slate-200 bg-white p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-base text-slate-900">{getMaterialRequestItem(t, request)}</p>
@@ -45,7 +45,7 @@ export default function MaterialsSummaryCard({ requests }) {
             </div>
           ))
         ) : (
-          <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/60 px-5 py-10 text-sm text-slate-500">
+          <div className="rounded-lg border border-dashed border-slate-300 bg-white px-5 py-10 text-sm text-slate-500">
             {t("materials.emptyRequests", "No material requests are in the queue right now.")}
           </div>
         )}

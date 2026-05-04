@@ -57,3 +57,7 @@ export function getStoreCategory(t, store) {
 export function getStoreAddress(t, store) {
   return getLocalizedValue(t, store?.addressKey, store?.address ?? "");
 }
+
+export function getStoreEta(t, store) {
+  return getLocalizedValue(t, store?.etaKey, store?.eta ?? "");
+}

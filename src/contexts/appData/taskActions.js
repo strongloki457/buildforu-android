@@ -16,7 +16,7 @@ export function createTaskActions({ currentUser, dispatch, projectsById, state, 
 
     const normalizedTask = normalizeTaskRecord(applyWorkspaceScope(task, currentUser), state.workers, state.projects);
 
-    if (!normalizedTask.title || !normalizedTask.date) {
+    if (!normalizedTask.title || !normalizedTask.date || !normalizedTask.employeeId || !normalizedTask.projectId) {
       return null;
     }
 

@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { AlertTriangle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { projectStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import { getProjectName, getWorkerPosition } from "../../utils/localizedValue";
@@ -19,8 +20,8 @@ export default function CalendarEntryForm({
     title: "",
     date: initialDate,
     location: "",
-    projectId: "",
-    employeeId: "",
+    projectId: projects[0]?.id ?? "",
+    employeeId: workers[0]?.id ?? "",
     priority: "medium"
   });
   const [projectForm, setProjectForm] = useState({
@@ -41,6 +42,14 @@ export default function CalendarEntryForm({
     () => workers.find((worker) => worker.id === taskForm.employeeId) ?? null,
     [taskForm.employeeId, workers]
   );
+
+  useEffect(() => {
+    setTaskForm((current) => ({
+      ...current,
+      projectId: projects.some((project) => project.id === current.projectId) ? current.projectId : projects[0]?.id ?? "",
+      employeeId: workers.some((worker) => worker.id === current.employeeId) ? current.employeeId : workers[0]?.id ?? ""
+    }));
+  }, [projects, workers]);
 
   const handleTaskChange = (key, value) => {
     setTaskForm((current) => ({ ...current, [key]: value }));
@@ -66,7 +75,7 @@ export default function CalendarEntryForm({
       const title = taskForm.title.trim();
       const location = taskForm.location.trim();
 
-      if (!title || !taskForm.date) {
+      if (!title || !taskForm.date || !taskForm.projectId || !taskForm.employeeId) {
         return;
       }
 
@@ -86,8 +95,8 @@ export default function CalendarEntryForm({
           ...current,
           title: "",
           location: "",
-          projectId: "",
-          employeeId: "",
+          projectId: projects[0]?.id ?? "",
+          employeeId: workers[0]?.id ?? "",
           priority: "medium",
           date: initialDate
         }));
@@ -139,7 +148,7 @@ export default function CalendarEntryForm({
               key={type}
               type="button"
               onClick={() => setEntryType(type)}
-              className={`rounded-[22px] border px-4 py-4 text-left transition ${
+              className={`rounded-lg border px-4 py-4 text-left transition ${
                 isActive
                   ? "border-brand-200 bg-brand-50 text-brand-900"
                   : "border-slate-200 bg-white text-slate-600 hover:border-brand-100 hover:bg-brand-50/40"
@@ -164,7 +173,7 @@ export default function CalendarEntryForm({
               value={taskForm.title}
               onChange={(event) => handleTaskChange("title", event.target.value)}
               required
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+              className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
             />
           </label>
 
@@ -174,9 +183,9 @@ export default function CalendarEntryForm({
               <select
                 value={taskForm.projectId}
                 onChange={(event) => handleTaskChange("projectId", event.target.value)}
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               >
-                <option value="">{t("calendar.noProjectLink", "No project link")}</option>
+                <option value="">{t("calendar.selectProject", "Select project")}</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
                     {getProjectName(t, project)}
@@ -190,9 +199,9 @@ export default function CalendarEntryForm({
               <select
                 value={taskForm.employeeId}
                 onChange={(event) => handleTaskChange("employeeId", event.target.value)}
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               >
-                <option value="">{t("calendar.unassignedWorker", "Unassigned")}</option>
+                <option value="">{t("calendar.selectWorker", "Select worker")}</option>
                 {workers.map((worker) => (
                   <option key={worker.id} value={worker.id}>
                     {worker.name} - {getWorkerPosition(t, worker)}
@@ -209,7 +218,7 @@ export default function CalendarEntryForm({
                 value={taskForm.location}
                 onChange={(event) => handleTaskChange("location", event.target.value)}
                 placeholder={t("calendar.taskLocation")}
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               />
             </label>
 
@@ -220,7 +229,7 @@ export default function CalendarEntryForm({
                 value={taskForm.date}
                 onChange={(event) => handleTaskChange("date", event.target.value)}
                 required
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               />
             </label>
           </div>
@@ -230,7 +239,7 @@ export default function CalendarEntryForm({
             <select
               value={taskForm.priority}
               onChange={(event) => handleTaskChange("priority", event.target.value)}
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+              className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
             >
               {taskPriorityOptions.map((priority) => (
                 <option key={priority} value={priority}>
@@ -239,6 +248,18 @@ export default function CalendarEntryForm({
               ))}
             </select>
           </label>
+
+          {(!projects.length || !workers.length) ? (
+            <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+              <span>
+                {t(
+                  "calendar.taskRequiresSetup",
+                  "Create at least one worker and one project before assigning calendar tasks."
+                )}
+              </span>
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="grid gap-4">
@@ -248,7 +269,7 @@ export default function CalendarEntryForm({
               value={projectForm.name}
               onChange={(event) => handleProjectChange("name", event.target.value)}
               required
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+              className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
             />
           </label>
 
@@ -259,7 +280,7 @@ export default function CalendarEntryForm({
                 value={projectForm.phase}
                 onChange={(event) => handleProjectChange("phase", event.target.value)}
                 placeholder={t("projects.projectTypePlaceholder", "Fit-out, shell, electrical...")}
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               />
             </label>
 
@@ -268,7 +289,7 @@ export default function CalendarEntryForm({
               <select
                 value={projectForm.status}
                 onChange={(event) => handleProjectChange("status", event.target.value)}
-                className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               >
                 {projectStatusOptions.map((status) => (
                   <option key={status} value={status}>
@@ -305,7 +326,7 @@ export default function CalendarEntryForm({
           <div className="grid gap-3">
             <span className="text-sm text-slate-600">{t("projects.teamAssigned", "Assigned team")}</span>
             {workers.length ? (
-              <div className="flex flex-wrap gap-2 rounded-[24px] border border-white/70 bg-white/75 p-3">
+              <div className="flex flex-wrap gap-2 rounded-lg border border-slate-200 bg-white p-3">
                 {workers.map((worker) => {
                   const isSelected = projectForm.assignedWorkerIds.includes(worker.id);
 
@@ -324,7 +345,7 @@ export default function CalendarEntryForm({
                 })}
               </div>
             ) : (
-              <div className="rounded-[24px] border border-dashed border-slate-200 bg-slate-50/70 px-4 py-4 text-sm text-slate-500">
+              <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50/70 px-4 py-4 text-sm text-slate-500">
                 {t("workers.noWorkersFound")}
               </div>
             )}
@@ -337,13 +358,17 @@ export default function CalendarEntryForm({
               value={projectForm.notes}
               onChange={(event) => handleProjectChange("notes", event.target.value)}
               placeholder={t("projects.projectNotesPlaceholder", "Useful context for the team or next step.")}
-              className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+              className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
             />
           </label>
         </div>
       )}
 
-      <Button type="submit" className="w-full justify-center">
+      <Button
+        type="submit"
+        className="w-full justify-center"
+        disabled={entryType === "task" && (!projects.length || !workers.length)}
+      >
         {entryType === "task"
           ? t("calendar.assignTaskButton")
           : t("calendar.createProjectButton", "Create project")}

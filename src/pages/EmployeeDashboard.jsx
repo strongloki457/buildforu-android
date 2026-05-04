@@ -1,31 +1,18 @@
-import { CalendarDays, MessageSquare, PackagePlus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { CalendarDays, ClipboardList, PackagePlus } from "lucide-react";
+import { useMemo } from "react";
 import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
 import TaskListCard from "../components/dashboard/TaskListCard";
 import WorkStatusCard from "../components/dashboard/WorkStatusCard";
-import { DashboardSkeleton } from "../components/ui/LoadingSkeleton";
-import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { useVisibleTasks } from "../hooks/useRoleData";
 import { getLocalDateKey, getUpcomingItemsByDate, sortByDateKey } from "../utils/date";
 
 export default function EmployeeDashboard() {
-  const { user } = useAuth();
-  const { tasks, toggleTaskStatus } = useAppData();
+  const { toggleTaskStatus } = useAppData();
   const { t } = useI18n();
-  const [ready, setReady] = useState(false);
+  const personalTasks = useVisibleTasks();
   const todayKey = getLocalDateKey();
-  const currentWorkerId = user.workerId || user.id;
-
-  useEffect(() => {
-    const timeout = window.setTimeout(() => setReady(true), 450);
-    return () => window.clearTimeout(timeout);
-  }, []);
-
-  const personalTasks = useMemo(
-    () => tasks.filter((task) => task.employeeId === currentWorkerId),
-    [currentWorkerId, tasks]
-  );
   const todayTasks = useMemo(
     () => sortByDateKey(personalTasks.filter((task) => task.date === todayKey)),
     [personalTasks, todayKey]
@@ -39,31 +26,27 @@ export default function EmployeeDashboard() {
   );
   const quickActions = [
     {
-      key: "chat",
-      label: t("dashboard.openChatAction", "Open chat"),
-      description: t("dashboard.employeeQuickChat", "Message the office or your lead without leaving the workflow."),
-      icon: MessageSquare,
-      to: "/chat"
+      key: "tasks",
+      label: t("dashboard.openTasksAction", "Open tasks"),
+      description: t("dashboard.employeeQuickTasks", "See every assigned task."),
+      icon: ClipboardList,
+      to: "/tasks"
     },
     {
       key: "materials",
       label: t("dashboard.requestMaterialAction", "Request material"),
-      description: t("dashboard.employeeQuickMaterials", "Send a material request tied to your current project."),
+      description: t("dashboard.employeeQuickMaterials", "Ask for supplies by project."),
       icon: PackagePlus,
       to: "/materials"
     },
     {
       key: "calendar",
       label: t("dashboard.openCalendarAction", "Open calendar"),
-      description: t("dashboard.employeeQuickCalendar", "See the full schedule and upcoming assignments."),
+      description: t("dashboard.employeeQuickCalendar", "Check the next site visit."),
       icon: CalendarDays,
       to: "/calendar"
     }
   ];
-
-  if (!ready) {
-    return <DashboardSkeleton />;
-  }
 
   return (
     <div className="space-y-6">

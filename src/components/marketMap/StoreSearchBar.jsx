@@ -2,6 +2,14 @@ import { BadgeEuro, Layers3, MapPinned, Search, SlidersHorizontal } from "lucide
 import Card from "../ui/Card";
 import { useI18n } from "../../hooks/useI18n";
 
+const categoryTranslationKeys = {
+  Concrete: "seed.stores.categories.concrete",
+  Sanitary: "seed.stores.categories.sanitary",
+  Finishing: "seed.stores.categories.finishing",
+  Fasteners: "seed.stores.categories.fasteners",
+  Paint: "seed.stores.categories.paint"
+};
+
 export default function StoreSearchBar({
   availability,
   availabilityOptions,
@@ -89,7 +97,7 @@ export default function StoreSearchBar({
             >
               {categories.map((option) => (
                 <option key={option} value={option} className="text-slate-900">
-                  {option === "all" ? t("marketMap.allCategories") : option}
+                  {option === "all" ? t("marketMap.allCategories") : t(categoryTranslationKeys[option], option)}
                 </option>
               ))}
             </select>

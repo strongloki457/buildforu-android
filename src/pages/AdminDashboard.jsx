@@ -1,5 +1,5 @@
 import { CalendarDays, ClipboardPlus, FolderPlus, UserPlus } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import AssignmentPanel from "../components/dashboard/AssignmentPanel";
 import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
@@ -11,7 +11,6 @@ import ProjectFormModal from "../components/projects/ProjectFormModal";
 import WorkerAccessModal from "../components/workers/WorkerAccessModal";
 import WorkerFormModal from "../components/workers/WorkerFormModal";
 import { emptyWorkerForm } from "../components/workers/workerFormState";
-import { DashboardSkeleton } from "../components/ui/LoadingSkeleton";
 import Modal from "../components/ui/Modal";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
@@ -34,7 +33,6 @@ export default function AdminDashboard() {
   } = useAppData();
   const { companyUsers, syncWorkerUser } = useAuth();
   const { t } = useI18n();
-  const [ready, setReady] = useState(false);
   const [showWorkerModal, setShowWorkerModal] = useState(false);
   const [workerFormError, setWorkerFormError] = useState("");
   const [workerAccess, setWorkerAccess] = useState(null);
@@ -42,37 +40,32 @@ export default function AdminDashboard() {
   const [showTaskModal, setShowTaskModal] = useState(false);
   const todayKey = getLocalDateKey();
 
-  useEffect(() => {
-    const timeout = window.setTimeout(() => setReady(true), 500);
-    return () => window.clearTimeout(timeout);
-  }, []);
-
   const quickActions = [
     {
       key: "add-worker",
       label: t("workers.addWorker"),
-      description: t("dashboard.quickAddWorker", "Create a worker profile and assign current projects."),
+      description: t("dashboard.quickAddWorker", "Add login and project access."),
       icon: UserPlus,
       onClick: () => setShowWorkerModal(true)
     },
     {
       key: "add-project",
       label: t("projects.addProjectAction", "Add project"),
-      description: t("dashboard.quickAddProject", "Start a new project card for the company workspace."),
+      description: t("dashboard.quickAddProject", "Create the job site record."),
       icon: FolderPlus,
       onClick: () => setShowProjectModal(true)
     },
     {
       key: "add-task",
       label: t("calendar.addTask"),
-      description: t("dashboard.quickAddTask", "Assign work for today or upcoming site activity."),
+      description: t("dashboard.quickAddTask", "Put work on the calendar."),
       icon: ClipboardPlus,
       onClick: () => setShowTaskModal(true)
     },
     {
       key: "open-calendar",
       label: t("dashboard.openCalendarAction", "Open calendar"),
-      description: t("dashboard.quickOpenCalendar", "Jump to the full company schedule and planning view."),
+      description: t("dashboard.quickOpenCalendar", "Review team schedule."),
       icon: CalendarDays,
       to: "/calendar"
     }
@@ -89,10 +82,6 @@ export default function AdminDashboard() {
         .slice(0, 4),
     [materialRequests]
   );
-
-  if (!ready) {
-    return <DashboardSkeleton />;
-  }
 
   return (
     <div className="space-y-6">
@@ -155,21 +144,29 @@ export default function AdminDashboard() {
           }}
           onSave={(payload) => {
             const normalizedEmail = normalizeEmail(payload.email);
-            const conflictingUser = companyUsers.find((member) => normalizeEmail(member.email) === normalizedEmail);
+            const shouldSyncLogin = Boolean(payload.createLogin);
+            const conflictingUser = shouldSyncLogin
+              ? companyUsers.find((member) => normalizeEmail(member.email) === normalizedEmail)
+              : null;
 
-            if (!normalizedEmail) {
+            if (!String(payload.name ?? "").trim()) {
+              setWorkerFormError(t("workers.workerNameRequired", "Full name is required."));
+              return;
+            }
+
+            if (shouldSyncLogin && !normalizedEmail) {
               setWorkerFormError(t("workers.workerEmailRequired", "Email is required to create an employee login."));
               return;
             }
 
-            if (conflictingUser) {
+            if (shouldSyncLogin && conflictingUser) {
               setWorkerFormError(t("workers.workerEmailDuplicate", "This email is already used by another company user."));
               return;
             }
 
             const createdWorker = addWorker(payload);
 
-            if (createdWorker) {
+            if (createdWorker && shouldSyncLogin) {
               const access = syncWorkerUser({
                 companyId: createdWorker.companyId,
                 workspaceId: createdWorker.workspaceId,
@@ -185,6 +182,9 @@ export default function AdminDashboard() {
                 });
               }
 
+              setWorkerFormError("");
+              setShowWorkerModal(false);
+            } else if (createdWorker) {
               setWorkerFormError("");
               setShowWorkerModal(false);
             }

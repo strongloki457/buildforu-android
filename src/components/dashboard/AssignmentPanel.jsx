@@ -31,6 +31,16 @@ export default function AssignmentPanel({
   const suggestedProjectId = selectedWorker?.projectIds?.[0] ?? projects[0]?.id ?? "";
 
   const handleChange = (key, value) => {
+    if (key === "employeeId") {
+      const nextWorker = workers.find((worker) => worker.id === value);
+      setForm((current) => ({
+        ...current,
+        employeeId: value,
+        projectId: nextWorker?.projectIds?.[0] ?? current.projectId
+      }));
+      return;
+    }
+
     setForm((current) => ({ ...current, [key]: value }));
   };
 
@@ -89,11 +99,17 @@ export default function AssignmentPanel({
       {title ? <SectionHeader title={title} subtitle={subtitle} /> : null}
 
       <form onSubmit={handleSubmit} className="grid gap-4">
+        {(!workers.length || !projects.length) ? (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            {t("calendar.taskRequiresSetup", "Create at least one worker and one project before assigning calendar tasks.")}
+          </div>
+        ) : null}
+
         <select
           value={form.employeeId}
           onChange={(event) => handleChange("employeeId", event.target.value)}
           disabled={!workers.length}
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
+          className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
         >
           {workers.length ? (
             workers.map((worker) => (
@@ -110,7 +126,7 @@ export default function AssignmentPanel({
           value={form.projectId}
           onChange={(event) => handleChange("projectId", event.target.value)}
           disabled={!projects.length}
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
+          className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
         >
           {projects.length ? (
             <>
@@ -131,7 +147,7 @@ export default function AssignmentPanel({
           onChange={(event) => handleChange("title", event.target.value)}
           placeholder={t("calendar.taskTitle")}
           required
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+          className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
         <input
@@ -139,7 +155,7 @@ export default function AssignmentPanel({
           onChange={(event) => handleChange("location", event.target.value)}
           placeholder={t("calendar.taskLocation")}
           required
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+          className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
         <input
@@ -147,7 +163,7 @@ export default function AssignmentPanel({
           value={form.date}
           onChange={(event) => handleChange("date", event.target.value)}
           required
-          className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm outline-none"
+          className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
         />
 
         <Button

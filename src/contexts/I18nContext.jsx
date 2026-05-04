@@ -10,6 +10,7 @@ export const I18nContext = createContext(null);
 
 const STORAGE_KEY = "buildforu-locale";
 const dictionaries = { en, pl, de, fr, es, it };
+const supportedLocales = Object.keys(dictionaries);
 
 const languageOptions = [
   { value: "en", label: "English" },
@@ -39,13 +40,18 @@ function interpolate(template, params) {
   );
 }
 
+function normalizeLocale(locale) {
+  return supportedLocales.includes(locale) ? locale : "en";
+}
+
 export function I18nProvider({ children }) {
-  const initialLocale = window.localStorage.getItem(STORAGE_KEY) || "en";
+  const initialLocale = normalizeLocale(window.localStorage.getItem(STORAGE_KEY));
   const [locale, setLocaleState] = useState(initialLocale);
 
   const setLocale = (nextLocale) => {
-    setLocaleState(nextLocale);
-    window.localStorage.setItem(STORAGE_KEY, nextLocale);
+    const normalizedLocale = normalizeLocale(nextLocale);
+    setLocaleState(normalizedLocale);
+    window.localStorage.setItem(STORAGE_KEY, normalizedLocale);
   };
 
   const t = (key, paramsOrFallback, maybeFallback) => {

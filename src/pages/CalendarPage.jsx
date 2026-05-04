@@ -10,51 +10,17 @@ import StatusBadge from "../components/ui/StatusBadge";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
-import { getLocalDateKey, isDateKeyInMonth, sortByDateKey } from "../utils/date";
+import { useVisibleCalendarEntries } from "../hooks/useRoleData";
+import { getLocalDateKey, isDateKeyInMonth } from "../utils/date";
 import { getProjectNotes, getTaskLocation, getTaskProjectName, getTaskTitle } from "../utils/localizedValue";
-
-function buildProjectCalendarEvent(project) {
-  return {
-    id: `project-event-${project.id}`,
-    entryType: "project",
-    date: project.startDate,
-    title: project.name,
-    titleKey: project.nameKey,
-    projectId: project.id,
-    projectName: project.name,
-    projectNameKey: project.nameKey,
-    location: project.location,
-    locationKey: project.locationKey,
-    notes: project.notes,
-    notesKey: project.notesKey,
-    status: project.status
-  };
-}
 
 export default function CalendarPage() {
   const { user } = useAuth();
-  const { tasks, workers, projects, addProject, addTask } = useAppData();
+  const { workers, projects, addProject, addTask } = useAppData();
   const { locale, t } = useI18n();
+  const scopedCalendarEntries = useVisibleCalendarEntries();
   const [showEntryModal, setShowEntryModal] = useState(false);
   const [visibleDate, setVisibleDate] = useState(() => new Date());
-  const currentWorkerId = user.workerId || user.id;
-
-  const scopedTasks = useMemo(
-    () => (user.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === currentWorkerId)),
-    [currentWorkerId, tasks, user.role]
-  );
-  const scopedProjectEvents = useMemo(() => {
-    const visibleProjects =
-      user.role === "admin"
-        ? projects
-        : projects.filter((project) => project.assignedWorkers.some((worker) => worker.id === currentWorkerId));
-
-    return visibleProjects.filter((project) => project.startDate).map((project) => buildProjectCalendarEvent(project));
-  }, [currentWorkerId, projects, user.role]);
-  const scopedCalendarEntries = useMemo(
-    () => sortByDateKey([...scopedTasks.map((task) => ({ ...task, entryType: "task" })), ...scopedProjectEvents]),
-    [scopedProjectEvents, scopedTasks]
-  );
   const entriesInVisibleMonth = useMemo(
     () => scopedCalendarEntries.filter((entry) => isDateKeyInMonth(entry.date, visibleDate)),
     [scopedCalendarEntries, visibleDate]

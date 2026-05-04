@@ -25,7 +25,7 @@ export default function ProjectsOverviewCard({ title, subtitle, projects }) {
       <div className="space-y-3">
         {projects.length ? (
           projects.map((project) => (
-            <div key={project.id} className="rounded-[24px] bg-white/80 p-4">
+            <div key={project.id} className="rounded-lg border border-slate-200 bg-white p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-base text-slate-900">{getProjectName(t, project)}</p>
@@ -36,14 +36,19 @@ export default function ProjectsOverviewCard({ title, subtitle, projects }) {
                       {t("projects.teamAssigned", "Assigned team")}: {project.assignedWorkers.length}
                     </span>
                   </div>
+                  {!project.assignedWorkers.length ? (
+                    <p className="mt-2 text-sm text-amber-700">
+                      {t("projects.noTeamWarning", "Assign at least one worker before scheduling tasks.")}
+                    </p>
+                  ) : null}
                 </div>
                 <StatusBadge value={project.status} />
               </div>
             </div>
           ))
         ) : (
-          <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/60 px-5 py-10 text-sm text-slate-500">
-            {t("projects.emptyStatusGroup", "No projects in this status yet.")}
+          <div className="rounded-lg border border-dashed border-slate-300 bg-white px-5 py-10 text-sm text-slate-500">
+            {t("projects.emptyStatusGroup", "No projects in this status yet.")} {t("projects.emptyCreateHint", "Create a project before assigning calendar tasks.")}
           </div>
         )}
       </div>

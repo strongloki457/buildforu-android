@@ -1,4 +1,4 @@
-import { CheckCircle2, MapPin } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin } from "lucide-react";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
@@ -25,7 +25,7 @@ export default function TaskListCard({
       <div className="space-y-3">
         {visibleTasks.length ? (
           visibleTasks.map((task) => (
-            <div key={task.id} className="rounded-[24px] border border-white/70 bg-white/75 p-4">
+            <div key={task.id} className="rounded-lg border border-slate-200 bg-white p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-base text-slate-900">{getTaskTitle(t, task)}</p>
@@ -37,6 +37,18 @@ export default function TaskListCard({
                   {showAssignee && task.assignee ? (
                     <p className="mt-2 text-sm text-slate-500">
                       {t("common.assignedTo", "Assigned to")}: {task.assignee}
+                    </p>
+                  ) : null}
+                  {showAssignee && !task.employeeId ? (
+                    <p className="mt-2 inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                      <AlertTriangle size={14} />
+                      {t("calendar.unassignedWorker", "Unassigned")}
+                    </p>
+                  ) : null}
+                  {!task.projectId ? (
+                    <p className="mt-2 inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                      <AlertTriangle size={14} />
+                      {t("calendar.noProjectLink", "No project link")}
                     </p>
                   ) : null}
                   <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
@@ -52,7 +64,7 @@ export default function TaskListCard({
                 {onToggleStatus ? (
                   <button
                     onClick={() => onToggleStatus(task.id)}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-brand-50 px-3 py-2 text-xs text-brand-700 transition hover:bg-brand-100"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm text-white transition hover:bg-brand-800"
                   >
                     <CheckCircle2 size={14} />
                     {t("common.toggleStatus")}
@@ -62,7 +74,7 @@ export default function TaskListCard({
             </div>
           ))
         ) : (
-          <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/50 p-6 text-sm text-slate-500">
+          <div className="rounded-lg border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-500">
             {emptyText}
           </div>
         )}

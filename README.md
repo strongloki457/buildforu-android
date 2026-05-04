@@ -15,7 +15,7 @@ BuildForU is designed as an internal operations platform for construction busine
 - Calendar and schedule overview
 - Task management
 - Team chat
-- Market map / store finder
+- Materials requests and Find to Buy store finder
 - Multilingual UI
 - Responsive design for desktop and mobile usage
 
@@ -68,10 +68,14 @@ src/
 
 ## Notes
 
-- The backend is not connected yet
-- Authentication is currently mocked
-- Application data is local and based on mock datasets
-- The project is intended as a strong frontend foundation for future production integration
+- The backend is not connected yet.
+- Authentication is frontend/mock only in the current MVP.
+- Passwords in mock data are not secure and must not be used as a production pattern.
+- A production backend must hash passwords and manage sessions securely.
+- Access control must be enforced server-side; frontend role guards are only a prototype convenience.
+- `localStorage` persistence is only for frontend prototype/MVP state.
+- Application data is local and based on mock datasets.
+- The project is intended as a strong frontend foundation for future production integration.
 
 ## Future Plans
 

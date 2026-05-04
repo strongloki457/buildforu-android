@@ -4,5 +4,6 @@ export const emptyWorkerForm = {
   phone: "",
   position: "",
   notes: "",
-  projectIds: []
+  projectIds: [],
+  createLogin: false
 };
