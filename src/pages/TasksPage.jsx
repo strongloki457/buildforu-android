@@ -53,8 +53,12 @@ export default function TasksPage() {
         </div>
 
         <div className="divide-y divide-white/60">
-          {scopedTasks.map((task) => (
-            <div key={task.id} className="bg-white/55 px-4 py-4 md:grid md:grid-cols-[1.4fr_1fr_1fr_0.9fr] md:items-center md:gap-4 md:px-5">
+          {scopedTasks.length ? (
+            scopedTasks.map((task) => (
+              <div
+                key={task.id}
+                className="bg-white/55 px-4 py-4 md:grid md:grid-cols-[1.4fr_1fr_1fr_0.9fr] md:items-center md:gap-4 md:px-5"
+              >
                 <div className="flex items-center gap-3">
                   <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
                     <ClipboardList size={16} />
@@ -72,28 +76,43 @@ export default function TasksPage() {
                   </div>
                 </div>
 
-              <div className="mt-3 grid gap-2 text-sm text-slate-500 md:mt-0 md:block">
-                <p className="md:hidden">
-                  <span className="text-slate-400">{t("common.location")}:</span> {getTaskLocation(t, task)}
-                </p>
-                <p className="md:hidden">
-                  <span className="text-slate-400">{user.role === "admin" ? t("common.assignedTo") : t("common.date")}:</span>{" "}
-                  {user.role === "admin" ? task.assignee : task.date}
-                </p>
-                <p className="hidden md:block">{getTaskLocation(t, task)}</p>
-              </div>
+                <div className="mt-3 grid gap-2 text-sm text-slate-500 md:mt-0 md:block">
+                  <p className="md:hidden">
+                    <span className="text-slate-400">{t("common.location")}:</span> {getTaskLocation(t, task)}
+                  </p>
+                  <p className="md:hidden">
+                    <span className="text-slate-400">
+                      {user.role === "admin" ? t("common.assignedTo") : t("common.date")}:
+                    </span>{" "}
+                    {user.role === "admin" ? task.assignee || t("calendar.unassignedWorker") : task.date}
+                  </p>
+                  <p className="hidden md:block">{getTaskLocation(t, task)}</p>
+                </div>
 
-              <p className="hidden text-sm text-slate-500 md:block">{user.role === "admin" ? task.assignee : task.date}</p>
-              <div className="mt-3 flex items-center gap-3 md:mt-0">
-                <StatusBadge value={task.status} />
-                {user.role === "employee" ? (
-                  <button onClick={() => toggleTaskStatus(task.id)} className="text-xs text-brand-700">
-                    {t("common.toggleStatus")}
-                  </button>
-                ) : null}
+                <p className="hidden text-sm text-slate-500 md:block">
+                  {user.role === "admin" ? task.assignee || t("calendar.unassignedWorker") : task.date}
+                </p>
+                <div className="mt-3 flex items-center gap-3 md:mt-0">
+                  <StatusBadge value={task.status} />
+                  {user.role === "employee" ? (
+                    <button onClick={() => toggleTaskStatus(task.id)} className="text-xs text-brand-700">
+                      {t("common.toggleStatus")}
+                    </button>
+                  ) : null}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="bg-white/55 px-6 py-14 text-center">
+              <ClipboardList size={28} className="mx-auto text-brand-600" />
+              <h3 className="mt-4 text-xl text-slate-900">
+                {user.role === "employee" ? t("tasks.emptyEmployeeTitle") : t("tasks.emptyTitle")}
+              </h3>
+              <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+                {user.role === "employee" ? t("tasks.emptyEmployeeSubtitle") : t("tasks.emptySubtitle")}
+              </p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 

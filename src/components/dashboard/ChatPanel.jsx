@@ -61,15 +61,17 @@ export default function ChatPanel({ title, subtitle, threads, user, onSendMessag
 
         <div className="flex min-h-[320px] flex-col rounded-[28px] bg-white/70 p-4 sm:min-h-[360px]">
           <ChatMessageList activeThread={activeThread} user={user} />
-          <ChatComposer
-            attachments={attachments}
-            message={message}
-            onFilesSelected={handleAttachmentSelection}
-            onMessageChange={setMessage}
-            onRemoveAttachment={removeAttachment}
-            onSend={handleSend}
-            placeholder={placeholder}
-          />
+          {activeThread ? (
+            <ChatComposer
+              attachments={attachments}
+              message={message}
+              onFilesSelected={handleAttachmentSelection}
+              onMessageChange={setMessage}
+              onRemoveAttachment={removeAttachment}
+              onSend={handleSend}
+              placeholder={placeholder}
+            />
+          ) : null}
         </div>
       </div>
     </Card>

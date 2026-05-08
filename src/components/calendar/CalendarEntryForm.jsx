@@ -183,6 +183,8 @@ export default function CalendarEntryForm({
               <select
                 value={taskForm.projectId}
                 onChange={(event) => handleTaskChange("projectId", event.target.value)}
+                required
+                disabled={!projects.length}
                 className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               >
                 <option value="">{t("calendar.selectProject", "Select project")}</option>
@@ -199,6 +201,8 @@ export default function CalendarEntryForm({
               <select
                 value={taskForm.employeeId}
                 onChange={(event) => handleTaskChange("employeeId", event.target.value)}
+                required
+                disabled={!workers.length}
                 className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
               >
                 <option value="">{t("calendar.selectWorker", "Select worker")}</option>

@@ -101,7 +101,7 @@
     "password": "Mot de passe",
     "button": "Connexion",
     "helper": "Utilisez les comptes de demonstration ci-dessous pour voir les deux experiences.",
-    "mockPassword": "Dans ce prototype, n'importe quel mot de passe fonctionne.",
+    "mockPassword": "Utilisez le mot de passe affiché sur chaque compte mock.",
     "requiredError": "L'e-mail et le mot de passe sont obligatoires.",
     "detectedRole": "Role detecte",
     "previewAccess": "Acces de demonstration",
@@ -264,7 +264,11 @@
     "task": "Tache",
     "prioritySuffix": "Priorite {{priority}}",
     "filterHint": "La vue filtre est pour l'instant un mock frontend pret pour une integration backend.",
-    "priority": "Priorité"
+    "priority": "Priorité",
+    "emptyTitle": "Aucune tâche trouvée",
+    "emptySubtitle": "Aucune tâche ne correspond encore à ce filtre.",
+    "emptyEmployeeTitle": "Aucun travail attribué",
+    "emptyEmployeeSubtitle": "Vous n'avez aucune tâche dans cette vue pour le moment."
   },
   "chat": {
     "title": "Chat d'equipe",
@@ -280,6 +284,10 @@
     "attachmentReady": "Pret a envoyer",
     "cameraReady": "Pret pour la camera sur mobile",
     "messageWithAttachments": "Message avec pieces jointes",
+    "noThreadsTitle": "Aucun fil de chat",
+    "noThreadsSubtitle": "Les nouvelles conversations apparaîtront ici après la configuration de l'équipe ou du backend.",
+    "noMessagesTitle": "Aucun message",
+    "noMessagesSubtitle": "Envoyez la première mise à jour lorsque cette conversation sera prête.",
     "messages": {
       "m-1": "Bonjour Alex, merci de prioriser aujourd'hui l'inspection de la dalle beton.",
       "m-2": "Bien recu. Je televerserai les notes apres la visite.",
@@ -437,7 +445,7 @@
     "findToBuyTab": "Trouver à acheter",
     "dualPurposeSubtitle": "Suivez les demandes de matériaux par projet et comparez les options d’achat simulées au même endroit.",
     "emptyRequests": "Aucune demande de matériaux dans la file.",
-    "projectRequiredHint": "Une demande de matériaux doit être liée à un projet.",
+    "projectRequiredHint": "Le projet est facultatif ; le bureau pourra lier cette demande plus tard.",
     "findToBuyTitle": "Trouver à acheter",
     "findToBuySubtitle": "Recherchez des magasins simulés par prix, distance, catégorie et disponibilité.",
     "findToBuyPlaceholder": "ciment, toilettes, carrelage, vis, peinture...",

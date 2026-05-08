@@ -101,7 +101,7 @@
     "password": "Contrasena",
     "button": "Iniciar sesion",
     "helper": "Usa las cuentas demo de abajo para ver ambas experiencias.",
-    "mockPassword": "En este prototipo funciona cualquier contrasena.",
+    "mockPassword": "Usa la contraseña mostrada en cada cuenta mock.",
     "requiredError": "El correo y la contrasena son obligatorios.",
     "detectedRole": "Rol detectado",
     "previewAccess": "Acceso de prueba",
@@ -264,7 +264,11 @@
     "task": "Tarea",
     "prioritySuffix": "Prioridad {{priority}}",
     "filterHint": "La vista de filtros esta simulada en frontend y lista para integracion backend.",
-    "priority": "Prioridad"
+    "priority": "Prioridad",
+    "emptyTitle": "No se encontraron tareas",
+    "emptySubtitle": "Ninguna tarea coincide todavía con este filtro.",
+    "emptyEmployeeTitle": "Sin trabajo asignado",
+    "emptyEmployeeSubtitle": "No tienes tareas en esta vista ahora mismo."
   },
   "chat": {
     "title": "Chat del equipo",
@@ -280,6 +284,10 @@
     "attachmentReady": "Listo para enviar",
     "cameraReady": "Listo para camara en movil",
     "messageWithAttachments": "Mensaje con adjuntos",
+    "noThreadsTitle": "Aún no hay chats",
+    "noThreadsSubtitle": "Las nuevas conversaciones aparecerán aquí cuando el backend o la configuración del equipo las cree.",
+    "noMessagesTitle": "Aún no hay mensajes",
+    "noMessagesSubtitle": "Envía la primera actualización cuando esta conversación esté lista.",
     "messages": {
       "m-1": "Buenos dias Alex, por favor prioriza hoy la inspeccion de la losa de hormigon.",
       "m-2": "Entendido. Subire las notas despues del recorrido.",
@@ -437,7 +445,7 @@
     "findToBuyTab": "Buscar para comprar",
     "dualPurposeSubtitle": "Sigue solicitudes de materiales por proyecto y compara opciones de compra simuladas en un solo lugar.",
     "emptyRequests": "No hay solicitudes de materiales en la cola.",
-    "projectRequiredHint": "Una solicitud de material debe estar conectada a un proyecto.",
+    "projectRequiredHint": "El proyecto es opcional; la oficina puede vincular esta solicitud más tarde.",
     "findToBuyTitle": "Buscar para comprar",
     "findToBuySubtitle": "Busca tiendas simuladas por precio, distancia, categoría y disponibilidad.",
     "findToBuyPlaceholder": "cemento, inodoro, azulejos, tornillos, pintura...",

@@ -196,6 +196,7 @@ export default function AdminDashboard() {
       {showProjectModal ? (
         <ProjectFormModal
           onClose={() => setShowProjectModal(false)}
+          workerOptions={workers}
           onSave={(payload) => {
             const createdProject = addProject(payload);
 

@@ -91,7 +91,14 @@ export default function App() {
               }
             />
             <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/settings/billing" element={<BillingPage />} />
+            <Route
+              path="/settings/billing"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <BillingPage />
+                </RoleGuard>
+              }
+            />
           </Route>
         </Route>
         <Route path="*" element={<FallbackRouter />} />

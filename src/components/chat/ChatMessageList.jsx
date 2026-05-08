@@ -15,6 +15,17 @@ export default function ChatMessageList({ activeThread, user }) {
     );
   }
 
+  if (!activeThread.messages.length) {
+    return (
+      <div className="flex-1">
+        <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/60 p-6 text-center">
+          <p className="text-base text-slate-900">{t("chat.noMessagesTitle")}</p>
+          <p className="mt-2 text-sm text-slate-500">{t("chat.noMessagesSubtitle")}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 space-y-3 overflow-y-auto pr-1">
       {activeThread.messages.map((item) => {

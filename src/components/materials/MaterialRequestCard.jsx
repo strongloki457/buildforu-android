@@ -39,11 +39,10 @@ export default function MaterialRequestCard({ request, isAdmin, locale, onDelete
       </div>
 
       <div className="mt-5 grid gap-3 text-sm text-slate-500 sm:grid-cols-2">
-        {request.projectName ? (
-          <div className="rounded-[20px] bg-slate-50/90 px-4 py-3">
-            <span className="text-slate-400">{t("common.project")}:</span> {getMaterialRequestProjectName(t, request)}
-          </div>
-        ) : null}
+        <div className="rounded-[20px] bg-slate-50/90 px-4 py-3">
+          <span className="text-slate-400">{t("common.project")}:</span>{" "}
+          {request.projectName ? getMaterialRequestProjectName(t, request) : t("materials.noProjectLink", "No project link")}
+        </div>
 
         {request.quantity ? (
           <div className="rounded-[20px] bg-slate-50/90 px-4 py-3">

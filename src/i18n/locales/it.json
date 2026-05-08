@@ -101,7 +101,7 @@
     "password": "Password",
     "button": "Accedi",
     "helper": "Usa gli account demo qui sotto per vedere entrambe le esperienze.",
-    "mockPassword": "In questo prototipo qualsiasi password funziona.",
+    "mockPassword": "Usa la password mostrata per ogni account mock.",
     "requiredError": "Email e password sono obbligatorie.",
     "detectedRole": "Ruolo rilevato",
     "previewAccess": "Accesso demo",
@@ -264,7 +264,11 @@
     "task": "Attivita",
     "prioritySuffix": "Priorita {{priority}}",
     "filterHint": "La vista filtri e al momento un mock frontend pronta per una futura integrazione backend.",
-    "priority": "Priorità"
+    "priority": "Priorità",
+    "emptyTitle": "Nessuna attività trovata",
+    "emptySubtitle": "Nessuna attività corrisponde ancora a questo filtro.",
+    "emptyEmployeeTitle": "Nessun lavoro assegnato",
+    "emptyEmployeeSubtitle": "Al momento non hai attività in questa vista."
   },
   "chat": {
     "title": "Chat del team",
@@ -280,6 +284,10 @@
     "attachmentReady": "Pronto per l'invio",
     "cameraReady": "Pronto per fotocamera su mobile",
     "messageWithAttachments": "Messaggio con allegati",
+    "noThreadsTitle": "Ancora nessuna chat",
+    "noThreadsSubtitle": "Le nuove conversazioni appariranno qui quando il backend o la configurazione del team le creeranno.",
+    "noMessagesTitle": "Ancora nessun messaggio",
+    "noMessagesSubtitle": "Invia il primo aggiornamento quando questa conversazione sarà pronta.",
     "messages": {
       "m-1": "Buongiorno Alex, per favore dai priorita oggi all'ispezione della soletta in calcestruzzo.",
       "m-2": "Ricevuto. Carichero le note dopo il sopralluogo.",
@@ -437,7 +445,7 @@
     "findToBuyTab": "Trova da acquistare",
     "dualPurposeSubtitle": "Monitora richieste materiali per progetto e confronta opzioni di acquisto mock in un unico posto.",
     "emptyRequests": "Nessuna richiesta materiali in coda.",
-    "projectRequiredHint": "Una richiesta materiale deve essere collegata a un progetto.",
+    "projectRequiredHint": "Il progetto è opzionale; l'ufficio potrà collegare questa richiesta più tardi.",
     "findToBuyTitle": "Trova da acquistare",
     "findToBuySubtitle": "Cerca negozi mock per prezzo, distanza, categoria e disponibilità.",
     "findToBuyPlaceholder": "cemento, WC, piastrelle, viti, vernice...",

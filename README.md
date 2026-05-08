@@ -1,6 +1,6 @@
 # BuildForU
 
-BuildForU is a construction company management web application focused on helping office teams and field crews stay aligned in one workspace. The current product is frontend-first and uses mock data, with separate experiences for Boss/Admin and Employee roles.
+BuildForU is a construction company management web application focused on helping office teams and field crews stay aligned in one workspace. The current product is a frontend-only MVP that uses mock and `localStorage` data, with separate experiences for Boss/Admin and Employee roles.
 
 ## Overview
 
@@ -8,7 +8,7 @@ BuildForU is designed as an internal operations platform for construction busine
 
 ## Main Features
 
-- Role-based login flow for Boss/Admin and Employee users
+- Role-based mock login flow for Boss/Admin and Employee users
 - Admin dashboard for company-wide operations visibility
 - Employee dashboard focused on personal assignments and field activity
 - Workers management interface
@@ -18,6 +18,7 @@ BuildForU is designed as an internal operations platform for construction busine
 - Materials requests and Find to Buy store finder
 - Multilingual UI
 - Responsive design for desktop and mobile usage
+- Local frontend persistence for users, sessions, workers, projects, tasks, attendance, materials, and selected language
 
 ## Tech Stack
 
@@ -43,12 +44,18 @@ npm run dev
 
 After starting the development server, open the local URL shown in the terminal.
 
+### Production Build Check
+
+```bash
+npm run build
+```
+
 ## Example Mock Login Accounts
 
-- `boss@buildforu.com`
-- `worker@buildforu.com`
+- Admin: `admin@buildforu.com` / `admin123`
+- Employee: `worker@buildforu.com` / `worker123`
 
-Any password works in the current prototype.
+New employee logins created from the Workers screen receive a temporary mock password shown in the UI.
 
 ## Project Structure
 
@@ -70,11 +77,11 @@ src/
 
 - The backend is not connected yet.
 - Authentication is frontend/mock only in the current MVP.
-- Passwords in mock data are not secure and must not be used as a production pattern.
+- Mock passwords are stored in frontend data and are not production-safe.
 - A production backend must hash passwords and manage sessions securely.
 - Access control must be enforced server-side; frontend role guards are only a prototype convenience.
 - `localStorage` persistence is only for frontend prototype/MVP state.
-- Application data is local and based on mock datasets.
+- Application data is local, resilient to empty/malformed storage, and based on mock datasets when no saved data exists.
 - The project is intended as a strong frontend foundation for future production integration.
 
 ## Future Plans

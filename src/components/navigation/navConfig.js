@@ -24,8 +24,8 @@ const pathRegistry = {
   dashboard: "/dashboard"
 };
 
-const employeeItems = ["dashboard", "tasks", "calendar", "materials", "settings"];
-const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "settings"];
+const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "settings"];
+const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "settings"];
 
 export function getNavigation(role, t) {
   const keys = role === "admin" ? adminItems : employeeItems;

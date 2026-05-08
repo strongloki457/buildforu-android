@@ -1,4 +1,4 @@
-import { AlertTriangle, PackagePlus } from "lucide-react";
+import { PackagePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
@@ -35,7 +35,7 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
     const quantity = form.quantity.trim();
     const note = form.note.trim();
 
-    if (!itemName || !form.projectId) {
+    if (!itemName) {
       return;
     }
 
@@ -81,10 +81,9 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
           <select
             value={form.projectId}
             onChange={(event) => handleChange("projectId", event.target.value)}
-            required
             className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
           >
-            <option value="">{t("calendar.selectProject", "Select project")}</option>
+            <option value="">{t("materials.noProjectLink", "No project link")}</option>
             {projectOptions.map((project) => (
               <option key={project.id} value={project.id}>
                 {getProjectName(t, project)}
@@ -126,13 +125,12 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
         </label>
 
         {!projectOptions.length ? (
-          <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-            <span>{t("materials.projectRequiredHint", "A material request must be connected to a project.")}</span>
+          <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-500">
+            <span>{t("materials.projectRequiredHint", "Project is optional; the office can link it later.")}</span>
           </div>
         ) : null}
 
-        <Button type="submit" className="w-full justify-center gap-2" disabled={!projectOptions.length}>
+        <Button type="submit" className="w-full justify-center gap-2" disabled={!form.itemName.trim()}>
           <PackagePlus size={16} />
           {t("materials.submitRequest", "Submit request")}
         </Button>

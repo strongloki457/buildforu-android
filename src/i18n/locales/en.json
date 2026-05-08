@@ -114,7 +114,7 @@
     "password": "Password",
     "button": "Sign in",
     "helper": "Use a demo account to preview the current frontend experience.",
-    "mockPassword": "Any password works in this prototype.",
+    "mockPassword": "Use the password shown on each mock account.",
     "requiredError": "Email and password are required.",
     "detectedRole": "Role preview",
     "previewAccess": "Demo access",
@@ -277,7 +277,11 @@
     "task": "Task",
     "prioritySuffix": "{{priority}} priority",
     "filterHint": "Filter view is mocked on the frontend and ready for backend integration later.",
-    "priority": "Priority"
+    "priority": "Priority",
+    "emptyTitle": "No tasks found",
+    "emptySubtitle": "No tasks match this filter yet.",
+    "emptyEmployeeTitle": "No assigned work",
+    "emptyEmployeeSubtitle": "You do not have any tasks in this view right now."
   },
   "chat": {
     "title": "Team chat",
@@ -293,6 +297,10 @@
     "attachmentReady": "Ready to send",
     "cameraReady": "Camera-ready on mobile",
     "messageWithAttachments": "Message with attachments",
+    "noThreadsTitle": "No chat threads yet",
+    "noThreadsSubtitle": "New conversations will appear here once the backend or team setup creates them.",
+    "noMessagesTitle": "No messages yet",
+    "noMessagesSubtitle": "Send the first update when this conversation is ready.",
     "messages": {
       "m-1": "Morning Alex, please prioritize the slab inspection today.",
       "m-2": "On it. I will upload notes after the walkthrough.",
@@ -479,7 +487,7 @@
     "findToBuyTab": "Find to Buy",
     "dualPurposeSubtitle": "Track material requests by project and compare mock buying options in one place.",
     "emptyRequests": "No material requests are in the queue right now.",
-    "projectRequiredHint": "A material request must be connected to a project.",
+    "projectRequiredHint": "Project is optional; the office can link this request later.",
     "findToBuyTitle": "Find to Buy",
     "findToBuySubtitle": "Search mock stores by price, distance, category and availability.",
     "findToBuyPlaceholder": "cement, toilet, tiles, screws, paint...",

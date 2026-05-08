@@ -72,7 +72,7 @@ export default function AssignmentPanel({
     const title = form.title.trim();
     const location = form.location.trim();
 
-    if (!form.employeeId || !form.projectId || !title || !location || !form.date) {
+    if (!form.employeeId || !form.projectId || !title || !form.date) {
       return;
     }
 
@@ -82,7 +82,7 @@ export default function AssignmentPanel({
     onAssign({
       ...form,
       title,
-      location,
+      location: location || project?.location || project?.name || "",
       assignee: assignee?.name ?? t("calendar.unknownWorker"),
       projectName: project?.name ?? ""
     });
@@ -154,7 +154,6 @@ export default function AssignmentPanel({
           value={form.location}
           onChange={(event) => handleChange("location", event.target.value)}
           placeholder={t("calendar.taskLocation")}
-          required
           className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm outline-none"
         />
 

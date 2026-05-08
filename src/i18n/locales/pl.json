@@ -101,7 +101,7 @@
     "password": "Hasło",
     "button": "Zaloguj się",
     "helper": "Użyj poniższych kont demo, aby zobaczyć oba widoki.",
-    "mockPassword": "W tym prototypie działa dowolne hasło.",
+    "mockPassword": "Użyj hasła widocznego przy danym koncie mockowym.",
     "requiredError": "Email i hasło są wymagane.",
     "detectedRole": "Wykryta rola",
     "previewAccess": "Dostęp podglądowy",
@@ -264,7 +264,11 @@
     "task": "Zadanie",
     "prioritySuffix": "Priorytet: {{priority}}",
     "filterHint": "Widok filtrów jest obecnie mockiem frontendowym i czeka na backend.",
-    "priority": "Priorytet"
+    "priority": "Priorytet",
+    "emptyTitle": "Nie znaleziono zadań",
+    "emptySubtitle": "Żadne zadania nie pasują jeszcze do tego filtra.",
+    "emptyEmployeeTitle": "Brak przypisanej pracy",
+    "emptyEmployeeSubtitle": "Nie masz teraz zadań w tym widoku."
   },
   "chat": {
     "title": "Czat zespołu",
@@ -280,6 +284,10 @@
     "attachmentReady": "Gotowe do wysłania",
     "cameraReady": "Gotowe pod aparat na mobile",
     "messageWithAttachments": "Wiadomość z załącznikami",
+    "noThreadsTitle": "Brak wątków czatu",
+    "noThreadsSubtitle": "Nowe rozmowy pojawią się tutaj po konfiguracji zespołu lub backendu.",
+    "noMessagesTitle": "Brak wiadomości",
+    "noMessagesSubtitle": "Wyślij pierwszą aktualizację, gdy rozmowa będzie gotowa.",
     "messages": {
       "m-1": "Cześć Alex, potraktuj dziś priorytetowo odbiór płyty betonowej.",
       "m-2": "Jasne. Wgram notatki po obchodzie.",
@@ -437,7 +445,7 @@
     "findToBuyTab": "Znajdź do kupienia",
     "dualPurposeSubtitle": "Śledź zapotrzebowanie na materiały według projektu i porównuj mockowe opcje zakupu w jednym miejscu.",
     "emptyRequests": "Brak zgłoszeń materiałowych w kolejce.",
-    "projectRequiredHint": "Zgłoszenie materiałowe musi być powiązane z projektem.",
+    "projectRequiredHint": "Projekt jest opcjonalny; biuro może powiązać zgłoszenie później.",
     "findToBuyTitle": "Znajdź do kupienia",
     "findToBuySubtitle": "Szukaj mockowych sklepów według ceny, odległości, kategorii i dostępności.",
     "findToBuyPlaceholder": "cement, toaleta, płytki, śruby, farba...",

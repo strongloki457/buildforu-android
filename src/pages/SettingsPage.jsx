@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function SettingsPage() {
-  const { company, companyUsers } = useAuth();
+  const { company, companyUsers, user } = useAuth();
   const { t } = useI18n();
   const [toggles, setToggles] = useState({
     alerts: true,
@@ -16,6 +16,7 @@ export default function SettingsPage() {
   });
   const adminCount = companyUsers.filter((member) => member.role === "admin").length;
   const employeeCount = companyUsers.filter((member) => member.role === "employee").length;
+  const isAdmin = user?.role === "admin";
 
   const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));
 
@@ -90,42 +91,59 @@ export default function SettingsPage() {
               <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("settings.planLabel", "Plan")}</p>
               <p className="mt-2 text-sm text-white">{company ? t(`plans.${company.plan}`, company.plan) : "-"}</p>
             </div>
-            <div className="rounded-[22px] bg-white/10 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("roles.admin", "Admin")}</p>
-              <p className="mt-2 text-sm text-white">{adminCount}</p>
-            </div>
-            <div className="rounded-[22px] bg-white/10 px-4 py-3">
-              <div className="flex items-center gap-2 text-white/60">
-                <Users2 size={14} />
-                <p className="text-xs uppercase tracking-[0.18em]">{t("roles.employee", "Employee")}</p>
+            {isAdmin ? (
+              <>
+                <div className="rounded-[22px] bg-white/10 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("roles.admin", "Admin")}</p>
+                  <p className="mt-2 text-sm text-white">{adminCount}</p>
+                </div>
+                <div className="rounded-[22px] bg-white/10 px-4 py-3">
+                  <div className="flex items-center gap-2 text-white/60">
+                    <Users2 size={14} />
+                    <p className="text-xs uppercase tracking-[0.18em]">{t("roles.employee", "Employee")}</p>
+                  </div>
+                  <p className="mt-2 text-sm text-white">{employeeCount}</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="rounded-[22px] bg-white/10 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("common.account")}</p>
+                  <p className="mt-2 text-sm text-white">{t(`roles.${user?.role}`, user?.role)}</p>
+                </div>
+                <div className="rounded-[22px] bg-white/10 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/60">{t("login.email")}</p>
+                  <p className="mt-2 truncate text-sm text-white">{user?.email || "-"}</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isAdmin ? (
+        <div className="mt-6 rounded-[28px] bg-white/82 p-6">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
+                <CreditCard size={18} />
               </div>
-              <p className="mt-2 text-sm text-white">{employeeCount}</p>
+              <div>
+                <p className="text-lg text-slate-900">{t("settings.billingTitle")}</p>
+                <p className="mt-2 max-w-2xl text-sm text-slate-500">{t("settings.billingDescription")}</p>
+              </div>
             </div>
+
+            <Link
+              to="/settings/billing"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-sm text-white transition hover:bg-brand-600"
+            >
+              {t("settings.manageBilling")}
+              <ArrowUpRight size={16} />
+            </Link>
           </div>
         </div>
-      </div>
-
-      <div className="mt-6 rounded-[28px] bg-white/82 p-6">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="rounded-2xl bg-brand-50 p-3 text-brand-700">
-              <CreditCard size={18} />
-            </div>
-            <div>
-              <p className="text-lg text-slate-900">{t("settings.billingTitle")}</p>
-              <p className="mt-2 max-w-2xl text-sm text-slate-500">{t("settings.billingDescription")}</p>
-            </div>
-          </div>
-
-          <Link
-            to="/settings/billing"
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-sm text-white transition hover:bg-brand-600"
-          >
-            {t("settings.manageBilling")}
-            <ArrowUpRight size={16} />
-          </Link>
-        </div>
-      </div>
+      ) : null}
     </Card>
   );
 }

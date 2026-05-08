@@ -63,7 +63,7 @@ export default function ProjectDetailsModal({ onClose, onStatusChange, project }
 
           <div className="rounded-[24px] bg-slate-50/90 p-4">
             <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
-              {t("projects.assignedWorkersCount", "Assigned workers")}
+              {t("projects.teamAssigned", "Assigned team")}
             </p>
             <p className="mt-3 text-sm text-slate-700">{project.assignedWorkers.length}</p>
           </div>

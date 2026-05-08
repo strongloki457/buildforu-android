@@ -18,7 +18,7 @@ export function createMaterialActions({ currentUser, dispatch, projectsById, sta
       state.projects
     );
 
-    if (!normalizedRequest.itemName || !normalizedRequest.requestedById || !normalizedRequest.projectId) {
+    if (!normalizedRequest.itemName || !normalizedRequest.requestedById) {
       return null;
     }
 
