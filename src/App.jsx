@@ -13,6 +13,7 @@ const ChatPage = lazy(() => import("./pages/ChatPage"));
 const EmployeeDashboard = lazy(() => import("./pages/EmployeeDashboard"));
 const FinancePage = lazy(() => import("./pages/FinancePage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const LegalPage = lazy(() => import("./pages/LegalPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const MarketMapPage = lazy(() => import("./pages/MarketMapPage"));
 const MaterialsPage = lazy(() => import("./pages/MaterialsPage"));
@@ -50,6 +51,8 @@ export default function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/register-company" element={<RegisterCompanyPage />} />
+        <Route path="/terms" element={<LegalPage type="terms" />} />
+        <Route path="/privacy" element={<LegalPage type="privacy" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>

@@ -553,6 +553,19 @@
     "startTrial": "Essai gratuit",
     "footer": "Concu pour les entreprises du batiment en croissance qui ont besoin dun espace operationnel plus clair et plus connecte."
   },
+  "legal": {
+    "eyebrow": "L?gal",
+    "terms": {
+      "title": "Conditions",
+      "body1": "BuildForU est un espace MVP pour les op?rations de construction. Utilisez-le avec des informations d'entreprise exactes et invitez uniquement les utilisateurs qui doivent acc?der ? votre espace.",
+      "body2": "Les contrats de production, conditions de facturation et engagements de service doivent ?tre examin?s avant une utilisation commerciale r?elle."
+    },
+    "privacy": {
+      "title": "Politique de confidentialit?",
+      "body1": "BuildForU stocke les donn?es de compte et d'espace n?cessaires au fonctionnement de l'application, notamment utilisateurs, employ?s, projets, t?ches, pr?sence et demandes de mat?riaux.",
+      "body2": "Ne stockez pas de donn?es de production sensibles dans ce MVP avant validation du d?ploiement, de la conservation des donn?es, du contr?le d'acc?s et des r?gles de s?curit?."
+    }
+  },
   "attendance": {
     "title": "Statut de travail",
     "subtitle": "Enregistrez le debut et la fin du travail avec heure et localisation optionnelle.",
@@ -722,18 +735,55 @@
   "register": {
     "eyebrow": "Inscrire votre entreprise",
     "title": "Creez lespace de votre entreprise",
-    "subtitle": "Commencez avec les details de votre entreprise, choisissez un plan et passez sur BuildForU en quelques minutes.",
+    "subtitle": "Créez un espace d'entreprise sécurisé pour le bureau et les équipes terrain.",
+    "helper": {
+      "workspace": "Cela crée l'espace de votre entreprise dans BuildForU.",
+      "admin": "Le premier utilisateur devient administrateur avec accès à la gestion.",
+      "employees": "Vous pourrez ajouter des employés et leurs accès plus tard."
+    },
     "companyName": "Nom de lentreprise",
-    "ownerName": "Nom du proprietaire",
-    "passwordHint": "Utilisez au moins 8 caractères.",
+    "ownerName": "Nom de l'administrateur",
+    "workspaceEmailPending": "Saisissez votre email professionnel",
+    "passwordHint": "Utilisez au moins 8 caractères. 12 caractères ou plus renforcent le mot de passe.",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "passwordStrengthLabel": "Solidité du mot de passe",
+    "passwordStrength": {
+      "weak": "Faible",
+      "fair": "Correct",
+      "strong": "Fort"
+    },
     "networkError": "Impossible de joindre le backend BuildForU. Vérifiez que le serveur API fonctionne.",
-    "databaseUnavailable": "La base de données ne fonctionne pas. Lancez PostgreSQL puis exécutez la migration backend.",
+    "databaseUnavailable": "La connexion à la base de données est indisponible. Vérifiez la configuration backend et réessayez.",
     "emailInUse": "Un compte avec cet email existe déjà.",
+    "passwordInvalid": "Ce mot de passe est trop faible ou invalide. Utilisez au moins 8 caractères.",
     "validationError": "Vérifiez les champs obligatoires et réessayez.",
     "serverError": "La création de l’espace a échoué. Veuillez réessayer.",
+    "placeholders": {
+      "companyName": "BuildForU Construction",
+      "ownerName": "Sophie Martin",
+      "email": "admin@entreprise.fr"
+    },
+    "validation": {
+      "companyNameRequired": "Le nom de l'entreprise est obligatoire.",
+      "adminNameRequired": "Le nom de l'administrateur est obligatoire.",
+      "emailRequired": "L'email est obligatoire.",
+      "emailInvalid": "Saisissez une adresse email valide.",
+      "passwordRequired": "Le mot de passe est obligatoire.",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+      "termsRequired": "Acceptez les Conditions et la Politique de confidentialité pour continuer.",
+      "fieldValid": "C'est bon"
+    },
     "plan": "Plan",
-    "creatingWorkspace": "Creation de lespace...",
-    "createAccount": "Creer le compte entreprise",
+    "creatingWorkspace": "Création de l'espace...",
+    "createAccount": "Créer le compte entreprise",
+    "termsPrefix": "J'accepte les",
+    "termsLink": "Conditions",
+    "termsMiddle": "et la",
+    "privacyLink": "Politique de confidentialité",
+    "legalNote": "Vous pourrez ajouter des employés après la création de l'espace.",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "signIn": "Se connecter",
     "alreadyTesting": "Vous testez deja le produit ?",
     "goToSignIn": "Aller a la connexion",
     "onboardingEyebrow": "Onboarding",

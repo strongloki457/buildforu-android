@@ -1,4 +1,4 @@
-import { Bell, Menu, Search } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -20,14 +20,6 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
           <div className="min-w-0 flex-1">
             <p className="text-xs uppercase tracking-[0.25em] text-brand-600">{t("common.welcomeBack")}</p>
             <h1 className="truncate text-xl text-slate-900 sm:text-2xl">{pageTitle}</h1>
-          </div>
-
-          <div className="relative hidden min-w-[220px] flex-1 md:block">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              placeholder={t("common.search")}
-              className="w-full rounded-2xl border border-white/70 bg-white/80 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-brand-300"
-            />
           </div>
 
           <LanguageSwitcher />
@@ -58,14 +50,6 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
           </div>
 
           <UserMenu />
-        </div>
-
-        <div className="relative md:hidden">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            placeholder={t("common.search")}
-            className="w-full rounded-2xl border border-white/70 bg-white/80 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-brand-300"
-          />
         </div>
 
         <nav className="hidden gap-2 overflow-x-auto pb-1 lg:flex">

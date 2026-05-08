@@ -71,6 +71,14 @@ function authErrorKey(error, context = "login") {
       }
 
       if (error.status === 400 || error.code === "VALIDATION_ERROR") {
+        if (error.details?.fieldErrors?.password?.length) {
+          return "register.passwordInvalid";
+        }
+
+        if (error.details?.fieldErrors?.email?.length) {
+          return "register.validation.emailInvalid";
+        }
+
         return "register.validationError";
       }
 

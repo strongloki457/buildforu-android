@@ -553,6 +553,19 @@
     "startTrial": "Kostenlos testen",
     "footer": "Entwickelt für wachsende Bauunternehmen, die einen klareren und vernetzteren Arbeitsbereich brauchen."
   },
+  "legal": {
+    "eyebrow": "Rechtliches",
+    "terms": {
+      "title": "Bedingungen",
+      "body1": "BuildForU ist ein MVP-Arbeitsbereich f?r Bauabl?ufe. Nutzen Sie ihn mit korrekten Unternehmensdaten und laden Sie nur Personen ein, die Zugriff auf Ihren Arbeitsbereich haben sollen.",
+      "body2": "Produktionsvertr?ge, Abrechnungsbedingungen und Servicezusagen sollten gepr?ft werden, bevor diese Software kommerziell eingesetzt wird."
+    },
+    "privacy": {
+      "title": "Datenschutzrichtlinie",
+      "body1": "BuildForU speichert Konto- und Arbeitsbereichsdaten, die f?r den Betrieb der Anwendung ben?tigt werden, einschlie?lich Nutzer, Mitarbeiter, Projekte, Aufgaben, Anwesenheit und Materialanfragen.",
+      "body2": "Speichern Sie keine sensiblen Produktionsdaten in diesem MVP, bevor Bereitstellung, Datenaufbewahrung, Zugriffskontrolle und Sicherheitsrichtlinien gepr?ft wurden."
+    }
+  },
   "attendance": {
     "title": "Arbeitsstatus",
     "subtitle": "Erfassen Sie Beginn und Ende der Arbeit mit Zeit und optionalem Standort.",
@@ -722,18 +735,55 @@
   "register": {
     "eyebrow": "Unternehmen registrieren",
     "title": "Erstellen Sie Ihren Unternehmens-Arbeitsbereich",
-    "subtitle": "Starten Sie mit Ihren Unternehmensdaten, wahlen Sie einen Plan und wechseln Sie in wenigen Minuten zu BuildForU.",
+    "subtitle": "Erstellen Sie einen sicheren Unternehmens-Arbeitsbereich für Büro und Baustellenteams.",
+    "helper": {
+      "workspace": "Damit erstellen Sie den Arbeitsbereich Ihres Unternehmens in BuildForU.",
+      "admin": "Der erste Nutzer wird Administrator mit Verwaltungszugriff.",
+      "employees": "Mitarbeiter und Logins können Sie später hinzufügen."
+    },
     "companyName": "Unternehmensname",
-    "ownerName": "Name des Inhabers",
-    "passwordHint": "Verwenden Sie mindestens 8 Zeichen.",
+    "ownerName": "Name des Administrators",
+    "workspaceEmailPending": "Geschäftliche E-Mail eingeben",
+    "passwordHint": "Verwenden Sie mindestens 8 Zeichen. 12 oder mehr Zeichen machen das Passwort stärker.",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort ausblenden",
+    "passwordStrengthLabel": "Passwortstärke",
+    "passwordStrength": {
+      "weak": "Schwach",
+      "fair": "Okay",
+      "strong": "Stark"
+    },
     "networkError": "Der BuildForU-Backendserver ist nicht erreichbar. Stellen Sie sicher, dass die API läuft.",
-    "databaseUnavailable": "Die Datenbank läuft nicht. Starten Sie PostgreSQL und führen Sie die Backend-Migration aus.",
+    "databaseUnavailable": "Die Datenbankverbindung ist nicht verfügbar. Prüfen Sie die Backend-Konfiguration und versuchen Sie es erneut.",
     "emailInUse": "Ein Konto mit dieser E-Mail existiert bereits.",
+    "passwordInvalid": "Dieses Passwort ist zu schwach oder ungültig. Verwenden Sie mindestens 8 Zeichen.",
     "validationError": "Prüfen Sie die Pflichtfelder und versuchen Sie es erneut.",
     "serverError": "Die Registrierung des Arbeitsbereichs ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "placeholders": {
+      "companyName": "BuildForU Bau GmbH",
+      "ownerName": "Sophie Müller",
+      "email": "admin@firma.de"
+    },
+    "validation": {
+      "companyNameRequired": "Der Unternehmensname ist erforderlich.",
+      "adminNameRequired": "Der Administratorname ist erforderlich.",
+      "emailRequired": "E-Mail ist erforderlich.",
+      "emailInvalid": "Geben Sie eine gültige E-Mail-Adresse ein.",
+      "passwordRequired": "Passwort ist erforderlich.",
+      "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen haben.",
+      "termsRequired": "Akzeptieren Sie die Bedingungen und Datenschutzrichtlinie, um fortzufahren.",
+      "fieldValid": "Sieht gut aus"
+    },
     "plan": "Plan",
     "creatingWorkspace": "Arbeitsbereich wird erstellt...",
     "createAccount": "Unternehmenskonto erstellen",
+    "termsPrefix": "Ich akzeptiere die",
+    "termsLink": "Bedingungen",
+    "termsMiddle": "und die",
+    "privacyLink": "Datenschutzrichtlinie",
+    "legalNote": "Mitarbeiter können nach dem Erstellen des Arbeitsbereichs hinzugefügt werden.",
+    "alreadyHaveAccount": "Sie haben bereits ein Konto?",
+    "signIn": "Anmelden",
     "alreadyTesting": "Testen Sie das Produkt bereits?",
     "goToSignIn": "Zur Anmeldung",
     "onboardingEyebrow": "Onboarding",

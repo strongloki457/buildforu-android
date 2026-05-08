@@ -22,6 +22,19 @@
     "startTrial": "Start free trial",
     "footer": "Built for growing construction companies that need a cleaner, more connected operations workspace."
   },
+  "legal": {
+    "eyebrow": "Legal",
+    "terms": {
+      "title": "Terms",
+      "body1": "BuildForU is an MVP workspace for construction operations. Use it with accurate company information and only invite users who should access your workspace.",
+      "body2": "Production contracts, billing terms, and service-level commitments should be reviewed before using this software in a live commercial environment."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "body1": "BuildForU stores account and workspace data needed to run the application, including users, workers, projects, tasks, attendance, and material requests.",
+      "body2": "Do not store sensitive production data in this MVP until your deployment, data retention, access control, and security policies are reviewed."
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "workers": "Workers",
@@ -722,18 +735,55 @@
   "register": {
     "eyebrow": "Register your company",
     "title": "Create your company workspace",
-    "subtitle": "Start with your company details, choose a plan, and move into BuildForU in a few minutes.",
+    "subtitle": "Create a secure company workspace for your office team and field employees.",
+    "helper": {
+      "workspace": "This creates your company workspace in BuildForU.",
+      "admin": "The first user becomes the admin with workspace management access.",
+      "employees": "You can add employees and create their logins after setup."
+    },
     "companyName": "Company name",
-    "ownerName": "Owner name",
-    "passwordHint": "Use at least 8 characters.",
+    "ownerName": "Admin name",
+    "workspaceEmailPending": "Enter your work email",
+    "passwordHint": "Use at least 8 characters. 12 or more characters makes the password stronger.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "passwordStrengthLabel": "Password strength",
+    "passwordStrength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "strong": "Strong"
+    },
     "networkError": "Cannot reach the BuildForU backend. Make sure the API server is running.",
-    "databaseUnavailable": "The database is not running. Start PostgreSQL and run the backend migration before registering.",
+    "databaseUnavailable": "The database connection is unavailable. Check the backend database configuration and try again.",
     "emailInUse": "An account with this email already exists.",
+    "passwordInvalid": "This password is too weak or invalid. Use at least 8 characters.",
     "validationError": "Check the required fields and try again.",
     "serverError": "Workspace registration failed. Please try again.",
+    "placeholders": {
+      "companyName": "BuildForU Construction Ltd",
+      "ownerName": "Sophie Carter",
+      "email": "admin@company.com"
+    },
+    "validation": {
+      "companyNameRequired": "Company name is required.",
+      "adminNameRequired": "Admin name is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordTooShort": "Password must be at least 8 characters.",
+      "termsRequired": "Accept the Terms and Privacy Policy to continue.",
+      "fieldValid": "Looks good"
+    },
     "plan": "Plan",
     "creatingWorkspace": "Creating workspace...",
     "createAccount": "Create company account",
+    "termsPrefix": "I agree to the",
+    "termsLink": "Terms",
+    "termsMiddle": "and",
+    "privacyLink": "Privacy Policy",
+    "legalNote": "You can add employees after creating your workspace.",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign in",
     "alreadyTesting": "Already testing the product?",
     "goToSignIn": "Go to sign in",
     "onboardingEyebrow": "Onboarding",

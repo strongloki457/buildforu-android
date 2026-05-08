@@ -553,6 +553,19 @@
     "startTrial": "Rozpocznij darmowy okres",
     "footer": "Stworzone dla rozwijających się firm budowlanych, które potrzebują bardziej spójnego centrum operacyjnego."
   },
+  "legal": {
+    "eyebrow": "Informacje prawne",
+    "terms": {
+      "title": "Regulamin",
+      "body1": "BuildForU jest przestrzeni? MVP do obs?ugi operacji budowlanych. U?ywaj jej z prawdziwymi danymi firmy i zapraszaj tylko osoby, kt?re powinny mie? dost?p do przestrzeni.",
+      "body2": "Umowy produkcyjne, warunki rozlicze? i zobowi?zania dotycz?ce poziomu us?ug powinny zosta? sprawdzone przed u?yciem tego oprogramowania w ?rodowisku komercyjnym."
+    },
+    "privacy": {
+      "title": "Polityka prywatno?ci",
+      "body1": "BuildForU przechowuje dane konta i przestrzeni potrzebne do dzia?ania aplikacji, w tym u?ytkownik?w, pracownik?w, projekty, zadania, obecno?? i zg?oszenia materia?owe.",
+      "body2": "Nie zapisuj w tym MVP wra?liwych danych produkcyjnych, dop?ki nie sprawdzisz wdro?enia, retencji danych, kontroli dost?pu i zasad bezpiecze?stwa."
+    }
+  },
   "attendance": {
     "title": "Status pracy",
     "subtitle": "Zapisz rozpoczęcie i zakończenie pracy z czasem oraz opcjonalną lokalizacją.",
@@ -722,18 +735,55 @@
   "register": {
     "eyebrow": "Zarejestruj firme",
     "title": "Utworz przestrzeń swojej firmy",
-    "subtitle": "Zacznij od danych firmy, wybierz plan i przejdz do BuildForU w kilka minut.",
+    "subtitle": "Utwórz bezpieczną przestrzeń firmy dla biura i pracowników w terenie.",
+    "helper": {
+      "workspace": "To utworzy przestrzeń Twojej firmy w BuildForU.",
+      "admin": "Pierwszy użytkownik zostaje administratorem z dostępem do zarządzania.",
+      "employees": "Pracowników i ich loginy dodasz później."
+    },
     "companyName": "Nazwa firmy",
-    "ownerName": "Imie wlasciciela",
-    "passwordHint": "Użyj co najmniej 8 znaków.",
+    "ownerName": "Imię administratora",
+    "workspaceEmailPending": "Wpisz firmowy email",
+    "passwordHint": "Użyj co najmniej 8 znaków. 12 lub więcej znaków daje mocniejsze hasło.",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
+    "passwordStrengthLabel": "Siła hasła",
+    "passwordStrength": {
+      "weak": "Słabe",
+      "fair": "Średnie",
+      "strong": "Mocne"
+    },
     "networkError": "Nie można połączyć się z backendem BuildForU. Upewnij się, że serwer API działa.",
-    "databaseUnavailable": "Baza danych nie działa. Uruchom PostgreSQL i migrację backendu przed rejestracją.",
+    "databaseUnavailable": "Połączenie z bazą danych jest niedostępne. Sprawdź konfigurację backendu i spróbuj ponownie.",
     "emailInUse": "Konto z tym adresem email już istnieje.",
+    "passwordInvalid": "To hasło jest zbyt słabe albo nieprawidłowe. Użyj co najmniej 8 znaków.",
     "validationError": "Sprawdź wymagane pola i spróbuj ponownie.",
     "serverError": "Nie udało się zarejestrować przestrzeni. Spróbuj ponownie.",
+    "placeholders": {
+      "companyName": "BuildForU Budownictwo",
+      "ownerName": "Anna Kowalska",
+      "email": "admin@firma.pl"
+    },
+    "validation": {
+      "companyNameRequired": "Nazwa firmy jest wymagana.",
+      "adminNameRequired": "Imię administratora jest wymagane.",
+      "emailRequired": "Email jest wymagany.",
+      "emailInvalid": "Wpisz poprawny adres email.",
+      "passwordRequired": "Hasło jest wymagane.",
+      "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków.",
+      "termsRequired": "Zaakceptuj Regulamin i Politykę prywatności, aby kontynuować.",
+      "fieldValid": "Wygląda dobrze"
+    },
     "plan": "Plan",
-    "creatingWorkspace": "Tworzenie przestrzeńi...",
+    "creatingWorkspace": "Tworzenie przestrzeni...",
     "createAccount": "Utwórz konto firmy",
+    "termsPrefix": "Akceptuję",
+    "termsLink": "Regulamin",
+    "termsMiddle": "oraz",
+    "privacyLink": "Politykę prywatności",
+    "legalNote": "Pracowników możesz dodać po utworzeniu przestrzeni.",
+    "alreadyHaveAccount": "Masz już konto?",
+    "signIn": "Zaloguj się",
     "alreadyTesting": "Testujesz już produkt?",
     "goToSignIn": "Przejdź do logowania",
     "onboardingEyebrow": "Onboarding",

@@ -553,6 +553,19 @@
     "startTrial": "Prueba gratis",
     "footer": "Creado para empresas constructoras en crecimiento que necesitan un espacio operativo mas claro y conectado."
   },
+  "legal": {
+    "eyebrow": "Legal",
+    "terms": {
+      "title": "T?rminos",
+      "body1": "BuildForU es un espacio MVP para operaciones de construcci?n. ?salo con informaci?n de empresa precisa e invita solo a usuarios que deban acceder a tu espacio.",
+      "body2": "Los contratos de producci?n, las condiciones de facturaci?n y los compromisos de servicio deben revisarse antes de usar este software en un entorno comercial real."
+    },
+    "privacy": {
+      "title": "Pol?tica de privacidad",
+      "body1": "BuildForU almacena los datos de cuenta y espacio necesarios para operar la aplicaci?n, incluidos usuarios, trabajadores, proyectos, tareas, asistencia y solicitudes de materiales.",
+      "body2": "No guardes datos sensibles de producci?n en este MVP hasta revisar el despliegue, la retenci?n de datos, el control de acceso y las pol?ticas de seguridad."
+    }
+  },
   "attendance": {
     "title": "Estado de trabajo",
     "subtitle": "Registra el inicio y fin del trabajo con hora y ubicacion opcional.",
@@ -667,18 +680,55 @@
   "register": {
     "eyebrow": "Registrar empresa",
     "title": "Crea el espacio de tu empresa",
-    "subtitle": "Empieza con los datos de tu empresa, elige un plan y entra en BuildForU en pocos minutos.",
+    "subtitle": "Crea un espacio de empresa seguro para la oficina y los equipos de obra.",
+    "helper": {
+      "workspace": "Esto crea el espacio de tu empresa en BuildForU.",
+      "admin": "El primer usuario será administrador con acceso de gestión.",
+      "employees": "Podrás añadir empleados y sus accesos más tarde."
+    },
     "companyName": "Nombre de la empresa",
-    "ownerName": "Nombre del propietario",
-    "passwordHint": "Usa al menos 8 caracteres.",
+    "ownerName": "Nombre del administrador",
+    "workspaceEmailPending": "Introduce tu email de trabajo",
+    "passwordHint": "Usa al menos 8 caracteres. Con 12 o más caracteres la contraseña será más fuerte.",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "passwordStrengthLabel": "Fortaleza de contraseña",
+    "passwordStrength": {
+      "weak": "Débil",
+      "fair": "Aceptable",
+      "strong": "Fuerte"
+    },
     "networkError": "No se puede conectar con el backend de BuildForU. Asegúrate de que el servidor API esté activo.",
-    "databaseUnavailable": "La base de datos no está activa. Inicia PostgreSQL y ejecuta la migración del backend.",
+    "databaseUnavailable": "La conexión con la base de datos no está disponible. Revisa la configuración del backend e inténtalo de nuevo.",
     "emailInUse": "Ya existe una cuenta con este email.",
+    "passwordInvalid": "Esta contraseña es demasiado débil o no es válida. Usa al menos 8 caracteres.",
     "validationError": "Revisa los campos obligatorios e inténtalo de nuevo.",
     "serverError": "No se pudo registrar el espacio. Inténtalo de nuevo.",
+    "placeholders": {
+      "companyName": "BuildForU Construcción",
+      "ownerName": "Sofía García",
+      "email": "admin@empresa.es"
+    },
+    "validation": {
+      "companyNameRequired": "El nombre de la empresa es obligatorio.",
+      "adminNameRequired": "El nombre del administrador es obligatorio.",
+      "emailRequired": "El email es obligatorio.",
+      "emailInvalid": "Introduce un email válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
+      "termsRequired": "Acepta los Términos y la Política de privacidad para continuar.",
+      "fieldValid": "Se ve bien"
+    },
     "plan": "Plan",
     "creatingWorkspace": "Creando espacio...",
     "createAccount": "Crear cuenta de empresa",
+    "termsPrefix": "Acepto los",
+    "termsLink": "Términos",
+    "termsMiddle": "y la",
+    "privacyLink": "Política de privacidad",
+    "legalNote": "Podrás añadir empleados después de crear el espacio.",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
     "alreadyTesting": "Ya estas probando el producto?",
     "goToSignIn": "Ir al acceso",
     "onboardingEyebrow": "Onboarding",
