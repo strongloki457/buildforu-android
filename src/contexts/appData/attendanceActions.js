@@ -3,7 +3,9 @@ import { normalizeLocation } from "./domainUtils";
 
 export function createAttendanceActions({ attendanceByWorkerId, currentUser, dispatch }) {
   const startWork = (workerId, options = {}) => {
-    if (currentUser?.role === "employee" && workerId !== currentUser.workerId) {
+    const currentWorkerId = currentUser?.apiWorkerId || currentUser?.workerId;
+
+    if (currentUser?.role === "employee" && workerId !== currentWorkerId) {
       return null;
     }
 
@@ -28,7 +30,9 @@ export function createAttendanceActions({ attendanceByWorkerId, currentUser, dis
   };
 
   const endWork = (workerId, options = {}) => {
-    if (currentUser?.role === "employee" && workerId !== currentUser.workerId) {
+    const currentWorkerId = currentUser?.apiWorkerId || currentUser?.workerId;
+
+    if (currentUser?.role === "employee" && workerId !== currentWorkerId) {
       return null;
     }
 

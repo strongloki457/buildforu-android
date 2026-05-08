@@ -131,8 +131,8 @@ export default function CalendarPage() {
             initialDate={initialEntryDate}
             projects={projects}
             workers={workers}
-            onCreateTask={(payload) => {
-              const createdTask = addTask(payload);
+            onCreateTask={async (payload) => {
+              const createdTask = await addTask(payload);
 
               if (createdTask) {
                 setShowEntryModal(false);
@@ -140,8 +140,8 @@ export default function CalendarPage() {
 
               return createdTask;
             }}
-            onCreateProject={(payload) => {
-              const createdProject = addProject(payload);
+            onCreateProject={async (payload) => {
+              const createdProject = await addProject(payload);
 
               if (createdProject) {
                 setShowEntryModal(false);

@@ -1,123 +1,572 @@
-import { createContext, useEffect, useMemo, useReducer } from "react";
-import { persistCoreAppData } from "../data/appDataStorage";
+import { createContext, useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { ApiError } from "../api/apiClient";
+import { attendanceApi } from "../api/attendance.api";
+import { materialsApi } from "../api/materials.api";
+import { projectsApi } from "../api/projects.api";
+import { tasksApi } from "../api/tasks.api";
+import { workersApi } from "../api/workers.api";
 import { mockFinance } from "../data/mockFinance";
 import { mockNotifications } from "../data/mockNotifications";
 import { useAuth } from "../hooks/useAuth";
-import { createAppDataActions } from "./appData/actions";
-import { hydrateMaterialRequestRecord } from "./appData/materials";
+import { createChatActions } from "./appData/chatActions";
+import { hydrateMaterialRequestRecord, normalizeMaterialRequestRecord } from "./appData/materials";
+import { normalizeProjectRecord } from "./appData/projects";
 import { appDataReducer, createInitialAppState } from "./appData/state";
-import { hydrateTaskRecord } from "./appData/tasks";
-import { hydrateWorkerRecord } from "./appData/workers";
+import { hydrateTaskRecord, normalizeTaskRecord } from "./appData/tasks";
+import { hydrateWorkerRecord, normalizeWorkerRecord } from "./appData/workers";
 
 export const AppDataContext = createContext(null);
+
+const EMPTY_CORE_DATA = {
+  attendance: [],
+  materialRequests: [],
+  projects: [],
+  tasks: [],
+  workers: []
+};
+
+const PROJECT_STATUS_TO_API = {
+  "To Start": "TO_START",
+  "In Progress": "IN_PROGRESS",
+  Completed: "COMPLETED"
+};
+
+const PROJECT_STATUS_FROM_API = {
+  TO_START: "To Start",
+  IN_PROGRESS: "In Progress",
+  COMPLETED: "Completed"
+};
+
+const TASK_STATUS_TO_API = {
+  pending: "TODO",
+  completed: "DONE"
+};
+
+const TASK_STATUS_FROM_API = {
+  TODO: "pending",
+  IN_PROGRESS: "pending",
+  DONE: "completed"
+};
+
+const MATERIAL_STATUS_TO_API = {
+  Pending: "PENDING",
+  Ordered: "ORDERED",
+  Purchased: "PURCHASED",
+  Rejected: "REJECTED"
+};
+
+const MATERIAL_STATUS_FROM_API = {
+  PENDING: "Pending",
+  ORDERED: "Ordered",
+  PURCHASED: "Purchased",
+  REJECTED: "Rejected"
+};
 
 function createLookup(items) {
   return new Map(items.map((item) => [item.id, item]));
 }
 
-function matchesWorkspaceScope(item, currentUser) {
-  if (!currentUser) {
-    return true;
+function getPageData(response) {
+  if (Array.isArray(response)) {
+    return response;
   }
 
-  const itemCompanyId = String(item?.companyId ?? "").trim();
-  const itemWorkspaceId = String(item?.workspaceId ?? "").trim();
-  const matchesCompany = !itemCompanyId || itemCompanyId === currentUser.companyId;
-  const matchesWorkspace = !itemWorkspaceId || itemWorkspaceId === currentUser.workspaceId;
+  return Array.isArray(response?.data) ? response.data : [];
+}
 
-  return matchesCompany && matchesWorkspace;
+function toDateKey(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value;
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toISOString().slice(0, 10);
+}
+
+function toLocation(lat, lng) {
+  if (lat === null || lat === undefined || lng === null || lng === undefined) {
+    return null;
+  }
+
+  return {
+    latitude: Number(lat),
+    longitude: Number(lng)
+  };
+}
+
+function formatDataError(error) {
+  if (error instanceof ApiError) {
+    if (error.code === "DATABASE_UNAVAILABLE" || error.status === 503) {
+      return "Database connection is unavailable. Start PostgreSQL and run migrations.";
+    }
+
+    if (error.status === 403) {
+      return "You do not have permission to load this data.";
+    }
+
+    if (error.status === 401) {
+      return "Your session expired. Please sign in again.";
+    }
+
+    return error.message;
+  }
+
+  return "Data could not be loaded. Please try again.";
+}
+
+function mapApiWorker(worker) {
+  const projectIds = Array.isArray(worker?.projects)
+    ? worker.projects
+        .map((assignment) => assignment.project?.id || assignment.projectId)
+        .filter(Boolean)
+    : [];
+
+  return {
+    id: worker.id,
+    companyId: worker.companyId,
+    workspaceId: worker.companyId,
+    name: worker.name,
+    email: worker.email ?? "",
+    phone: worker.phone ?? "",
+    notes: worker.notes ?? "",
+    hasLinkedLogin: Boolean(worker.user),
+    projectIds
+  };
+}
+
+function mapApiProject(project) {
+  const assignedWorkerIds = Array.isArray(project?.workers)
+    ? project.workers.map((assignment) => assignment.worker?.id || assignment.workerId).filter(Boolean)
+    : [];
+
+  return {
+    id: project.id,
+    companyId: project.companyId,
+    workspaceId: project.companyId,
+    name: project.name,
+    status: PROJECT_STATUS_FROM_API[project.status] ?? project.status,
+    notes: project.note ?? "",
+    assignedWorkerIds
+  };
+}
+
+function mapApiTask(task) {
+  return {
+    id: task.id,
+    companyId: task.companyId,
+    workspaceId: task.companyId,
+    title: task.title,
+    location: task.description ?? task.project?.name ?? "",
+    date: toDateKey(task.date),
+    status: TASK_STATUS_FROM_API[task.status] ?? "pending",
+    priority: "medium",
+    employeeId: task.workerId ?? task.worker?.id ?? "",
+    assignee: task.worker?.name ?? "",
+    projectId: task.projectId ?? task.project?.id ?? "",
+    projectName: task.project?.name ?? ""
+  };
+}
+
+function mapApiAttendance(record) {
+  return {
+    id: record.id,
+    workerId: record.workerId,
+    currentStatus: record.endTime ? "Off Site" : "On Site",
+    workStartTime: record.startTime ?? null,
+    workEndTime: record.endTime ?? null,
+    workStartLocation: toLocation(record.startLat, record.startLng),
+    workEndLocation: toLocation(record.endLat, record.endLng)
+  };
+}
+
+function mapLatestAttendance(records) {
+  const latestByWorker = new Map();
+
+  getPageData(records).forEach((record) => {
+    if (!record.workerId || latestByWorker.has(record.workerId)) {
+      return;
+    }
+
+    latestByWorker.set(record.workerId, mapApiAttendance(record));
+  });
+
+  return Array.from(latestByWorker.values());
+}
+
+function mapApiMaterialRequest(request) {
+  return {
+    id: request.id,
+    companyId: request.companyId,
+    workspaceId: request.companyId,
+    itemName: request.itemName,
+    quantity: request.quantity ?? "",
+    note: request.note ?? "",
+    status: MATERIAL_STATUS_FROM_API[request.status] ?? request.status,
+    requestedById: request.requesterWorkerId ?? request.requesterWorker?.id ?? "",
+    requestedBy: request.requesterWorker?.name ?? "",
+    projectId: request.projectId ?? request.project?.id ?? "",
+    projectName: request.project?.name ?? "",
+    createdAt: request.createdAt
+  };
+}
+
+function getCurrentWorkerId(user) {
+  return user?.apiWorkerId || user?.workerId || "";
+}
+
+function ensureEmployeeWorker(workers, user, projects) {
+  const workerId = getCurrentWorkerId(user);
+
+  if (user?.role !== "employee" || !workerId || workers.some((worker) => worker.id === workerId)) {
+    return workers;
+  }
+
+  const projectIds = projects
+    .filter((project) => project.assignedWorkerIds?.includes(workerId))
+    .map((project) => project.id);
+
+  return [
+    {
+      id: workerId,
+      companyId: user.companyId,
+      workspaceId: user.companyId,
+      name: user.name,
+      email: user.email,
+      projectIds
+    },
+    ...workers
+  ];
+}
+
+function normalizeCoreData({ attendance, materialRequests, projects, tasks, workers }, user) {
+  const normalizedProjects = projects.map((project) => normalizeProjectRecord(project));
+  const normalizedWorkers = ensureEmployeeWorker(workers, user, normalizedProjects).map((worker) =>
+    normalizeWorkerRecord(worker, null, normalizedProjects)
+  );
+  const normalizedTasks = tasks
+    .map((task) => normalizeTaskRecord(task, normalizedWorkers, normalizedProjects))
+    .filter((task) => task.title && task.date);
+  const normalizedMaterials = materialRequests
+    .map((request) => normalizeMaterialRequestRecord(request, normalizedWorkers, normalizedProjects))
+    .filter((request) => request.itemName && request.requestedById);
+
+  return {
+    attendance,
+    materialRequests: normalizedMaterials,
+    projects: normalizedProjects,
+    tasks: normalizedTasks,
+    workers: normalizedWorkers
+  };
+}
+
+function workerPayload(input) {
+  return {
+    name: input.name,
+    email: input.email || "",
+    phone: input.phone || "",
+    notes: input.notes || "",
+    projectIds: input.projectIds || [],
+    createLogin: Boolean(input.createLogin && !input.hasLinkedLogin)
+  };
+}
+
+function projectPayload(input) {
+  return {
+    name: input.name,
+    status: PROJECT_STATUS_TO_API[input.status] ?? "TO_START",
+    note: input.notes || input.note || input.phase || input.location || "",
+    workerIds: input.assignedWorkerIds || input.workerIds || []
+  };
+}
+
+function taskPayload(input) {
+  return {
+    title: input.title,
+    description: input.location || input.description || "",
+    date: input.date,
+    status: TASK_STATUS_TO_API[input.status] ?? "TODO",
+    workerId: input.employeeId || input.workerId || "",
+    projectId: input.projectId || ""
+  };
+}
+
+function attendanceLocationPayload(options = {}) {
+  const location = options.location || {};
+
+  return {
+    lat: location.latitude,
+    lng: location.longitude
+  };
+}
+
+function materialPayload(input, user) {
+  return {
+    itemName: input.itemName,
+    quantity: input.quantity || "",
+    note: input.note || "",
+    projectId: input.projectId || "",
+    requesterWorkerId: user?.role === "admin" ? input.requestedById || input.requesterWorkerId || "" : ""
+  };
 }
 
 export function AppDataProvider({ children }) {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(appDataReducer, undefined, createInitialAppState);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [dataError, setDataError] = useState("");
+
+  const loadBackendData = useCallback(async () => {
+    if (!user) {
+      dispatch({ type: "SET_CORE_DATA", payload: EMPTY_CORE_DATA });
+      setDataError("");
+      return;
+    }
+
+    setIsDataLoading(true);
+    setDataError("");
+
+    try {
+      const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse] = await Promise.all([
+        user.role === "admin" ? workersApi.list({ limit: 100 }) : Promise.resolve({ data: [] }),
+        projectsApi.list({ limit: 100 }),
+        tasksApi.list({ limit: 100 }),
+        attendanceApi.list({ limit: 100 }),
+        materialsApi.list({ limit: 100 })
+      ]);
+
+      const mappedProjects = getPageData(projectsResponse).map(mapApiProject);
+      const mappedWorkers = getPageData(workersResponse).map(mapApiWorker);
+      const mappedTasks = getPageData(tasksResponse).map(mapApiTask);
+      const mappedAttendance = mapLatestAttendance(attendanceResponse);
+      const mappedMaterials = getPageData(materialsResponse).map(mapApiMaterialRequest);
+
+      dispatch({
+        type: "SET_CORE_DATA",
+        payload: normalizeCoreData(
+          {
+            attendance: mappedAttendance,
+            materialRequests: mappedMaterials,
+            projects: mappedProjects,
+            tasks: mappedTasks,
+            workers: mappedWorkers
+          },
+          user
+        )
+      });
+    } catch (error) {
+      dispatch({ type: "SET_CORE_DATA", payload: EMPTY_CORE_DATA });
+      setDataError(formatDataError(error));
+    } finally {
+      setIsDataLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
-    persistCoreAppData(state);
-  }, [state.attendance, state.materialRequests, state.projects, state.tasks, state.workers]);
+    loadBackendData();
+  }, [loadBackendData]);
 
-  const scopedState = useMemo(() => {
-    const workers = state.workers.filter((worker) => matchesWorkspaceScope(worker, user));
-    const workerIds = new Set(workers.map((worker) => worker.id));
-    const projects = state.projects.filter((project) => matchesWorkspaceScope(project, user));
-    const projectIds = new Set(projects.map((project) => project.id));
-    const tasks = state.tasks.filter(
-      (task) =>
-        matchesWorkspaceScope(task, user) ||
-        workerIds.has(task.employeeId) ||
-        projectIds.has(task.projectId)
-    );
-    const materialRequests = state.materialRequests.filter(
-      (request) =>
-        matchesWorkspaceScope(request, user) ||
-        workerIds.has(request.requestedById) ||
-        projectIds.has(request.projectId)
-    );
-    const attendance = state.attendance.filter((record) => workerIds.has(record.workerId));
+  const runMutation = useCallback(async (operation) => {
+    try {
+      setDataError("");
+      return await operation();
+    } catch (error) {
+      setDataError(formatDataError(error));
+      return null;
+    }
+  }, []);
 
-    return {
-      ...state,
-      attendance,
-      materialRequests,
-      projects,
-      tasks,
-      workers
-    };
-  }, [state, user]);
-
-  const projectsById = useMemo(() => createLookup(scopedState.projects), [scopedState.projects]);
+  const projectsById = useMemo(() => createLookup(state.projects), [state.projects]);
   const attendanceByWorkerId = useMemo(
-    () => new Map(scopedState.attendance.map((record) => [record.workerId, record])),
-    [scopedState.attendance]
+    () => new Map(state.attendance.map((record) => [record.workerId, record])),
+    [state.attendance]
   );
 
   const workers = useMemo(
-    () => scopedState.workers.map((worker) => hydrateWorkerRecord(worker, projectsById, attendanceByWorkerId)),
-    [attendanceByWorkerId, projectsById, scopedState.workers]
+    () => state.workers.map((worker) => hydrateWorkerRecord(worker, projectsById, attendanceByWorkerId)),
+    [attendanceByWorkerId, projectsById, state.workers]
   );
   const workersById = useMemo(() => createLookup(workers), [workers]);
 
   const tasks = useMemo(
-    () => scopedState.tasks.map((task) => hydrateTaskRecord(task, workersById, projectsById)),
-    [projectsById, scopedState.tasks, workersById]
+    () => state.tasks.map((task) => hydrateTaskRecord(task, workersById, projectsById)),
+    [projectsById, state.tasks, workersById]
   );
 
   const projects = useMemo(
     () =>
-      scopedState.projects.map((project) => ({
+      state.projects.map((project) => ({
         ...project,
         assignedWorkers: workers.filter((worker) => worker.projectIds.includes(project.id)),
         taskCount: tasks.filter((task) => task.projectId === project.id).length,
         openTaskCount: tasks.filter((task) => task.projectId === project.id && task.status === "pending").length
       })),
-    [scopedState.projects, tasks, workers]
+    [state.projects, tasks, workers]
   );
 
   const materialRequests = useMemo(
-    () => scopedState.materialRequests.map((request) => hydrateMaterialRequestRecord(request, workersById, projectsById)),
-    [projectsById, scopedState.materialRequests, workersById]
+    () => state.materialRequests.map((request) => hydrateMaterialRequestRecord(request, workersById, projectsById)),
+    [projectsById, state.materialRequests, workersById]
   );
 
   const attendance = useMemo(
     () =>
-      scopedState.attendance.map((record) => ({
+      state.attendance.map((record) => ({
         ...record,
         worker: workersById.get(record.workerId) ?? null
       })),
-    [scopedState.attendance, workersById]
+    [state.attendance, workersById]
   );
 
+  const chatActions = useMemo(() => createChatActions({ dispatch }), []);
+
   const actions = useMemo(
-    () =>
-      createAppDataActions({
-        attendanceByWorkerId,
-        currentUser: user,
-        dispatch,
-        projectsById,
-        state: scopedState,
-        workersById
-      }),
-    [attendanceByWorkerId, projectsById, scopedState, user, workersById]
+    () => ({
+      ...chatActions,
+      async addWorker(input) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const response = await workersApi.createWorker(workerPayload(input));
+          const normalizedWorker = normalizeWorkerRecord(mapApiWorker(response.worker), null, state.projects);
+          dispatch({ type: "ADD_WORKER", payload: normalizedWorker });
+          return { ...normalizedWorker, _temporaryPassword: response.temporaryPassword || "" };
+        });
+      },
+      async updateWorker(workerId, input) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const response = await workersApi.updateWorker(workerId, workerPayload(input));
+          const worker = response.worker ?? response;
+          const temporaryPassword = response.temporaryPassword || "";
+          const normalizedWorker = normalizeWorkerRecord(mapApiWorker(worker), workersById.get(workerId), state.projects);
+          dispatch({ type: "UPDATE_WORKER", payload: normalizedWorker });
+          return { ...normalizedWorker, _temporaryPassword: temporaryPassword };
+        });
+      },
+      async deleteWorker(workerId) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          await workersApi.deleteWorker(workerId);
+          dispatch({ type: "DELETE_WORKER", payload: { workerId } });
+          return true;
+        });
+      },
+      async addProject(input) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const response = await projectsApi.createProject(projectPayload(input));
+          const normalizedProject = normalizeProjectRecord(mapApiProject(response.project));
+          dispatch({ type: "ADD_PROJECT", payload: normalizedProject });
+          return normalizedProject;
+        });
+      },
+      async updateProjectStatus(projectId, status) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const response = await projectsApi.updateProject(projectId, {
+            status: PROJECT_STATUS_TO_API[status] ?? status
+          });
+          const normalizedProject = normalizeProjectRecord(mapApiProject(response.project), projectsById.get(projectId));
+          dispatch({
+            type: "UPDATE_PROJECT_STATUS",
+            payload: {
+              projectId,
+              status: normalizedProject.status
+            }
+          });
+          return normalizedProject;
+        });
+      },
+      async addTask(input) {
+        return runMutation(async () => {
+          if (user?.role && user.role !== "admin") return null;
+          const response = await tasksApi.createTask(taskPayload(input));
+          const normalizedTask = normalizeTaskRecord(mapApiTask(response.task), state.workers, state.projects);
+          dispatch({ type: "ADD_TASK", payload: normalizedTask });
+          return hydrateTaskRecord(normalizedTask, workersById, projectsById);
+        });
+      },
+      async toggleTaskStatus(taskId) {
+        return runMutation(async () => {
+          const existingTask = state.tasks.find((task) => task.id === taskId);
+          if (!existingTask) return null;
+          const nextStatus = existingTask.status === "completed" ? "TODO" : "DONE";
+          const response = await tasksApi.updateTask(taskId, { status: nextStatus });
+          const normalizedTask = normalizeTaskRecord(mapApiTask(response.task), state.workers, state.projects, existingTask);
+          dispatch({ type: "UPDATE_TASK", payload: normalizedTask });
+          return normalizedTask;
+        });
+      },
+      async startWork(workerId, options = {}) {
+        return runMutation(async () => {
+          const currentWorkerId = getCurrentWorkerId(user);
+          if (user?.role === "employee" && workerId !== currentWorkerId) return null;
+          const response = await attendanceApi.start(attendanceLocationPayload(options));
+          const attendanceRecord = mapApiAttendance(response.attendance);
+          dispatch({ type: "SET_ATTENDANCE_RECORD", payload: attendanceRecord });
+          return attendanceRecord;
+        });
+      },
+      async endWork(workerId, options = {}) {
+        return runMutation(async () => {
+          const currentWorkerId = getCurrentWorkerId(user);
+          if (user?.role === "employee" && workerId !== currentWorkerId) return null;
+          const response = await attendanceApi.end(attendanceLocationPayload(options));
+          const attendanceRecord = mapApiAttendance(response.attendance);
+          dispatch({ type: "SET_ATTENDANCE_RECORD", payload: attendanceRecord });
+          return attendanceRecord;
+        });
+      },
+      async addMaterialRequest(input) {
+        return runMutation(async () => {
+          const response = await materialsApi.createRequest(materialPayload(input, user));
+          const normalizedRequest = normalizeMaterialRequestRecord(
+            mapApiMaterialRequest(response.materialRequest),
+            state.workers,
+            state.projects
+          );
+          dispatch({ type: "ADD_MATERIAL_REQUEST", payload: normalizedRequest });
+          return hydrateMaterialRequestRecord(normalizedRequest, workersById, projectsById);
+        });
+      },
+      async deleteMaterialRequest(requestId) {
+        return runMutation(async () => {
+          await materialsApi.deleteRequest(requestId);
+          dispatch({ type: "DELETE_MATERIAL_REQUEST", payload: { requestId } });
+          return true;
+        });
+      },
+      async updateMaterialRequestStatus(requestId, status) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const response = await materialsApi.updateStatus(requestId, MATERIAL_STATUS_TO_API[status] ?? status);
+          const normalizedRequest = normalizeMaterialRequestRecord(
+            mapApiMaterialRequest(response.materialRequest),
+            state.workers,
+            state.projects
+          );
+          dispatch({
+            type: "UPDATE_MATERIAL_REQUEST_STATUS",
+            payload: {
+              requestId,
+              status: normalizedRequest.status
+            }
+          });
+          return normalizedRequest.status;
+        });
+      },
+      refreshData: loadBackendData,
+      clearDataError: () => setDataError("")
+    }),
+    [chatActions, loadBackendData, projectsById, runMutation, state.projects, state.tasks, state.workers, user, workersById]
   );
 
   const value = useMemo(
@@ -130,9 +579,11 @@ export function AppDataProvider({ children }) {
       projects,
       finance: mockFinance,
       notifications: mockNotifications,
+      isDataLoading,
+      dataError,
       ...actions
     }),
-    [actions, attendance, materialRequests, projects, state.threads, tasks, workers]
+    [actions, attendance, dataError, isDataLoading, materialRequests, projects, state.threads, tasks, workers]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;

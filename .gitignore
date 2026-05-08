@@ -1,0 +1,14 @@
+node_modules/
+backend/node_modules/
+
+.env
+.env.*
+backend/.env
+backend/.env.*
+!.env.example
+!backend/.env.example
+
+*.log
+*.err
+
+.DS_Store

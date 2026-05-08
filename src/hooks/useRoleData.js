@@ -21,10 +21,14 @@ function buildProjectCalendarEvent(project) {
   };
 }
 
+function getCurrentWorkerId(user) {
+  return user?.apiWorkerId || user?.workerId || user?.id || "";
+}
+
 export function useCurrentWorker() {
   const { user } = useAuth();
   const { workers } = useAppData();
-  const currentWorkerId = user?.workerId || user?.id || "";
+  const currentWorkerId = getCurrentWorkerId(user);
 
   return useMemo(
     () => workers.find((worker) => worker.id === currentWorkerId) ?? null,
@@ -35,7 +39,7 @@ export function useCurrentWorker() {
 export function useVisibleTasks() {
   const { user } = useAuth();
   const { tasks } = useAppData();
-  const currentWorkerId = user?.workerId || user?.id || "";
+  const currentWorkerId = getCurrentWorkerId(user);
 
   return useMemo(
     () => (user?.role === "admin" ? tasks : tasks.filter((task) => task.employeeId === currentWorkerId)),
@@ -46,7 +50,7 @@ export function useVisibleTasks() {
 export function useVisibleProjects() {
   const { user } = useAuth();
   const { projects } = useAppData();
-  const currentWorkerId = user?.workerId || user?.id || "";
+  const currentWorkerId = getCurrentWorkerId(user);
 
   return useMemo(
     () =>
@@ -60,7 +64,7 @@ export function useVisibleProjects() {
 export function useVisibleMaterialRequests() {
   const { user } = useAuth();
   const { materialRequests } = useAppData();
-  const currentWorkerId = user?.workerId || user?.id || "";
+  const currentWorkerId = getCurrentWorkerId(user);
 
   return useMemo(() => {
     const visibleRequests =

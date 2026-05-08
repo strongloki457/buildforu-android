@@ -18,14 +18,21 @@ const initialProjectForm = {
 export default function ProjectFormModal({ onClose, onSave, workerOptions = [] }) {
   const { t } = useI18n();
   const [form, setForm] = useState(initialProjectForm);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSave(form);
+    setIsSaving(true);
+
+    try {
+      await onSave(form);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleWorkerToggle = (workerId) => {
@@ -155,11 +162,11 @@ export default function ProjectFormModal({ onClose, onSave, workerOptions = [] }
         </label>
 
         <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
+          <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose} disabled={isSaving}>
             {t("common.cancel")}
           </Button>
-          <Button type="submit" className="w-full sm:w-auto">
-            {t("projects.addProjectAction", "Add project")}
+          <Button type="submit" className="w-full sm:w-auto" disabled={isSaving}>
+            {isSaving ? t("common.saving", "Saving...") : t("projects.addProjectAction", "Add project")}
           </Button>
         </div>
       </form>

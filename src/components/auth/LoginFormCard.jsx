@@ -36,6 +36,7 @@ export default function LoginFormCard({
               type="email"
               name="email"
               autoComplete="email"
+              required
               value={form.email}
               onChange={(event) => onChange("email", event.target.value)}
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
@@ -48,6 +49,7 @@ export default function LoginFormCard({
               type="password"
               name="password"
               autoComplete="current-password"
+              required
               value={form.password}
               onChange={(event) => onChange("password", event.target.value)}
               className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
@@ -112,7 +114,7 @@ export default function LoginFormCard({
           </div>
 
           <p className="mt-4 text-xs text-slate-500">
-            {t("login.mockCredentialsHint", "Each mock account has its own login and password.")}
+            {t("login.mockCredentialsHint", "These example accounts must exist in the backend seed data.")}
           </p>
         </div>
       </div>

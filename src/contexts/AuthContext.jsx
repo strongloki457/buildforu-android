@@ -1,418 +1,292 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
-import {
-  createEmployeeDirectoryUser,
-  createProvisionedCompanyAccount,
-  findAccountByEmail,
-  findUserByWorkerId,
-  getPublicCompanies,
-  getPublicUsers,
-  getUsersForCompany,
-  mergeCompanyDirectory,
-  resolveSessionUser
-} from "../data/mockCompanyDirectory";
+import { authApi } from "../api/auth.api";
+import { ApiError } from "../api/client";
+import { clearStoredAuth, getStoredUser, getToken, setStoredUser, setToken } from "../api/auth.storage";
 
 export const AuthContext = createContext(null);
 
-const LOCAL_STORAGE_KEY = "buildforu-auth";
-const SESSION_STORAGE_KEY = "buildforu-auth-session";
-const DIRECTORY_STORAGE_KEY = "buildforu-company-directory";
-
-function normalizeText(value) {
-  return String(value ?? "").trim();
+function normalizeRole(role) {
+  const normalizedRole = String(role || "").toLowerCase();
+  return normalizedRole === "admin" ? "admin" : "employee";
 }
 
-function normalizeEmail(value) {
-  return normalizeText(value).toLowerCase();
+function createInitials(name = "") {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+
+  return initials || "BU";
 }
 
-function createSlug(value, fallback = "workspace") {
-  const slug = normalizeText(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return slug || fallback;
-}
-
-function clearAuthSession() {
-  window.localStorage.removeItem(LOCAL_STORAGE_KEY);
-  window.sessionStorage.removeItem(SESSION_STORAGE_KEY);
-}
-
-function persistAuthSession(user, rememberMe) {
-  clearAuthSession();
-  const storage = rememberMe ? window.localStorage : window.sessionStorage;
-  const storageKey = rememberMe ? LOCAL_STORAGE_KEY : SESSION_STORAGE_KEY;
-  storage.setItem(storageKey, JSON.stringify(user));
-}
-
-function readStoredSession() {
-  const persistentSession = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-
-  if (persistentSession) {
-    return {
-      rememberMe: true,
-      value: persistentSession
-    };
+function normalizeApiUser(apiUser) {
+  if (!apiUser) {
+    return null;
   }
 
-  const sessionValue = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
+  const role = normalizeRole(apiUser.role);
+  const company = apiUser.company || null;
+  const apiCompanyId = apiUser.companyId || company?.id || null;
+  const apiWorkerId = apiUser.workerId || null;
 
-  if (sessionValue) {
-    return {
-      rememberMe: false,
-      value: sessionValue
-    };
-  }
-
-  return null;
-}
-
-function createEmptyDirectory() {
   return {
-    companies: [],
-    users: [],
-    removedUserIds: []
+    ...apiUser,
+    role,
+    company,
+    companyId: apiCompanyId,
+    apiCompanyId,
+    workerId: apiWorkerId,
+    apiWorkerId,
+    workspaceId: apiUser.workspaceId || apiCompanyId || "",
+    workspaceName: apiUser.workspaceName || company?.name || apiUser.companyName || "BuildForU",
+    companyName: apiUser.companyName || company?.name || "BuildForU",
+    plan: apiUser.plan || company?.plan || "pro",
+    avatar: apiUser.avatar || createInitials(apiUser.name),
+    title: apiUser.title || (role === "admin" ? "Company Admin" : "Employee"),
+    isApiBacked: true,
+    mockCompanyId: null,
+    mockWorkspaceId: null,
   };
 }
 
-function loadStoredDirectory() {
-  if (typeof window === "undefined") {
-    return createEmptyDirectory();
-  }
-
-  try {
-    const rawValue = window.localStorage.getItem(DIRECTORY_STORAGE_KEY);
-
-    if (!rawValue) {
-      return createEmptyDirectory();
+function authErrorKey(error, context = "login") {
+  if (error instanceof ApiError) {
+    if (error.code === "NETWORK_ERROR") {
+      return context === "register" ? "register.networkError" : "login.networkError";
     }
 
-    const parsedValue = JSON.parse(rawValue);
-
-    return {
-      companies: Array.isArray(parsedValue?.companies) ? parsedValue.companies : [],
-      users: Array.isArray(parsedValue?.users) ? parsedValue.users : [],
-      removedUserIds: Array.isArray(parsedValue?.removedUserIds) ? parsedValue.removedUserIds : []
-    };
-  } catch {
-    return createEmptyDirectory();
-  }
-}
-
-function persistStoredDirectory(directory) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(DIRECTORY_STORAGE_KEY, JSON.stringify(directory));
-}
-
-function resolveUniqueAdminEmail(directory, requestedEmail, companyName) {
-  const normalizedEmail = normalizeEmail(requestedEmail);
-
-  if (normalizedEmail && !findAccountByEmail(directory, normalizedEmail)) {
-    return normalizedEmail;
-  }
-
-  const slug = createSlug(companyName, "workspace");
-  let attempt = 0;
-
-  while (attempt < 100) {
-    const suffix = attempt === 0 ? "" : `${attempt + 1}`;
-    const candidate = `admin+${slug}${suffix}@buildforu.com`;
-
-    if (!findAccountByEmail(directory, candidate)) {
-      return candidate;
+    if (error.status === 503 || error.code === "DATABASE_UNAVAILABLE") {
+      return context === "register" ? "register.databaseUnavailable" : "login.databaseUnavailable";
     }
 
-    attempt += 1;
+    if (error.status === 401) {
+      return "login.invalidCredentials";
+    }
+
+    if (context === "register") {
+      if (error.status === 409 || error.code === "EMAIL_IN_USE" || error.code === "UNIQUE_CONSTRAINT") {
+        return "register.emailInUse";
+      }
+
+      if (error.status === 400 || error.code === "VALIDATION_ERROR") {
+        return "register.validationError";
+      }
+
+      return "register.serverError";
+    }
+
+    return "login.serverError";
   }
 
-  return `admin+${slug}-${Date.now().toString(36)}@buildforu.com`;
+  return error?.message || "login.serverError";
+}
+
+function mergeCompanyUser(list, nextUser) {
+  if (!nextUser) {
+    return list;
+  }
+
+  const exists = list.some((member) => member.id === nextUser.id || member.email === nextUser.email);
+
+  if (exists) {
+    return list.map((member) => (member.id === nextUser.id || member.email === nextUser.email ? { ...member, ...nextUser } : member));
+  }
+
+  return [...list, nextUser];
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [isBooting, setIsBooting] = useState(true);
-  const [storedDirectory, setStoredDirectory] = useState(loadStoredDirectory);
-  const directory = useMemo(() => mergeCompanyDirectory(storedDirectory), [storedDirectory]);
-  const companies = useMemo(() => getPublicCompanies(directory), [directory]);
-  const users = useMemo(() => getPublicUsers(directory), [directory]);
-  const company = useMemo(
-    () => companies.find((item) => item.id === user?.companyId) ?? null,
-    [companies, user?.companyId]
-  );
-  const companyUsers = useMemo(
-    () => (user?.companyId ? getUsersForCompany(directory, user.companyId) : []),
-    [directory, user?.companyId]
-  );
+  const [user, setUser] = useState(() => getStoredUser());
+  const [isLoading, setIsLoading] = useState(true);
+  const [companyUsers, setCompanyUsers] = useState(() => {
+    const storedUser = getStoredUser();
+    return storedUser ? [storedUser] : [];
+  });
 
-  useEffect(() => {
-    persistStoredDirectory(storedDirectory);
-  }, [storedDirectory]);
+  const persistSession = useCallback((token, apiUser) => {
+    const normalizedUser = normalizeApiUser(apiUser);
 
-  useEffect(() => {
-    const storedSession = readStoredSession();
-
-    if (!storedSession) {
-      setIsBooting(false);
-      return;
-    }
-
-    try {
-      const parsedUser = JSON.parse(storedSession.value);
-      const resolvedUser = resolveSessionUser(directory, parsedUser);
-
-      if (resolvedUser) {
-        setUser(resolvedUser);
-        persistAuthSession(resolvedUser, storedSession.rememberMe);
-      } else {
-        setUser(null);
-        clearAuthSession();
-      }
-    } catch {
+    if (!token || !normalizedUser) {
+      clearStoredAuth();
       setUser(null);
-      clearAuthSession();
-    } finally {
-      setIsBooting(false);
+      setCompanyUsers([]);
+      return null;
     }
-  }, [directory]);
+
+    setToken(token);
+    setStoredUser(normalizedUser);
+    setUser(normalizedUser);
+    setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
+
+    return normalizedUser;
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function bootstrapSession() {
+      if (!getToken()) {
+        clearStoredAuth();
+
+        if (isMounted) {
+          setUser(null);
+          setCompanyUsers([]);
+          setIsLoading(false);
+        }
+
+        return;
+      }
+
+      try {
+        const response = await authApi.me();
+        const normalizedUser = normalizeApiUser(response.user);
+
+        if (!normalizedUser) {
+          throw new Error("login.sessionExpired");
+        }
+
+        setStoredUser(normalizedUser);
+
+        if (isMounted) {
+          setUser(normalizedUser);
+          setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
+        }
+      } catch {
+        clearStoredAuth();
+
+        if (isMounted) {
+          setUser(null);
+          setCompanyUsers([]);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    bootstrapSession();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      clearStoredAuth();
+      setUser(null);
+      setCompanyUsers([]);
+    };
+
+    window.addEventListener("buildforu:auth-expired", handleAuthExpired);
+
+    return () => {
+      window.removeEventListener("buildforu:auth-expired", handleAuthExpired);
+    };
+  }, []);
 
   const login = useCallback(
-    async (credentialsOrEmail, maybePassword, maybeRememberMe = true) => {
-      const credentials =
-        credentialsOrEmail && typeof credentialsOrEmail === "object"
-          ? credentialsOrEmail
-          : {
-              email: credentialsOrEmail,
-              password: maybePassword,
-              rememberMe: maybeRememberMe
-            };
-      const { email, password, rememberMe = true } = credentials;
-
-      if (!email || !password) {
-        throw new Error("login.requiredError");
+    async ({ email, password }) => {
+      try {
+        const response = await authApi.login({ email, password });
+        return persistSession(response.token, response.user);
+      } catch (error) {
+        throw new Error(authErrorKey(error, "login"));
       }
-
-      const matchedAccount = findAccountByEmail(directory, email);
-
-      await new Promise((resolve) => window.setTimeout(resolve, 500));
-
-      if (!matchedAccount || matchedAccount.user.credentials.password !== normalizeText(password)) {
-        throw new Error("login.invalidCredentials");
-      }
-
-      setUser(matchedAccount.publicUser);
-      persistAuthSession(matchedAccount.publicUser, rememberMe);
-
-      return matchedAccount.publicUser;
     },
-    [directory]
-  );
-
-  const registerCompany = useCallback(
-    async ({ companyName, ownerName, email, password, plan }) => {
-      const uniqueAdminEmail = resolveUniqueAdminEmail(directory, email, companyName);
-      const provisionedAccess = createProvisionedCompanyAccount({
-        companyName,
-        ownerName,
-        email: uniqueAdminEmail,
-        password,
-        plan
-      });
-
-      await new Promise((resolve) => window.setTimeout(resolve, 500));
-
-      let nextStoredDirectory = null;
-      setStoredDirectory((current) => {
-        nextStoredDirectory = {
-          ...current,
-          companies: [...current.companies, provisionedAccess.company],
-          users: [...current.users, provisionedAccess.user]
-        };
-
-        return nextStoredDirectory;
-      });
-
-      const mergedDirectory = mergeCompanyDirectory(nextStoredDirectory);
-      const registeredCompany =
-        getPublicCompanies(mergedDirectory).find((item) => item.id === provisionedAccess.company.id) ??
-        provisionedAccess.company;
-      const registeredUser = resolveSessionUser(mergedDirectory, {
-        id: provisionedAccess.user.id,
-        email: provisionedAccess.user.credentials.email
-      });
-
-      if (registeredUser) {
-        setUser(registeredUser);
-        persistAuthSession(registeredUser, true);
-      }
-
-      return {
-        company: registeredCompany,
-        credentials: provisionedAccess.user.credentials,
-        user: registeredUser
-      };
-    },
-    [directory]
-  );
-
-  const previewAccount = useCallback(
-    (email) => {
-      const account = findAccountByEmail(directory, email);
-      return account?.publicUser ?? null;
-    },
-    [directory]
-  );
-
-  const syncWorkerUser = useCallback(
-    ({ companyId, email, name, workerId, workspaceId }) => {
-      const normalizedWorkerId = normalizeText(workerId);
-      const normalizedEmail = normalizeEmail(email);
-      const normalizedName = normalizeText(name);
-
-      if (!normalizedWorkerId || !normalizedEmail || !normalizedName) {
-        return null;
-      }
-
-      let nextStoredDirectory = null;
-      let nextUserRecord = null;
-      let temporaryPassword = "";
-      let created = false;
-
-      setStoredDirectory((current) => {
-        const mergedCurrentDirectory = mergeCompanyDirectory(current);
-        const existingWorkerAccount = findUserByWorkerId(mergedCurrentDirectory, normalizedWorkerId)?.user ?? null;
-
-        if (existingWorkerAccount) {
-          nextUserRecord = {
-            ...existingWorkerAccount,
-            companyId: normalizeText(companyId) || existingWorkerAccount.companyId,
-            workspaceId: normalizeText(workspaceId) || existingWorkerAccount.workspaceId,
-            name: normalizedName,
-            avatar: existingWorkerAccount.avatar,
-            credentials: {
-              ...existingWorkerAccount.credentials,
-              email: normalizedEmail
-            }
-          };
-        } else {
-          const createdUser = createEmployeeDirectoryUser({
-            companyId,
-            email: normalizedEmail,
-            name: normalizedName,
-            workerId: normalizedWorkerId,
-            workspaceId
-          });
-
-          nextUserRecord = createdUser;
-          temporaryPassword = createdUser.credentials.password;
-          created = true;
-        }
-
-        const nextUsers = current.users.some((item) => item.id === nextUserRecord.id)
-          ? current.users.map((item) => (item.id === nextUserRecord.id ? nextUserRecord : item))
-          : [...current.users, nextUserRecord];
-
-        nextStoredDirectory = {
-          ...current,
-          users: nextUsers,
-          removedUserIds: (current.removedUserIds ?? []).filter((item) => item !== nextUserRecord.id)
-        };
-
-        return nextStoredDirectory;
-      });
-
-      const mergedDirectory = mergeCompanyDirectory(nextStoredDirectory ?? storedDirectory);
-      const publicUser = resolveSessionUser(mergedDirectory, {
-        id: nextUserRecord?.id,
-        email: nextUserRecord?.credentials?.email
-      });
-
-      return {
-        created,
-        publicUser,
-        temporaryPassword
-      };
-    },
-    [storedDirectory]
-  );
-
-  const removeWorkerUser = useCallback(
-    (workerId) => {
-      const normalizedWorkerId = normalizeText(workerId);
-
-      if (!normalizedWorkerId) {
-        return false;
-      }
-
-      let wasRemoved = false;
-
-      setStoredDirectory((current) => {
-        const mergedCurrentDirectory = mergeCompanyDirectory(current);
-        const linkedUser = findUserByWorkerId(mergedCurrentDirectory, normalizedWorkerId)?.user ?? null;
-
-        if (!linkedUser) {
-          return current;
-        }
-
-        wasRemoved = true;
-
-        return {
-          ...current,
-          users: current.users.filter((item) => item.id !== linkedUser.id),
-          removedUserIds: Array.from(new Set([...(current.removedUserIds ?? []), linkedUser.id]))
-        };
-      });
-
-      if (user?.workerId === normalizedWorkerId) {
-        setUser(null);
-        clearAuthSession();
-      }
-
-      return wasRemoved;
-    },
-    [user?.workerId]
+    [persistSession],
   );
 
   const logout = useCallback(() => {
+    clearStoredAuth();
     setUser(null);
-    clearAuthSession();
+    setCompanyUsers([]);
   }, []);
+
+  const registerCompany = useCallback(
+    async ({ companyName, ownerName, email, password, plan }) => {
+      try {
+        const response = await authApi.registerCompany({
+          companyName,
+          name: ownerName || `${companyName} Admin`,
+          email,
+          password,
+          plan,
+        });
+        const registeredUser = persistSession(response.token, response.user);
+
+        return {
+          company: registeredUser?.company,
+          credentials: { email },
+          user: registeredUser,
+        };
+      } catch (error) {
+        throw new Error(authErrorKey(error, "register"));
+      }
+    },
+    [persistSession],
+  );
+
+  const previewAccount = useCallback((email) => {
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      return null;
+    }
+
+    if (normalizedEmail.includes("admin") || normalizedEmail.includes("boss")) {
+      return { role: "admin" };
+    }
+
+    return { role: "employee" };
+  }, []);
+
+  const company = useMemo(() => {
+    if (!user) {
+      return null;
+    }
+
+    return {
+      id: user.companyId,
+      apiCompanyId: user.apiCompanyId,
+      workspaceId: user.workspaceId,
+      name: user.companyName,
+      plan: user.plan,
+    };
+  }, [user]);
 
   const value = useMemo(
     () => ({
       user,
       currentUser: user,
-      role: user?.role ?? null,
-      workerId: user?.workerId ?? "",
-      users,
-      company,
+      role: user?.role || null,
+      workerId: user?.workerId || null,
+      apiWorkerId: user?.apiWorkerId || null,
+      users: companyUsers,
       companyUsers,
-      companies,
-      isBooting,
+      companies: company ? [company] : [],
+      company,
+      isAuthenticated: Boolean(user),
+      isLoading,
+      isBooting: isLoading,
       login,
       logout,
       previewAccount,
       registerCompany,
-      syncWorkerUser,
-      removeWorkerUser
     }),
     [
-      companies,
       company,
       companyUsers,
-      isBooting,
+      isLoading,
       login,
       logout,
       previewAccount,
       registerCompany,
-      removeWorkerUser,
-      syncWorkerUser,
       user,
-      users
-    ]
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

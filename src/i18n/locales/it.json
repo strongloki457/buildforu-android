@@ -26,6 +26,7 @@
     "today": "Oggi",
     "overview": "Panoramica",
     "save": "Salva",
+    "saving": "Salvataggio...",
     "status": "Stato",
     "location": "Posizione",
     "date": "Data",
@@ -49,7 +50,8 @@
     "viewProfile": "Vedi profilo",
     "toggleStatus": "Cambia stato",
     "all": "Tutti",
-    "project": "Progetto"
+    "project": "Progetto",
+    "retry": "Riprova"
   },
   "statusLabels": {
     "pending": "In sospeso",
@@ -101,7 +103,7 @@
     "password": "Password",
     "button": "Accedi",
     "helper": "Usa gli account demo qui sotto per vedere entrambe le esperienze.",
-    "mockPassword": "Usa la password mostrata per ogni account mock.",
+    "mockPassword": "Usa la password mostrata per ogni account di esempio.",
     "requiredError": "Email e password sono obbligatorie.",
     "detectedRole": "Ruolo rilevato",
     "previewAccess": "Accesso demo",
@@ -115,13 +117,17 @@
     "workspaceEyebrow": "Piattaforma operazioni di cantiere",
     "featureAdmin": "Spazi admin e dipendente",
     "featureOps": "Attivita, pianificazioni e chat team",
-    "featureI18n": "Interfaccia multilingue con dati mock",
+    "featureI18n": "Interfaccia multilingue pronta per i dati backend",
     "demoAccounts": "Account esempio",
     "featureEmployeeCredentials": "Credenziali dipendente",
     "featureRoleViews": "Viste per ruolo",
     "featureWorkspaceAccess": "Accesso workspace",
-    "invalidCredentials": "Usa una delle coppie email e password indicate.",
-    "mockCredentialsHint": "Credenziali mock per questo prototipo frontend."
+    "invalidCredentials": "Email o password non corretti.",
+    "networkError": "Impossibile raggiungere il backend BuildForU. Assicurati che il server API sia attivo.",
+    "databaseUnavailable": "Il database non è attivo. Avvia PostgreSQL ed esegui la migrazione backend.",
+    "sessionExpired": "La sessione è scaduta. Accedi di nuovo.",
+    "serverError": "Accesso non riuscito. Riprova.",
+    "mockCredentialsHint": "Questi account di esempio devono esistere nei dati seed del backend."
   },
   "sidebar": {
     "controlTower": "Torre di controllo",
@@ -347,6 +353,7 @@
     "workerNameRequired": "Il nome completo è obbligatorio.",
     "workerEmailRequired": "L’email è obbligatoria per creare un accesso dipendente.",
     "workerEmailDuplicate": "Questa email è già usata da un altro utente aziendale.",
+    "employeeLoginCreateFailed": "Il lavoratore è stato salvato, ma non è stato possibile creare l’accesso dipendente. Controlla la connessione al backend e riprova.",
     "createEmployeeLogin": "Crea accesso dipendente",
     "createEmployeeLoginHint": "Attiva se il lavoratore deve accedere e vedere le proprie attività.",
     "loginAlreadyLinked": "Questo lavoratore ha già un accesso collegato.",
@@ -573,7 +580,8 @@
     "viewDetails": "Presenza",
     "detailsTitle": "Presenza di {{name}}",
     "detailsDescription": "Consulta stato di presenza, orari e coordinate opzionali.",
-    "notStarted": "Lavoro non iniziato"
+    "notStarted": "Lavoro non iniziato",
+    "saveFailed": "Impossibile salvare la presenza. Riprova."
   },
   "billing": {
     "title": "Fatturazione e abbonamento",
@@ -662,6 +670,12 @@
     "subtitle": "Parti dai dati aziendali, scegli un piano ed entra in BuildForU in pochi minuti.",
     "companyName": "Nome azienda",
     "ownerName": "Nome del proprietario",
+    "passwordHint": "Usa almeno 8 caratteri.",
+    "networkError": "Impossibile raggiungere il backend BuildForU. Assicurati che il server API sia attivo.",
+    "databaseUnavailable": "Il database non è attivo. Avvia PostgreSQL ed esegui la migrazione backend.",
+    "emailInUse": "Esiste già un account con questa email.",
+    "validationError": "Controlla i campi obbligatori e riprova.",
+    "serverError": "Registrazione dello spazio non riuscita. Riprova.",
     "plan": "Piano",
     "creatingWorkspace": "Creazione spazio...",
     "createAccount": "Crea account azienda",

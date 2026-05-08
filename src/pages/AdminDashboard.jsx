@@ -12,7 +12,6 @@ import WorkerAccessModal from "../components/workers/WorkerAccessModal";
 import WorkerFormModal from "../components/workers/WorkerFormModal";
 import { emptyWorkerForm } from "../components/workers/workerFormState";
 import Modal from "../components/ui/Modal";
-import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { getLocalDateKey, sortByDateKey } from "../utils/date";
@@ -31,7 +30,6 @@ export default function AdminDashboard() {
     tasks,
     workers
   } = useAppData();
-  const { companyUsers, syncWorkerUser } = useAuth();
   const { t } = useI18n();
   const [showWorkerModal, setShowWorkerModal] = useState(false);
   const [workerFormError, setWorkerFormError] = useState("");
@@ -142,11 +140,11 @@ export default function AdminDashboard() {
             setWorkerFormError("");
             setShowWorkerModal(false);
           }}
-          onSave={(payload) => {
+          onSave={async (payload) => {
             const normalizedEmail = normalizeEmail(payload.email);
             const shouldSyncLogin = Boolean(payload.createLogin);
             const conflictingUser = shouldSyncLogin
-              ? companyUsers.find((member) => normalizeEmail(member.email) === normalizedEmail)
+              ? workers.find((worker) => normalizeEmail(worker.email) === normalizedEmail)
               : null;
 
             if (!String(payload.name ?? "").trim()) {
@@ -164,21 +162,13 @@ export default function AdminDashboard() {
               return;
             }
 
-            const createdWorker = addWorker(payload);
+            const createdWorker = await addWorker(payload);
 
             if (createdWorker && shouldSyncLogin) {
-              const access = syncWorkerUser({
-                companyId: createdWorker.companyId,
-                workspaceId: createdWorker.workspaceId,
-                workerId: createdWorker.id,
-                name: createdWorker.name,
-                email: normalizedEmail
-              });
-
-              if (access?.temporaryPassword) {
+              if (createdWorker._temporaryPassword) {
                 setWorkerAccess({
                   email: normalizedEmail,
-                  temporaryPassword: access.temporaryPassword
+                  temporaryPassword: createdWorker._temporaryPassword
                 });
               }
 
@@ -197,8 +187,8 @@ export default function AdminDashboard() {
         <ProjectFormModal
           onClose={() => setShowProjectModal(false)}
           workerOptions={workers}
-          onSave={(payload) => {
-            const createdProject = addProject(payload);
+          onSave={async (payload) => {
+            const createdProject = await addProject(payload);
 
             if (createdProject) {
               setShowProjectModal(false);
@@ -217,8 +207,8 @@ export default function AdminDashboard() {
             workers={workers}
             projects={projects}
             initialDate={todayKey}
-            onAssign={(payload) => {
-              const createdTask = addTask(payload);
+            onAssign={async (payload) => {
+              const createdTask = await addTask(payload);
 
               if (createdTask) {
                 setShowTaskModal(false);

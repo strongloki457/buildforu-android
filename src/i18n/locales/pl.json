@@ -26,6 +26,7 @@
     "today": "Dzisiaj",
     "overview": "Przegląd",
     "save": "Zapisz",
+    "saving": "Zapisywanie...",
     "status": "Status",
     "location": "Lokalizacja",
     "date": "Data",
@@ -49,7 +50,8 @@
     "viewProfile": "Zobacz profil",
     "toggleStatus": "Zmień status",
     "all": "Wszystkie",
-    "project": "Projekt"
+    "project": "Projekt",
+    "retry": "Pon?w"
   },
   "statusLabels": {
     "pending": "Oczekujące",
@@ -101,7 +103,7 @@
     "password": "Hasło",
     "button": "Zaloguj się",
     "helper": "Użyj poniższych kont demo, aby zobaczyć oba widoki.",
-    "mockPassword": "Użyj hasła widocznego przy danym koncie mockowym.",
+    "mockPassword": "Użyj hasła widocznego przy danym koncie przykładowym.",
     "requiredError": "Email i hasło są wymagane.",
     "detectedRole": "Wykryta rola",
     "previewAccess": "Dostęp podglądowy",
@@ -115,13 +117,17 @@
     "workspaceEyebrow": "Platforma operacji budowlanych",
     "featureAdmin": "Przestrzeń admina i pracownika",
     "featureOps": "Zadania, harmonogramy i czat zespołu",
-    "featureI18n": "Wielojęzyczny interfejs oparty na danych mock",
+    "featureI18n": "Wielojęzyczny interfejs gotowy na dane backendowe",
     "demoAccounts": "Konta przykładowe",
     "featureEmployeeCredentials": "Dane logowania pracownika",
     "featureRoleViews": "Widoki zależne od roli",
     "featureWorkspaceAccess": "Dostęp do przestrzeni",
-    "invalidCredentials": "Użyj jednej z podanych par email i hasło.",
-    "mockCredentialsHint": "Mockowe dane logowania dla tego prototypu frontendowego."
+    "invalidCredentials": "Nieprawidłowy email lub hasło.",
+    "networkError": "Nie można połączyć się z backendem BuildForU. Upewnij się, że serwer API działa.",
+    "databaseUnavailable": "Baza danych nie działa. Uruchom PostgreSQL i migrację backendu przed rejestracją.",
+    "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
+    "serverError": "Logowanie nie powiodło się. Spróbuj ponownie.",
+    "mockCredentialsHint": "Te konta przykładowe muszą istnieć w danych seed backendu."
   },
   "sidebar": {
     "controlTower": "Centrum dowodzenia",
@@ -347,6 +353,7 @@
     "workerNameRequired": "Imię i nazwisko jest wymagane.",
     "workerEmailRequired": "Email jest wymagany, aby utworzyć login pracownika.",
     "workerEmailDuplicate": "Ten email jest już używany przez innego użytkownika firmy.",
+    "employeeLoginCreateFailed": "Pracownik został zapisany, ale nie udało się utworzyć loginu pracownika. Sprawdź połączenie z backendem i spróbuj ponownie.",
     "createEmployeeLogin": "Utwórz login pracownika",
     "createEmployeeLoginHint": "Włącz, jeśli pracownik ma logować się i widzieć własne zadania.",
     "loginAlreadyLinked": "Ten pracownik ma już powiązany login.",
@@ -573,7 +580,8 @@
     "viewDetails": "Obecność",
     "detailsTitle": "Obecność {{name}}",
     "detailsDescription": "Podejrzyj zapisany status obecności, znaczniki czasu i opcjonalne współrzędne lokalizacji.",
-    "notStarted": "Praca nierozpoczęta"
+    "notStarted": "Praca nierozpoczęta",
+    "saveFailed": "Nie uda?o si? zapisa? obecno?ci. Spr?buj ponownie."
   },
   "landing": {
     "eyebrow": "SaaS dla operacji budowlanych",
@@ -717,6 +725,12 @@
     "subtitle": "Zacznij od danych firmy, wybierz plan i przejdz do BuildForU w kilka minut.",
     "companyName": "Nazwa firmy",
     "ownerName": "Imie wlasciciela",
+    "passwordHint": "Użyj co najmniej 8 znaków.",
+    "networkError": "Nie można połączyć się z backendem BuildForU. Upewnij się, że serwer API działa.",
+    "databaseUnavailable": "Baza danych nie działa. Uruchom PostgreSQL i migrację backendu przed rejestracją.",
+    "emailInUse": "Konto z tym adresem email już istnieje.",
+    "validationError": "Sprawdź wymagane pola i spróbuj ponownie.",
+    "serverError": "Nie udało się zarejestrować przestrzeni. Spróbuj ponownie.",
     "plan": "Plan",
     "creatingWorkspace": "Tworzenie przestrzeńi...",
     "createAccount": "Utwórz konto firmy",

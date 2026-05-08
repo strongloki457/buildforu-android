@@ -30,9 +30,10 @@ export function createTaskActions({ currentUser, dispatch, projectsById, state, 
 
   const toggleTaskStatus = (taskId) => {
     if (currentUser?.role === "employee") {
+      const currentWorkerId = currentUser?.apiWorkerId || currentUser?.workerId;
       const task = state.tasks.find((item) => item.id === taskId);
 
-      if (!task || task.employeeId !== currentUser.workerId) {
+      if (!task || task.employeeId !== currentWorkerId) {
         return null;
       }
     }

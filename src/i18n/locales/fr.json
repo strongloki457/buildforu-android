@@ -26,6 +26,7 @@
     "today": "Aujourd'hui",
     "overview": "Vue d'ensemble",
     "save": "Enregistrer",
+    "saving": "Enregistrement...",
     "status": "Statut",
     "location": "Lieu",
     "date": "Date",
@@ -49,7 +50,8 @@
     "viewProfile": "Voir le profil",
     "toggleStatus": "Changer le statut",
     "all": "Tous",
-    "project": "Projet"
+    "project": "Projet",
+    "retry": "R?essayer"
   },
   "statusLabels": {
     "pending": "En attente",
@@ -101,7 +103,7 @@
     "password": "Mot de passe",
     "button": "Connexion",
     "helper": "Utilisez les comptes de demonstration ci-dessous pour voir les deux experiences.",
-    "mockPassword": "Utilisez le mot de passe affiché sur chaque compte mock.",
+    "mockPassword": "Utilisez le mot de passe affiché sur chaque compte d’exemple.",
     "requiredError": "L'e-mail et le mot de passe sont obligatoires.",
     "detectedRole": "Role detecte",
     "previewAccess": "Acces de demonstration",
@@ -115,13 +117,17 @@
     "workspaceEyebrow": "Plateforme des operations chantier",
     "featureAdmin": "Espaces admin et employe",
     "featureOps": "Taches, planning et chat equipe",
-    "featureI18n": "Interface multilingue alimentee par des donnees mock",
+    "featureI18n": "Interface multilingue prête pour les données backend",
     "demoAccounts": "Comptes exemple",
     "featureEmployeeCredentials": "Identifiants employé",
     "featureRoleViews": "Vues selon le rôle",
     "featureWorkspaceAccess": "Accès à l’espace de travail",
-    "invalidCredentials": "Utilisez l’une des paires email et mot de passe indiquées.",
-    "mockCredentialsHint": "Identifiants simulés pour ce prototype frontend."
+    "invalidCredentials": "L’email ou le mot de passe est incorrect.",
+    "networkError": "Impossible de joindre le backend BuildForU. Vérifiez que le serveur API fonctionne.",
+    "databaseUnavailable": "La base de données ne fonctionne pas. Lancez PostgreSQL puis exécutez la migration backend.",
+    "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+    "serverError": "La connexion a échoué. Veuillez réessayer.",
+    "mockCredentialsHint": "Ces comptes d’exemple doivent exister dans les données seed du backend."
   },
   "sidebar": {
     "controlTower": "Tour de controle",
@@ -347,6 +353,7 @@
     "workerNameRequired": "Le nom complet est obligatoire.",
     "workerEmailRequired": "L’email est obligatoire pour créer un accès employé.",
     "workerEmailDuplicate": "Cet email est déjà utilisé par un autre utilisateur de l’entreprise.",
+    "employeeLoginCreateFailed": "L’employé a été enregistré, mais le compte de connexion n’a pas pu être créé. Vérifiez la connexion au backend et réessayez.",
     "createEmployeeLogin": "Créer un accès employé",
     "createEmployeeLoginHint": "Activez cette option si l’employé doit se connecter et voir ses propres tâches.",
     "loginAlreadyLinked": "Cet employé possède déjà un accès lié.",
@@ -573,7 +580,8 @@
     "viewDetails": "Presence",
     "detailsTitle": "Presence de {{name}}",
     "detailsDescription": "Consultez le statut de presence, les horodatages et les coordonnees optionnelles.",
-    "notStarted": "Travail non commencé"
+    "notStarted": "Travail non commencé",
+    "saveFailed": "Impossible d?enregistrer la pr?sence. Veuillez r?essayer."
   },
   "landing": {
     "eyebrow": "SaaS operations chantier",
@@ -717,6 +725,12 @@
     "subtitle": "Commencez avec les details de votre entreprise, choisissez un plan et passez sur BuildForU en quelques minutes.",
     "companyName": "Nom de lentreprise",
     "ownerName": "Nom du proprietaire",
+    "passwordHint": "Utilisez au moins 8 caractères.",
+    "networkError": "Impossible de joindre le backend BuildForU. Vérifiez que le serveur API fonctionne.",
+    "databaseUnavailable": "La base de données ne fonctionne pas. Lancez PostgreSQL puis exécutez la migration backend.",
+    "emailInUse": "Un compte avec cet email existe déjà.",
+    "validationError": "Vérifiez les champs obligatoires et réessayez.",
+    "serverError": "La création de l’espace a échoué. Veuillez réessayer.",
     "plan": "Plan",
     "creatingWorkspace": "Creation de lespace...",
     "createAccount": "Creer le compte entreprise",

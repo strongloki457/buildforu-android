@@ -33,7 +33,15 @@ export default function WorkStatusCard() {
     const { location, messageKey } = await requestCurrentLocation();
 
     if (mode === "start") {
-      startWork(worker.id, { timestamp, location });
+      const savedRecord = await startWork(worker.id, { timestamp, location });
+      if (!savedRecord) {
+        setFeedback({
+          tone: "warning",
+          text: t("attendance.saveFailed", "Could not save attendance. Please try again.")
+        });
+        setActiveAction("");
+        return;
+      }
       setFeedback({
         tone: messageKey ? "warning" : "success",
         text: messageKey
@@ -41,7 +49,15 @@ export default function WorkStatusCard() {
           : t("attendance.startSaved")
       });
     } else {
-      endWork(worker.id, { timestamp, location });
+      const savedRecord = await endWork(worker.id, { timestamp, location });
+      if (!savedRecord) {
+        setFeedback({
+          tone: "warning",
+          text: t("attendance.saveFailed", "Could not save attendance. Please try again.")
+        });
+        setActiveAction("");
+        return;
+      }
       setFeedback({
         tone: messageKey ? "warning" : "success",
         text: messageKey

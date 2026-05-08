@@ -33,6 +33,7 @@ export default function CalendarEntryForm({
     status: "To Start",
     assignedWorkerIds: []
   });
+  const [isSaving, setIsSaving] = useState(false);
 
   const selectedTaskProject = useMemo(
     () => projects.find((project) => project.id === taskForm.projectId) ?? null,
@@ -68,72 +69,77 @@ export default function CalendarEntryForm({
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSaving(true);
 
-    if (entryType === "task") {
-      const title = taskForm.title.trim();
-      const location = taskForm.location.trim();
+    try {
+      if (entryType === "task") {
+        const title = taskForm.title.trim();
+        const location = taskForm.location.trim();
 
-      if (!title || !taskForm.date || !taskForm.projectId || !taskForm.employeeId) {
+        if (!title || !taskForm.date || !taskForm.projectId || !taskForm.employeeId) {
+          return;
+        }
+
+        const createdTask = await onCreateTask({
+          title,
+          date: taskForm.date,
+          location: location || selectedTaskProject?.location || selectedTaskProject?.name || "",
+          projectId: taskForm.projectId,
+          projectName: selectedTaskProject?.name ?? "",
+          employeeId: taskForm.employeeId,
+          assignee: selectedTaskWorker?.name ?? "",
+          priority: taskForm.priority
+        });
+
+        if (createdTask) {
+          setTaskForm((current) => ({
+            ...current,
+            title: "",
+            location: "",
+            projectId: projects[0]?.id ?? "",
+            employeeId: workers[0]?.id ?? "",
+            priority: "medium",
+            date: initialDate
+          }));
+        }
+
         return;
       }
 
-      const createdTask = onCreateTask({
-        title,
-        date: taskForm.date,
-        location: location || selectedTaskProject?.location || selectedTaskProject?.name || "",
-        projectId: taskForm.projectId,
-        projectName: selectedTaskProject?.name ?? "",
-        employeeId: taskForm.employeeId,
-        assignee: selectedTaskWorker?.name ?? "",
-        priority: taskForm.priority
-      });
+      const name = projectForm.name.trim();
+      const phase = projectForm.phase.trim();
+      const location = projectForm.location.trim();
+      const notes = projectForm.notes.trim();
 
-      if (createdTask) {
-        setTaskForm((current) => ({
-          ...current,
-          title: "",
-          location: "",
-          projectId: projects[0]?.id ?? "",
-          employeeId: workers[0]?.id ?? "",
-          priority: "medium",
-          date: initialDate
-        }));
+      if (!name || !projectForm.startDate) {
+        return;
       }
 
-      return;
-    }
-
-    const name = projectForm.name.trim();
-    const phase = projectForm.phase.trim();
-    const location = projectForm.location.trim();
-    const notes = projectForm.notes.trim();
-
-    if (!name || !projectForm.startDate) {
-      return;
-    }
-
-    const createdProject = onCreateProject({
-      name,
-      startDate: projectForm.startDate,
-      phase,
-      location,
-      notes,
-      status: projectForm.status,
-      assignedWorkerIds: projectForm.assignedWorkerIds
-    });
-
-    if (createdProject) {
-      setProjectForm({
-        name: "",
-        startDate: initialDate,
-        phase: "",
-        location: "",
-        notes: "",
-        status: "To Start",
-        assignedWorkerIds: []
+      const createdProject = await onCreateProject({
+        name,
+        startDate: projectForm.startDate,
+        phase,
+        location,
+        notes,
+        status: projectForm.status,
+        assignedWorkerIds: projectForm.assignedWorkerIds
       });
+
+      if (createdProject) {
+        setProjectForm({
+          name: "",
+          startDate: initialDate,
+          phase: "",
+          location: "",
+          notes: "",
+          status: "To Start",
+          assignedWorkerIds: []
+        });
+      }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -371,9 +377,11 @@ export default function CalendarEntryForm({
       <Button
         type="submit"
         className="w-full justify-center"
-        disabled={entryType === "task" && (!projects.length || !workers.length)}
+        disabled={isSaving || (entryType === "task" && (!projects.length || !workers.length))}
       >
-        {entryType === "task"
+        {isSaving
+          ? t("common.saving", "Saving...")
+          : entryType === "task"
           ? t("calendar.assignTaskButton")
           : t("calendar.createProjectButton", "Create project")}
       </Button>

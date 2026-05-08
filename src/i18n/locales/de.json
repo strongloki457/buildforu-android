@@ -26,6 +26,7 @@
     "today": "Heute",
     "overview": "Übersicht",
     "save": "Speichern",
+    "saving": "Speichern...",
     "status": "Status",
     "location": "Standort",
     "date": "Datum",
@@ -49,7 +50,8 @@
     "viewProfile": "Profil ansehen",
     "toggleStatus": "Status wechseln",
     "all": "Alle",
-    "project": "Projekt"
+    "project": "Projekt",
+    "retry": "Erneut versuchen"
   },
   "statusLabels": {
     "pending": "Ausstehend",
@@ -101,7 +103,7 @@
     "password": "Passwort",
     "button": "Anmelden",
     "helper": "Nutzen Sie die Demo-Konten unten, um beide Ansichten zu sehen.",
-    "mockPassword": "Verwenden Sie das Passwort, das beim jeweiligen Mock-Konto angezeigt wird.",
+    "mockPassword": "Verwenden Sie das Passwort, das beim jeweiligen Beispielkonto angezeigt wird.",
     "requiredError": "E-Mail und Passwort sind erforderlich.",
     "detectedRole": "Erkannte Rolle",
     "previewAccess": "Vorschauzugang",
@@ -115,13 +117,17 @@
     "workspaceEyebrow": "Plattform für Bauabläufe",
     "featureAdmin": "Arbeitsbereiche für Admin und Mitarbeiter",
     "featureOps": "Aufgaben, Pläne und Team-Chat",
-    "featureI18n": "Mehrsprachige Oberfläche mit Mock-Daten",
+    "featureI18n": "Mehrsprachige Oberfläche bereit für Backend-Daten",
     "demoAccounts": "Beispielkonten",
     "featureEmployeeCredentials": "Mitarbeiter-Anmeldedaten",
     "featureRoleViews": "Rollenbasierte Ansichten",
     "featureWorkspaceAccess": "Workspace-Zugriff",
-    "invalidCredentials": "Verwenden Sie eine der angegebenen E-Mail- und Passwortkombinationen.",
-    "mockCredentialsHint": "Mock-Anmeldedaten für diesen Frontend-Prototyp."
+    "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+    "networkError": "Der BuildForU-Backendserver ist nicht erreichbar. Stellen Sie sicher, dass die API läuft.",
+    "databaseUnavailable": "Die Datenbank läuft nicht. Starten Sie PostgreSQL und führen Sie die Backend-Migration aus.",
+    "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+    "serverError": "Die Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "mockCredentialsHint": "Diese Beispielkonten müssen in den Backend-Seed-Daten vorhanden sein."
   },
   "sidebar": {
     "controlTower": "Leitstand",
@@ -347,6 +353,7 @@
     "workerNameRequired": "Der vollständige Name ist erforderlich.",
     "workerEmailRequired": "Eine E-Mail ist erforderlich, um einen Mitarbeiterzugang zu erstellen.",
     "workerEmailDuplicate": "Diese E-Mail wird bereits von einem anderen Unternehmensnutzer verwendet.",
+    "employeeLoginCreateFailed": "Der Mitarbeiter wurde gespeichert, aber der Mitarbeiter-Login konnte nicht erstellt werden. Prüfen Sie die Backend-Verbindung und versuchen Sie es erneut.",
     "createEmployeeLogin": "Mitarbeiterzugang erstellen",
     "createEmployeeLoginHint": "Aktivieren, wenn der Mitarbeiter sich anmelden und eigene Aufgaben sehen soll.",
     "loginAlreadyLinked": "Dieser Mitarbeiter hat bereits einen verknüpften Zugang.",
@@ -573,7 +580,8 @@
     "viewDetails": "Anwesenheit",
     "detailsTitle": "Anwesenheit von {{name}}",
     "detailsDescription": "Sehen Sie den erfassten Anwesenheitsstatus, Zeitstempel und optionale Standortkoordinaten.",
-    "notStarted": "Arbeit nicht begonnen"
+    "notStarted": "Arbeit nicht begonnen",
+    "saveFailed": "Anwesenheit konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
   },
   "landing": {
     "eyebrow": "SaaS für Bauabläufe",
@@ -717,6 +725,12 @@
     "subtitle": "Starten Sie mit Ihren Unternehmensdaten, wahlen Sie einen Plan und wechseln Sie in wenigen Minuten zu BuildForU.",
     "companyName": "Unternehmensname",
     "ownerName": "Name des Inhabers",
+    "passwordHint": "Verwenden Sie mindestens 8 Zeichen.",
+    "networkError": "Der BuildForU-Backendserver ist nicht erreichbar. Stellen Sie sicher, dass die API läuft.",
+    "databaseUnavailable": "Die Datenbank läuft nicht. Starten Sie PostgreSQL und führen Sie die Backend-Migration aus.",
+    "emailInUse": "Ein Konto mit dieser E-Mail existiert bereits.",
+    "validationError": "Prüfen Sie die Pflichtfelder und versuchen Sie es erneut.",
+    "serverError": "Die Registrierung des Arbeitsbereichs ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "plan": "Plan",
     "creatingWorkspace": "Arbeitsbereich wird erstellt...",
     "createAccount": "Unternehmenskonto erstellen",

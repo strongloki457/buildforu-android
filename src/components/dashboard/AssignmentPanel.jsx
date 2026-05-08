@@ -23,6 +23,7 @@ export default function AssignmentPanel({
     location: "",
     date: initialDate
   });
+  const [isSaving, setIsSaving] = useState(false);
 
   const selectedWorker = useMemo(
     () => workers.find((worker) => worker.id === form.employeeId) ?? null,
@@ -67,7 +68,7 @@ export default function AssignmentPanel({
     }
   }, [form.projectId, selectedWorker, suggestedProjectId]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const title = form.title.trim();
     const location = form.location.trim();
@@ -79,19 +80,27 @@ export default function AssignmentPanel({
     const assignee = workers.find((worker) => worker.id === form.employeeId);
     const project = projects.find((item) => item.id === form.projectId);
 
-    onAssign({
-      ...form,
-      title,
-      location: location || project?.location || project?.name || "",
-      assignee: assignee?.name ?? t("calendar.unknownWorker"),
-      projectName: project?.name ?? ""
-    });
+    setIsSaving(true);
 
-    setForm((current) => ({
-      ...current,
-      title: "",
-      location: ""
-    }));
+    try {
+      const createdTask = await onAssign({
+        ...form,
+        title,
+        location: location || project?.location || project?.name || "",
+        assignee: assignee?.name ?? t("calendar.unknownWorker"),
+        projectName: project?.name ?? ""
+      });
+
+      if (createdTask) {
+        setForm((current) => ({
+          ...current,
+          title: "",
+          location: ""
+        }));
+      }
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const content = (
@@ -168,9 +177,9 @@ export default function AssignmentPanel({
         <Button
           type="submit"
           className="w-full disabled:cursor-not-allowed disabled:opacity-60"
-          disabled={!workers.length || !projects.length}
+          disabled={isSaving || !workers.length || !projects.length}
         >
-          {t("calendar.assignTaskButton")}
+          {isSaving ? t("common.saving", "Saving...") : t("calendar.assignTaskButton")}
         </Button>
       </form>
     </>

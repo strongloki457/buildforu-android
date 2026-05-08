@@ -26,6 +26,7 @@
     "today": "Hoy",
     "overview": "Resumen",
     "save": "Guardar",
+    "saving": "Guardando...",
     "status": "Estado",
     "location": "Ubicacion",
     "date": "Fecha",
@@ -49,7 +50,8 @@
     "viewProfile": "Ver perfil",
     "toggleStatus": "Cambiar estado",
     "all": "Todos",
-    "project": "Proyecto"
+    "project": "Proyecto",
+    "retry": "Reintentar"
   },
   "statusLabels": {
     "pending": "Pendiente",
@@ -101,7 +103,7 @@
     "password": "Contrasena",
     "button": "Iniciar sesion",
     "helper": "Usa las cuentas demo de abajo para ver ambas experiencias.",
-    "mockPassword": "Usa la contraseña mostrada en cada cuenta mock.",
+    "mockPassword": "Usa la contraseña mostrada en cada cuenta de ejemplo.",
     "requiredError": "El correo y la contrasena son obligatorios.",
     "detectedRole": "Rol detectado",
     "previewAccess": "Acceso de prueba",
@@ -115,13 +117,17 @@
     "workspaceEyebrow": "Plataforma de operaciones de construccion",
     "featureAdmin": "Espacios de admin y empleado",
     "featureOps": "Tareas, horarios y chat del equipo",
-    "featureI18n": "Interfaz multilingue con datos mock",
+    "featureI18n": "Interfaz multilingüe preparada para datos del backend",
     "demoAccounts": "Cuentas de ejemplo",
     "featureEmployeeCredentials": "Credenciales de empleado",
     "featureRoleViews": "Vistas por rol",
     "featureWorkspaceAccess": "Acceso al espacio de trabajo",
-    "invalidCredentials": "Usa una de las combinaciones de email y contraseña indicadas.",
-    "mockCredentialsHint": "Credenciales simuladas para este prototipo frontend."
+    "invalidCredentials": "El email o la contraseña no son correctos.",
+    "networkError": "No se puede conectar con el backend de BuildForU. Asegúrate de que el servidor API esté activo.",
+    "databaseUnavailable": "La base de datos no está activa. Inicia PostgreSQL y ejecuta la migración del backend.",
+    "sessionExpired": "Tu sesión ha caducado. Inicia sesión de nuevo.",
+    "serverError": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+    "mockCredentialsHint": "Estas cuentas de ejemplo deben existir en los datos seed del backend."
   },
   "sidebar": {
     "controlTower": "Torre de control",
@@ -347,6 +353,7 @@
     "workerNameRequired": "El nombre completo es obligatorio.",
     "workerEmailRequired": "El email es obligatorio para crear un acceso de empleado.",
     "workerEmailDuplicate": "Este email ya lo usa otro usuario de la empresa.",
+    "employeeLoginCreateFailed": "El trabajador se guardó, pero no se pudo crear su acceso. Comprueba la conexión con el backend e inténtalo de nuevo.",
     "createEmployeeLogin": "Crear acceso de empleado",
     "createEmployeeLoginHint": "Actívalo si el trabajador debe iniciar sesión y ver sus propias tareas.",
     "loginAlreadyLinked": "Este trabajador ya tiene un acceso vinculado.",
@@ -573,7 +580,8 @@
     "viewDetails": "Asistencia",
     "detailsTitle": "Asistencia de {{name}}",
     "detailsDescription": "Consulta el estado de asistencia, marcas de tiempo y coordenadas opcionales.",
-    "notStarted": "Trabajo no iniciado"
+    "notStarted": "Trabajo no iniciado",
+    "saveFailed": "No se pudo guardar la asistencia. Int?ntalo de nuevo."
   },
   "billing": {
     "title": "Facturacion y suscripcion",
@@ -662,6 +670,12 @@
     "subtitle": "Empieza con los datos de tu empresa, elige un plan y entra en BuildForU en pocos minutos.",
     "companyName": "Nombre de la empresa",
     "ownerName": "Nombre del propietario",
+    "passwordHint": "Usa al menos 8 caracteres.",
+    "networkError": "No se puede conectar con el backend de BuildForU. Asegúrate de que el servidor API esté activo.",
+    "databaseUnavailable": "La base de datos no está activa. Inicia PostgreSQL y ejecuta la migración del backend.",
+    "emailInUse": "Ya existe una cuenta con este email.",
+    "validationError": "Revisa los campos obligatorios e inténtalo de nuevo.",
+    "serverError": "No se pudo registrar el espacio. Inténtalo de nuevo.",
     "plan": "Plan",
     "creatingWorkspace": "Creando espacio...",
     "createAccount": "Crear cuenta de empresa",

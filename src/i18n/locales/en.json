@@ -39,6 +39,7 @@
     "today": "Today",
     "overview": "Overview",
     "save": "Save",
+    "saving": "Saving...",
     "status": "Status",
     "location": "Location",
     "date": "Date",
@@ -62,7 +63,8 @@
     "viewProfile": "View profile",
     "toggleStatus": "Toggle status",
     "all": "All",
-    "project": "Project"
+    "project": "Project",
+    "retry": "Retry"
   },
   "statusLabels": {
     "pending": "Pending",
@@ -114,7 +116,7 @@
     "password": "Password",
     "button": "Sign in",
     "helper": "Use a demo account to preview the current frontend experience.",
-    "mockPassword": "Use the password shown on each mock account.",
+    "mockPassword": "Use the password shown on each example account.",
     "requiredError": "Email and password are required.",
     "detectedRole": "Role preview",
     "previewAccess": "Demo access",
@@ -128,13 +130,17 @@
     "workspaceEyebrow": "Construction operations platform",
     "featureAdmin": "Admin and employee workspaces",
     "featureOps": "Tasks, schedules and team chat",
-    "featureI18n": "Multilingual UI powered by mock data",
+    "featureI18n": "Multilingual UI ready for backend data",
     "demoAccounts": "Example accounts",
     "featureEmployeeCredentials": "Employee credentials",
     "featureRoleViews": "Role-based views",
     "featureWorkspaceAccess": "Workspace access",
-    "invalidCredentials": "Use one of the listed email and password pairs.",
-    "mockCredentialsHint": "Mock credentials for this frontend prototype."
+    "invalidCredentials": "Email or password is incorrect.",
+    "networkError": "Cannot reach the BuildForU backend. Make sure the API server is running.",
+    "databaseUnavailable": "The database is not running. Start PostgreSQL and run the backend migration before registering.",
+    "sessionExpired": "Your session expired. Please sign in again.",
+    "serverError": "Sign-in failed. Please try again.",
+    "mockCredentialsHint": "These example accounts must exist in the backend seed data."
   },
   "sidebar": {
     "controlTower": "Control tower",
@@ -360,6 +366,7 @@
     "workerNameRequired": "Full name is required.",
     "workerEmailRequired": "Email is required to create an employee login.",
     "workerEmailDuplicate": "This email is already used by another company user.",
+    "employeeLoginCreateFailed": "Worker was saved, but the employee login could not be created. Check the backend connection and try again.",
     "createEmployeeLogin": "Create employee login",
     "createEmployeeLoginHint": "Enable this when the worker should sign in and see their own tasks.",
     "loginAlreadyLinked": "This worker already has a linked employee login.",
@@ -396,7 +403,8 @@
     "viewDetails": "Attendance",
     "detailsTitle": "{{name}} attendance",
     "detailsDescription": "View recorded attendance status, timestamps and optional location coordinates.",
-    "notStarted": "Not started work"
+    "notStarted": "Not started work",
+    "saveFailed": "Could not save attendance. Please try again."
   },
   "projects": {
     "title": "Projects",
@@ -717,6 +725,12 @@
     "subtitle": "Start with your company details, choose a plan, and move into BuildForU in a few minutes.",
     "companyName": "Company name",
     "ownerName": "Owner name",
+    "passwordHint": "Use at least 8 characters.",
+    "networkError": "Cannot reach the BuildForU backend. Make sure the API server is running.",
+    "databaseUnavailable": "The database is not running. Start PostgreSQL and run the backend migration before registering.",
+    "emailInUse": "An account with this email already exists.",
+    "validationError": "Check the required fields and try again.",
+    "serverError": "Workspace registration failed. Please try again.",
     "plan": "Plan",
     "creatingWorkspace": "Creating workspace...",
     "createAccount": "Create company account",

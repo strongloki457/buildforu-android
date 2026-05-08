@@ -14,6 +14,7 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
     note: "",
     projectId: defaultProjectId ?? projectOptions[0]?.id ?? ""
   });
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     setForm((current) => ({
@@ -28,7 +29,7 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
     setForm((current) => ({ ...current, [key]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const itemName = form.itemName.trim();
@@ -39,20 +40,26 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
       return;
     }
 
-    const createdRequest = onSubmit({
-      itemName,
-      quantity,
-      note,
-      projectId: form.projectId
-    });
+    setIsSaving(true);
 
-    if (createdRequest) {
-      setForm({
-        itemName: "",
-        quantity: "",
-        note: "",
-        projectId: defaultProjectId ?? projectOptions[0]?.id ?? ""
+    try {
+      const createdRequest = await onSubmit({
+        itemName,
+        quantity,
+        note,
+        projectId: form.projectId
       });
+
+      if (createdRequest) {
+        setForm({
+          itemName: "",
+          quantity: "",
+          note: "",
+          projectId: defaultProjectId ?? projectOptions[0]?.id ?? ""
+        });
+      }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -130,9 +137,9 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
           </div>
         ) : null}
 
-        <Button type="submit" className="w-full justify-center gap-2" disabled={!form.itemName.trim()}>
+        <Button type="submit" className="w-full justify-center gap-2" disabled={isSaving || !form.itemName.trim()}>
           <PackagePlus size={16} />
-          {t("materials.submitRequest", "Submit request")}
+          {isSaving ? t("common.saving", "Saving...") : t("materials.submitRequest", "Submit request")}
         </Button>
       </form>
     </Card>

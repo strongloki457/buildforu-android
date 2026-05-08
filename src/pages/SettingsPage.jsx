@@ -3,19 +3,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
+import { useAppData } from "../hooks/useAppData";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function SettingsPage() {
-  const { company, companyUsers, user } = useAuth();
+  const { company, user } = useAuth();
+  const { workers } = useAppData();
   const { t } = useI18n();
   const [toggles, setToggles] = useState({
     alerts: true,
     summaries: true,
     privacy: false
   });
-  const adminCount = companyUsers.filter((member) => member.role === "admin").length;
-  const employeeCount = companyUsers.filter((member) => member.role === "employee").length;
+  const adminCount = user?.role === "admin" ? 1 : 0;
+  const employeeCount = workers.filter((worker) => worker.hasLinkedLogin).length;
   const isAdmin = user?.role === "admin";
 
   const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));

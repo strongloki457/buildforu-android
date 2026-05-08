@@ -1,5 +1,3 @@
-import { loadStoredCoreAppData } from "../../data/appDataStorage";
-import { getInitialCoreAppData } from "../../data/coreAppData";
 import { mockThreads } from "../../data/mockThreads";
 import { buildAttendanceStateRecord, ensureAttendanceRecords } from "./attendance";
 import { normalizeMaterialRequestRecord } from "./materials";
@@ -82,10 +80,12 @@ export function finalizeCoreState(state) {
 }
 
 export function createInitialAppState() {
-  const storedState = loadStoredCoreAppData(getInitialCoreAppData());
-
   return finalizeCoreState({
-    ...storedState,
+    attendance: [],
+    materialRequests: [],
+    projects: [],
+    tasks: [],
+    workers: [],
     threads: mockThreads.map((thread) => ({
       ...thread,
       messages: thread.messages.map((message) => ({ ...message }))
@@ -95,6 +95,15 @@ export function createInitialAppState() {
 
 export function appDataReducer(state, action) {
   switch (action.type) {
+    case "SET_CORE_DATA":
+      return finalizeCoreState({
+        ...state,
+        attendance: action.payload.attendance ?? [],
+        materialRequests: action.payload.materialRequests ?? [],
+        projects: action.payload.projects ?? [],
+        tasks: action.payload.tasks ?? [],
+        workers: action.payload.workers ?? []
+      });
     case "ADD_PROJECT":
       return finalizeCoreState({
         ...state,
@@ -138,6 +147,11 @@ export function appDataReducer(state, action) {
               )
             : state.workers,
         tasks: [action.payload, ...state.tasks]
+      });
+    case "UPDATE_TASK":
+      return finalizeCoreState({
+        ...state,
+        tasks: state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task))
       });
     case "UPDATE_PROJECT_STATUS":
       return finalizeCoreState({

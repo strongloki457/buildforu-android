@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { availablePlans } from "./authData";
 import { useI18n } from "../../hooks/useI18n";
 
-export default function RegisterFormPanel({ form, isSubmitting, onChange, onSubmit }) {
+export default function RegisterFormPanel({ error = "", form, isSubmitting, onChange, onSubmit }) {
   const { t } = useI18n();
 
   return (
@@ -31,6 +31,7 @@ export default function RegisterFormPanel({ form, isSubmitting, onChange, onSubm
             <span className="text-sm text-slate-600">{t("register.ownerName")}</span>
             <input
               type="text"
+              required
               value={form.ownerName}
               onChange={(event) => onChange("ownerName", event.target.value)}
               className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
@@ -41,6 +42,7 @@ export default function RegisterFormPanel({ form, isSubmitting, onChange, onSubm
             <span className="text-sm text-slate-600">{t("login.email")}</span>
             <input
               type="email"
+              required
               value={form.email}
               onChange={(event) => onChange("email", event.target.value)}
               className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
@@ -52,10 +54,13 @@ export default function RegisterFormPanel({ form, isSubmitting, onChange, onSubm
           <span className="text-sm text-slate-600">{t("login.password")}</span>
           <input
             type="password"
+            required
+            minLength={8}
             value={form.password}
             onChange={(event) => onChange("password", event.target.value)}
             className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
           />
+          <span className="text-xs text-slate-500">{t("register.passwordHint", "Use at least 8 characters.")}</span>
         </label>
 
         <label className="grid gap-2">
@@ -72,6 +77,8 @@ export default function RegisterFormPanel({ form, isSubmitting, onChange, onSubm
             ))}
           </select>
         </label>
+
+        {error ? <p className="text-sm text-rose-600">{error}</p> : null}
 
         <button
           type="submit"

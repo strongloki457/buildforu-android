@@ -32,9 +32,10 @@ export function createMaterialActions({ currentUser, dispatch, projectsById, sta
 
   const deleteMaterialRequest = (requestId) => {
     if (currentUser?.role === "employee") {
+      const currentWorkerId = currentUser?.apiWorkerId || currentUser?.workerId;
       const request = state.materialRequests.find((item) => item.id === requestId);
 
-      if (!request || request.requestedById !== currentUser.workerId) {
+      if (!request || request.requestedById !== currentWorkerId) {
         return null;
       }
     }

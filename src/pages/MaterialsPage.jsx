@@ -40,7 +40,7 @@ export default function MaterialsPage() {
   const [projectFilter, setProjectFilter] = useState("all");
 
   const isAdmin = user.role === "admin";
-  const requesterId = user.workerId || user.id;
+  const requesterId = user.apiWorkerId || user.workerId || user.id;
   const workerProjects = useMemo(
     () => visibleProjects.filter((project) => linkedWorker?.projectIds?.includes(project.id)),
     [linkedWorker?.projectIds, visibleProjects]
@@ -85,7 +85,7 @@ export default function MaterialsPage() {
     [scopedRequests]
   );
 
-  const handleCreateRequest = (payload) =>
+  const handleCreateRequest = async (payload) =>
     addMaterialRequest({
       ...payload,
       requestedById: requesterId,
@@ -93,7 +93,7 @@ export default function MaterialsPage() {
       projectName: payload.projectId ? projects.find((project) => project.id === payload.projectId)?.name ?? "" : ""
     });
 
-  const handleDeleteRequest = (requestId) => {
+  const handleDeleteRequest = async (requestId) => {
     const request = materialRequests.find((item) => item.id === requestId);
 
     if (!request || request.requestedById !== requesterId) {
@@ -104,7 +104,7 @@ export default function MaterialsPage() {
       return;
     }
 
-    deleteMaterialRequest(requestId);
+    await deleteMaterialRequest(requestId);
   };
 
   return (

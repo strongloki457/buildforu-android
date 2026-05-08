@@ -7,6 +7,7 @@ import { getProjectName } from "../../utils/localizedValue";
 export default function WorkerFormModal({ errorMessage = "", initialValues, mode, onClose, onSave, projectOptions }) {
   const { t } = useI18n();
   const [form, setForm] = useState(initialValues);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     setForm(initialValues);
@@ -25,9 +26,15 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onSave(form);
+    setIsSaving(true);
+
+    try {
+      await onSave(form);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -67,7 +74,7 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
               type="checkbox"
               checked={Boolean(form.createLogin)}
               onChange={(event) => handleChange("createLogin", event.target.checked)}
-              disabled={Boolean(form.hasLinkedLogin)}
+              disabled={Boolean(form.hasLinkedLogin) || isSaving}
               className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-200"
             />
             <span className="min-w-0">
@@ -160,11 +167,15 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
         {errorMessage ? <p className="text-sm text-rose-600">{errorMessage}</p> : null}
 
         <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
+          <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose} disabled={isSaving}>
             {t("common.cancel")}
           </Button>
-          <Button type="submit" className="w-full sm:w-auto">
-            {mode === "edit" ? t("workers.saveChanges") : t("workers.addWorker")}
+          <Button type="submit" className="w-full sm:w-auto" disabled={isSaving}>
+            {isSaving
+              ? t("common.saving", "Saving...")
+              : mode === "edit"
+                ? t("workers.saveChanges")
+                : t("workers.addWorker")}
           </Button>
         </div>
       </form>

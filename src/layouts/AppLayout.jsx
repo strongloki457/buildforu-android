@@ -9,7 +9,7 @@ import { useI18n } from "../hooks/useI18n";
 
 export default function AppLayout() {
   const { user } = useAuth();
-  const { notifications } = useAppData();
+  const { dataError, isDataLoading, notifications, refreshData } = useAppData();
   const { t } = useI18n();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,6 +37,25 @@ export default function AppLayout() {
             notifications={notifications}
             onMenuOpen={() => setSidebarOpen(true)}
           />
+
+          {dataError ? (
+            <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+              <span>{dataError}</span>
+              <button
+                type="button"
+                onClick={refreshData}
+                className="rounded-lg bg-white px-3 py-2 text-xs font-medium text-amber-900 shadow-sm"
+              >
+                {t("common.retry", "Retry")}
+              </button>
+            </div>
+          ) : null}
+
+          {isDataLoading ? (
+            <div className="mt-4 rounded-2xl border border-white/60 bg-white/70 px-4 py-3 text-sm text-slate-500">
+              {t("common.loading", "Loading interface...")}
+            </div>
+          ) : null}
 
           <main className="mt-4 rounded-[28px]">
             <Outlet />

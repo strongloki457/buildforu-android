@@ -48,7 +48,8 @@ export function normalizeWorkerRecord(worker = {}, currentWorker, projects) {
     availability,
     completionRate,
     nextShift,
-    projectIds
+    projectIds,
+    hasLinkedLogin: Boolean(worker.hasLinkedLogin ?? currentWorker?.hasLinkedLogin)
   };
 }
 

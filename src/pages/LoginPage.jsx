@@ -48,6 +48,12 @@ export default function LoginPage() {
     setIsSubmitting(true);
     setError("");
 
+    if (!form.email.trim() || !form.password) {
+      setError(t("login.requiredError", "Email and password are required."));
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await login(form);
       const destination = location.state?.from?.pathname || "/dashboard";

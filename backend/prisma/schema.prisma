@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum ProjectStatus {
+  TO_START
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum MaterialRequestStatus {
+  PENDING
+  ORDERED
+  PURCHASED
+  REJECTED
+}
+
+model Company {
+  id               String            @id @default(cuid())
+  name             String
+  plan             String            @default("starter")
+  users            User[]
+  workers          Worker[]
+  projects         Project[]
+  tasks            Task[]
+  attendance       Attendance[]
+  materialRequests MaterialRequest[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([createdAt])
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  companyId    String
+  workerId     String?  @unique
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  worker       Worker?  @relation(fields: [workerId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([role])
+}
+
+model Worker {
+  id               String            @id @default(cuid())
+  name             String
+  email            String?
+  phone            String?
+  notes            String?
+  companyId        String
+  company          Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user             User?
+  projects         WorkerProject[]
+  tasks            Task[]
+  attendance       Attendance[]
+  materialRequests MaterialRequest[] @relation("RequesterMaterialRequests")
+  deletedAt        DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([companyId])
+  @@index([email])
+  @@index([deletedAt])
+}
+
+model Project {
+  id               String                 @id @default(cuid())
+  name             String
+  status           ProjectStatus          @default(TO_START)
+  note             String?
+  companyId        String
+  company          Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  workers          WorkerProject[]
+  tasks            Task[]
+  materialRequests MaterialRequest[]
+  deletedAt        DateTime?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@index([companyId])
+  @@index([status])
+  @@index([deletedAt])
+}
+
+model WorkerProject {
+  workerId  String
+  projectId String
+  worker    Worker  @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([workerId, projectId])
+  @@index([workerId])
+  @@index([projectId])
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  date        DateTime
+  status      TaskStatus   @default(TODO)
+  companyId   String
+  workerId    String?
+  projectId   String?
+  company     Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  worker      Worker?      @relation(fields: [workerId], references: [id], onDelete: SetNull)
+  project     Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([companyId])
+  @@index([workerId])
+  @@index([projectId])
+  @@index([date])
+  @@index([companyId, date])
+}
+
+model Attendance {
+  id        String    @id @default(cuid())
+  companyId String
+  workerId  String
+  startTime DateTime
+  endTime   DateTime?
+  startLat  Float?
+  startLng  Float?
+  endLat    Float?
+  endLng    Float?
+  company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  worker    Worker    @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([companyId])
+  @@index([workerId])
+  @@index([companyId, workerId])
+  @@index([companyId, startTime])
+}
+
+model MaterialRequest {
+  id                String                @id @default(cuid())
+  itemName          String
+  quantity          String?
+  note              String?
+  status            MaterialRequestStatus @default(PENDING)
+  companyId         String
+  requesterWorkerId String
+  projectId         String?
+  company           Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  requesterWorker   Worker                @relation("RequesterMaterialRequests", fields: [requesterWorkerId], references: [id], onDelete: Restrict)
+  project           Project?              @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([companyId])
+  @@index([requesterWorkerId])
+  @@index([projectId])
+  @@index([status])
+  @@index([createdAt])
+}
