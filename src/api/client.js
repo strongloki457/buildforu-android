@@ -59,7 +59,12 @@ export async function apiRequest(path, options = {}) {
       headers,
       body: hasBody ? (isFormData ? options.body : JSON.stringify(options.body)) : undefined,
     });
-  } catch {
+  } catch (error) {
+    console.warn("BuildForU API request failed before receiving a response.", {
+      apiBaseUrl: API_BASE_URL,
+      path,
+      message: error instanceof Error ? error.message : String(error),
+    });
     throw new ApiError("Unable to reach the BuildForU backend.", { code: "NETWORK_ERROR" });
   }
 

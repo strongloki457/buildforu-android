@@ -61,7 +61,7 @@ export default function LoginPage() {
     } catch (issue) {
       setError(
         issue.message === "login.invalidCredentials"
-          ? t("login.invalidCredentials", "Use one of the listed email and password pairs.")
+          ? t("login.invalidCredentials", "Invalid email or password.")
           : t(issue.message, issue.message)
       );
     } finally {

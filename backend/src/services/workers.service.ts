@@ -23,6 +23,28 @@ const workerInclude = {
   }
 } as const;
 
+function normalizeEmail(email: string | null | undefined) {
+  const normalized = String(email ?? "").trim().toLowerCase();
+  return normalized || null;
+}
+
+async function assertEmployeeEmailAvailable(email: string, companyId: string, workerId?: string) {
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      companyId: true,
+      workerId: true
+    }
+  });
+
+  if (!existingUser || (workerId && existingUser.companyId === companyId && existingUser.workerId === workerId)) {
+    return;
+  }
+
+  throw new AppError(409, "An account with this email already exists.", "EMAIL_IN_USE");
+}
+
 export async function listWorkers(currentUser: AuthContext, query: PaginationQuery) {
   const pagination = getPagination(query);
   const where: Prisma.WorkerWhereInput = {
@@ -46,7 +68,7 @@ export async function listWorkers(currentUser: AuthContext, query: PaginationQue
 
 export async function createWorker(currentUser: AuthContext, input: CreateWorkerInput) {
   const projectIds = await ensureProjectsBelongToCompany(input.projectIds, currentUser.companyId);
-  const email = input.email || null;
+  const email = normalizeEmail(input.email);
   let temporaryPassword: string | null = null;
   let temporaryPasswordHash: string | null = null;
 
@@ -55,6 +77,7 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
       throw new AppError(400, "Email is required to create employee login.", "EMAIL_REQUIRED");
     }
 
+    await assertEmployeeEmailAvailable(email, currentUser.companyId);
     temporaryPassword = generateTemporaryPassword();
     temporaryPasswordHash = await hashPassword(temporaryPassword);
   }
@@ -127,12 +150,13 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
   let temporaryPasswordHash: string | null = null;
 
   if (input.createLogin) {
-    const email = input.email || scopedWorker.email;
+    const email = normalizeEmail(input.email) || normalizeEmail(scopedWorker.email);
 
     if (!email) {
       throw new AppError(400, "Email is required to create employee login.", "EMAIL_REQUIRED");
     }
 
+    await assertEmployeeEmailAvailable(email, currentUser.companyId, workerId);
     temporaryPassword = generateTemporaryPassword();
     temporaryPasswordHash = await hashPassword(temporaryPassword);
   }
@@ -141,7 +165,7 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
     const data: Prisma.WorkerUpdateInput = {};
 
     if (input.name !== undefined) data.name = input.name;
-    if (input.email !== undefined) data.email = input.email || null;
+    if (input.email !== undefined) data.email = normalizeEmail(input.email);
     if (input.phone !== undefined) data.phone = input.phone || null;
     if (input.notes !== undefined) data.notes = input.notes || null;
 
@@ -154,7 +178,8 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
       const userData: Prisma.UserUpdateManyMutationInput = {};
 
       if (input.name !== undefined) userData.name = input.name;
-      if (input.email) userData.email = input.email;
+      const normalizedInputEmail = normalizeEmail(input.email);
+      if (normalizedInputEmail) userData.email = normalizedInputEmail;
 
       if (Object.keys(userData).length) {
         await tx.user.updateMany({
@@ -181,7 +206,7 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
     }
 
     if (input.createLogin && temporaryPasswordHash) {
-      const email = input.email || scopedWorker.email;
+      const email = normalizeEmail(input.email) || normalizeEmail(scopedWorker.email);
       const existingUser = await tx.user.findFirst({
         where: {
           workerId,

@@ -21,6 +21,10 @@ function createInitials(name = "") {
   return initials || "BU";
 }
 
+function normalizeEmail(email = "") {
+  return String(email).trim().toLowerCase();
+}
+
 function normalizeApiUser(apiUser) {
   if (!apiUser) {
     return null;
@@ -199,7 +203,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(
     async ({ email, password }) => {
       try {
-        const response = await authApi.login({ email, password });
+        const response = await authApi.login({ email: normalizeEmail(email), password });
         return persistSession(response.token, response.user);
       } catch (error) {
         throw new Error(authErrorKey(error, "login"));
@@ -220,7 +224,7 @@ export function AuthProvider({ children }) {
         const response = await authApi.registerCompany({
           companyName,
           name: ownerName || `${companyName} Admin`,
-          email,
+          email: normalizeEmail(email),
           password,
           plan,
         });
