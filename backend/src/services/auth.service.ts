@@ -1,6 +1,8 @@
+import crypto from "crypto";
 import { Role } from "@prisma/client";
 import { prisma } from "../config/prisma";
-import type { LoginInput, RegisterCompanyInput } from "../validators/auth.validators";
+import { env } from "../config/env";
+import type { ForgotPasswordInput, LoginInput, RegisterCompanyInput, ResetPasswordInput } from "../validators/auth.validators";
 import { AppError, assertFound } from "../utils/errors";
 import { signAccessToken } from "../utils/jwt";
 import { hashPassword, verifyPassword } from "../utils/password";
@@ -157,6 +159,56 @@ export async function login(input: LoginInput) {
 
   const { passwordHash: _passwordHash, ...publicUser } = user;
   return buildAuthResponse(publicUser);
+}
+
+export async function requestPasswordReset(input: ForgotPasswordInput) {
+  const user = await prisma.user.findUnique({
+    where: { email: input.email },
+    select: { id: true }
+  });
+
+  if (!user) {
+    return { message: "If that email exists, a reset link has been sent." };
+  }
+
+  await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } });
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+
+  await prisma.passwordResetToken.create({
+    data: { userId: user.id, token, expiresAt }
+  });
+
+  const result: { message: string; devToken?: string } = {
+    message: "If that email exists, a reset link has been sent."
+  };
+
+  if (env.NODE_ENV === "development") {
+    result.devToken = token;
+  }
+
+  return result;
+}
+
+export async function resetPassword(input: ResetPasswordInput) {
+  const resetToken = await prisma.passwordResetToken.findUnique({
+    where: { token: input.token },
+    select: { id: true, userId: true, expiresAt: true }
+  });
+
+  if (!resetToken || resetToken.expiresAt < new Date()) {
+    throw new AppError(400, "Reset token is invalid or has expired.", "TOKEN_INVALID");
+  }
+
+  const passwordHash = await hashPassword(input.password);
+
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: resetToken.userId }, data: { passwordHash } }),
+    prisma.passwordResetToken.delete({ where: { id: resetToken.id } })
+  ]);
+
+  return { message: "Password has been reset successfully." };
 }
 
 export async function getCurrentUser(userId: string) {

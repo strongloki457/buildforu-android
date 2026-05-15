@@ -192,12 +192,16 @@ export function AuthProvider({ children }) {
           setUser(normalizedUser);
           setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
         }
-      } catch {
-        clearStoredAuth();
+      } catch (error) {
+        const isNetworkError = error instanceof ApiError && error.code === "NETWORK_ERROR";
 
-        if (isMounted) {
-          setUser(null);
-          setCompanyUsers([]);
+        if (!isNetworkError) {
+          clearStoredAuth();
+
+          if (isMounted) {
+            setUser(null);
+            setCompanyUsers([]);
+          }
         }
       } finally {
         if (isMounted) {

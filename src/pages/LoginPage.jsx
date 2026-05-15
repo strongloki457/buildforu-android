@@ -14,10 +14,9 @@ export default function LoginPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
-  const defaultAccount = demoAccounts[0];
   const [form, setForm] = useState({
-    email: defaultAccount?.email ?? "",
-    password: defaultAccount?.password ?? "",
+    email: "",
+    password: "",
     rememberMe: true
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +24,7 @@ export default function LoginPage() {
 
   const detectedRole = useMemo(() => {
     const email = form.email.trim().toLowerCase();
-    return demoAccounts.find((account) => account.email === email)?.role || "employee";
+    return demoAccounts.find((account) => account.email === email)?.role ?? null;
   }, [form.email]);
 
   const handleChange = (key, value) => {

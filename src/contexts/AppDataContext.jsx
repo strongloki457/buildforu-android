@@ -1,14 +1,14 @@
 import { createContext, useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { ApiError } from "../api/client";
 import { attendanceApi } from "../api/attendance.api";
+import { chatApi } from "../api/chat.api";
 import { materialsApi } from "../api/materials.api";
+import { notificationsApi } from "../api/notifications.api";
 import { projectsApi } from "../api/projects.api";
 import { tasksApi } from "../api/tasks.api";
 import { workersApi } from "../api/workers.api";
 import { mockFinance } from "../data/mockFinance";
-import { mockNotifications } from "../data/mockNotifications";
 import { useAuth } from "../hooks/useAuth";
-import { createChatActions } from "./appData/chatActions";
 import { hydrateMaterialRequestRecord, normalizeMaterialRequestRecord } from "./appData/materials";
 import { normalizeProjectRecord } from "./appData/projects";
 import { appDataReducer, createInitialAppState } from "./appData/state";
@@ -342,11 +342,31 @@ function getProjectProgress(project, linkedTasks) {
   return PROJECT_STATUS_PROGRESS[project.status] ?? 0;
 }
 
+function formatTimestamp(isoString) {
+  return new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" }).format(new Date(isoString));
+}
+
+function mapApiThread(thread, currentUserId) {
+  const otherParticipant = thread.participants.find((p) => p.userId !== currentUserId);
+  return {
+    id: thread.id,
+    name: otherParticipant?.user?.name ?? "Unknown",
+    participants: thread.participants.map((p) => p.userId),
+    messages: thread.messages.map((msg) => ({
+      id: msg.id,
+      senderId: msg.senderId,
+      text: msg.text,
+      timestamp: formatTimestamp(msg.createdAt)
+    }))
+  };
+}
+
 export function AppDataProvider({ children }) {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(appDataReducer, undefined, createInitialAppState);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [dataError, setDataError] = useState("");
+  const [notifications, setNotifications] = useState([]);
 
   const loadBackendData = useCallback(async () => {
     if (!user) {
@@ -359,19 +379,24 @@ export function AppDataProvider({ children }) {
     setDataError("");
 
     try {
-      const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse] = await Promise.all([
-        user.role === "admin" ? workersApi.list({ limit: 100 }) : Promise.resolve({ data: [] }),
-        projectsApi.list({ limit: 100 }),
-        tasksApi.list({ limit: 100 }),
-        attendanceApi.list({ limit: 100 }),
-        materialsApi.list({ limit: 100 })
-      ]);
+      const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse, threadsResponse] =
+        await Promise.all([
+          user.role === "admin" ? workersApi.list({ limit: 100 }) : Promise.resolve({ data: [] }),
+          projectsApi.list({ limit: 100 }),
+          tasksApi.list({ limit: 100 }),
+          attendanceApi.list({ limit: 100 }),
+          materialsApi.list({ limit: 100 }),
+          chatApi.getThreads()
+        ]);
 
       const mappedProjects = getPageData(projectsResponse).map(mapApiProject);
       const mappedWorkers = getPageData(workersResponse).map(mapApiWorker);
       const mappedTasks = getPageData(tasksResponse).map(mapApiTask);
       const mappedAttendance = mapLatestAttendance(attendanceResponse);
       const mappedMaterials = getPageData(materialsResponse).map(mapApiMaterialRequest);
+
+      const mappedThreads = (threadsResponse?.threads ?? []).map((t) => mapApiThread(t, user.id));
+      dispatch({ type: "SET_THREADS", payload: mappedThreads });
 
       dispatch({
         type: "SET_CORE_DATA",
@@ -466,11 +491,45 @@ export function AppDataProvider({ children }) {
     [state.attendance, workersById]
   );
 
-  const chatActions = useMemo(() => createChatActions({ dispatch }), []);
+  useEffect(() => {
+    if (!user) return;
+    const fetchNotifications = () => {
+      notificationsApi.list().then((res) => setNotifications(res?.notifications ?? [])).catch(() => {});
+    };
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 60_000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   const actions = useMemo(
     () => ({
-      ...chatActions,
+      async sendMessage({ threadId, senderId, text, attachments = [] }) {
+        if (!text.trim() && !attachments.length) return null;
+        try {
+          const response = await chatApi.sendMessage(threadId, text.trim());
+          const msg = response.message;
+          const mappedMsg = {
+            id: msg.id,
+            senderId: msg.senderId,
+            text: msg.text,
+            timestamp: formatTimestamp(msg.createdAt)
+          };
+          dispatch({ type: "SEND_MESSAGE", payload: { threadId, message: mappedMsg } });
+          return mappedMsg;
+        } catch {
+          return null;
+        }
+      },
+      async startThread(otherUserId) {
+        try {
+          const response = await chatApi.createThread(otherUserId);
+          const thread = mapApiThread(response.thread, user?.id ?? "");
+          dispatch({ type: "ADD_THREAD", payload: thread });
+          return thread;
+        } catch {
+          return null;
+        }
+      },
       async addWorker(input) {
         return runMutation(async () => {
           if (user?.role !== "admin") return null;
@@ -618,7 +677,7 @@ export function AppDataProvider({ children }) {
       refreshData: loadBackendData,
       clearDataError: () => setDataError("")
     }),
-    [chatActions, loadBackendData, projectsById, runMutation, state.projects, state.tasks, state.workers, user, workersById]
+    [loadBackendData, projectsById, runMutation, state.projects, state.tasks, state.workers, user, workersById]
   );
 
   const value = useMemo(
@@ -630,7 +689,7 @@ export function AppDataProvider({ children }) {
       materialRequests,
       projects,
       finance: mockFinance,
-      notifications: mockNotifications,
+      notifications,
       isDataLoading,
       dataError,
       ...actions

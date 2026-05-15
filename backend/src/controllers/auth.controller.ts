@@ -16,3 +16,13 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
   const user = await authService.getCurrentUser(req.user!.userId);
   res.json({ user });
 });
+
+export const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.requestPasswordReset(req.body);
+  res.json(result);
+});
+
+export const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.resetPassword(req.body);
+  res.json(result);
+});

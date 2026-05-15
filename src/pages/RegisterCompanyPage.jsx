@@ -113,7 +113,7 @@ export default function RegisterCompanyPage() {
     [form, hasSubmitted, touched, validationErrors]
   );
   const passwordStrength = useMemo(() => getPasswordStrength(form.password), [form.password]);
-  const isSubmitDisabled = isSubmitting || Object.keys(validationErrors).length > 0;
+  const isSubmitDisabled = isSubmitting || (hasSubmitted && Object.keys(validationErrors).length > 0);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));

@@ -7,7 +7,9 @@ import { errorHandler, notFoundHandler } from "./middleware/error.middleware";
 import { AppError } from "./utils/errors";
 import attendanceRoutes from "./routes/attendance.routes";
 import authRoutes from "./routes/auth.routes";
+import chatRoutes from "./routes/chat.routes";
 import materialsRoutes from "./routes/materials.routes";
+import notificationsRoutes from "./routes/notifications.routes";
 import projectsRoutes from "./routes/projects.routes";
 import tasksRoutes from "./routes/tasks.routes";
 import workersRoutes from "./routes/workers.routes";
@@ -66,6 +68,8 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/notifications", notificationsRoutes);
 app.use("/api/workers", workersRoutes);
 app.use("/api/projects", projectsRoutes);
 app.use("/api/tasks", tasksRoutes);

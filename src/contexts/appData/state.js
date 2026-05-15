@@ -213,12 +213,18 @@ export function appDataReducer(state, action) {
         ...state,
         threads: state.threads.map((thread) =>
           thread.id === action.payload.threadId
-            ? {
-                ...thread,
-                messages: [...thread.messages, action.payload.message]
-              }
+            ? { ...thread, messages: [...thread.messages, action.payload.message] }
             : thread
         )
+      };
+    case "SET_THREADS":
+      return { ...state, threads: action.payload };
+    case "ADD_THREAD":
+      return {
+        ...state,
+        threads: state.threads.some((t) => t.id === action.payload.id)
+          ? state.threads
+          : [action.payload, ...state.threads]
       };
     default:
       return state;

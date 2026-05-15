@@ -1,3 +1,6 @@
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { demoAccounts } from "./authData";
 import { useI18n } from "../../hooks/useI18n";
 
@@ -11,6 +14,7 @@ export default function LoginFormCard({
   onSubmit
 }) {
   const { t } = useI18n();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <section className="flex items-center lg:justify-end">
@@ -25,9 +29,11 @@ export default function LoginFormCard({
           </div>
         </div>
 
-        <div className="mt-5 inline-flex rounded-full border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs text-brand-800">
-          {t("login.detectedRole")}: {t(`roles.${detectedRole}`)}
-        </div>
+        {detectedRole ? (
+          <div className="mt-5 inline-flex rounded-full border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs text-brand-800">
+            {t("login.detectedRole")}: {t(`roles.${detectedRole}`)}
+          </div>
+        ) : null}
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4 sm:mt-8 sm:space-y-5">
           <label className="block">
@@ -45,15 +51,25 @@ export default function LoginFormCard({
 
           <label className="block">
             <span className="mb-2 block text-sm text-slate-600">{t("login.password")}</span>
-            <input
-              type="password"
-              name="password"
-              autoComplete="current-password"
-              required
-              value={form.password}
-              onChange={(event) => onChange("password", event.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 sm:text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                autoComplete="off"
+                required
+                value={form.password}
+                onChange={(event) => onChange("password", event.target.value)}
+                className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-4 pr-14 text-base text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 sm:text-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100"
+                aria-label={showPassword ? t("register.hidePassword") : t("register.showPassword")}
+              >
+                {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+              </button>
+            </div>
           </label>
 
           <div className="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
@@ -67,12 +83,9 @@ export default function LoginFormCard({
               <span>{t("login.rememberMe")}</span>
             </label>
 
-            <a
-              href="mailto:support@buildforu.com?subject=BuildForU%20Password%20Reset"
-              className="font-medium text-brand-700 transition hover:text-brand-600"
-            >
+            <Link to="/forgot-password" className="font-medium text-brand-700 transition hover:text-brand-600">
               {t("login.forgotPassword")}
-            </a>
+            </Link>
           </div>
 
           {error ? <p className="text-sm text-rose-600">{error}</p> : null}
@@ -117,6 +130,13 @@ export default function LoginFormCard({
             {t("login.mockCredentialsHint", "These example accounts must exist in the backend seed data.")}
           </p>
         </div>
+
+        <p className="mt-5 text-center text-sm text-slate-500">
+          {t("login.noAccount", "Don't have an account?")}{" "}
+          <Link to="/register-company" className="font-medium text-brand-700 transition hover:text-brand-600">
+            {t("login.createWorkspace", "Create workspace")}
+          </Link>
+        </p>
       </div>
     </section>
   );

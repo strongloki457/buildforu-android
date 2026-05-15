@@ -41,6 +41,7 @@ model Company {
   tasks            Task[]
   attendance       Attendance[]
   materialRequests MaterialRequest[]
+  chatThreads      ChatThread[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
@@ -48,17 +49,20 @@ model Company {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         Role
-  companyId    String
-  workerId     String?  @unique
-  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  worker       Worker?  @relation(fields: [workerId], references: [id], onDelete: SetNull)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String               @id @default(cuid())
+  name                String
+  email               String               @unique
+  passwordHash        String
+  role                Role
+  companyId           String
+  workerId            String?              @unique
+  company             Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  worker              Worker?              @relation(fields: [workerId], references: [id], onDelete: SetNull)
+  chatParticipations  ChatParticipant[]
+  sentMessages        ChatMessage[]
+  passwordResetTokens PasswordResetToken[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
 
   @@index([companyId])
   @@index([role])
@@ -158,6 +162,53 @@ model Attendance {
   @@index([workerId])
   @@index([companyId, workerId])
   @@index([companyId, startTime])
+}
+
+model ChatThread {
+  id           String            @id @default(cuid())
+  companyId    String
+  company      Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  participants ChatParticipant[]
+  messages     ChatMessage[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([companyId])
+  @@index([companyId, updatedAt])
+}
+
+model ChatParticipant {
+  threadId String
+  userId   String
+  thread   ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([threadId, userId])
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String     @id @default(cuid())
+  threadId  String
+  senderId  String
+  text      String
+  thread    ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  sender    User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@index([threadId])
+  @@index([threadId, createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model MaterialRequest {

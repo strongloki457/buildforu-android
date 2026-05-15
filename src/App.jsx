@@ -15,7 +15,9 @@ const EmployeeDashboard = lazy(() => import("./pages/EmployeeDashboard"));
 const FinancePage = lazy(() => import("./pages/FinancePage"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const LegalPage = lazy(() => import("./pages/LegalPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
+const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const MarketMapPage = lazy(() => import("./pages/MarketMapPage"));
 const MaterialsPage = lazy(() => import("./pages/MaterialsPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
@@ -67,6 +69,8 @@ export default function App() {
           <Route path="/register-company" element={<RegisterCompanyPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardRouter />} />
