@@ -26,11 +26,11 @@ export default function WorkersPanel({ title, subtitle, workers }) {
         <div className="space-y-3">
           {workers.map((worker) => (
             <div key={worker.id} className="rounded-lg border border-slate-200 bg-white p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-base text-slate-900">{worker.name}</p>
-                  <p className="mt-1 text-sm text-slate-500">{getWorkerPosition(t, worker)}</p>
-                  <p className="mt-2 text-sm text-slate-500">
+                  <p className="break-anywhere text-base text-slate-900">{worker.name}</p>
+                  <p className="break-anywhere mt-1 text-sm text-slate-500">{getWorkerPosition(t, worker)}</p>
+                  <p className="break-anywhere mt-2 text-sm text-slate-500">
                     {t("workers.assignedProjects", "Assigned projects")}:{" "}
                     {getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject) ||
                       t("workers.notProvided", "Not provided")}

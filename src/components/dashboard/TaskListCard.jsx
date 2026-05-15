@@ -26,16 +26,16 @@ export default function TaskListCard({
         {visibleTasks.length ? (
           visibleTasks.map((task) => (
             <div key={task.id} className="rounded-lg border border-slate-200 bg-white p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="min-w-0">
-                  <p className="text-base text-slate-900">{getTaskTitle(t, task)}</p>
+                  <p className="break-anywhere text-base text-slate-900">{getTaskTitle(t, task)}</p>
                   {getTaskProjectName(t, task) ? (
                     <p className="mt-2 text-xs uppercase tracking-[0.2em] text-slate-400">
                       {t("common.project")}: {getTaskProjectName(t, task)}
                     </p>
                   ) : null}
                   {showAssignee && task.assignee ? (
-                    <p className="mt-2 text-sm text-slate-500">
+                    <p className="break-anywhere mt-2 text-sm text-slate-500">
                       {t("common.assignedTo", "Assigned to")}: {task.assignee}
                     </p>
                   ) : null}
@@ -51,20 +51,20 @@ export default function TaskListCard({
                       {t("calendar.noProjectLink", "No project link")}
                     </p>
                   ) : null}
-                  <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+                  <div className="mt-2 flex min-w-0 items-center gap-2 text-sm text-slate-500">
                     <MapPin size={14} />
-                    <span>{getTaskLocation(t, task)}</span>
+                    <span className="break-anywhere min-w-0">{getTaskLocation(t, task)}</span>
                   </div>
                 </div>
                 <StatusBadge value={task.status} />
               </div>
 
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
                 <div className="text-xs uppercase tracking-[0.2em] text-slate-400">{task.date}</div>
                 {onToggleStatus ? (
                   <button
                     onClick={() => onToggleStatus(task.id)}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm text-white transition hover:bg-brand-800"
+                    className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-brand-700 px-4 py-2 text-sm text-white transition hover:bg-brand-800 sm:w-auto"
                   >
                     <CheckCircle2 size={14} />
                     {t("common.toggleStatus")}

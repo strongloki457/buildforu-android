@@ -13,7 +13,7 @@ export default function ChatThreadList({ activeThread, onSelectThread, threads }
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 xl:block xl:space-y-2 xl:overflow-visible xl:pb-0">
+    <div className="touch-scroll flex gap-2 overflow-x-auto pb-1 xl:block xl:space-y-2 xl:overflow-visible xl:pb-0">
       {threads.map((thread) => {
         const isActive = thread.id === activeThread?.id;
         const latestMessage = thread.messages[thread.messages.length - 1];
@@ -23,12 +23,12 @@ export default function ChatThreadList({ activeThread, onSelectThread, threads }
             key={thread.id}
             type="button"
             onClick={() => onSelectThread(thread.id)}
-            className={`min-w-[220px] rounded-[24px] p-4 text-left transition xl:w-full xl:min-w-0 ${
+            className={`min-h-[76px] min-w-[72vw] max-w-[280px] rounded-[22px] p-4 text-left transition sm:min-w-[220px] xl:w-full xl:min-w-0 xl:max-w-none xl:rounded-[24px] ${
               isActive ? "bg-brand-700 text-white shadow-lg shadow-brand-900/20" : "bg-white/80 text-slate-700"
             }`}
           >
-            <p className="text-sm">{thread.name}</p>
-            <p className={`mt-2 text-xs ${isActive ? "text-white/70" : "text-slate-400"}`}>
+            <p className="truncate text-sm">{thread.name}</p>
+            <p className={`mt-2 line-clamp-2 text-xs ${isActive ? "text-white/70" : "text-slate-400"}`}>
               {t(latestMessage?.textKey, latestMessage?.text || t("chat.messageWithAttachments"))}
             </p>
           </button>

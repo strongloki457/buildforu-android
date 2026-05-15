@@ -14,13 +14,13 @@ export default function LoginFormCard({
 
   return (
     <section className="flex items-center lg:justify-end">
-      <div className="w-full rounded-[32px] border border-slate-200/80 bg-white/92 p-6 shadow-[0_28px_70px_-44px_rgba(15,23,42,0.38)] backdrop-blur sm:p-8">
-        <div className="flex items-start justify-between gap-4">
-          <div>
+      <div className="w-full min-w-0 rounded-[24px] border border-slate-200/80 bg-white/92 p-4 shadow-[0_28px_70px_-44px_rgba(15,23,42,0.38)] backdrop-blur sm:rounded-[32px] sm:p-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+          <div className="min-w-0">
             <p className="text-sm text-slate-500">{t("login.accessNote")}</p>
-            <h2 className="mt-3 text-3xl text-slate-950">{t("login.button")}</h2>
+            <h2 className="mt-3 text-2xl text-slate-950 sm:text-3xl">{t("login.button")}</h2>
           </div>
-          <div className="rounded-2xl border border-brand-100 bg-brand-50 px-3 py-2 text-xs uppercase tracking-[0.22em] text-brand-700">
+          <div className="w-fit rounded-2xl border border-brand-100 bg-brand-50 px-3 py-2 text-xs uppercase tracking-[0.18em] text-brand-700 sm:tracking-[0.22em]">
             {t("app.name")}
           </div>
         </div>
@@ -29,7 +29,7 @@ export default function LoginFormCard({
           {t("login.detectedRole")}: {t(`roles.${detectedRole}`)}
         </div>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-5">
+        <form onSubmit={onSubmit} className="mt-6 space-y-4 sm:mt-8 sm:space-y-5">
           <label className="block">
             <span className="mb-2 block text-sm text-slate-600">{t("login.email")}</span>
             <input
@@ -39,7 +39,7 @@ export default function LoginFormCard({
               required
               value={form.email}
               onChange={(event) => onChange("email", event.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 sm:text-sm"
             />
           </label>
 
@@ -52,7 +52,7 @@ export default function LoginFormCard({
               required
               value={form.password}
               onChange={(event) => onChange("password", event.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 sm:text-sm"
             />
           </label>
 
@@ -80,7 +80,7 @@ export default function LoginFormCard({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex w-full items-center justify-center rounded-2xl bg-brand-700 px-4 py-3.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-brand-700 px-4 py-3.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isSubmitting ? t("login.loading") : t("login.button")}
           </button>
@@ -98,7 +98,7 @@ export default function LoginFormCard({
                 key={account.email}
                 type="button"
                 onClick={() => onSelectDemoAccount(account)}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 transition hover:border-brand-200 hover:bg-brand-50"
+                className="min-h-[120px] rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 transition hover:border-brand-200 hover:bg-brand-50"
               >
                 <span className="block text-slate-950">{account.email}</span>
                 <span className="mt-1 block text-xs text-slate-500">{account.name}</span>

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import PublicOnlyRoute from "./components/common/PublicOnlyRoute";
 import RoleGuard from "./components/common/RoleGuard";
 import { useAuth } from "./hooks/useAuth";
 import { useI18n } from "./hooks/useI18n";
@@ -35,12 +36,22 @@ function RouteFallback() {
 }
 
 function DashboardRouter() {
-  const { user } = useAuth();
+  const { user, isBooting } = useAuth();
+
+  if (isBooting || !user) {
+    return <RouteFallback />;
+  }
+
   return user?.role === "admin" ? <AdminDashboard /> : <EmployeeDashboard />;
 }
 
 function FallbackRouter() {
-  const { user } = useAuth();
+  const { user, isBooting } = useAuth();
+
+  if (isBooting) {
+    return <RouteFallback />;
+  }
+
   return <Navigate to={user ? "/dashboard" : "/"} replace />;
 }
 
@@ -50,10 +61,12 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/register-company" element={<RegisterCompanyPage />} />
         <Route path="/terms" element={<LegalPage type="terms" />} />
         <Route path="/privacy" element={<LegalPage type="privacy" />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/register-company" element={<RegisterCompanyPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardRouter />} />

@@ -17,15 +17,33 @@
 
   html {
     @apply scroll-smooth;
+    overflow-x: hidden;
   }
 
   body {
     @apply min-h-screen bg-mesh text-slate-900 antialiased;
     background-attachment: fixed;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   #root {
     @apply min-h-screen;
+    overflow-x: hidden;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
   }
 }
 
@@ -54,6 +72,24 @@
       linear-gradient(rgba(20, 83, 45, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(20, 83, 45, 0.04) 1px, transparent 1px);
     background-size: auto, 28px 28px, 28px 28px;
+  }
+
+  .mobile-safe-bottom {
+    padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+  }
+
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .touch-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .break-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 

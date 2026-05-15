@@ -1,13 +1,29 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { authApi } from "../api/auth.api";
 import { ApiError } from "../api/client";
-import { clearStoredAuth, getStoredUser, getToken, setStoredUser, setToken } from "../api/auth.storage";
+import {
+  clearStoredAuth,
+  getStoredUser,
+  getToken,
+  setStoredUser,
+  setToken,
+  shouldRememberSession,
+} from "../api/auth.storage";
 
 export const AuthContext = createContext(null);
 
 function normalizeRole(role) {
-  const normalizedRole = String(role || "").toLowerCase();
-  return normalizedRole === "admin" ? "admin" : "employee";
+  const normalizedRole = String(role || "").trim().toLowerCase();
+
+  if (normalizedRole === "admin") {
+    return "admin";
+  }
+
+  if (normalizedRole === "employee") {
+    return "employee";
+  }
+
+  return null;
 }
 
 function createInitials(name = "") {
@@ -34,6 +50,10 @@ function normalizeApiUser(apiUser) {
   const company = apiUser.company || null;
   const apiCompanyId = apiUser.companyId || company?.id || null;
   const apiWorkerId = apiUser.workerId || null;
+
+  if (!apiUser.id || !apiUser.email || !role || !apiCompanyId) {
+    return null;
+  }
 
   return {
     ...apiUser,
@@ -69,6 +89,10 @@ function authErrorKey(error, context = "login") {
       return "login.invalidCredentials";
     }
 
+    if (error.status === 429 || error.code === "RATE_LIMITED") {
+      return context === "register" ? "register.rateLimited" : "login.rateLimited";
+    }
+
     if (context === "register") {
       if (error.status === 409 || error.code === "EMAIL_IN_USE" || error.code === "UNIQUE_CONSTRAINT") {
         return "register.emailInUse";
@@ -87,6 +111,10 @@ function authErrorKey(error, context = "login") {
       }
 
       return "register.serverError";
+    }
+
+    if (error.status === 400 || error.code === "VALIDATION_ERROR") {
+      return "login.validationError";
     }
 
     return "login.serverError";
@@ -110,15 +138,14 @@ function mergeCompanyUser(list, nextUser) {
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => getStoredUser());
+  const initialStoredUser = getStoredUser();
+  const [user, setUser] = useState(() => initialStoredUser);
   const [isLoading, setIsLoading] = useState(true);
-  const [companyUsers, setCompanyUsers] = useState(() => {
-    const storedUser = getStoredUser();
-    return storedUser ? [storedUser] : [];
-  });
+  const [companyUsers, setCompanyUsers] = useState(() => (initialStoredUser ? [initialStoredUser] : []));
 
-  const persistSession = useCallback((token, apiUser) => {
+  const persistSession = useCallback((token, apiUser, options = {}) => {
     const normalizedUser = normalizeApiUser(apiUser);
+    const remember = options.remember !== false;
 
     if (!token || !normalizedUser) {
       clearStoredAuth();
@@ -127,8 +154,8 @@ export function AuthProvider({ children }) {
       return null;
     }
 
-    setToken(token);
-    setStoredUser(normalizedUser);
+    setToken(token, remember);
+    setStoredUser(normalizedUser, remember);
     setUser(normalizedUser);
     setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
 
@@ -159,7 +186,7 @@ export function AuthProvider({ children }) {
           throw new Error("login.sessionExpired");
         }
 
-        setStoredUser(normalizedUser);
+        setStoredUser(normalizedUser, shouldRememberSession());
 
         if (isMounted) {
           setUser(normalizedUser);
@@ -184,7 +211,7 @@ export function AuthProvider({ children }) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [persistSession]);
 
   useEffect(() => {
     const handleAuthExpired = () => {
@@ -201,10 +228,10 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = useCallback(
-    async ({ email, password }) => {
+    async ({ email, password, rememberMe = true }) => {
       try {
         const response = await authApi.login({ email: normalizeEmail(email), password });
-        return persistSession(response.token, response.user);
+        return persistSession(response.token, response.user, { remember: rememberMe });
       } catch (error) {
         throw new Error(authErrorKey(error, "login"));
       }
@@ -228,7 +255,7 @@ export function AuthProvider({ children }) {
           password,
           plan,
         });
-        const registeredUser = persistSession(response.token, response.user);
+        const registeredUser = persistSession(response.token, response.user, { remember: true });
 
         return {
           company: registeredUser?.company,

@@ -1,24 +1,18 @@
 import { createContext, useMemo, useState } from "react";
-import de from "../i18n/locales/de.json";
 import en from "../i18n/locales/en.json";
-import es from "../i18n/locales/es.json";
 import fr from "../i18n/locales/fr.json";
-import it from "../i18n/locales/it.json";
 import pl from "../i18n/locales/pl.json";
 
 export const I18nContext = createContext(null);
 
 const STORAGE_KEY = "buildforu-locale";
-const dictionaries = { en, pl, de, fr, es, it };
+const dictionaries = { en, pl, fr };
 const supportedLocales = Object.keys(dictionaries);
 
 const languageOptions = [
-  { value: "en", label: "English" },
-  { value: "pl", label: "Polski" },
-  { value: "de", label: "Deutsch" },
-  { value: "fr", label: "Fran\u00e7ais" },
-  { value: "es", label: "Espa\u00f1ol" },
-  { value: "it", label: "Italiano" }
+  { value: "en" },
+  { value: "pl" },
+  { value: "fr" }
 ];
 
 function resolvePath(object, path) {

@@ -85,12 +85,12 @@ export default function WorkStatusCard() {
       <SectionHeader title={t("attendance.title")} subtitle={t("attendance.subtitle")} />
 
       <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-5">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+          <div className="min-w-0">
             <p className="text-sm text-slate-500">{t("attendance.currentStatus")}</p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <StatusBadge value={currentStatus} />
-              <span className="text-sm text-slate-500">
+              <span className="break-anywhere text-sm text-slate-500">
                 {getLocalizedValue(t, worker.assignedProjectKey, worker.assignedProject) || t("workers.notProvided")}
               </span>
             </div>

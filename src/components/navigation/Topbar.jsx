@@ -10,16 +10,16 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
   const { t } = useI18n();
 
   return (
-    <header className="glass-nav sticky top-4 z-20 rounded-[24px] p-3 sm:rounded-[28px] sm:p-4">
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <button onClick={onMenuOpen} className="rounded-2xl bg-slate-900 px-3 py-3 text-white lg:hidden" aria-label={t("common.openMenu")}>
+    <header className="glass-nav sticky top-2 z-20 rounded-[20px] p-2.5 sm:top-4 sm:rounded-[28px] sm:p-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
+          <button onClick={onMenuOpen} className="min-h-11 min-w-11 rounded-2xl bg-slate-900 p-3 text-white lg:hidden" aria-label={t("common.openMenu")}>
             <Menu size={18} />
           </button>
 
           <div className="min-w-0 flex-1">
-            <p className="text-xs uppercase tracking-[0.25em] text-brand-600">{t("common.welcomeBack")}</p>
-            <h1 className="truncate text-xl text-slate-900 sm:text-2xl">{pageTitle}</h1>
+            <p className="hidden text-xs uppercase tracking-[0.2em] text-brand-600 sm:block sm:tracking-[0.25em]">{t("common.welcomeBack")}</p>
+            <h1 className="truncate text-lg text-slate-900 sm:text-2xl">{pageTitle}</h1>
           </div>
 
           <LanguageSwitcher />
@@ -27,7 +27,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
           <div className="relative">
             <button
               onClick={() => setShowNotifications((current) => !current)}
-              className="relative rounded-2xl bg-white/80 p-3 text-slate-700 transition hover:bg-white"
+              className="relative min-h-11 min-w-11 rounded-2xl bg-white/80 p-3 text-slate-700 transition hover:bg-white"
               aria-label={t("common.notifications")}
             >
               <Bell size={18} />
@@ -35,7 +35,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
             </button>
 
             {showNotifications ? (
-              <div className="absolute right-0 z-30 mt-3 w-72 rounded-3xl border border-white/70 bg-white/95 p-4 shadow-soft backdrop-blur-xl">
+              <div className="absolute right-0 z-30 mt-3 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] overflow-y-auto rounded-3xl border border-white/70 bg-white/95 p-4 shadow-soft backdrop-blur-xl">
                 <p className="text-sm text-slate-900">{t("common.notifications")}</p>
                 <div className="mt-4 space-y-3">
                   {notifications.map((notification) => (
@@ -52,7 +52,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
           <UserMenu />
         </div>
 
-        <nav className="hidden gap-2 overflow-x-auto pb-1 lg:flex">
+        <nav className="touch-scroll hidden gap-2 overflow-x-auto pb-1 lg:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.key}

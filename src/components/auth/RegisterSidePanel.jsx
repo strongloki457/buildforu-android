@@ -5,13 +5,13 @@ export default function RegisterSidePanel({ form, helperEmail }) {
   const { t } = useI18n();
 
   return (
-    <aside className="order-2 space-y-4 lg:sticky lg:top-6">
-      <div className="rounded-[34px] border border-white/70 bg-white/84 p-6 shadow-soft">
+    <aside className="order-2 min-w-0 space-y-4 lg:sticky lg:top-6">
+      <div className="rounded-[24px] border border-white/70 bg-white/84 p-4 shadow-soft sm:rounded-[34px] sm:p-6">
         <div className="inline-flex rounded-2xl bg-brand-50 p-3 text-brand-700">
           <Sparkles size={18} />
         </div>
-        <p className="mt-5 text-xs uppercase tracking-[0.24em] text-brand-700/75">{t("register.onboardingEyebrow")}</p>
-        <h2 className="mt-3 text-2xl text-slate-950">{t("register.onboardingTitle")}</h2>
+        <p className="mt-5 text-xs uppercase tracking-[0.18em] text-brand-700/75 sm:tracking-[0.24em]">{t("register.onboardingEyebrow")}</p>
+        <h2 className="break-anywhere mt-3 text-xl text-slate-950 sm:text-2xl">{t("register.onboardingTitle")}</h2>
         <p className="mt-3 text-sm leading-7 text-slate-600">{t("register.onboardingSubtitle")}</p>
 
         <div className="mt-6 space-y-3">
@@ -30,11 +30,11 @@ export default function RegisterSidePanel({ form, helperEmail }) {
         </div>
       </div>
 
-      <div className="rounded-[34px] border border-brand-100 bg-gradient-to-b from-brand-50 via-white to-white p-6 shadow-soft">
-        <p className="text-xs uppercase tracking-[0.24em] text-brand-700/75">{t("register.selectedPlan")}</p>
+      <div className="rounded-[24px] border border-brand-100 bg-gradient-to-b from-brand-50 via-white to-white p-4 shadow-soft sm:rounded-[34px] sm:p-6">
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-700/75 sm:tracking-[0.24em]">{t("register.selectedPlan")}</p>
         <div className="mt-4 flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl text-slate-950">{t(`plans.${form.plan}`)}</h3>
+            <h3 className="text-xl text-slate-950 sm:text-2xl">{t(`plans.${form.plan}`)}</h3>
             <p className="mt-2 text-sm text-slate-500">{t(`register.planCards.${form.plan}.price`)}</p>
           </div>
           <div className="rounded-2xl bg-white px-3 py-2 text-xs text-brand-700 shadow-soft">

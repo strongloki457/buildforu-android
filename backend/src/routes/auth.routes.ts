@@ -9,9 +9,10 @@ const router = Router();
 
 const authRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 10,
+  limit: 20,
   standardHeaders: "draft-7",
   legacyHeaders: false,
+  skipSuccessfulRequests: true,
   message: {
     error: {
       code: "RATE_LIMITED",

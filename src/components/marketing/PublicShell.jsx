@@ -23,7 +23,7 @@ export default function PublicShell({ children }) {
         <header className="glass-nav rounded-[28px] px-4 py-3 sm:px-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Link to="/" className="flex items-center gap-3">
-              <img src={logoFull} alt="BuildForU" className="h-10 w-auto" />
+              <img src={logoFull} alt={t("app.name")} className="h-10 w-auto" />
             </Link>
 
             <nav className="hidden items-center gap-2 md:flex">

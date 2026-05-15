@@ -56,10 +56,10 @@ export default function ChatPanel({ title, subtitle, threads, user, onSendMessag
     <Card className="h-full">
       <SectionHeader title={title} subtitle={subtitle} />
 
-      <div className="grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)]">
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[220px_minmax(0,1fr)]">
         <ChatThreadList activeThread={activeThread} onSelectThread={setActiveThreadId} threads={threads} />
 
-        <div className="flex min-h-[320px] flex-col rounded-[28px] bg-white/70 p-4 sm:min-h-[360px]">
+        <div className="flex min-h-[min(62dvh,520px)] min-w-0 flex-col rounded-[22px] bg-white/70 p-3 sm:min-h-[360px] sm:rounded-[28px] sm:p-4">
           <ChatMessageList activeThread={activeThread} user={user} />
           {activeThread ? (
             <ChatComposer

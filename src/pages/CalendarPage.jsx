@@ -80,11 +80,11 @@ export default function CalendarPage() {
         <div className="grid gap-3">
           {entriesInVisibleMonth.length ? (
             entriesInVisibleMonth.map((entry) => (
-              <div key={entry.id} className="rounded-[24px] bg-white/80 p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+              <div key={entry.id} className="rounded-[22px] bg-white/80 p-4 sm:rounded-[24px]">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-slate-900">{getTaskTitle(t, entry)}</p>
+                      <p className="break-anywhere text-slate-900">{getTaskTitle(t, entry)}</p>
                       <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] text-slate-600">
                         {entry.entryType === "project"
                           ? t("calendar.entryTypes.project", "Project")
@@ -99,14 +99,14 @@ export default function CalendarPage() {
                       </p>
                     ) : null}
 
-                    <p className="mt-2 text-sm text-slate-500">{getTaskLocation(t, entry) || t("common.location", "Location")}</p>
+                    <p className="break-anywhere mt-2 text-sm text-slate-500">{getTaskLocation(t, entry) || t("common.location", "Location")}</p>
 
                     {entry.entryType === "project" && getProjectNotes(t, entry) ? (
-                      <p className="mt-2 text-sm text-slate-500">{getProjectNotes(t, entry)}</p>
+                      <p className="break-anywhere mt-2 text-sm text-slate-500">{getProjectNotes(t, entry)}</p>
                     ) : null}
                   </div>
 
-                  <div className="rounded-2xl bg-brand-50 px-4 py-2 text-sm text-brand-700">{entry.date}</div>
+                  <div className="w-fit rounded-2xl bg-brand-50 px-4 py-2 text-sm text-brand-700">{entry.date}</div>
                 </div>
               </div>
             ))

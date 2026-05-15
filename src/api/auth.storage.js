@@ -1,25 +1,50 @@
 const TOKEN_KEY = "buildforu-auth-token";
 const USER_KEY = "buildforu-auth-user";
 
-export function getToken() {
-  return window.localStorage.getItem(TOKEN_KEY);
+function getStorage(preferSession = false) {
+  return preferSession ? window.sessionStorage : window.localStorage;
 }
 
-export function setToken(token) {
+function getStoredValue(key) {
+  return window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
+}
+
+function setStoredValue(key, value, remember = true) {
+  const primaryStorage = getStorage(!remember);
+  const secondaryStorage = getStorage(remember);
+
+  secondaryStorage.removeItem(key);
+  primaryStorage.setItem(key, value);
+}
+
+function removeStoredValue(key) {
+  window.localStorage.removeItem(key);
+  window.sessionStorage.removeItem(key);
+}
+
+export function getToken() {
+  return getStoredValue(TOKEN_KEY);
+}
+
+export function shouldRememberSession() {
+  return Boolean(window.localStorage.getItem(TOKEN_KEY));
+}
+
+export function setToken(token, remember = true) {
   if (!token) {
     removeToken();
     return;
   }
 
-  window.localStorage.setItem(TOKEN_KEY, token);
+  setStoredValue(TOKEN_KEY, token, remember);
 }
 
 export function removeToken() {
-  window.localStorage.removeItem(TOKEN_KEY);
+  removeStoredValue(TOKEN_KEY);
 }
 
 export function getStoredUser() {
-  const rawUser = window.localStorage.getItem(USER_KEY);
+  const rawUser = getStoredValue(USER_KEY);
 
   if (!rawUser) {
     return null;
@@ -28,21 +53,21 @@ export function getStoredUser() {
   try {
     return JSON.parse(rawUser);
   } catch {
-    window.localStorage.removeItem(USER_KEY);
+    removeStoredValue(USER_KEY);
     return null;
   }
 }
 
-export function setStoredUser(user) {
+export function setStoredUser(user, remember = true) {
   if (!user) {
-    window.localStorage.removeItem(USER_KEY);
+    removeStoredValue(USER_KEY);
     return;
   }
 
-  window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+  setStoredValue(USER_KEY, JSON.stringify(user), remember);
 }
 
 export function clearStoredAuth() {
   removeToken();
-  window.localStorage.removeItem(USER_KEY);
+  removeStoredValue(USER_KEY);
 }

@@ -17,7 +17,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
       />
 
       <aside
-        className={`fixed left-0 top-0 z-40 flex h-full w-[88vw] max-w-[320px] flex-col overflow-y-auto border-r border-white/40 bg-slate-950/95 p-5 text-white transition duration-300 sm:w-[300px] sm:p-6 lg:sticky lg:z-10 lg:w-full lg:max-w-none lg:translate-x-0 lg:rounded-[32px] ${
+        className={`fixed left-0 top-0 z-40 flex h-dvh w-[88vw] max-w-[320px] flex-col overflow-y-auto border-r border-white/40 bg-slate-950/95 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] text-white transition duration-300 sm:w-[300px] sm:p-6 lg:sticky lg:z-10 lg:h-full lg:w-full lg:max-w-none lg:translate-x-0 lg:rounded-[32px] ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -31,7 +31,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
             </div>
           </div>
 
-          <button onClick={onClose} className="rounded-2xl bg-white/10 p-2 lg:hidden" aria-label={t("common.close")}>
+          <button onClick={onClose} className="min-h-11 min-w-11 rounded-2xl bg-white/10 p-2 lg:hidden" aria-label={t("common.close")}>
             <X size={16} />
           </button>
         </div>
@@ -59,7 +59,7 @@ export default function Sidebar({ navItems, user, isOpen, onClose }) {
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-2xl px-4 py-3.5 text-sm transition ${
+                  `flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3.5 text-sm transition ${
                     isActive
                       ? "bg-gradient-to-r from-brand-700 to-brand-500 text-white"
                       : "text-white/70 hover:bg-white/8 hover:text-white"

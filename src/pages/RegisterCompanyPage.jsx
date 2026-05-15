@@ -31,6 +31,14 @@ function validateRegisterForm(form) {
     errors.password = "register.validation.passwordRequired";
   } else if (form.password.length < 8) {
     errors.password = "register.validation.passwordTooShort";
+  } else if (!/[a-z]/.test(form.password) || !/[A-Z]/.test(form.password) || !/\d/.test(form.password)) {
+    errors.password = "register.validation.passwordComplexity";
+  }
+
+  if (!form.confirmPassword) {
+    errors.confirmPassword = "register.validation.confirmPasswordRequired";
+  } else if (form.password !== form.confirmPassword) {
+    errors.confirmPassword = "register.validation.passwordMismatch";
   }
 
   if (!form.termsAccepted) {
@@ -67,6 +75,7 @@ export default function RegisterCompanyPage() {
     ownerName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     plan: availablePlans.includes(normalizePlan(location.state?.plan)) ? normalizePlan(location.state?.plan) : "pro",
     termsAccepted: false
   });
@@ -96,6 +105,9 @@ export default function RegisterCompanyPage() {
       ownerName: Boolean((touched.ownerName || hasSubmitted) && form.ownerName.trim() && !validationErrors.ownerName),
       email: Boolean((touched.email || hasSubmitted) && form.email.trim() && !validationErrors.email),
       password: Boolean((touched.password || hasSubmitted) && form.password && !validationErrors.password),
+      confirmPassword: Boolean(
+        (touched.confirmPassword || hasSubmitted) && form.confirmPassword && !validationErrors.confirmPassword
+      ),
       termsAccepted: Boolean((touched.termsAccepted || hasSubmitted) && form.termsAccepted)
     }),
     [form, hasSubmitted, touched, validationErrors]
@@ -120,6 +132,7 @@ export default function RegisterCompanyPage() {
       ownerName: true,
       email: true,
       password: true,
+      confirmPassword: true,
       termsAccepted: true
     });
     setIsSubmitting(true);
@@ -151,7 +164,7 @@ export default function RegisterCompanyPage() {
 
   return (
     <PublicShell>
-      <section className="grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_420px] lg:items-start">
+      <section className="grid min-w-0 gap-5 sm:gap-8 lg:grid-cols-[minmax(0,1.02fr)_420px] lg:items-start">
         <RegisterFormPanel
           error={error}
           fieldErrors={fieldErrors}

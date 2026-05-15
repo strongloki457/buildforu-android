@@ -4,7 +4,13 @@ export const registerCompanySchema = z.object({
   companyName: z.string().trim().min(2).max(140),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().toLowerCase(),
-  password: z.string().min(8).max(128),
+  password: z
+    .string()
+    .min(8)
+    .max(128)
+    .refine((password) => /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password), {
+      message: "Password must include uppercase, lowercase, and numeric characters."
+    }),
   plan: z.string().trim().max(40).optional().default("starter")
 });
 

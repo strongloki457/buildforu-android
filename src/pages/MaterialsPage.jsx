@@ -108,13 +108,13 @@ export default function MaterialsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       <div className="max-w-3xl">
         <p className="text-xs uppercase tracking-[0.25em] text-brand-600">
           {t("materials.pageEyebrow", "Materials")}
         </p>
-        <h1 className="mt-2 text-3xl text-slate-950">{t("materials.title", "Materials")}</h1>
-        <p className="mt-2 text-sm text-slate-500 sm:text-base">
+        <h1 className="mt-2 text-2xl text-slate-950 sm:text-3xl">{t("materials.title", "Materials")}</h1>
+        <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-base">
           {t(
             "materials.dualPurposeSubtitle",
             "Track material requests by project so the office can approve, order and close them quickly."
@@ -131,7 +131,7 @@ export default function MaterialsPage() {
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 rounded-lg px-4 py-3 text-sm transition sm:flex-none ${
+              className={`min-h-11 flex-1 rounded-lg px-4 py-3 text-sm transition sm:flex-none ${
                 isActive ? "bg-brand-700 text-white shadow-lg shadow-brand-900/15" : "text-slate-600 hover:bg-brand-50"
               }`}
             >
@@ -145,7 +145,7 @@ export default function MaterialsPage() {
         <div className="space-y-6">
           <MaterialsMetrics isAdmin={isAdmin} scopedRequests={scopedRequests} />
 
-          <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
+          <div className="grid min-w-0 gap-5 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6">
             {isAdmin ? (
               <MaterialWorkflowCard
                 projectLinkedCount={projectLinkedCount}

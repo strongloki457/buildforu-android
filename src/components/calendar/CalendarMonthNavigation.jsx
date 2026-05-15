@@ -5,20 +5,20 @@ export default function CalendarMonthNavigation({ monthLabel, onNextMonth, onPre
   const { t } = useI18n();
 
   return (
-    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-white/70 bg-white/75 p-3 sm:p-4">
-      <div>
-        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
+    <div className="mb-5 flex flex-col gap-3 rounded-[22px] border border-white/70 bg-white/75 p-3 sm:flex-row sm:items-center sm:justify-between sm:rounded-[24px] sm:p-4">
+      <div className="min-w-0">
+        <p className="text-xs uppercase tracking-[0.18em] text-slate-400 sm:tracking-[0.22em]">
           {t("calendar.selectedMonth", "Selected month")}
         </p>
-        <p className="mt-1 text-lg capitalize text-slate-950">{monthLabel}</p>
+        <p className="break-anywhere mt-1 text-lg capitalize text-slate-950">{monthLabel}</p>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_44px_44px] items-center gap-2 sm:flex sm:flex-wrap">
         {onToday ? (
           <button
             type="button"
             onClick={onToday}
-            className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50"
+            className="min-h-11 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50"
           >
             {t("common.today")}
           </button>

@@ -1,13 +1,18 @@
 {
   "app": {
     "name": "BuildForU",
-    "tagline": "Operations chantier avec une vue plus claire.",
+    "tagline": "Opérations de chantier avec une vue plus claire.",
     "commandCenter": "Centre de commande BuildForU",
-    "preparing": "Preparation de BuildForU..."
+    "preparing": "Préparation de BuildForU..."
   },
   "roles": {
-    "employee": "Employe",
+    "employee": "Employé",
     "admin": "Patron"
+  },
+  "languages": {
+    "en": "Anglais",
+    "pl": "Polonais",
+    "fr": "Français"
   },
   "nav": {
     "dashboard": "Tableau",
@@ -51,7 +56,7 @@
     "toggleStatus": "Changer le statut",
     "all": "Tous",
     "project": "Projet",
-    "retry": "R?essayer"
+    "retry": "Réessayer"
   },
   "statusLabels": {
     "pending": "En attente",
@@ -117,17 +122,19 @@
     "workspaceEyebrow": "Plateforme des operations chantier",
     "featureAdmin": "Espaces admin et employe",
     "featureOps": "Taches, planning et chat equipe",
-    "featureI18n": "Interface multilingue prête pour les données backend",
+    "featureI18n": "Interface multilingue prête pour les données du serveur",
     "demoAccounts": "Comptes exemple",
     "featureEmployeeCredentials": "Identifiants employé",
     "featureRoleViews": "Vues selon le rôle",
     "featureWorkspaceAccess": "Accès à l’espace de travail",
     "invalidCredentials": "L’email ou le mot de passe est incorrect.",
-    "networkError": "Impossible de joindre le backend BuildForU. Vérifiez que le serveur API fonctionne.",
-    "databaseUnavailable": "La base de données ne fonctionne pas. Lancez PostgreSQL puis exécutez la migration backend.",
+    "networkError": "Impossible de joindre le serveur BuildForU. Vérifiez que le serveur API fonctionne.",
+    "databaseUnavailable": "La base de données ne fonctionne pas. Lancez PostgreSQL puis exécutez la migration serveur.",
     "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
     "serverError": "La connexion a échoué. Veuillez réessayer.",
-    "mockCredentialsHint": "Ces comptes d’exemple doivent exister dans les données seed du backend."
+    "mockCredentialsHint": "Ces comptes d’exemple doivent exister dans les données initiales du serveur.",
+    "rateLimited": "Trop de tentatives de connexion. Patientez un moment puis réessayez.",
+    "validationError": "Saisissez une adresse email valide et un mot de passe."
   },
   "sidebar": {
     "controlTower": "Tour de controle",
@@ -145,7 +152,7 @@
     "workerPulse": "Pulse equipe",
     "assignTask": "Attribuer une nouvelle tache",
     "projectHealth": "Sante des projets",
-    "todayFocus": "Focus du jour",
+    "todayFocus": "Priorité du jour",
     "activeProjects": "Projets actifs",
     "crewAvailability": "Disponibilite des equipes",
     "completionRate": "Taux d'achevement",
@@ -227,7 +234,7 @@
     "monthlyEyebrow": "Mensuel",
     "emptyMonth": "Aucun element planifie pour ce mois.",
     "formTitle": "Attribuer une nouvelle tache",
-    "formSubtitle": "Creez une affectation mock directement depuis la vue calendrier.",
+    "formSubtitle": "Créez une affectation d’exemple directement depuis la vue calendrier.",
     "worker": "Employe",
     "unknownWorker": "Employe inconnu",
     "emptyWorker": "Ajoutez un employe pour attribuer une tache",
@@ -259,7 +266,7 @@
     "primarySubtitle": "Planning mensuel pour la vue d’équipe actuelle.",
     "projectEntryDescription": "Créez un vrai projet qui apparaîtra aussi dans Projets.",
     "scheduleListMixedSubtitle": "Tâches et dates de projets prévues pour le mois sélectionné.",
-    "taskEntryDescription": "Créez une tâche datée liée ? un projet et ? un employé."
+    "taskEntryDescription": "Créez une tâche datée liée à un projet et à un employé."
   },
   "tasks": {
     "title": "Gestion des taches",
@@ -269,7 +276,7 @@
     "all": "Toutes les taches",
     "task": "Tache",
     "prioritySuffix": "Priorite {{priority}}",
-    "filterHint": "La vue filtre est pour l'instant un mock frontend pret pour une integration backend.",
+    "filterHint": "La vue de filtre est actuellement un exemple prêt pour une intégration serveur.",
     "priority": "Priorité",
     "emptyTitle": "Aucune tâche trouvée",
     "emptySubtitle": "Aucune tâche ne correspond encore à ce filtre.",
@@ -284,14 +291,14 @@
     "emptySubtitle": "Choisissez une conversation pour voir les mises a jour et envoyer un message.",
     "attachFile": "Fichier",
     "attachImage": "Image",
-    "takePhoto": "Camera",
+    "takePhoto": "Appareil photo",
     "attachments": "Pieces jointes",
     "removeAttachment": "Retirer la piece jointe",
     "attachmentReady": "Pret a envoyer",
-    "cameraReady": "Pret pour la camera sur mobile",
+    "cameraReady": "Prêt pour l’appareil photo sur téléphone",
     "messageWithAttachments": "Message avec pieces jointes",
     "noThreadsTitle": "Aucun fil de chat",
-    "noThreadsSubtitle": "Les nouvelles conversations apparaîtront ici après la configuration de l'équipe ou du backend.",
+    "noThreadsSubtitle": "Les nouvelles conversations apparaîtront ici après la configuration de l’équipe ou du serveur.",
     "noMessagesTitle": "Aucun message",
     "noMessagesSubtitle": "Envoyez la première mise à jour lorsque cette conversation sera prête.",
     "messages": {
@@ -310,7 +317,7 @@
     "availableNow": "Disponibles maintenant",
     "availableNowDetail": "Membres d'equipe prets a prendre plus de travail.",
     "averagePerformance": "Perf. moyenne",
-    "averagePerformanceDetail": "Basee sur les taux d'achevement mockes.",
+    "averagePerformanceDetail": "Basée sur les taux d’achèvement d’exemple.",
     "offShift": "Hors service",
     "offShiftDetail": "Employes hors rotation active sur site.",
     "addWorker": "Ajouter un employé",
@@ -318,7 +325,7 @@
     "editWorker": "Modifier l'employe",
     "addWorkerTitle": "Ajouter un nouvel employe",
     "editWorkerTitle": "Modifier l'employe",
-    "workerModalDescription": "Mettez a jour les details de l'equipe dans l'etat local mock sans toucher a l'authentification.",
+    "workerModalDescription": "Mettez à jour les détails de l’équipe dans l’état local de test sans toucher à l’authentification.",
     "fullName": "Nom complet",
     "placeholderName": "Emma Schneider",
     "placeholderEmail": "emma@buildforu.com",
@@ -332,14 +339,14 @@
     "allStatuses": "Tous les statuts",
     "allProjects": "Tous les projets",
     "contact": "Contact",
-    "operations": "Operations",
+    "operations": "Opérations",
     "nextShift": "Prochaine garde",
     "notScheduled": "Non planifie",
     "completionRate": "Taux d'achevement",
     "noWorkersFound": "Aucun employe trouve",
     "noWorkersSubtitle": "Essayez une autre combinaison de filtres ou ajoutez un nouveau membre d'equipe.",
     "deleteWorkerTitle": "Supprimer l'employe",
-    "deleteWorkerDescription": "Voulez-vous vraiment retirer {{name}} de la liste de l'equipe ? Cela affecte seulement les donnees mock locales.",
+    "deleteWorkerDescription": "Voulez-vous vraiment retirer {{name}} de la liste de l’équipe ? Cela affecte seulement les données locales de test.",
     "keepWorker": "Conserver l'employe",
     "deleteWorkerConfirm": "Supprimer l'employe",
     "saveChanges": "Enregistrer les modifications",
@@ -353,14 +360,14 @@
     "workerNameRequired": "Le nom complet est obligatoire.",
     "workerEmailRequired": "L’email est obligatoire pour créer un accès employé.",
     "workerEmailDuplicate": "Cet email est déjà utilisé par un autre utilisateur de l’entreprise.",
-    "employeeLoginCreateFailed": "L’employé a été enregistré, mais le compte de connexion n’a pas pu être créé. Vérifiez la connexion au backend et réessayez.",
+    "employeeLoginCreateFailed": "L’employé a été enregistré, mais le compte de connexion n’a pas pu être créé. Vérifiez la connexion au serveur et réessayez.",
     "createEmployeeLogin": "Créer un accès employé",
     "createEmployeeLoginHint": "Activez cette option si l’employé doit se connecter et voir ses propres tâches.",
     "loginAlreadyLinked": "Cet employé possède déjà un accès lié.",
     "emptyCreateHint": "Créez le premier employé pour activer les accès et les affectations.",
     "employeeAccessSubtitle": "Transmettez à l’employé ses identifiants temporaires.",
     "employeeAccessTitle": "Accès employé",
-    "employeeAccessHint": "L’employé pourra changer ce mot de passe lorsque l’authentification backend sera connectée.",
+    "employeeAccessHint": "L’employé pourra changer ce mot de passe lorsque l’authentification côté serveur sera connectée.",
     "employeeLoginProvisioning": "Un accès employé lié sera créé avec un mot de passe temporaire."
   },
   "projects": {
@@ -368,30 +375,30 @@
     "subtitle": "Suivez la dynamique de livraison et le risque des sites actifs.",
     "activeBuilds": "Chantiers actifs",
     "activeBuildsDetail": "Portefeuille actuel en cours.",
-    "atRisk": "A risque",
+    "atRisk": "À risque",
     "atRiskDetail": "Un site demande une surveillance plus proche.",
     "averageProgress": "Avancement moyen",
-    "averageProgressDetail": "Point median d'achevement du portefeuille.",
-    "progressComplete": "{{value}}% termine",
+    "averageProgressDetail": "Point médian d’achèvement du portefeuille.",
+    "progressComplete": "{{value}}% terminé",
     "totalProjects": "Tous les projets",
-    "totalProjectsDetail": "Chaque projet actuellement suivi dans lapplication.",
+    "totalProjectsDetail": "Chaque projet actuellement suivi dans l’application.",
     "inProgressProjects": "En cours",
     "inProgressProjectsDetail": "Projets actuellement actifs sur site ou en livraison.",
-    "completedProjects": "Termines",
-    "completedProjectsDetail": "Projets deja livres ou completement clotures.",
-    "peopleAssigned": "Personnes affectees",
-    "peopleAssignedDetail": "Travailleurs actuellement relies au travail projet.",
-    "detailsDescription": "Equipe, calendrier et notes operationnelles du projet au meme endroit.",
+    "completedProjects": "Terminés",
+    "completedProjectsDetail": "Projets déjà livrés ou complètement clôturés.",
+    "peopleAssigned": "Personnes affectées",
+    "peopleAssignedDetail": "Employés actuellement reliés au travail projet.",
+    "detailsDescription": "Équipe, calendrier et notes opérationnelles du projet au même endroit.",
     "currentPhase": "Phase actuelle",
     "projectLocation": "Lieu",
     "budget": "Budget",
-    "startDate": "Date de debut",
-    "deadline": "Echeance",
+    "startDate": "Date de début",
+    "deadline": "Échéance",
     "progressLabel": "Avancement",
-    "teamAssigned": "Equipe affectee",
-    "noAssignedWorkers": "Aucun travailleur nest encore affecte a ce projet.",
+    "teamAssigned": "Équipe affectée",
+    "noAssignedWorkers": "Aucun employé n’est encore affecté à ce projet.",
     "notes": "Notes",
-    "viewDetails": "Voir les details",
+    "viewDetails": "Voir les détails",
     "addProjectAction": "Créer un projet",
     "addProjectTitle": "Créer un projet",
     "addProjectSubtitle": "Créez une entrée de projet pour le tableau de l’équipe.",
@@ -405,7 +412,28 @@
     "noTeamWarning": "Affectez au moins un employé avant de planifier des tâches.",
     "assignedWorkersCount": "{{count}} employés affectés",
     "projectCount": "{{count}} projets",
-    "detailsDescriptionPractical": "Périmètre, équipe et calendrier du projet au même endroit."
+    "detailsDescriptionPractical": "Périmètre, équipe et calendrier du projet au même endroit.",
+    "progressOverview": "Vue de l’avancement",
+    "linkedTasks": "Tâches liées",
+    "linkedMaterials": "Matériaux liés",
+    "tasksCompletedRatio": "{{completed}}/{{total}} terminées",
+    "noLinkedTasksShort": "Aucune tâche",
+    "nextWorkItem": "Prochain élément de travail",
+    "openTasks": "Tâches ouvertes",
+    "openTasksCount": "{{count}} ouvertes",
+    "openTasksDetail": "Tâches encore en attente de clôture.",
+    "materialCoverage": "Couverture matériaux",
+    "openMaterials": "Matériaux ouverts",
+    "openMaterialsCount": "{{count}} ouvertes",
+    "openMaterialsDetail": "Demandes de matériaux encore en attente de clôture.",
+    "noLinkedTasks": "Aucune tâche n’est encore liée à ce projet.",
+    "noLinkedMaterials": "Aucune demande de matériaux n’est encore liée à ce projet.",
+    "assignedWorkers": "Employés affectés",
+    "assignedWorkersHelper": "Personnes connectées à ce chantier.",
+    "loadFailed": "Les projets n’ont pas pu être chargés. Réessayez.",
+    "emptyStatusHint": "Déplacez un projet ici lorsque le chantier atteint cette étape.",
+    "emptyTitle": "Aucun projet",
+    "emptySubtitle": "Créez la première fiche chantier pour relier employés, tâches et demandes de matériaux."
   },
   "materials": {
     "title": "Materiaux",
@@ -472,7 +500,7 @@
     "focusedStore": "Option sélectionnée",
     "noFinderMatch": "Aucune option correspondante",
     "noFinderResultsSubtitle": "Essayez un autre produit ou assouplissez les filtres.",
-    "noFinderResultsTitle": "Aucun magasin ne correspond ? cette recherche",
+    "noFinderResultsTitle": "Aucun magasin ne correspond à cette recherche",
     "projectDropHint": "Zone de dépôt du projet",
     "projectLinked": "Lié au projet",
     "selectFinderResult": "Sélectionnez un résultat pour le mettre en avant sur la carte."
@@ -481,13 +509,13 @@
     "title": "Finances",
     "subtitle": "Consultez les revenus, depenses et le suivi des factures.",
     "revenue": "Revenus",
-    "revenueDetail": "Instantane mock actuel des revenus.",
+    "revenueDetail": "Aperçu d’exemple des revenus actuels.",
     "expenses": "Depenses",
     "expensesDetail": "Depenses d'exploitation sur les projets.",
     "profit": "Profit",
     "profitDetail": "Marge positive sur ce cycle.",
     "openInvoices": "Factures ouvertes",
-    "openInvoicesDetail": "Pret pour des donnees backend plus tard.",
+    "openInvoicesDetail": "Prêt pour de futures données serveur.",
     "cashFlowOutlook": "Perspective de tresorerie",
     "monthOverMonth": "+12,4% mois sur mois",
     "weekLabel": "S{{number}}"
@@ -502,16 +530,16 @@
     "privacyTitle": "Mode confidentialite avance",
     "privacyDescription": "Reduisez les details operationnels visibles sur les ecrans partages.",
     "workspaceSaved": "Preferences enregistrees localement",
-    "workspaceSavedDetail": "Cet ecran reste purement UI pour l'instant et est pret pour un futur service backend.",
+    "workspaceSavedDetail": "Cet écran reste une interface de démonstration pour l’instant et il est prêt pour un futur service de paramètres.",
     "billingTitle": "Facturation et abonnement",
-    "billingDescription": "Ouvrez la vue abonnement pour verifier le plan, lusage des employes et les informations mock de facturation.",
+    "billingDescription": "Ouvrez la vue abonnement pour vérifier le forfait, l’utilisation des employés et les informations de facturation d’exemple.",
     "manageBilling": "Gerer la facturation",
     "planLabel": "Plan",
-    "workspaceAccessHint": "L’accès à l’espace de travail est simulé dans ce MVP frontend."
+    "workspaceAccessHint": "L’accès à l’espace de travail est simulé dans ce MVP."
   },
   "marketMap": {
     "title": "Carte des magasins",
-    "subtitle": "Comparez les magasins proches, consultez les prix mockes et passez a la meilleure option d'achat.",
+    "subtitle": "Comparez les magasins proches, consultez les prix d’exemple et choisissez la meilleure option d’achat.",
     "eyebrow": "Intelligence marche",
     "searchPlaceholder": "Rechercher des materiaux (ex. toilette, ciment, carrelage...)",
     "price": "Prix",
@@ -529,13 +557,13 @@
     "bestOverallOption": "Meilleure option globale",
     "noOption": "Aucune option disponible",
     "resultsTitle": "Resultats des magasins proches",
-    "resultsSubtitle": "{{count}} options mock pretes pour comparaison et apercu carte.",
+    "resultsSubtitle": "{{count}} options d’exemple prêtes pour la comparaison et l’aperçu sur carte.",
     "mapPreview": "Apercu carte",
-    "mapPreviewSubtitle": "Un conteneur de carte mock montrant les options correspondantes.",
+    "mapPreviewSubtitle": "Une carte stylisée montrant les options correspondantes.",
     "noStoresTitle": "Aucun magasin ne correspond a cette recherche",
     "noStoresSubtitle": "Essayez un autre materiau ou changez les filtres selectionnes.",
     "focusedStore": "Magasin cible",
-    "storeSupplyCheck": "Verification du magasin avec donnees de localisation mock.",
+    "storeSupplyCheck": "Vérification du magasin avec des données de localisation d’exemple.",
     "cheapestDetail": "{{price}} chez {{store}}",
     "nearestDetail": "{{distance}} km de {{store}}",
     "bestOverallDetail": "{{store}} equilibre au mieux prix, distance et stock."
@@ -554,16 +582,16 @@
     "footer": "Concu pour les entreprises du batiment en croissance qui ont besoin dun espace operationnel plus clair et plus connecte."
   },
   "legal": {
-    "eyebrow": "L?gal",
+    "eyebrow": "Légal",
     "terms": {
       "title": "Conditions",
-      "body1": "BuildForU est un espace MVP pour les op?rations de construction. Utilisez-le avec des informations d'entreprise exactes et invitez uniquement les utilisateurs qui doivent acc?der ? votre espace.",
-      "body2": "Les contrats de production, conditions de facturation et engagements de service doivent ?tre examin?s avant une utilisation commerciale r?elle."
+      "body1": "BuildForU est un espace MVP pour les opérations de construction. Utilisez-le avec des informations d’entreprise exactes et invitez uniquement les utilisateurs qui doivent accéder à votre espace.",
+      "body2": "Les contrats de production, conditions de facturation et engagements de service doivent être examinés avant une utilisation commerciale réelle."
     },
     "privacy": {
-      "title": "Politique de confidentialit?",
-      "body1": "BuildForU stocke les donn?es de compte et d'espace n?cessaires au fonctionnement de l'application, notamment utilisateurs, employ?s, projets, t?ches, pr?sence et demandes de mat?riaux.",
-      "body2": "Ne stockez pas de donn?es de production sensibles dans ce MVP avant validation du d?ploiement, de la conservation des donn?es, du contr?le d'acc?s et des r?gles de s?curit?."
+      "title": "Politique de confidentialité",
+      "body1": "BuildForU stocke les données de compte et d’espace nécessaires au fonctionnement de l’application, notamment les utilisateurs, les employés, les projets, les tâches, la présence et les demandes de matériaux.",
+      "body2": "Ne stockez pas de données de production sensibles dans ce MVP avant validation du déploiement, de la conservation des données, du contrôle d’accès et des règles de sécurité."
     }
   },
   "attendance": {
@@ -594,17 +622,17 @@
     "detailsTitle": "Presence de {{name}}",
     "detailsDescription": "Consultez le statut de presence, les horodatages et les coordonnees optionnelles.",
     "notStarted": "Travail non commencé",
-    "saveFailed": "Impossible d?enregistrer la pr?sence. Veuillez r?essayer."
+    "saveFailed": "Impossible d’enregistrer la présence. Veuillez réessayer."
   },
   "landing": {
-    "eyebrow": "SaaS operations chantier",
+    "eyebrow": "SaaS pour les opérations de chantier",
     "title": "Pilotez equipes, plannings et communication chantier depuis un seul espace BuildForU.",
     "subtitle": "BuildForU aide les entreprises du batiment a gerer travailleurs, taches, planification, chat equipe et approvisionnement dans un tableau de bord soigne pour bureau et terrain.",
     "featuresEyebrow": "Capacites principales",
     "featuresTitle": "Construit autour du rythme quotidien dune entreprise du batiment.",
     "ctaEyebrow": "Pret a demarrer",
     "ctaTitle": "Lancez votre essai BuildForU et mettez en place lespace de votre entreprise en quelques minutes.",
-    "ctaSubtitle": "Explorez le produit, comparez les plans et entrez dans le tableau existant sans backend.",
+    "ctaSubtitle": "Explorez le produit, comparez les plans et entrez dans le tableau existant sans configuration serveur.",
     "stats": {
       "roles": {
         "label": "Concu pour",
@@ -612,11 +640,11 @@
       },
       "deployment": {
         "label": "Deploiement",
-        "value": "Frontend dabord"
+        "value": "Interface d’abord"
       },
       "focus": {
-        "label": "Focus",
-        "value": "Operations quotidiennes"
+        "label": "Priorité",
+        "value": "Opérations quotidiennes"
       }
     },
     "features": {
@@ -629,7 +657,7 @@
         "description": "Coordonnez jours de travail, visites et horaires avec une vue de planification plus claire."
       },
       "chat": {
-        "title": "Chat equipe",
+        "title": "Messagerie d’équipe",
         "description": "Reduisez le chaos des appels avec des mises a jour rapides entre bureau et terrain."
       },
       "marketMap": {
@@ -658,7 +686,7 @@
         "title": "Planning du jour"
       },
       "chat": {
-        "label": "Chat",
+        "label": "Messagerie",
         "title": "Mises a jour bureau vers terrain",
         "badge": "2 non lus",
         "message-1": {
@@ -716,7 +744,7 @@
           "1": "Tout du Starter",
           "2": "Gestion des travailleurs",
           "3": "Tableau operationnel admin",
-          "4": "Onboarding prioritaire"
+          "4": "Accompagnement prioritaire"
         }
       },
       "enterprise": {
@@ -726,8 +754,8 @@
         "features": {
           "1": "Tout du Pro",
           "2": "Montee en charge illimitee",
-          "3": "Support onboarding personnalise",
-          "4": "Deploiement futur pret pour API"
+          "3": "Accompagnement personnalisé",
+          "4": "Futur déploiement prêt pour API"
         }
       }
     }
@@ -753,8 +781,8 @@
       "fair": "Correct",
       "strong": "Fort"
     },
-    "networkError": "Impossible de joindre le backend BuildForU. Vérifiez que le serveur API fonctionne.",
-    "databaseUnavailable": "La connexion à la base de données est indisponible. Vérifiez la configuration backend et réessayez.",
+    "networkError": "Impossible de joindre le serveur BuildForU. Vérifiez que le serveur API fonctionne.",
+    "databaseUnavailable": "La connexion à la base de données est indisponible. Vérifiez la configuration serveur et réessayez.",
     "emailInUse": "Un compte avec cet email existe déjà.",
     "passwordInvalid": "Ce mot de passe est trop faible ou invalide. Utilisez au moins 8 caractères.",
     "validationError": "Vérifiez les champs obligatoires et réessayez.",
@@ -772,7 +800,10 @@
       "passwordRequired": "Le mot de passe est obligatoire.",
       "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
       "termsRequired": "Acceptez les Conditions et la Politique de confidentialité pour continuer.",
-      "fieldValid": "C'est bon"
+      "fieldValid": "C'est bon",
+      "passwordComplexity": "Utilisez une majuscule, une minuscule et au moins un chiffre.",
+      "confirmPasswordRequired": "Confirmez votre mot de passe.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas."
     },
     "plan": "Plan",
     "creatingWorkspace": "Création de l'espace...",
@@ -786,12 +817,12 @@
     "signIn": "Se connecter",
     "alreadyTesting": "Vous testez deja le produit ?",
     "goToSignIn": "Aller a la connexion",
-    "onboardingEyebrow": "Onboarding",
+    "onboardingEyebrow": "Intégration",
     "onboardingTitle": "Mettez vos operations en place avec moins de friction.",
     "onboardingSubtitle": "BuildForU est concu pour installer rapidement votre entreprise dans un espace operationnel sans etapes lourdes.",
     "selectedPlan": "Plan selectionne",
-    "workspaceSignIn": "Connexion a lespace",
-    "dashboardPreviewNote": "Apres inscription, vous arriverez dans le tableau existant pour voir toute lexperience BuildForU.",
+    "workspaceSignIn": "Connexion à l’espace",
+    "dashboardPreviewNote": "Après inscription, vous arriverez dans le tableau existant pour voir toute l’expérience BuildForU.",
     "steps": {
       "1": {
         "title": "Choisissez votre plan et commencez",
@@ -802,7 +833,7 @@
         "description": "Commencez avec le compte du proprietaire puis developpez a partir de la."
       },
       "3": {
-        "title": "Parcours onboarding fiable",
+        "title": "Parcours d’intégration fiable",
         "description": "Ce prototype garde linscription claire et concentree."
       }
     },
@@ -822,13 +853,15 @@
         "workers": "Travailleurs illimites",
         "note": "Pour les grandes organisations qui ont besoin de flexibilite et de support de deploiement."
       }
-    }
+    },
+    "confirmPassword": "Confirmer le mot de passe",
+    "rateLimited": "Trop de tentatives d’inscription. Patientez un moment puis réessayez."
   },
   "billing": {
     "title": "Facturation et abonnement",
-    "subtitle": "Consultez votre abonnement actuel, les donnees mock de facturation et les options de mise a niveau.",
+    "subtitle": "Consultez votre abonnement actuel, les données de facturation d’exemple et les options de mise à niveau.",
     "currentPlan": "Plan actuel",
-    "mockSubscriptionData": "Donnees mock dabonnement",
+    "mockSubscriptionData": "Données d’abonnement d’exemple",
     "workerLimit": "Limite de travailleurs",
     "workerLimitDetail": "Selon le niveau de plan selectionne",
     "usage": "Utilisation",
@@ -842,10 +875,10 @@
     "nextInvoice": "Prochaine facture",
     "billingContact": "Contact de facturation",
     "billingContactEmail": "finance@buildforu.com",
-    "billingContactHint": "Contact mock affiche pour lapercu de linterface",
+    "billingContactHint": "Contact d’exemple affiché pour l’aperçu de l’interface",
     "paymentMethod": "Methode de paiement",
     "cardLabel": "Visa se terminant par 2048",
-    "cardHint": "Expire 09/28 - details de carte mock pour lapercu abonnement",
+    "cardHint": "Expire 09/28 - détails de carte d’exemple pour l’aperçu de l’abonnement",
     "recentActivity": "Activite recente de facturation",
     "unlimitedWorkers": "Illimite",
     "planDescriptions": {

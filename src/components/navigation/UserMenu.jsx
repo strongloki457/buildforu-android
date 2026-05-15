@@ -12,7 +12,7 @@ export default function UserMenu() {
   return (
     <div className="relative">
       <button
-        className="flex items-center gap-3 rounded-2xl bg-white/80 px-3 py-2 transition hover:bg-white"
+        className="flex min-h-11 items-center gap-2 rounded-2xl bg-white/80 px-2.5 py-2 transition hover:bg-white sm:gap-3 sm:px-3"
         onClick={() => setOpen((current) => !current)}
       >
         <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-700 to-brand-500 text-sm text-white">
@@ -24,13 +24,13 @@ export default function UserMenu() {
             {[getUserTitle(t, user), user?.companyName].filter(Boolean).join(" - ")}
           </p>
         </div>
-        <ChevronDown size={16} className="text-slate-400" />
+        <ChevronDown size={16} className="hidden text-slate-400 sm:block" />
       </button>
 
       {open ? (
-        <div className="absolute right-0 z-30 mt-3 w-56 rounded-3xl border border-white/70 bg-white/95 p-3 shadow-soft backdrop-blur-xl">
+        <div className="absolute right-0 z-30 mt-3 w-[min(14rem,calc(100vw-1.5rem))] rounded-3xl border border-white/70 bg-white/95 p-3 shadow-soft backdrop-blur-xl">
           <div className="rounded-2xl bg-slate-50 p-3">
-            <p className="text-sm text-slate-900">{user?.email}</p>
+            <p className="break-anywhere text-sm text-slate-900">{user?.email}</p>
             {user?.companyName ? <p className="mt-1 text-xs text-slate-500">{user.companyName}</p> : null}
             <p className="mt-1 text-xs uppercase tracking-[0.2em] text-brand-600">{t(`roles.${user?.role}`, user?.role)}</p>
           </div>

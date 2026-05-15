@@ -62,6 +62,14 @@ const MATERIAL_STATUS_FROM_API = {
   REJECTED: "Rejected"
 };
 
+const PROJECT_STATUS_PROGRESS = {
+  "To Start": 0,
+  "In Progress": 45,
+  Completed: 100
+};
+
+const OPEN_MATERIAL_STATUSES = new Set(["Pending", "Ordered"]);
+
 function createLookup(items) {
   return new Map(items.map((item) => [item.id, item]));
 }
@@ -318,6 +326,22 @@ function materialPayload(input, user) {
   };
 }
 
+function getProjectProgress(project, linkedTasks) {
+  const completedTaskCount = linkedTasks.filter((task) => task.status === "completed").length;
+
+  if (linkedTasks.length) {
+    return Math.round((completedTaskCount / linkedTasks.length) * 100);
+  }
+
+  const storedProgress = Number(project.progress);
+
+  if (Number.isFinite(storedProgress) && storedProgress > 0) {
+    return Math.max(0, Math.min(100, Math.round(storedProgress)));
+  }
+
+  return PROJECT_STATUS_PROGRESS[project.status] ?? 0;
+}
+
 export function AppDataProvider({ children }) {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(appDataReducer, undefined, createInitialAppState);
@@ -401,20 +425,36 @@ export function AppDataProvider({ children }) {
     [projectsById, state.tasks, workersById]
   );
 
-  const projects = useMemo(
-    () =>
-      state.projects.map((project) => ({
-        ...project,
-        assignedWorkers: workers.filter((worker) => worker.projectIds.includes(project.id)),
-        taskCount: tasks.filter((task) => task.projectId === project.id).length,
-        openTaskCount: tasks.filter((task) => task.projectId === project.id && task.status === "pending").length
-      })),
-    [state.projects, tasks, workers]
-  );
-
   const materialRequests = useMemo(
     () => state.materialRequests.map((request) => hydrateMaterialRequestRecord(request, workersById, projectsById)),
     [projectsById, state.materialRequests, workersById]
+  );
+
+  const projects = useMemo(
+    () =>
+      state.projects.map((project) => {
+        const linkedTasks = tasks.filter((task) => task.projectId === project.id);
+        const linkedMaterialRequests = materialRequests.filter((request) => request.projectId === project.id);
+        const completedTaskCount = linkedTasks.filter((task) => task.status === "completed").length;
+        const openTaskCount = linkedTasks.length - completedTaskCount;
+        const openMaterialCount = linkedMaterialRequests.filter((request) =>
+          OPEN_MATERIAL_STATUSES.has(request.status)
+        ).length;
+
+        return {
+          ...project,
+          assignedWorkers: workers.filter((worker) => worker.projectIds.includes(project.id)),
+          linkedTasks,
+          linkedMaterialRequests,
+          taskCount: linkedTasks.length,
+          completedTaskCount,
+          openTaskCount,
+          materialRequestCount: linkedMaterialRequests.length,
+          openMaterialCount,
+          progress: getProjectProgress(project, linkedTasks)
+        };
+      }),
+    [materialRequests, state.projects, tasks, workers]
   );
 
   const attendance = useMemo(
@@ -463,7 +503,19 @@ export function AppDataProvider({ children }) {
         return runMutation(async () => {
           if (user?.role !== "admin") return null;
           const response = await projectsApi.createProject(projectPayload(input));
-          const normalizedProject = normalizeProjectRecord(mapApiProject(response.project));
+          const apiProject = mapApiProject(response.project);
+          const normalizedProject = normalizeProjectRecord({
+            ...apiProject,
+            phase: input.phase ?? apiProject.phase,
+            budget: input.budget ?? apiProject.budget,
+            location: input.location ?? apiProject.location,
+            startDate: input.startDate ?? apiProject.startDate,
+            deadline: input.deadline ?? apiProject.deadline,
+            notes: input.notes || apiProject.notes,
+            assignedWorkerIds: apiProject.assignedWorkerIds?.length
+              ? apiProject.assignedWorkerIds
+              : input.assignedWorkerIds ?? []
+          });
           dispatch({ type: "ADD_PROJECT", payload: normalizedProject });
           return normalizedProject;
         });

@@ -9,6 +9,11 @@
     "employee": "Employee",
     "admin": "Boss"
   },
+  "languages": {
+    "en": "English",
+    "pl": "Polish",
+    "fr": "French"
+  },
   "plans": {
     "starter": "Starter",
     "pro": "Pro",
@@ -152,6 +157,8 @@
     "networkError": "Cannot reach the BuildForU backend. Make sure the API server is running.",
     "databaseUnavailable": "The database is not running. Start PostgreSQL and run the backend migration before registering.",
     "sessionExpired": "Your session expired. Please sign in again.",
+    "rateLimited": "Too many sign-in attempts. Please wait a moment and try again.",
+    "validationError": "Enter a valid email address and password.",
     "serverError": "Sign-in failed. Please try again.",
     "mockCredentialsHint": "These example accounts must exist in the backend seed data."
   },
@@ -461,7 +468,28 @@
     "noTeamWarning": "Assign at least one worker before scheduling tasks.",
     "assignedWorkersCount": "{{count}} workers assigned",
     "projectCount": "{{count}} projects",
-    "detailsDescriptionPractical": "Project scope, crew and timeline in one place."
+    "detailsDescriptionPractical": "Project scope, crew and timeline in one place.",
+    "progressOverview": "Progress overview",
+    "linkedTasks": "Linked tasks",
+    "linkedMaterials": "Linked materials",
+    "tasksCompletedRatio": "{{completed}}/{{total}} done",
+    "noLinkedTasksShort": "No tasks",
+    "nextWorkItem": "Next work item",
+    "openTasks": "Open tasks",
+    "openTasksCount": "{{count}} open",
+    "openTasksDetail": "Tasks still waiting for completion.",
+    "materialCoverage": "Material coverage",
+    "openMaterials": "Open materials",
+    "openMaterialsCount": "{{count}} open",
+    "openMaterialsDetail": "Material requests still waiting for closure.",
+    "noLinkedTasks": "No tasks are linked to this project yet.",
+    "noLinkedMaterials": "No material requests are linked to this project yet.",
+    "assignedWorkers": "Assigned workers",
+    "assignedWorkersHelper": "People connected to this job site.",
+    "loadFailed": "Projects could not be loaded. Try again.",
+    "emptyStatusHint": "Move a project here when the site reaches this stage.",
+    "emptyTitle": "No projects yet",
+    "emptySubtitle": "Create the first job site record to connect workers, tasks and material requests."
   },
   "materials": {
     "title": "Materials",
@@ -745,6 +773,7 @@
     "ownerName": "Admin name",
     "workspaceEmailPending": "Enter your work email",
     "passwordHint": "Use at least 8 characters. 12 or more characters makes the password stronger.",
+    "confirmPassword": "Confirm password",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "passwordStrengthLabel": "Password strength",
@@ -756,7 +785,8 @@
     "networkError": "Cannot reach the BuildForU backend. Make sure the API server is running.",
     "databaseUnavailable": "The database connection is unavailable. Check the backend database configuration and try again.",
     "emailInUse": "An account with this email already exists.",
-    "passwordInvalid": "This password is too weak or invalid. Use at least 8 characters.",
+    "passwordInvalid": "Use at least 8 characters with uppercase, lowercase and a number.",
+    "rateLimited": "Too many registration attempts. Please wait a moment and try again.",
     "validationError": "Check the required fields and try again.",
     "serverError": "Workspace registration failed. Please try again.",
     "placeholders": {
@@ -771,6 +801,9 @@
       "emailInvalid": "Enter a valid email address.",
       "passwordRequired": "Password is required.",
       "passwordTooShort": "Password must be at least 8 characters.",
+      "passwordComplexity": "Use uppercase, lowercase and at least one number.",
+      "confirmPasswordRequired": "Confirm your password.",
+      "passwordMismatch": "Passwords do not match.",
       "termsRequired": "Accept the Terms and Privacy Policy to continue.",
       "fieldValid": "Looks good"
     },

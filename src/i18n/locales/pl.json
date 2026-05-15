@@ -9,6 +9,11 @@
     "employee": "Pracownik",
     "admin": "Szef"
   },
+  "languages": {
+    "en": "Angielski",
+    "pl": "Polski",
+    "fr": "Francuski"
+  },
   "nav": {
     "dashboard": "Panel",
     "workers": "Pracownicy",
@@ -51,7 +56,7 @@
     "toggleStatus": "Zmień status",
     "all": "Wszystkie",
     "project": "Projekt",
-    "retry": "Pon?w"
+    "retry": "Ponów"
   },
   "statusLabels": {
     "pending": "Oczekujące",
@@ -117,17 +122,19 @@
     "workspaceEyebrow": "Platforma operacji budowlanych",
     "featureAdmin": "Przestrzeń admina i pracownika",
     "featureOps": "Zadania, harmonogramy i czat zespołu",
-    "featureI18n": "Wielojęzyczny interfejs gotowy na dane backendowe",
+    "featureI18n": "Wielojęzyczny interfejs gotowy na dane z serwera",
     "demoAccounts": "Konta przykładowe",
     "featureEmployeeCredentials": "Dane logowania pracownika",
     "featureRoleViews": "Widoki zależne od roli",
     "featureWorkspaceAccess": "Dostęp do przestrzeni",
     "invalidCredentials": "Nieprawidłowy email lub hasło.",
-    "networkError": "Nie można połączyć się z backendem BuildForU. Upewnij się, że serwer API działa.",
-    "databaseUnavailable": "Baza danych nie działa. Uruchom PostgreSQL i migrację backendu przed rejestracją.",
+    "networkError": "Nie można połączyć się z serwerem BuildForU. Upewnij się, że serwer API działa.",
+    "databaseUnavailable": "Baza danych nie działa. Uruchom PostgreSQL i wykonaj migrację serwera przed rejestracją.",
     "sessionExpired": "Sesja wygasła. Zaloguj się ponownie.",
     "serverError": "Logowanie nie powiodło się. Spróbuj ponownie.",
-    "mockCredentialsHint": "Te konta przykładowe muszą istnieć w danych seed backendu."
+    "mockCredentialsHint": "Te konta przykładowe muszą istnieć w danych początkowych serwera.",
+    "rateLimited": "Zbyt wiele prób logowania. Poczekaj chwilę i spróbuj ponownie.",
+    "validationError": "Wpisz poprawny adres email i hasło."
   },
   "sidebar": {
     "controlTower": "Centrum dowodzenia",
@@ -269,7 +276,7 @@
     "all": "Wszystkie zadania",
     "task": "Zadanie",
     "prioritySuffix": "Priorytet: {{priority}}",
-    "filterHint": "Widok filtrów jest obecnie mockiem frontendowym i czeka na backend.",
+    "filterHint": "Widok filtrów jest obecnie przykładowy i gotowy do integracji z serwerem.",
     "priority": "Priorytet",
     "emptyTitle": "Nie znaleziono zadań",
     "emptySubtitle": "Żadne zadania nie pasują jeszcze do tego filtra.",
@@ -288,10 +295,10 @@
     "attachments": "Załączniki",
     "removeAttachment": "Usuń załącznik",
     "attachmentReady": "Gotowe do wysłania",
-    "cameraReady": "Gotowe pod aparat na mobile",
+    "cameraReady": "Gotowe do użycia aparatu na telefonie",
     "messageWithAttachments": "Wiadomość z załącznikami",
     "noThreadsTitle": "Brak wątków czatu",
-    "noThreadsSubtitle": "Nowe rozmowy pojawią się tutaj po konfiguracji zespołu lub backendu.",
+    "noThreadsSubtitle": "Nowe rozmowy pojawią się tutaj po konfiguracji zespołu lub serwera.",
     "noMessagesTitle": "Brak wiadomości",
     "noMessagesSubtitle": "Wyślij pierwszą aktualizację, gdy rozmowa będzie gotowa.",
     "messages": {
@@ -310,7 +317,7 @@
     "availableNow": "Dostępni teraz",
     "availableNowDetail": "Członkowie ekip gotowi na dodatkowe zadania.",
     "averagePerformance": "Śr. wydajność",
-    "averagePerformanceDetail": "Na podstawie aktualnych mockowanych wskaźników realizacji.",
+    "averagePerformanceDetail": "Na podstawie aktualnych przykładowych wskaźników realizacji.",
     "offShift": "Po zmianie",
     "offShiftDetail": "Pracownicy poza aktywną rotacją terenową.",
     "addWorker": "Dodaj pracownika",
@@ -318,7 +325,7 @@
     "editWorker": "Edytuj pracownika",
     "addWorkerTitle": "Dodaj nowego pracownika",
     "editWorkerTitle": "Edytuj pracownika",
-    "workerModalDescription": "Zaktualizuj dane ekipy w lokalnym mock state bez wpływu na obecny auth flow.",
+    "workerModalDescription": "Zaktualizuj dane ekipy w lokalnym stanie testowym bez wpływu na obecny proces logowania.",
     "fullName": "Imię i nazwisko",
     "placeholderName": "Emma Schneider",
     "placeholderEmail": "emma@buildforu.com",
@@ -339,7 +346,7 @@
     "noWorkersFound": "Nie znaleziono pracowników",
     "noWorkersSubtitle": "Spróbuj innej kombinacji filtrów albo dodaj nowego członka ekipy.",
     "deleteWorkerTitle": "Usuń pracownika",
-    "deleteWorkerDescription": "Czy na pewno chcesz usunąć {{name}} z listy ekipy? To wpłynie tylko na lokalne dane mock.",
+    "deleteWorkerDescription": "Czy na pewno chcesz usunąć {{name}} z listy ekipy? To wpłynie tylko na lokalne dane testowe.",
     "keepWorker": "Zachowaj pracownika",
     "deleteWorkerConfirm": "Usuń pracownika",
     "saveChanges": "Zapisz zmiany",
@@ -353,14 +360,14 @@
     "workerNameRequired": "Imię i nazwisko jest wymagane.",
     "workerEmailRequired": "Email jest wymagany, aby utworzyć login pracownika.",
     "workerEmailDuplicate": "Ten email jest już używany przez innego użytkownika firmy.",
-    "employeeLoginCreateFailed": "Pracownik został zapisany, ale nie udało się utworzyć loginu pracownika. Sprawdź połączenie z backendem i spróbuj ponownie.",
+    "employeeLoginCreateFailed": "Pracownik został zapisany, ale nie udało się utworzyć loginu pracownika. Sprawdź połączenie z serwerem i spróbuj ponownie.",
     "createEmployeeLogin": "Utwórz login pracownika",
     "createEmployeeLoginHint": "Włącz, jeśli pracownik ma logować się i widzieć własne zadania.",
     "loginAlreadyLinked": "Ten pracownik ma już powiązany login.",
     "emptyCreateHint": "Utwórz pierwszego pracownika, aby odblokować loginy i przypisania.",
     "employeeAccessSubtitle": "Przekaż pracownikowi tymczasowe dane logowania.",
     "employeeAccessTitle": "Dostęp pracownika",
-    "employeeAccessHint": "Pracownik będzie mógł zmienić hasło po podłączeniu backendu.",
+    "employeeAccessHint": "Pracownik będzie mógł zmienić hasło po podłączeniu uwierzytelniania po stronie serwera.",
     "employeeLoginProvisioning": "Powiązany login pracownika zostanie utworzony z hasłem tymczasowym."
   },
   "projects": {
@@ -374,11 +381,11 @@
     "averageProgressDetail": "Środkowy punkt ukończenia portfolio.",
     "progressComplete": "{{value}}% ukończono",
     "totalProjects": "Wszystkie projekty",
-    "totalProjectsDetail": "Kazdy projekt sledzony obecnie w aplikacji.",
+    "totalProjectsDetail": "Każdy projekt śledzony obecnie w aplikacji.",
     "inProgressProjects": "W trakcie",
     "inProgressProjectsDetail": "Projekty realizowane aktualnie na budowie lub w dostawie.",
-    "completedProjects": "Zakonczone",
-    "completedProjectsDetail": "Projekty juz oddane lub calkowicie zamkniete.",
+    "completedProjects": "Zakończone",
+    "completedProjectsDetail": "Projekty już oddane lub całkowicie zamknięte.",
     "peopleAssigned": "Przypisane osoby",
     "peopleAssignedDetail": "Pracownicy przypisani obecnie do pracy projektowej.",
     "detailsDescription": "Zespół projektu, harmonogram i notatki operacyjne w jednym miejscu.",
@@ -389,7 +396,7 @@
     "deadline": "Termin",
     "progressLabel": "Postęp",
     "teamAssigned": "Przypisany zespół",
-    "noAssignedWorkers": "Do tego projektu nie przypisano jeszcze pracownikow.",
+    "noAssignedWorkers": "Do tego projektu nie przypisano jeszcze pracowników.",
     "notes": "Notatki",
     "viewDetails": "Zobacz szczegóły",
     "addProjectAction": "Utwórz projekt",
@@ -405,7 +412,28 @@
     "noTeamWarning": "Przypisz co najmniej jednego pracownika przed planowaniem zadań.",
     "assignedWorkersCount": "Przypisani pracownicy: {{count}}",
     "projectCount": "Liczba projektów: {{count}}",
-    "detailsDescriptionPractical": "Zakres projektu, ekipa i harmonogram w jednym miejscu."
+    "detailsDescriptionPractical": "Zakres projektu, ekipa i harmonogram w jednym miejscu.",
+    "progressOverview": "Przegląd postępu",
+    "linkedTasks": "Powiązane zadania",
+    "linkedMaterials": "Powiązane materiały",
+    "tasksCompletedRatio": "{{completed}}/{{total}} ukończono",
+    "noLinkedTasksShort": "Brak zadań",
+    "nextWorkItem": "Następny element pracy",
+    "openTasks": "Otwarte zadania",
+    "openTasksCount": "{{count}} otwarte",
+    "openTasksDetail": "Zadania nadal czekające na ukończenie.",
+    "materialCoverage": "Pokrycie materiałowe",
+    "openMaterials": "Otwarte materiały",
+    "openMaterialsCount": "{{count}} otwarte",
+    "openMaterialsDetail": "Zgłoszenia materiałowe nadal czekające na zamknięcie.",
+    "noLinkedTasks": "Do tego projektu nie podpięto jeszcze zadań.",
+    "noLinkedMaterials": "Do tego projektu nie podpięto jeszcze zgłoszeń materiałowych.",
+    "assignedWorkers": "Przypisani pracownicy",
+    "assignedWorkersHelper": "Osoby przypisane do tej budowy.",
+    "loadFailed": "Nie udało się wczytać projektów. Spróbuj ponownie.",
+    "emptyStatusHint": "Przenieś projekt tutaj, gdy budowa osiągnie ten etap.",
+    "emptyTitle": "Brak projektów",
+    "emptySubtitle": "Utwórz pierwszą kartę budowy, aby połączyć pracowników, zadania i zgłoszenia materiałowe."
   },
   "materials": {
     "title": "Materiały",
@@ -450,11 +478,11 @@
     "pageEyebrow": "Materiały",
     "requestsTab": "Zgłoszenia",
     "findToBuyTab": "Znajdź do kupienia",
-    "dualPurposeSubtitle": "Śledź zapotrzebowanie na materiały według projektu i porównuj mockowe opcje zakupu w jednym miejscu.",
+    "dualPurposeSubtitle": "Śledź zapotrzebowanie na materiały według projektu i porównuj przykładowe opcje zakupu w jednym miejscu.",
     "emptyRequests": "Brak zgłoszeń materiałowych w kolejce.",
     "projectRequiredHint": "Projekt jest opcjonalny; biuro może powiązać zgłoszenie później.",
     "findToBuyTitle": "Znajdź do kupienia",
-    "findToBuySubtitle": "Szukaj mockowych sklepów według ceny, odległości, kategorii i dostępności.",
+    "findToBuySubtitle": "Szukaj przykładowych sklepów według ceny, odległości, kategorii i dostępności.",
     "findToBuyPlaceholder": "cement, toaleta, płytki, śruby, farba...",
     "findToBuyExamples": "Spróbuj: cement, toaleta, płytki, śruby, farba",
     "sortBy": "Sortuj według",
@@ -468,7 +496,7 @@
     "finderMockHint": "Mockowe opcje zakupu gotowe pod przyszłe integracje.",
     "finderResultHint": "Mockowy wynik sklepu gotowy pod przyszłe dane cen i dostępności.",
     "finderResultsTitle": "Opcje zakupu",
-    "finderResultsSubtitle": "{{count}} mockowych sklepów pasuje do filtrów.",
+    "finderResultsSubtitle": "{{count}} przykładowych sklepów pasuje do filtrów.",
     "focusedStore": "Wybrana opcja",
     "noFinderMatch": "Brak pasującej opcji",
     "noFinderResultsSubtitle": "Spróbuj innej nazwy produktu albo poluzuj filtry.",
@@ -481,7 +509,7 @@
     "title": "Finanse",
     "subtitle": "Przeglądaj przychody, koszty i postęp faktur.",
     "revenue": "Przychód",
-    "revenueDetail": "Aktualny mockowany obraz przychodów.",
+    "revenueDetail": "Aktualny przykładowy obraz przychodów.",
     "expenses": "Koszty",
     "expensesDetail": "Wydatki operacyjne w projektach.",
     "profit": "Zysk",
@@ -502,16 +530,16 @@
     "privacyTitle": "Rozszerzony tryb prywatności",
     "privacyDescription": "Ogranicz widoczne szczegóły operacyjne na współdzielonych ekranach.",
     "workspaceSaved": "Preferencje zapisane lokalnie",
-    "workspaceSavedDetail": "Ten ekran jest obecnie tylko warstwą UI i jest gotowy do przyszłego połączenia z backendem.",
+    "workspaceSavedDetail": "Ten ekran jest obecnie tylko warstwą interfejsu i jest gotowy do przyszłego połączenia z usługą ustawień.",
     "billingTitle": "Rozliczeńia i subskrypcja",
-    "billingDescription": "Otworz widok subskrypcji, aby sprawdzic plan, liczbe pracownikow i mockowane informacje rozliczeńiowe.",
+    "billingDescription": "Otwórz widok subskrypcji, aby sprawdzić plan, liczbę pracowników i przykładowe informacje rozliczeniowe.",
     "manageBilling": "Zarzadzaj rozliczeńiami",
     "planLabel": "Plan",
-    "workspaceAccessHint": "Dostęp do przestrzeni jest mockowany w tym MVP frontendowym."
+    "workspaceAccessHint": "Dostęp do przestrzeni jest symulowany w tym MVP."
   },
   "marketMap": {
     "title": "Mapa marketów",
-    "subtitle": "Porównuj pobliskie sklepy, sprawdzaj mockowane ceny i wybieraj najlepsze źródła zakupu.",
+    "subtitle": "Porównuj pobliskie sklepy, sprawdzaj przykładowe ceny i wybieraj najlepsze źródła zakupu.",
     "eyebrow": "Inteligencja zakupowa",
     "searchPlaceholder": "Szukaj materiałów (np. toaleta, cement, płytki...)",
     "price": "Cena",
@@ -529,13 +557,13 @@
     "bestOverallOption": "Najlepsza opcja ogółem",
     "noOption": "Brak dostępnej opcji",
     "resultsTitle": "Wyniki pobliskich sklepów",
-    "resultsSubtitle": "{{count}} mockowanych opcji gotowych do porównania i podglądu na mapie.",
+    "resultsSubtitle": "{{count}} przykładowych opcji gotowych do porównania i podglądu na mapie.",
     "mapPreview": "Podgląd mapy",
-    "mapPreviewSubtitle": "Stylizowana mock mapa pokazująca położenie pasujących ofert.",
+    "mapPreviewSubtitle": "Stylizowana mapa pokazująca położenie pasujących ofert.",
     "noStoresTitle": "Brak sklepów dla tego wyszukiwania",
     "noStoresSubtitle": "Spróbuj innej nazwy materiału albo zmień wybrane filtry.",
     "focusedStore": "Wybrany sklep",
-    "storeSupplyCheck": "Podgląd sklepu z mockowanymi danymi lokalizacji.",
+    "storeSupplyCheck": "Podgląd sklepu z przykładowymi danymi lokalizacji.",
     "cheapestDetail": "{{price}} w sklepie {{store}}",
     "nearestDetail": "{{distance}} km od sklepu {{store}}",
     "bestOverallDetail": "{{store}} najlepiej łączy cenę, odległość i stan magazynowy."
@@ -557,13 +585,13 @@
     "eyebrow": "Informacje prawne",
     "terms": {
       "title": "Regulamin",
-      "body1": "BuildForU jest przestrzeni? MVP do obs?ugi operacji budowlanych. U?ywaj jej z prawdziwymi danymi firmy i zapraszaj tylko osoby, kt?re powinny mie? dost?p do przestrzeni.",
-      "body2": "Umowy produkcyjne, warunki rozlicze? i zobowi?zania dotycz?ce poziomu us?ug powinny zosta? sprawdzone przed u?yciem tego oprogramowania w ?rodowisku komercyjnym."
+      "body1": "BuildForU jest przestrzenią MVP do obsługi operacji budowlanych. Używaj jej z prawdziwymi danymi firmy i zapraszaj tylko osoby, które powinny mieć dostęp do przestrzeni.",
+      "body2": "Umowy produkcyjne, warunki rozliczeń i zobowiązania dotyczące poziomu usług powinny zostać sprawdzone przed użyciem tego oprogramowania w środowisku komercyjnym."
     },
     "privacy": {
-      "title": "Polityka prywatno?ci",
-      "body1": "BuildForU przechowuje dane konta i przestrzeni potrzebne do dzia?ania aplikacji, w tym u?ytkownik?w, pracownik?w, projekty, zadania, obecno?? i zg?oszenia materia?owe.",
-      "body2": "Nie zapisuj w tym MVP wra?liwych danych produkcyjnych, dop?ki nie sprawdzisz wdro?enia, retencji danych, kontroli dost?pu i zasad bezpiecze?stwa."
+      "title": "Polityka prywatności",
+      "body1": "BuildForU przechowuje dane konta i przestrzeni potrzebne do działania aplikacji, w tym użytkowników, pracowników, projekty, zadania, obecność i zgłoszenia materiałowe.",
+      "body2": "Nie zapisuj w tym MVP wrażliwych danych produkcyjnych, dopóki nie sprawdzisz wdrożenia, retencji danych, kontroli dostępu i zasad bezpieczeństwa."
     }
   },
   "attendance": {
@@ -594,17 +622,17 @@
     "detailsTitle": "Obecność {{name}}",
     "detailsDescription": "Podejrzyj zapisany status obecności, znaczniki czasu i opcjonalne współrzędne lokalizacji.",
     "notStarted": "Praca nierozpoczęta",
-    "saveFailed": "Nie uda?o si? zapisa? obecno?ci. Spr?buj ponownie."
+    "saveFailed": "Nie udało się zapisać obecności. Spróbuj ponownie."
   },
   "landing": {
     "eyebrow": "SaaS dla operacji budowlanych",
     "title": "Prowadź ekipy, harmonogramy i komunikację z budowy w jednej przestrzeni BuildForU.",
-    "subtitle": "BuildForU pomaga firmom budowlanym zarządzać pracownikami, zadaniami, planowaniem, czatem zespołu i narzędziami zakupowymi w dopracowanym dashboardzie dla biura i terenu.",
+    "subtitle": "BuildForU pomaga firmom budowlanym zarządzać pracownikami, zadaniami, planowaniem, czatem zespołu i narzędziami zakupowymi w dopracowanym panelu dla biura i terenu.",
     "featuresEyebrow": "Główne możliwości",
     "featuresTitle": "Zaprojektowane wokół codziennego rytmu firmy budowlanej.",
     "ctaEyebrow": "Gotowe do startu",
     "ctaTitle": "Uruchom okres próbny BuildForU i przygotuj przestrzeń swojej firmy w kilka minut.",
-    "ctaSubtitle": "Poznaj produkt, sprawdź plany i wejdź do istniejącego dashboardu bez konfiguracji backendu.",
+    "ctaSubtitle": "Poznaj produkt, sprawdź plany i wejdź do istniejącego panelu bez konfiguracji serwera.",
     "stats": {
       "roles": {
         "label": "Dla kogo",
@@ -612,7 +640,7 @@
       },
       "deployment": {
         "label": "Wdrożenie",
-        "value": "Najpierw frontend"
+        "value": "Najpierw interfejs"
       },
       "focus": {
         "label": "Fokus",
@@ -715,8 +743,8 @@
         "features": {
           "1": "Wszystko ze Startera",
           "2": "Zarządzanie pracownikami",
-          "3": "Dashboard operacyjny admina",
-          "4": "Priorytetowy onboarding"
+          "3": "Panel operacyjny administratora",
+          "4": "Priorytetowe wdrożenie"
         }
       },
       "enterprise": {
@@ -727,7 +755,7 @@
           "1": "Wszystko z Pro",
           "2": "Nielimitowane skalowanie pracownikow",
           "3": "Dedykowane wsparcie wdrozeniowe",
-          "4": "Przyszle wdrozenie gotowe pod API"
+          "4": "Przyszłe wdrożenie gotowe pod API"
         }
       }
     }
@@ -753,8 +781,8 @@
       "fair": "Średnie",
       "strong": "Mocne"
     },
-    "networkError": "Nie można połączyć się z backendem BuildForU. Upewnij się, że serwer API działa.",
-    "databaseUnavailable": "Połączenie z bazą danych jest niedostępne. Sprawdź konfigurację backendu i spróbuj ponownie.",
+    "networkError": "Nie można połączyć się z serwerem BuildForU. Upewnij się, że serwer API działa.",
+    "databaseUnavailable": "Połączenie z bazą danych jest niedostępne. Sprawdź konfigurację serwera i spróbuj ponownie.",
     "emailInUse": "Konto z tym adresem email już istnieje.",
     "passwordInvalid": "To hasło jest zbyt słabe albo nieprawidłowe. Użyj co najmniej 8 znaków.",
     "validationError": "Sprawdź wymagane pola i spróbuj ponownie.",
@@ -772,7 +800,10 @@
       "passwordRequired": "Hasło jest wymagane.",
       "passwordTooShort": "Hasło musi mieć co najmniej 8 znaków.",
       "termsRequired": "Zaakceptuj Regulamin i Politykę prywatności, aby kontynuować.",
-      "fieldValid": "Wygląda dobrze"
+      "fieldValid": "Wygląda dobrze",
+      "passwordComplexity": "Użyj wielkiej litery, małej litery i co najmniej jednej cyfry.",
+      "confirmPasswordRequired": "Potwierdź hasło.",
+      "passwordMismatch": "Hasła nie są takie same."
     },
     "plan": "Plan",
     "creatingWorkspace": "Tworzenie przestrzeni...",
@@ -786,12 +817,12 @@
     "signIn": "Zaloguj się",
     "alreadyTesting": "Testujesz już produkt?",
     "goToSignIn": "Przejdź do logowania",
-    "onboardingEyebrow": "Onboarding",
+    "onboardingEyebrow": "Wdrożenie",
     "onboardingTitle": "Uruchom operacje z mniejszym tarciem.",
     "onboardingSubtitle": "BuildForU zostało zaprojektowane tak, aby szybko przenieść Twoją firmę do działającej przestrzeni operacyjnej bez przytłaczającej konfiguracji.",
     "selectedPlan": "Wybrany plan",
     "workspaceSignIn": "Logowanie do przestrzeni",
-    "dashboardPreviewNote": "Po rejestracji trafisz do istniejącego dashboardu, aby zobaczyć pełne doświadczenie BuildForU.",
+    "dashboardPreviewNote": "Po rejestracji trafisz do istniejącego panelu, aby zobaczyć pełne doświadczenie BuildForU.",
     "steps": {
       "1": {
         "title": "Wybierz plan i zacznij",
@@ -822,13 +853,15 @@
         "workers": "Nielimitowana liczba pracownikow",
         "note": "Dla wiekszych organizacji, ktore potrzebuja elastycznosci i wsparcia wdrozenia."
       }
-    }
+    },
+    "confirmPassword": "Potwierdź hasło",
+    "rateLimited": "Zbyt wiele prób rejestracji. Poczekaj chwilę i spróbuj ponownie."
   },
   "billing": {
     "title": "Rozliczeńia i subskrypcja",
-    "subtitle": "Sprawdz aktualna subskrypcje, mockowane dane rozliczeńiowe i opcje rozbudowy.",
+    "subtitle": "Sprawdź aktualną subskrypcję, przykładowe dane rozliczeniowe i opcje rozbudowy.",
     "currentPlan": "Aktualny plan",
-    "mockSubscriptionData": "Mockowane dane subskrypcji",
+    "mockSubscriptionData": "Przykładowe dane subskrypcji",
     "workerLimit": "Limit pracownikow",
     "workerLimitDetail": "Na podstawie wybranego poziomu planu",
     "usage": "Wykorzystanie",
@@ -836,7 +869,7 @@
     "usageDetail": "Sledzone wzgledem obecnego planu",
     "upgradePlan": "Zmien plan",
     "subscriptionOverview": "Przeglad subskrypcji",
-    "uiOnly": "Na razie tylko UI",
+    "uiOnly": "Na razie tylko interfejs",
     "workerUsage": "Wykorzystanie pracownikow",
     "workerUsageHint": "Zmien plan, gdy liczba pracownikow przekroczy pojemnosc obecnego pakietu.",
     "nextInvoice": "Nastepna faktura",
@@ -845,7 +878,7 @@
     "billingContactHint": "Mockowany kontakt pokazany do podgladu interfejsu",
     "paymentMethod": "Metoda platnosci",
     "cardLabel": "Visa konczaca sie na 2048",
-    "cardHint": "Wazna do 09/28 - mockowane dane karty do podgladu subskrypcji",
+    "cardHint": "Ważna do 09/28 - przykładowe dane karty do podglądu subskrypcji",
     "recentActivity": "Ostatnia aktywnosc rozliczeńiowa",
     "unlimitedWorkers": "Bez limitu",
     "planDescriptions": {

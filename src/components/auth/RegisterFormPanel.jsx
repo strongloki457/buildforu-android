@@ -52,13 +52,14 @@ export default function RegisterFormPanel({
 }) {
   const { t } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const strength = strengthStyles[passwordStrength] ?? strengthStyles.weak;
 
   return (
-    <div className="glass-panel order-1 rounded-[34px] p-6 sm:p-8">
+    <div className="glass-panel order-1 min-w-0 rounded-[24px] p-4 sm:rounded-[34px] sm:p-8">
       <div className="max-w-xl">
-        <p className="text-xs uppercase tracking-[0.26em] text-brand-700/75">{t("register.eyebrow")}</p>
-        <h1 className="mt-4 text-3xl leading-tight text-slate-950 sm:text-4xl">{t("register.title")}</h1>
+        <p className="text-xs uppercase tracking-[0.18em] text-brand-700/75 sm:tracking-[0.26em]">{t("register.eyebrow")}</p>
+        <h1 className="break-anywhere mt-4 text-2xl leading-tight text-slate-950 sm:text-4xl">{t("register.title")}</h1>
         <p className="mt-3 text-base leading-7 text-slate-600">{t("register.subtitle")}</p>
         <div className="mt-5 grid gap-2 text-sm text-slate-600">
           {["workspace", "admin", "employees"].map((item) => (
@@ -81,7 +82,7 @@ export default function RegisterFormPanel({
             onChange={(event) => onChange("companyName", event.target.value)}
             onBlur={() => onBlur("companyName")}
             placeholder={t("register.placeholders.companyName")}
-            className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
           />
           <FieldFeedback isValid={fieldStatus.companyName} messageKey={fieldErrors.companyName} />
         </label>
@@ -97,7 +98,7 @@ export default function RegisterFormPanel({
               onChange={(event) => onChange("ownerName", event.target.value)}
               onBlur={() => onBlur("ownerName")}
               placeholder={t("register.placeholders.ownerName")}
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
             />
             <FieldFeedback isValid={fieldStatus.ownerName} messageKey={fieldErrors.ownerName} />
           </label>
@@ -112,7 +113,7 @@ export default function RegisterFormPanel({
               onChange={(event) => onChange("email", event.target.value)}
               onBlur={() => onBlur("email")}
               placeholder={t("register.placeholders.email")}
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
             />
             <FieldFeedback isValid={fieldStatus.email} messageKey={fieldErrors.email} />
           </label>
@@ -129,7 +130,7 @@ export default function RegisterFormPanel({
               value={form.password}
               onChange={(event) => onChange("password", event.target.value)}
               onBlur={() => onBlur("password")}
-              className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-4 pr-14 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-4 pr-14 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
             />
             <button
               type="button"
@@ -155,12 +156,38 @@ export default function RegisterFormPanel({
         </label>
 
         <label className="grid gap-2">
+          <span className="text-sm text-slate-600">{t("register.confirmPassword", "Confirm password")}</span>
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              autoComplete="new-password"
+              disabled={isSubmitting}
+              minLength={8}
+              value={form.confirmPassword}
+              onChange={(event) => onChange("confirmPassword", event.target.value)}
+              onBlur={() => onBlur("confirmPassword")}
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-4 pr-14 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
+            />
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={() => setShowConfirmPassword((current) => !current)}
+              className="absolute right-2 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-xl text-slate-500 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+              aria-label={showConfirmPassword ? t("register.hidePassword") : t("register.showPassword")}
+            >
+              {showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+            </button>
+          </div>
+          <FieldFeedback isValid={fieldStatus.confirmPassword} messageKey={fieldErrors.confirmPassword} />
+        </label>
+
+        <label className="grid gap-2">
           <span className="text-sm text-slate-600">{t("register.plan")}</span>
           <select
             disabled={isSubmitting}
             value={form.plan}
             onChange={(event) => onChange("plan", event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+            className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
           >
             {availablePlans.map((planId) => (
               <option key={planId} value={planId}>
@@ -202,7 +229,7 @@ export default function RegisterFormPanel({
         <button
           type="submit"
           disabled={isSubmitDisabled}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-3.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-3.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting ? t("register.creatingWorkspace") : t("register.createAccount")}
           <ArrowRight size={16} />
