@@ -242,20 +242,6 @@ export function AuthProvider({ children }) {
     [persistSession],
   );
 
-  const previewAccount = useCallback((email) => {
-    const normalizedEmail = String(email || "").trim().toLowerCase();
-
-    if (!normalizedEmail) {
-      return null;
-    }
-
-    if (normalizedEmail.includes("admin") || normalizedEmail.includes("boss")) {
-      return { role: "admin" };
-    }
-
-    return { role: "employee" };
-  }, []);
-
   const company = useMemo(() => {
     if (!user) {
       return null;
@@ -286,7 +272,6 @@ export function AuthProvider({ children }) {
       isBooting: isLoading,
       login,
       logout,
-      previewAccount,
       registerCompany,
     }),
     [
@@ -295,7 +280,6 @@ export function AuthProvider({ children }) {
       isLoading,
       login,
       logout,
-      previewAccount,
       registerCompany,
       user,
     ],

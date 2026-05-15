@@ -1,3 +1,4 @@
+// TODO: replace with API in v0.2
 export const mockStores = [
   {
     id: "store-item-1",

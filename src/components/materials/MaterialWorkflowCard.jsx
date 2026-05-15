@@ -1,6 +1,6 @@
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
-import { materialRequestStatusOptions } from "../../data/mockMaterials";
+import { materialRequestStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import MaterialStatusBadge from "./MaterialStatusBadge";
 

@@ -1,4 +1,4 @@
-import { materialRequestStatusOptions } from "../../data/mockMaterials";
+import { materialRequestStatusOptions } from "../../data/options";
 import { normalizeOptionValue } from "./domainUtils";
 import { hydrateMaterialRequestRecord, normalizeMaterialRequestRecord } from "./materials";
 

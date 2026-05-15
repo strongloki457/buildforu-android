@@ -7,7 +7,7 @@ import MaterialsList from "../components/materials/MaterialsList";
 import MaterialsMetrics from "../components/materials/MaterialsMetrics";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
-import { materialRequestStatusOptions } from "../data/mockMaterials";
+import { materialRequestStatusOptions } from "../data/options";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";

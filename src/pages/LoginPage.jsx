@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function LoginPage() {
-  const { login, previewAccount } = useAuth();
+  const { login } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,15 +21,9 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const detectedRole = useMemo(() => {
-    const previewUser = previewAccount(form.email);
     const value = form.email.toLowerCase();
-
-    if (previewUser?.role) {
-      return previewUser.role;
-    }
-
     return value.includes("boss") || value.includes("admin") ? "admin" : "employee";
-  }, [form.email, previewAccount]);
+  }, [form.email]);
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));

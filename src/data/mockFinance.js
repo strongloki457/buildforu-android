@@ -1,3 +1,4 @@
+// TODO: replace with API in v0.2
 export const mockFinance = {
   revenue: "$3.84M",
   expenses: "$2.91M",

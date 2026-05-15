@@ -1,1 +1,0 @@
-export { mockUsers } from "./mockCompanyDirectory";

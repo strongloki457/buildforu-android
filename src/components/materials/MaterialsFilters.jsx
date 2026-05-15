@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { materialRequestStatusOptions } from "../../data/mockMaterials";
+import { materialRequestStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import { getProjectName } from "../../utils/localizedValue";
 

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useEffect, useMemo, useReducer, useState } from "react";
-import { ApiError } from "../api/apiClient";
+import { ApiError } from "../api/client";
 import { attendanceApi } from "../api/attendance.api";
 import { materialsApi } from "../api/materials.api";
 import { projectsApi } from "../api/projects.api";

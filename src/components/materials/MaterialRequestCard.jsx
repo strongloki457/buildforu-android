@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import Button from "../ui/Button";
-import { materialRequestStatusOptions } from "../../data/mockMaterials";
+import { materialRequestStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import {
   getMaterialRequestItem,

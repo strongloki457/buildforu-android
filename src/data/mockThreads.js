@@ -1,3 +1,4 @@
+// TODO: replace with API in v0.2 (Bug #2 — chat backend)
 export const mockThreads = [
   {
     id: "thread-1",
