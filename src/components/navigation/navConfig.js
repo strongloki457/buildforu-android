@@ -27,8 +27,12 @@ const pathRegistry = {
 const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "settings"];
 const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "settings"];
 
+function normalizeRole(role) {
+  return String(role || "").trim().toLowerCase();
+}
+
 export function getNavigation(role, t) {
-  const keys = role === "admin" ? adminItems : employeeItems;
+  const keys = normalizeRole(role) === "admin" ? adminItems : employeeItems;
 
   return keys.map((key) => ({
     key,

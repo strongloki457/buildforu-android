@@ -15,10 +15,19 @@ const initialProjectForm = {
   assignedWorkerIds: []
 };
 
-export default function ProjectFormModal({ onClose, onSave, workerOptions = [] }) {
+function createProjectForm(initialValues) {
+  return {
+    ...initialProjectForm,
+    ...initialValues,
+    assignedWorkerIds: initialValues?.assignedWorkerIds ?? []
+  };
+}
+
+export default function ProjectFormModal({ initialValues = null, mode = "create", onClose, onSave, workerOptions = [] }) {
   const { t } = useI18n();
-  const [form, setForm] = useState(initialProjectForm);
+  const [form, setForm] = useState(() => createProjectForm(initialValues));
   const [isSaving, setIsSaving] = useState(false);
+  const isEditMode = mode === "edit";
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -47,8 +56,12 @@ export default function ProjectFormModal({ onClose, onSave, workerOptions = [] }
   return (
     <Modal
       onClose={onClose}
-      title={t("projects.addProjectTitle", "Add project")}
-      description={t("projects.addProjectSubtitle", "Create a new project entry for the team board.")}
+      title={isEditMode ? t("projects.editProjectTitle", "Edit project") : t("projects.addProjectTitle", "Add project")}
+      description={
+        isEditMode
+          ? t("projects.editProjectSubtitle", "Update the project details and assigned team.")
+          : t("projects.addProjectSubtitle", "Create a new project entry for the team board.")
+      }
     >
       <form onSubmit={handleSubmit} className="grid gap-4">
         <label className="grid gap-2">
@@ -166,7 +179,11 @@ export default function ProjectFormModal({ onClose, onSave, workerOptions = [] }
             {t("common.cancel")}
           </Button>
           <Button type="submit" className="w-full sm:w-auto" disabled={isSaving}>
-            {isSaving ? t("common.saving", "Saving...") : t("projects.addProjectAction", "Add project")}
+            {isSaving
+              ? t("common.saving", "Saving...")
+              : isEditMode
+              ? t("common.save", "Save")
+              : t("projects.addProjectAction", "Add project")}
           </Button>
         </div>
       </form>

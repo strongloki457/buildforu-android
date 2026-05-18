@@ -1,3 +1,4 @@
+import { RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import MaterialRequestForm from "../components/materials/MaterialRequestForm";
 import MaterialsStoreFinderTab from "../components/materials/MaterialsStoreFinderTab";
@@ -28,7 +29,10 @@ export default function MaterialsPage() {
     materialRequests,
     addMaterialRequest,
     deleteMaterialRequest,
-    updateMaterialRequestStatus
+    updateMaterialRequestStatus,
+    dataError,
+    isDataLoading,
+    refreshData
   } = useAppData();
   const { locale, t } = useI18n();
   const linkedWorker = useCurrentWorker();
@@ -183,13 +187,39 @@ export default function MaterialsPage() {
                 statusFilter={statusFilter}
               />
 
-              <MaterialsList
-                filteredRequests={filteredRequests}
-                isAdmin={isAdmin}
-                locale={locale}
-                onDelete={handleDeleteRequest}
-                onStatusChange={updateMaterialRequestStatus}
-              />
+              {dataError ? (
+                <div className="mb-4 flex flex-col gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+                  <span className="break-anywhere">{dataError}</span>
+                  <button
+                    type="button"
+                    onClick={refreshData}
+                    className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-medium text-amber-900 shadow-sm"
+                  >
+                    <RotateCw size={14} />
+                    {t("common.retry", "Retry")}
+                  </button>
+                </div>
+              ) : null}
+
+              {isDataLoading && !scopedRequests.length ? (
+                <div className="grid gap-4">
+                  {[0, 1, 2].map((item) => (
+                    <div key={item} className="rounded-[28px] border border-slate-100 bg-white/70 p-5">
+                      <div className="h-5 w-2/3 animate-pulse rounded-full bg-slate-200" />
+                      <div className="mt-4 h-4 w-1/2 animate-pulse rounded-full bg-slate-100" />
+                      <div className="mt-6 h-12 animate-pulse rounded-2xl bg-slate-100" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MaterialsList
+                  filteredRequests={filteredRequests}
+                  isAdmin={isAdmin}
+                  locale={locale}
+                  onDelete={handleDeleteRequest}
+                  onStatusChange={updateMaterialRequestStatus}
+                />
+              )}
             </Card>
           </div>
         </div>

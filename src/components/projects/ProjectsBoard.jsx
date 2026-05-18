@@ -49,6 +49,7 @@ export default function ProjectsBoard({
   isLoading = false,
   loadError = "",
   onCreateProject,
+  onEditProject,
   onRefresh,
   onStatusChange,
   projects,
@@ -58,9 +59,10 @@ export default function ProjectsBoard({
 }) {
   const { t } = useI18n();
   const [activeProjectId, setActiveProjectId] = useState("");
-  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [projectModal, setProjectModal] = useState(null);
   const activeProject = projects.find((project) => project.id === activeProjectId) ?? null;
   const canCreateProject = Boolean(onCreateProject);
+  const canEditProject = Boolean(onEditProject);
 
   const groupedProjects = useMemo(
     () =>
@@ -104,7 +106,7 @@ export default function ProjectsBoard({
         subtitle={subtitle}
         action={
           canCreateProject ? (
-            <Button className="w-full gap-2 sm:w-auto" onClick={() => setShowProjectModal(true)}>
+            <Button className="w-full gap-2 sm:w-auto" onClick={() => setProjectModal({ mode: "create" })}>
               <Plus size={16} />
               {t("projects.addProjectAction", "Create project")}
             </Button>
@@ -216,7 +218,7 @@ export default function ProjectsBoard({
             )}
           </p>
           {canCreateProject ? (
-            <Button className="mt-5 gap-2" onClick={() => setShowProjectModal(true)}>
+            <Button className="mt-5 gap-2" onClick={() => setProjectModal({ mode: "create" })}>
               <Plus size={16} />
               {t("projects.addProjectAction", "Create project")}
             </Button>
@@ -227,20 +229,33 @@ export default function ProjectsBoard({
       {activeProject ? (
         <ProjectDetailsModal
           onClose={() => setActiveProjectId("")}
+          onEdit={
+            canEditProject
+              ? () => {
+                  setProjectModal({ mode: "edit", project: activeProject });
+                  setActiveProjectId("");
+                }
+              : null
+          }
           onStatusChange={onStatusChange}
           project={activeProject}
         />
       ) : null}
 
-      {showProjectModal ? (
+      {projectModal ? (
         <ProjectFormModal
-          onClose={() => setShowProjectModal(false)}
+          initialValues={projectModal.project}
+          mode={projectModal.mode}
+          onClose={() => setProjectModal(null)}
           onSave={async (payload) => {
-            const createdProject = await onCreateProject?.(payload);
+            const savedProject =
+              projectModal.mode === "edit" && projectModal.project
+                ? await onEditProject?.(projectModal.project.id, payload)
+                : await onCreateProject?.(payload);
 
-            if (createdProject) {
-              setShowProjectModal(false);
-              setActiveProjectId(createdProject.id);
+            if (savedProject) {
+              setProjectModal(null);
+              setActiveProjectId(savedProject.id);
             }
           }}
           workerOptions={workerOptions}

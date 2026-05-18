@@ -1,15 +1,19 @@
 import { useI18n } from "../../hooks/useI18n";
 import MessageAttachments from "./MessageAttachments";
 
-export default function ChatMessageList({ activeThread, user }) {
+export default function ChatMessageList({ activeThread, hasThreads = Boolean(activeThread), user }) {
   const { t } = useI18n();
 
   if (!activeThread) {
     return (
       <div className="flex-1">
         <div className="rounded-[24px] border border-dashed border-slate-200 bg-white/60 p-6 text-center">
-          <p className="text-base text-slate-900">{t("chat.emptyTitle")}</p>
-          <p className="mt-2 text-sm text-slate-500">{t("chat.emptySubtitle")}</p>
+          <p className="text-base text-slate-900">
+            {hasThreads ? t("chat.emptyTitle") : t("chat.noThreadsTitle")}
+          </p>
+          <p className="mt-2 text-sm text-slate-500">
+            {hasThreads ? t("chat.emptySubtitle") : t("chat.noThreadsSubtitle")}
+          </p>
         </div>
       </div>
     );

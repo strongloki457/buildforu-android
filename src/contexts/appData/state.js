@@ -119,6 +119,17 @@ export function appDataReducer(state, action) {
             )
           : state.workers
       });
+    case "UPDATE_PROJECT":
+      return finalizeCoreState({
+        ...state,
+        projects: state.projects.map((project) => (project.id === action.payload.id ? action.payload : project)),
+        workers: state.workers.map((worker) => ({
+          ...worker,
+          projectIds: action.payload.assignedWorkerIds.includes(worker.id)
+            ? Array.from(new Set([...worker.projectIds, action.payload.id]))
+            : worker.projectIds.filter((projectId) => projectId !== action.payload.id)
+        }))
+      });
     case "ADD_WORKER":
       return finalizeCoreState({
         ...state,

@@ -95,20 +95,22 @@ export default function ProjectCard({ onStatusChange, onViewDetails, project }) 
           </div>
         </div>
 
-        <label className="grid min-w-[150px] gap-2 text-sm text-slate-500">
-          <span className="sr-only">{t("common.status", "Status")}</span>
-          <select
-            value={project.status}
-            onChange={(event) => onStatusChange?.(project.id, event.target.value)}
-            className="min-h-11 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
-          >
-            {projectStatusOptions.map((status) => (
-              <option key={status} value={status}>
-                {t(`statusLabels.${status.toLowerCase()}`, status)}
-              </option>
-            ))}
-          </select>
-        </label>
+        {onStatusChange ? (
+          <label className="grid min-w-[150px] gap-2 text-sm text-slate-500">
+            <span className="sr-only">{t("common.status", "Status")}</span>
+            <select
+              value={project.status}
+              onChange={(event) => onStatusChange(project.id, event.target.value)}
+              className="min-h-11 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+            >
+              {projectStatusOptions.map((status) => (
+                <option key={status} value={status}>
+                  {t(`statusLabels.${status.toLowerCase()}`, status)}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
       </div>
 
       {notePreview ? <p className="break-anywhere mt-4 text-sm leading-6 text-slate-600">{notePreview}</p> : null}

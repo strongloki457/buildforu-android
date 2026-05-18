@@ -1,4 +1,4 @@
-import { ClipboardList, Filter } from "lucide-react";
+import { ClipboardList, Filter, RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
@@ -13,7 +13,7 @@ const filters = ["all", "pending", "completed"];
 
 export default function TasksPage() {
   const { user } = useAuth();
-  const { toggleTaskStatus } = useAppData();
+  const { dataError, isDataLoading, refreshData, toggleTaskStatus } = useAppData();
   const { t } = useI18n();
   const visibleTasks = useVisibleTasks();
   const [activeFilter, setActiveFilter] = useState("all");
@@ -44,6 +44,20 @@ export default function TasksPage() {
         }
       />
 
+      {dataError ? (
+        <div className="mb-4 flex flex-col gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+          <span className="break-anywhere">{dataError}</span>
+          <button
+            type="button"
+            onClick={refreshData}
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-medium text-amber-900 shadow-sm"
+          >
+            <RotateCw size={14} />
+            {t("common.retry", "Retry")}
+          </button>
+        </div>
+      ) : null}
+
       <div className="overflow-hidden rounded-[22px] border border-white/60 sm:rounded-[28px]">
         <div className="hidden grid-cols-[1.4fr_1fr_1fr_0.9fr] bg-white/70 px-5 py-4 text-xs uppercase tracking-[0.2em] text-slate-400 md:grid">
           <span>{t("tasks.task")}</span>
@@ -53,7 +67,19 @@ export default function TasksPage() {
         </div>
 
         <div className="divide-y divide-white/60">
-          {scopedTasks.length ? (
+          {isDataLoading && !visibleTasks.length ? (
+            [0, 1, 2].map((item) => (
+              <div
+                key={item}
+                className="bg-white/55 px-4 py-4 md:grid md:grid-cols-[1.4fr_1fr_1fr_0.9fr] md:items-center md:gap-4 md:px-5"
+              >
+                <div className="h-10 animate-pulse rounded-2xl bg-slate-100" />
+                <div className="mt-3 h-4 animate-pulse rounded-full bg-slate-100 md:mt-0" />
+                <div className="hidden h-4 animate-pulse rounded-full bg-slate-100 md:block" />
+                <div className="mt-3 h-8 w-24 animate-pulse rounded-full bg-slate-100 md:mt-0" />
+              </div>
+            ))
+          ) : scopedTasks.length ? (
             scopedTasks.map((task) => (
               <div
                 key={task.id}

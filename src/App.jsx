@@ -44,7 +44,7 @@ function DashboardRouter() {
     return <RouteFallback />;
   }
 
-  return user?.role === "admin" ? <AdminDashboard /> : <EmployeeDashboard />;
+  return String(user?.role || "").trim().toLowerCase() === "admin" ? <AdminDashboard /> : <EmployeeDashboard />;
 }
 
 function FallbackRouter() {

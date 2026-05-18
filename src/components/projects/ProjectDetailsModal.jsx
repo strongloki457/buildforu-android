@@ -1,4 +1,4 @@
-import { CalendarDays, ClipboardList, MapPin, PackageCheck, Users2 } from "lucide-react";
+import { CalendarDays, ClipboardList, MapPin, PackageCheck, Pencil, Users2 } from "lucide-react";
 import { projectStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import {
@@ -12,6 +12,7 @@ import {
   getTaskTitle
 } from "../../utils/localizedValue";
 import Modal from "../ui/Modal";
+import Button from "../ui/Button";
 import StatusBadge from "../ui/StatusBadge";
 import ProjectTeamList from "./ProjectTeamList";
 import { formatProjectDate } from "./projectUtils";
@@ -47,7 +48,7 @@ function EmptyPanel({ children }) {
   );
 }
 
-export default function ProjectDetailsModal({ onClose, onStatusChange, project }) {
+export default function ProjectDetailsModal({ onClose, onEdit, onStatusChange, project }) {
   const { locale, t } = useI18n();
   const linkedTasks = project.linkedTasks ?? [];
   const linkedMaterials = project.linkedMaterialRequests ?? [];
@@ -88,20 +89,30 @@ export default function ProjectDetailsModal({ onClose, onStatusChange, project }
               </div>
             </div>
 
-            <label className="grid gap-2 text-sm text-slate-500">
-              <span>{t("common.status", "Status")}</span>
-              <select
-                value={project.status}
-                onChange={(event) => onStatusChange?.(project.id, event.target.value)}
-                className="min-h-11 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
-              >
-                {projectStatusOptions.map((status) => (
-                  <option key={status} value={status}>
-                    {t(`statusLabels.${status.toLowerCase()}`, status)}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="grid gap-2">
+              {onStatusChange ? (
+                <label className="grid gap-2 text-sm text-slate-500">
+                  <span>{t("common.status", "Status")}</span>
+                  <select
+                    value={project.status}
+                    onChange={(event) => onStatusChange(project.id, event.target.value)}
+                    className="min-h-11 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100"
+                  >
+                    {projectStatusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {t(`statusLabels.${status.toLowerCase()}`, status)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : null}
+              {onEdit ? (
+                <Button type="button" variant="secondary" className="gap-2" onClick={onEdit}>
+                  <Pencil size={16} />
+                  {t("common.edit", "Edit")}
+                </Button>
+              ) : null}
+            </div>
           </div>
         </div>
 

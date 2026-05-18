@@ -379,14 +379,13 @@ export function AppDataProvider({ children }) {
     setDataError("");
 
     try {
-      const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse, threadsResponse] =
+      const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse] =
         await Promise.all([
           user.role === "admin" ? workersApi.list({ limit: 100 }) : Promise.resolve({ data: [] }),
           projectsApi.list({ limit: 100 }),
           tasksApi.list({ limit: 100 }),
           attendanceApi.list({ limit: 100 }),
-          materialsApi.list({ limit: 100 }),
-          chatApi.getThreads()
+          materialsApi.list({ limit: 100 })
         ]);
 
       const mappedProjects = getPageData(projectsResponse).map(mapApiProject);
@@ -395,8 +394,15 @@ export function AppDataProvider({ children }) {
       const mappedAttendance = mapLatestAttendance(attendanceResponse);
       const mappedMaterials = getPageData(materialsResponse).map(mapApiMaterialRequest);
 
-      const mappedThreads = (threadsResponse?.threads ?? []).map((t) => mapApiThread(t, user.id));
-      dispatch({ type: "SET_THREADS", payload: mappedThreads });
+      chatApi
+        .getThreads()
+        .then((threadsResponse) => {
+          const mappedThreads = (threadsResponse?.threads ?? []).map((t) => mapApiThread(t, user.id));
+          dispatch({ type: "SET_THREADS", payload: mappedThreads });
+        })
+        .catch(() => {
+          dispatch({ type: "SET_THREADS", payload: [] });
+        });
 
       dispatch({
         type: "SET_CORE_DATA",
@@ -576,6 +582,31 @@ export function AppDataProvider({ children }) {
               : input.assignedWorkerIds ?? []
           });
           dispatch({ type: "ADD_PROJECT", payload: normalizedProject });
+          return normalizedProject;
+        });
+      },
+      async updateProject(projectId, input) {
+        return runMutation(async () => {
+          if (user?.role !== "admin") return null;
+          const existingProject = projectsById.get(projectId);
+          const response = await projectsApi.updateProject(projectId, projectPayload(input));
+          const apiProject = mapApiProject(response.project);
+          const normalizedProject = normalizeProjectRecord(
+            {
+              ...apiProject,
+              phase: input.phase ?? existingProject?.phase,
+              budget: input.budget ?? existingProject?.budget,
+              location: input.location ?? existingProject?.location,
+              startDate: input.startDate ?? existingProject?.startDate,
+              deadline: input.deadline ?? existingProject?.deadline,
+              notes: input.notes || apiProject.notes,
+              assignedWorkerIds: apiProject.assignedWorkerIds?.length
+                ? apiProject.assignedWorkerIds
+                : input.assignedWorkerIds ?? []
+            },
+            existingProject
+          );
+          dispatch({ type: "UPDATE_PROJECT", payload: normalizedProject });
           return normalizedProject;
         });
       },

@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import CalendarEntryForm from "../components/calendar/CalendarEntryForm";
 import CalendarCard from "../components/dashboard/CalendarCard";
@@ -16,7 +16,7 @@ import { getProjectNotes, getTaskLocation, getTaskProjectName, getTaskTitle } fr
 
 export default function CalendarPage() {
   const { user } = useAuth();
-  const { workers, projects, addProject, addTask } = useAppData();
+  const { workers, projects, addProject, addTask, dataError, isDataLoading, refreshData } = useAppData();
   const { locale, t } = useI18n();
   const scopedCalendarEntries = useVisibleCalendarEntries();
   const [showEntryModal, setShowEntryModal] = useState(false);
@@ -77,8 +77,28 @@ export default function CalendarPage() {
             </div>
           }
         />
+        {dataError ? (
+          <div className="mb-4 flex flex-col gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+            <span className="break-anywhere">{dataError}</span>
+            <button
+              type="button"
+              onClick={refreshData}
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-medium text-amber-900 shadow-sm"
+            >
+              <RotateCw size={14} />
+              {t("common.retry", "Retry")}
+            </button>
+          </div>
+        ) : null}
         <div className="grid gap-3">
-          {entriesInVisibleMonth.length ? (
+          {isDataLoading && !scopedCalendarEntries.length ? (
+            [0, 1, 2].map((item) => (
+              <div key={item} className="rounded-[22px] bg-white/80 p-4 sm:rounded-[24px]">
+                <div className="h-5 w-2/3 animate-pulse rounded-full bg-slate-200" />
+                <div className="mt-4 h-4 w-1/2 animate-pulse rounded-full bg-slate-100" />
+              </div>
+            ))
+          ) : entriesInVisibleMonth.length ? (
             entriesInVisibleMonth.map((entry) => (
               <div key={entry.id} className="rounded-[22px] bg-white/80 p-4 sm:rounded-[24px]">
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
