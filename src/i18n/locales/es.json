@@ -597,7 +597,28 @@
     "detailsTitle": "Asistencia de {{name}}",
     "detailsDescription": "Consulta el estado de asistencia, marcas de tiempo y coordenadas opcionales.",
     "notStarted": "Trabajo no iniciado",
-    "saveFailed": "No se pudo guardar la asistencia. Int?ntalo de nuevo."
+    "saveFailed": "No se pudo guardar la asistencia. Int?ntalo de nuevo.",
+    "trackingActiveNotice": "El seguimiento de ubicacion esta activo solo durante tu sesion de trabajo.",
+    "trackingPendingNotice": "El seguimiento de ubicacion funciona solo mientras esta sesion de trabajo esta activa.",
+    "trackingPrivacyNotice": "La ubicacion se usa solo para verificar asistencia y se detiene despues de Terminar trabajo.",
+    "trackingStoppedNotice": "Trabajo terminado. El seguimiento de ubicacion se ha detenido.",
+    "locationPermissionDeniedWorkRecorded": "Permiso de ubicacion denegado. El tiempo de trabajo se registro sin ubicacion.",
+    "lastKnownLocation": "Ultima ubicacion conocida",
+    "viewRoute": "Ver ruta",
+    "routeHistory": "Ruta de la sesion de trabajo",
+    "routeMapPlaceholder": "Marcador de mapa para esta sesion. Los puntos GPS ordenados se muestran abajo.",
+    "routeLoading": "Cargando ruta...",
+    "routeLoadFailed": "No se pudo cargar la ruta.",
+    "routePoint": "Punto {{number}}",
+    "locationAccuracy": "Precision {{value}} m",
+    "noRoutePoints": "No se registraron puntos de ruta para esta sesion.",
+    "trackingStatus": "Estado de seguimiento",
+    "trackingActive": "Seguimiento activo",
+    "trackingInactive": "Seguimiento inactivo",
+    "gpsPoints": "Puntos GPS",
+    "gpsPointsRecorded": "{{count}} puntos GPS registrados",
+    "lastLocationUpdate": "Ultima actualizacion de ubicacion",
+    "routePointCount": "{{count}} puntos"
   },
   "billing": {
     "title": "Facturacion y suscripcion",
@@ -1048,5 +1069,13 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "languages": {
+    "en": "Ingles",
+    "pl": "Polaco",
+    "fr": "Frances",
+    "de": "Aleman",
+    "es": "Espanol",
+    "it": "Italiano"
   }
 }

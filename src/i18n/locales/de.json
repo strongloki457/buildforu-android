@@ -597,7 +597,28 @@
     "detailsTitle": "Anwesenheit von {{name}}",
     "detailsDescription": "Sehen Sie den erfassten Anwesenheitsstatus, Zeitstempel und optionale Standortkoordinaten.",
     "notStarted": "Arbeit nicht begonnen",
-    "saveFailed": "Anwesenheit konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+    "saveFailed": "Anwesenheit konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+    "trackingActiveNotice": "Die Standortverfolgung ist nur wahrend Ihrer Arbeitssitzung aktiv.",
+    "trackingPendingNotice": "Die Standortverfolgung lauft nur wahrend dieser aktiven Arbeitssitzung.",
+    "trackingPrivacyNotice": "Der Standort wird nur zur Anwesenheitsprufung genutzt und stoppt nach Arbeit beenden.",
+    "trackingStoppedNotice": "Arbeit beendet. Die Standortverfolgung wurde gestoppt.",
+    "locationPermissionDeniedWorkRecorded": "Standortfreigabe verweigert. Die Arbeitszeit wurde ohne Standort gespeichert.",
+    "lastKnownLocation": "Letzter bekannter Standort",
+    "viewRoute": "Route ansehen",
+    "routeHistory": "Route der Arbeitssitzung",
+    "routeMapPlaceholder": "Kartenplatzhalter fur diese Arbeitssitzung. Geordnete GPS-Punkte werden unten angezeigt.",
+    "routeLoading": "Route wird geladen...",
+    "routeLoadFailed": "Route konnte nicht geladen werden.",
+    "routePoint": "Punkt {{number}}",
+    "locationAccuracy": "Genauigkeit {{value}} m",
+    "noRoutePoints": "Fur diese Sitzung wurden keine Routenpunkte aufgezeichnet.",
+    "trackingStatus": "Tracking-Status",
+    "trackingActive": "Tracking aktiv",
+    "trackingInactive": "Tracking inaktiv",
+    "gpsPoints": "GPS-Punkte",
+    "gpsPointsRecorded": "{{count}} GPS-Punkte aufgezeichnet",
+    "lastLocationUpdate": "Letzte Standortaktualisierung",
+    "routePointCount": "{{count}} Punkte"
   },
   "landing": {
     "eyebrow": "SaaS für Bauabläufe",
@@ -1048,5 +1069,13 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "languages": {
+    "en": "Englisch",
+    "pl": "Polnisch",
+    "fr": "Franzosisch",
+    "de": "Deutsch",
+    "es": "Spanisch",
+    "it": "Italienisch"
   }
 }

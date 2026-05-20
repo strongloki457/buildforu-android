@@ -20,4 +20,12 @@ export const authApi = {
   me() {
     return apiRequest("/api/auth/me");
   },
+
+  refresh(refreshToken) {
+    return apiRequest("/api/auth/refresh", {
+      method: "POST",
+      body: { refreshToken },
+      auth: false,
+    });
+  },
 };

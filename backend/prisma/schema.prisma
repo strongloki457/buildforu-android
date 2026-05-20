@@ -40,6 +40,7 @@ model Company {
   projects         Project[]
   tasks            Task[]
   attendance       Attendance[]
+  locationPoints   AttendanceLocationPoint[]
   materialRequests MaterialRequest[]
   chatThreads      ChatThread[]
   createdAt        DateTime          @default(now())
@@ -49,23 +50,37 @@ model Company {
 }
 
 model User {
-  id                  String               @id @default(cuid())
-  name                String
-  email               String               @unique
-  passwordHash        String
-  role                Role
-  companyId           String
-  workerId            String?              @unique
-  company             Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  worker              Worker?              @relation(fields: [workerId], references: [id], onDelete: SetNull)
-  chatParticipations  ChatParticipant[]
-  sentMessages        ChatMessage[]
-  passwordResetTokens PasswordResetToken[]
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  id                   String               @id @default(cuid())
+  name                 String
+  email                String               @unique
+  passwordHash         String
+  role                 Role
+  companyId            String
+  workerId             String?              @unique
+  failedLoginAttempts  Int                  @default(0)
+  lockedUntil          DateTime?
+  company              Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  worker               Worker?              @relation(fields: [workerId], references: [id], onDelete: SetNull)
+  chatParticipations   ChatParticipant[]
+  sentMessages         ChatMessage[]
+  passwordResetTokens  PasswordResetToken[]
+  refreshTokens        RefreshToken[]
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 
   @@index([companyId])
   @@index([role])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Worker {
@@ -80,6 +95,7 @@ model Worker {
   projects         WorkerProject[]
   tasks            Task[]
   attendance       Attendance[]
+  locationPoints   AttendanceLocationPoint[]
   materialRequests MaterialRequest[] @relation("RequesterMaterialRequests")
   deletedAt        DateTime?
   createdAt        DateTime          @default(now())
@@ -155,6 +171,7 @@ model Attendance {
   endLng    Float?
   company   Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
   worker    Worker    @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  locationPoints AttendanceLocationPoint[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -162,6 +179,28 @@ model Attendance {
   @@index([workerId])
   @@index([companyId, workerId])
   @@index([companyId, startTime])
+  @@index([companyId, endTime])
+}
+
+model AttendanceLocationPoint {
+  id           String     @id @default(cuid())
+  attendanceId String
+  workerId     String
+  companyId    String
+  latitude     Float
+  longitude    Float
+  accuracy     Float?
+  recordedAt   DateTime
+  createdAt    DateTime   @default(now())
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  worker       Worker     @relation(fields: [workerId], references: [id], onDelete: Cascade)
+  company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([attendanceId])
+  @@index([workerId])
+  @@index([companyId])
+  @@index([companyId, workerId])
+  @@index([attendanceId, recordedAt])
 }
 
 model ChatThread {

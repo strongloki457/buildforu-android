@@ -9,14 +9,26 @@ export type AccessTokenPayload = {
   workerId: string | null;
 };
 
-export function signAccessToken(payload: AccessTokenPayload) {
-  const options: SignOptions = {
-    expiresIn: env.JWT_EXPIRES_IN as SignOptions["expiresIn"]
-  };
+export type RefreshTokenPayload = {
+  userId: string;
+};
 
-  return jwt.sign(payload, env.JWT_SECRET, options);
+export function signAccessToken(payload: AccessTokenPayload) {
+  return jwt.sign(payload, env.JWT_SECRET, {
+    expiresIn: env.JWT_EXPIRES_IN as SignOptions["expiresIn"]
+  });
 }
 
 export function verifyAccessToken(token: string) {
   return jwt.verify(token, env.JWT_SECRET) as AccessTokenPayload;
+}
+
+export function signRefreshToken(payload: RefreshTokenPayload) {
+  return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
+    expiresIn: env.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"]
+  });
+}
+
+export function verifyRefreshToken(token: string) {
+  return jwt.verify(token, env.JWT_REFRESH_SECRET) as RefreshTokenPayload;
 }

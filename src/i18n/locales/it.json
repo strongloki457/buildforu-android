@@ -597,7 +597,28 @@
     "detailsTitle": "Presenza di {{name}}",
     "detailsDescription": "Consulta stato di presenza, orari e coordinate opzionali.",
     "notStarted": "Lavoro non iniziato",
-    "saveFailed": "Impossibile salvare la presenza. Riprova."
+    "saveFailed": "Impossibile salvare la presenza. Riprova.",
+    "trackingActiveNotice": "Il tracciamento della posizione e attivo solo durante la sessione di lavoro.",
+    "trackingPendingNotice": "Il tracciamento della posizione funziona solo mentre questa sessione e attiva.",
+    "trackingPrivacyNotice": "La posizione viene usata solo per verificare la presenza e si ferma dopo Termina lavoro.",
+    "trackingStoppedNotice": "Lavoro terminato. Il tracciamento della posizione e stato fermato.",
+    "locationPermissionDeniedWorkRecorded": "Permesso posizione negato. Il tempo di lavoro e stato registrato senza posizione.",
+    "lastKnownLocation": "Ultima posizione nota",
+    "viewRoute": "Vedi percorso",
+    "routeHistory": "Percorso della sessione di lavoro",
+    "routeMapPlaceholder": "Segnaposto mappa per questa sessione. I punti GPS ordinati sono mostrati sotto.",
+    "routeLoading": "Caricamento percorso...",
+    "routeLoadFailed": "Impossibile caricare il percorso.",
+    "routePoint": "Punto {{number}}",
+    "locationAccuracy": "Precisione {{value}} m",
+    "noRoutePoints": "Nessun punto percorso registrato per questa sessione.",
+    "trackingStatus": "Stato tracciamento",
+    "trackingActive": "Tracciamento attivo",
+    "trackingInactive": "Tracciamento inattivo",
+    "gpsPoints": "Punti GPS",
+    "gpsPointsRecorded": "{{count}} punti GPS registrati",
+    "lastLocationUpdate": "Ultimo aggiornamento posizione",
+    "routePointCount": "{{count}} punti"
   },
   "billing": {
     "title": "Fatturazione e abbonamento",
@@ -1048,5 +1069,13 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "languages": {
+    "en": "Inglese",
+    "pl": "Polacco",
+    "fr": "Francese",
+    "de": "Tedesco",
+    "es": "Spagnolo",
+    "it": "Italiano"
   }
 }

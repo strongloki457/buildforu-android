@@ -12,7 +12,10 @@
   "languages": {
     "en": "English",
     "pl": "Polish",
-    "fr": "French"
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "it": "Italian"
   },
   "plans": {
     "starter": "Starter",
@@ -427,7 +430,28 @@
     "detailsTitle": "{{name}} attendance",
     "detailsDescription": "View recorded attendance status, timestamps and optional location coordinates.",
     "notStarted": "Not started work",
-    "saveFailed": "Could not save attendance. Please try again."
+    "saveFailed": "Could not save attendance. Please try again.",
+    "trackingActiveNotice": "Location tracking is active only during your work session.",
+    "trackingPendingNotice": "Location tracking will run only while this work session is active.",
+    "trackingPrivacyNotice": "Location is used only for work attendance verification and stops after End Work.",
+    "trackingStoppedNotice": "Work ended successfully. Location tracking has stopped.",
+    "locationPermissionDeniedWorkRecorded": "Location permission denied. Work time was recorded without location.",
+    "lastKnownLocation": "Last known location",
+    "viewRoute": "View Route",
+    "routeHistory": "Work-session route",
+    "routeMapPlaceholder": "Map placeholder for this work session. Ordered GPS points are shown below.",
+    "routeLoading": "Loading route...",
+    "routeLoadFailed": "Route could not be loaded.",
+    "routePoint": "Point {{number}}",
+    "locationAccuracy": "Accuracy {{value}} m",
+    "noRoutePoints": "No route points were recorded for this session.",
+    "trackingStatus": "Tracking status",
+    "trackingActive": "Tracking Active",
+    "trackingInactive": "Tracking Inactive",
+    "gpsPoints": "GPS points",
+    "gpsPointsRecorded": "{{count}} GPS points recorded",
+    "lastLocationUpdate": "Last location update",
+    "routePointCount": "{{count}} points"
   },
   "projects": {
     "title": "Projects",

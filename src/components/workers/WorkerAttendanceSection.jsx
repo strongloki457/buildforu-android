@@ -1,9 +1,12 @@
 import { Clock3, Crosshair, MapPin } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
-import { formatAttendanceDateTime, hasAttendanceLocation } from "../../utils/attendance";
+import { formatAttendanceDateTime } from "../../utils/attendance";
 
 export default function WorkerAttendanceSection({ locale, worker }) {
   const { t } = useI18n();
+  const attendance = worker.attendance ?? {};
+  const isTrackingActive = attendance.currentStatus === "On Site";
+  const locationPointCount = Number(attendance.locationPointCount ?? 0);
 
   return (
     <div className="rounded-[22px] bg-slate-50/90 px-4 py-3">
@@ -32,10 +35,10 @@ export default function WorkerAttendanceSection({ locale, worker }) {
           <div>
             <p className="text-xs text-slate-400">{t("attendance.locationIndicator")}</p>
             <p className="text-sm text-slate-600">
-              {hasAttendanceLocation(worker.attendance?.workStartLocation) ||
-              hasAttendanceLocation(worker.attendance?.workEndLocation)
-                ? t("attendance.locationCaptured")
-                : t("attendance.locationUnavailableShort")}
+              {isTrackingActive ? t("attendance.trackingActive") : t("attendance.trackingInactive")}
+            </p>
+            <p className="mt-1 text-xs text-slate-400">
+              {t("attendance.gpsPointsRecorded", { count: locationPointCount }, "{{count}} GPS points")}
             </p>
           </div>
         </div>
@@ -48,6 +51,15 @@ export default function WorkerAttendanceSection({ locale, worker }) {
                 `statusLabels.${String(worker.attendance?.currentStatus ?? worker.status).toLowerCase()}`,
                 worker.attendance?.currentStatus ?? worker.status
               )}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-2 sm:col-span-2">
+          <MapPin size={14} className="mt-0.5 text-brand-600" />
+          <div>
+            <p className="text-xs text-slate-400">{t("attendance.lastLocationUpdate")}</p>
+            <p className="text-sm text-slate-600">
+              {formatAttendanceDateTime(attendance.lastKnownLocationAt, locale) ?? t("attendance.noRecord")}
             </p>
           </div>
         </div>

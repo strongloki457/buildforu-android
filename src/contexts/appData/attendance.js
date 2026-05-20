@@ -15,7 +15,10 @@ export function buildAttendanceStateRecord(record = {}, currentRecord) {
     workStartTime: record.workStartTime ?? currentRecord?.workStartTime ?? null,
     workEndTime: record.workEndTime ?? currentRecord?.workEndTime ?? null,
     workStartLocation: normalizeLocation(record.workStartLocation ?? currentRecord?.workStartLocation),
-    workEndLocation: normalizeLocation(record.workEndLocation ?? currentRecord?.workEndLocation)
+    workEndLocation: normalizeLocation(record.workEndLocation ?? currentRecord?.workEndLocation),
+    lastKnownLocation: normalizeLocation(record.lastKnownLocation ?? currentRecord?.lastKnownLocation),
+    lastKnownLocationAt: record.lastKnownLocationAt ?? currentRecord?.lastKnownLocationAt ?? null,
+    locationPointCount: Number(record.locationPointCount ?? currentRecord?.locationPointCount ?? 0)
   };
 }
 
@@ -32,7 +35,10 @@ export function ensureAttendanceRecords(workers, attendance) {
         workStartTime: worker.attendance?.workStartTime,
         workEndTime: worker.attendance?.workEndTime,
         workStartLocation: worker.attendance?.workStartLocation,
-        workEndLocation: worker.attendance?.workEndLocation
+        workEndLocation: worker.attendance?.workEndLocation,
+        lastKnownLocation: worker.attendance?.lastKnownLocation,
+        lastKnownLocationAt: worker.attendance?.lastKnownLocationAt,
+        locationPointCount: worker.attendance?.locationPointCount
       },
       attendanceByWorkerId.get(worker.id)
     )

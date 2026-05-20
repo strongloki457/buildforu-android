@@ -1,4 +1,4 @@
-import { getToken, removeToken } from "./auth.storage";
+import { getRefreshToken, getToken, removeToken, setRefreshToken, setToken, shouldRememberSession } from "./auth.storage";
 
 const DEFAULT_API_URL = "http://localhost:5000";
 
@@ -20,6 +20,35 @@ function notifyAuthExpired() {
   }
 
   window.dispatchEvent(new CustomEvent("buildforu:auth-expired"));
+}
+
+let refreshPromise = null;
+
+async function attemptTokenRefresh() {
+  if (refreshPromise) return refreshPromise;
+
+  refreshPromise = (async () => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) throw new Error("No refresh token");
+
+    const response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!response.ok) throw new Error("Refresh failed");
+
+    const data = await response.json();
+    const remember = shouldRememberSession();
+    setToken(data.token, remember);
+    setRefreshToken(data.refreshToken, remember);
+    return data.token;
+  })().finally(() => {
+    refreshPromise = null;
+  });
+
+  return refreshPromise;
 }
 
 async function parseResponse(response) {
@@ -68,7 +97,22 @@ export async function apiRequest(path, options = {}) {
     throw new ApiError("Unable to reach the BuildForU backend.", { code: "NETWORK_ERROR" });
   }
 
-  const payload = await parseResponse(response);
+  let payload = await parseResponse(response);
+
+  if (response.status === 401 && options._isRetry !== true && path !== "/api/auth/refresh") {
+    try {
+      const newToken = await attemptTokenRefresh();
+      headers.set("Authorization", `Bearer ${newToken}`);
+      return apiRequest(path, { ...options, _isRetry: true });
+    } catch {
+      removeToken();
+      notifyAuthExpired();
+      throw new ApiError("Your session has expired. Please sign in again.", {
+        status: 401,
+        code: "AUTH_EXPIRED",
+      });
+    }
+  }
 
   if (!response.ok) {
     if (response.status === 401) {

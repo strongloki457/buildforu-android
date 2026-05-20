@@ -99,37 +99,39 @@ export default function LoginFormCard({
           </button>
         </form>
 
-        <div className="mt-6 rounded-3xl border border-slate-200 bg-slate-50/85 p-4">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-slate-900">{t("login.demoAccounts")}</p>
-            <p className="text-sm text-slate-500">{t("login.helper")}</p>
-          </div>
+        {demoAccounts.length > 0 && (
+          <div className="mt-6 rounded-3xl border border-slate-200 bg-slate-50/85 p-4">
+            <div className="flex flex-col gap-1">
+              <p className="text-sm text-slate-900">{t("login.demoAccounts")}</p>
+              <p className="text-sm text-slate-500">{t("login.helper")}</p>
+            </div>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            {demoAccounts.map((account) => (
-              <button
-                key={account.email}
-                type="button"
-                onClick={() => onSelectDemoAccount(account)}
-                className="min-h-[120px] rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 transition hover:border-brand-200 hover:bg-brand-50"
-              >
-                <span className="block text-slate-950">{account.email}</span>
-                <span className="mt-1 block text-xs text-slate-500">{account.name}</span>
-                <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
-                  {t(`roles.${account.role}`)}
-                </span>
-                <span className="mt-1 block text-xs text-slate-500">{account.companyName}</span>
-                <span className="mt-3 inline-flex rounded-full bg-brand-50 px-3 py-1 text-[11px] text-brand-700">
-                  {t("login.password", "Password")}: {account.password}
-                </span>
-              </button>
-            ))}
-          </div>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {demoAccounts.map((account) => (
+                <button
+                  key={account.email}
+                  type="button"
+                  onClick={() => onSelectDemoAccount(account)}
+                  className="min-h-[100px] rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-700 transition hover:border-brand-200 hover:bg-brand-50"
+                >
+                  <span className="block text-slate-950">{account.email}</span>
+                  <span className="mt-1 block text-xs text-slate-500">{account.name}</span>
+                  <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-slate-400">
+                    {t(`roles.${account.role}`)}
+                  </span>
+                  <span className="mt-1 block text-xs text-slate-500">{account.companyName}</span>
+                  <span className="mt-3 inline-flex rounded-full bg-brand-50 px-3 py-1 text-[11px] text-brand-700">
+                    {t("login.clickToFill", "Click to fill credentials")}
+                  </span>
+                </button>
+              ))}
+            </div>
 
-          <p className="mt-4 text-xs text-slate-500">
-            {t("login.mockCredentialsHint", "These example accounts must exist in the backend seed data.")}
-          </p>
-        </div>
+            <p className="mt-4 text-xs text-slate-500">
+              {t("login.mockCredentialsHint", "These example accounts must exist in the backend seed data.")}
+            </p>
+          </div>
+        )}
 
         <p className="mt-5 text-center text-sm text-slate-500">
           {t("login.noAccount", "Don't have an account?")}{" "}

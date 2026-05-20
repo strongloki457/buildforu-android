@@ -12,7 +12,10 @@
   "languages": {
     "en": "Anglais",
     "pl": "Polonais",
-    "fr": "Français"
+    "fr": "Français",
+    "de": "Allemand",
+    "es": "Espagnol",
+    "it": "Italien"
   },
   "nav": {
     "dashboard": "Tableau",
@@ -625,7 +628,28 @@
     "detailsTitle": "Presence de {{name}}",
     "detailsDescription": "Consultez le statut de presence, les horodatages et les coordonnees optionnelles.",
     "notStarted": "Travail non commencé",
-    "saveFailed": "Impossible d’enregistrer la présence. Veuillez réessayer."
+    "saveFailed": "Impossible d’enregistrer la présence. Veuillez réessayer.",
+    "trackingActiveNotice": "Le suivi de localisation est actif uniquement pendant votre session de travail.",
+    "trackingPendingNotice": "Le suivi de localisation fonctionne uniquement pendant cette session de travail active.",
+    "trackingPrivacyNotice": "La localisation sert uniquement a verifier la presence et s arrete apres Terminer le travail.",
+    "trackingStoppedNotice": "Travail termine. Le suivi de localisation est arrete.",
+    "locationPermissionDeniedWorkRecorded": "Permission de localisation refusee. Le temps de travail a ete enregistre sans localisation.",
+    "lastKnownLocation": "Derniere localisation connue",
+    "viewRoute": "Voir l itineraire",
+    "routeHistory": "Itineraire de la session de travail",
+    "routeMapPlaceholder": "Emplacement reserve pour la carte de cette session. Les points GPS sont affiches ci-dessous dans l ordre.",
+    "routeLoading": "Chargement de l itineraire...",
+    "routeLoadFailed": "L itineraire n a pas pu etre charge.",
+    "routePoint": "Point {{number}}",
+    "locationAccuracy": "Precision {{value}} m",
+    "noRoutePoints": "Aucun point d itineraire n a ete enregistre pour cette session.",
+    "trackingStatus": "Statut du suivi",
+    "trackingActive": "Suivi actif",
+    "trackingInactive": "Suivi inactif",
+    "gpsPoints": "Points GPS",
+    "gpsPointsRecorded": "{{count}} points GPS enregistres",
+    "lastLocationUpdate": "Derniere mise a jour de localisation",
+    "routePointCount": "{{count}} points"
   },
   "landing": {
     "eyebrow": "SaaS pour les opérations de chantier",

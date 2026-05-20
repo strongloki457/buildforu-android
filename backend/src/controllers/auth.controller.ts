@@ -26,3 +26,15 @@ export const resetPassword = asyncHandler(async (req: Request, res: Response) =>
   const result = await authService.resetPassword(req.body);
   res.json(result);
 });
+
+export const refresh = asyncHandler(async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken || typeof refreshToken !== "string") {
+    res.status(400).json({ error: { code: "MISSING_REFRESH_TOKEN", message: "Refresh token is required." } });
+    return;
+  }
+
+  const result = await authService.refreshAccessToken(refreshToken);
+  res.json(result);
+});

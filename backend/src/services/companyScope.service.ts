@@ -1,4 +1,3 @@
-import { Project, Worker } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import { AppError, assertFound } from "../utils/errors";
 
@@ -7,28 +6,22 @@ export function normalizeOptionalId(value: string | null | undefined) {
   return normalized || null;
 }
 
-export async function requireCompanyWorker(workerId: string, companyId: string): Promise<Worker> {
+export async function requireCompanyWorker(workerId: string, companyId: string): Promise<void> {
   const worker = await prisma.worker.findFirst({
-    where: {
-      id: workerId,
-      companyId,
-      deletedAt: null
-    }
+    where: { id: workerId, companyId, deletedAt: null },
+    select: { id: true }
   });
 
-  return assertFound(worker, "Worker was not found in this company.");
+  assertFound(worker, "Worker was not found in this company.");
 }
 
-export async function requireCompanyProject(projectId: string, companyId: string): Promise<Project> {
+export async function requireCompanyProject(projectId: string, companyId: string): Promise<void> {
   const project = await prisma.project.findFirst({
-    where: {
-      id: projectId,
-      companyId,
-      deletedAt: null
-    }
+    where: { id: projectId, companyId, deletedAt: null },
+    select: { id: true }
   });
 
-  return assertFound(project, "Project was not found in this company.");
+  assertFound(project, "Project was not found in this company.");
 }
 
 export async function ensureWorkersBelongToCompany(workerIds: string[], companyId: string) {

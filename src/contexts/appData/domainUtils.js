@@ -27,6 +27,7 @@ export function normalizeLocation(location) {
   return {
     latitude,
     longitude,
+    accuracy: Number.isFinite(Number(location.accuracy)) ? Number(location.accuracy) : undefined,
     text: normalizeText(location.text)
   };
 }

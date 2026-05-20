@@ -26,7 +26,8 @@ export function requestCurrentLocation() {
         resolve({
           location: {
             latitude: Number(position.coords.latitude.toFixed(5)),
-            longitude: Number(position.coords.longitude.toFixed(5))
+            longitude: Number(position.coords.longitude.toFixed(5)),
+            accuracy: Number.isFinite(position.coords.accuracy) ? Math.round(position.coords.accuracy) : undefined
           },
           messageKey: null
         });

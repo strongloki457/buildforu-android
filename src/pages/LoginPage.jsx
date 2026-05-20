@@ -32,10 +32,11 @@ export default function LoginPage() {
   };
 
   const handleSelectDemoAccount = (account) => {
+    const demoPassword = import.meta.env[`VITE_DEMO_PASSWORD_${account.role.toUpperCase()}`] ?? "";
     setForm((current) => ({
       ...current,
       email: account.email,
-      password: account.password
+      password: demoPassword
     }));
   };
 

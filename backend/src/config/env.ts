@@ -16,7 +16,14 @@ const envSchema = z
     JWT_EXPIRES_IN: z.string().default("1h"),
     FRONTEND_URL: z.string().min(1).default("http://localhost:5173"),
     PORT: z.coerce.number().int().positive().default(5000),
-    NODE_ENV: z.enum(["development", "test", "production"]).default("development")
+    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    JWT_REFRESH_SECRET: z.string().min(32).default("development-only-refresh-secret-change-me"),
+    JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
+    SMTP_HOST: z.string().optional(),
+    SMTP_PORT: z.coerce.number().int().positive().default(587),
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
+    SMTP_FROM: z.string().email().default("noreply@buildforu.com")
   })
   .superRefine((value, context) => {
     if (isProduction && value.JWT_SECRET === "development-only-buildforu-secret-change-me") {

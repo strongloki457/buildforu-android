@@ -1,5 +1,6 @@
 import { Clock3, MapPin, Navigation } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { attendanceApi } from "../../api/attendance.api";
 import AttendanceActionButton from "../attendance/AttendanceActionButton";
 import AttendanceFeedback from "../attendance/AttendanceFeedback";
 import AttendanceMetaItem from "../attendance/AttendanceMetaItem";
@@ -13,15 +14,93 @@ import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import StatusBadge from "../ui/StatusBadge";
 
+const LOCATION_TRACKING_MIN_INTERVAL_MS = 2 * 60 * 1000;
+
+function createLocationPointPayload(location) {
+  return {
+    latitude: location.latitude,
+    longitude: location.longitude,
+    accuracy: location.accuracy,
+    recordedAt: new Date().toISOString()
+  };
+}
+
 export default function WorkStatusCard() {
   const { startWork, endWork } = useAppData();
   const { locale, t } = useI18n();
   const worker = useCurrentWorker();
   const [activeAction, setActiveAction] = useState("");
   const [feedback, setFeedback] = useState(null);
+  const [isTrackingLocation, setIsTrackingLocation] = useState(false);
+  const watchIdRef = useRef(null);
+  const lastSentAtRef = useRef(0);
   const attendance = worker?.attendance;
   const currentStatus = attendance?.currentStatus ?? worker?.status ?? "Off Site";
   const isOnSite = currentStatus === "On Site";
+
+  const stopLocationTracking = () => {
+    if (watchIdRef.current !== null && "geolocation" in navigator) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
+
+    setIsTrackingLocation(false);
+  };
+
+  const sendLocationPoint = async (location) => {
+    if (!Number.isFinite(location?.latitude) || !Number.isFinite(location?.longitude)) {
+      return;
+    }
+
+    try {
+      await attendanceApi.recordLocation(createLocationPointPayload(location));
+    } catch {
+      // Attendance remains valid even if one GPS point cannot be saved.
+    }
+  };
+
+  const startLocationTracking = () => {
+    if (watchIdRef.current !== null || !("geolocation" in navigator)) {
+      return;
+    }
+
+    setIsTrackingLocation(true);
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      (position) => {
+        const now = Date.now();
+
+        if (now - lastSentAtRef.current < LOCATION_TRACKING_MIN_INTERVAL_MS) {
+          return;
+        }
+
+        lastSentAtRef.current = now;
+        sendLocationPoint({
+          latitude: Number(position.coords.latitude.toFixed(5)),
+          longitude: Number(position.coords.longitude.toFixed(5)),
+          accuracy: Number.isFinite(position.coords.accuracy) ? Math.round(position.coords.accuracy) : undefined
+        });
+      },
+      () => {
+        stopLocationTracking();
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 30000
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (isOnSite) {
+      startLocationTracking();
+    } else {
+      stopLocationTracking();
+    }
+
+    return stopLocationTracking;
+  }, [isOnSite]);
 
   const handleStatusAction = async (mode) => {
     if (!worker) {
@@ -30,7 +109,16 @@ export default function WorkStatusCard() {
 
     setActiveAction(mode);
     const timestamp = new Date().toISOString();
-    const { location, messageKey } = await requestCurrentLocation();
+    let location = null;
+    let messageKey = null;
+
+    if (mode === "end") {
+      stopLocationTracking();
+    }
+
+    const locationResult = await requestCurrentLocation();
+    location = locationResult.location;
+    messageKey = locationResult.messageKey;
 
     if (mode === "start") {
       const savedRecord = await startWork(worker.id, { timestamp, location });
@@ -42,15 +130,19 @@ export default function WorkStatusCard() {
         setActiveAction("");
         return;
       }
+      if (!messageKey) {
+        startLocationTracking();
+      }
       setFeedback({
         tone: messageKey ? "warning" : "success",
         text: messageKey
-          ? t("attendance.startSavedWithoutLocation", { reason: t(messageKey) })
-          : t("attendance.startSaved")
+          ? t("attendance.locationPermissionDeniedWorkRecorded")
+          : t("attendance.trackingActiveNotice")
       });
     } else {
       const savedRecord = await endWork(worker.id, { timestamp, location });
       if (!savedRecord) {
+        startLocationTracking();
         setFeedback({
           tone: "warning",
           text: t("attendance.saveFailed", "Could not save attendance. Please try again.")
@@ -62,7 +154,7 @@ export default function WorkStatusCard() {
         tone: messageKey ? "warning" : "success",
         text: messageKey
           ? t("attendance.endSavedWithoutLocation", { reason: t(messageKey) })
-          : t("attendance.endSaved")
+          : t("attendance.trackingStoppedNotice")
       });
     }
 
@@ -102,6 +194,13 @@ export default function WorkStatusCard() {
             onStatusAction={handleStatusAction}
           />
         </div>
+
+        {isOnSite ? (
+          <div className="mt-4 rounded-lg border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-800">
+            <p>{isTrackingLocation ? t("attendance.trackingActiveNotice") : t("attendance.trackingPendingNotice")}</p>
+            <p className="mt-1 text-xs leading-5 text-brand-700">{t("attendance.trackingPrivacyNotice")}</p>
+          </div>
+        ) : null}
 
         <div className="mt-5 grid gap-3 md:grid-cols-2">
           <AttendanceMetaItem

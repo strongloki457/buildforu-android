@@ -128,7 +128,11 @@ function formatDataError(error) {
     return error.message;
   }
 
-  return "Data could not be loaded. Please try again.";
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return "Something went wrong. Please try again.";
 }
 
 function mapApiWorker(worker) {
@@ -185,6 +189,8 @@ function mapApiTask(task) {
 }
 
 function mapApiAttendance(record) {
+  const latestPoint = Array.isArray(record.locationPoints) ? record.locationPoints[0] : null;
+
   return {
     id: record.id,
     workerId: record.workerId,
@@ -192,7 +198,10 @@ function mapApiAttendance(record) {
     workStartTime: record.startTime ?? null,
     workEndTime: record.endTime ?? null,
     workStartLocation: toLocation(record.startLat, record.startLng),
-    workEndLocation: toLocation(record.endLat, record.endLng)
+    workEndLocation: toLocation(record.endLat, record.endLng),
+    lastKnownLocation: latestPoint ? toLocation(latestPoint.latitude, latestPoint.longitude) : null,
+    lastKnownLocationAt: latestPoint?.recordedAt ?? null,
+    locationPointCount: Number(record._count?.locationPoints ?? record.locationPointCount ?? 0)
   };
 }
 
@@ -509,9 +518,9 @@ export function AppDataProvider({ children }) {
 
   const actions = useMemo(
     () => ({
-      async sendMessage({ threadId, senderId, text, attachments = [] }) {
+      async sendMessage({ threadId, text, attachments = [] }) {
         if (!text.trim() && !attachments.length) return null;
-        try {
+        return runMutation(async () => {
           const response = await chatApi.sendMessage(threadId, text.trim());
           const msg = response.message;
           const mappedMsg = {
@@ -522,23 +531,19 @@ export function AppDataProvider({ children }) {
           };
           dispatch({ type: "SEND_MESSAGE", payload: { threadId, message: mappedMsg } });
           return mappedMsg;
-        } catch {
-          return null;
-        }
+        });
       },
       async startThread(otherUserId) {
-        try {
+        return runMutation(async () => {
           const response = await chatApi.createThread(otherUserId);
           const thread = mapApiThread(response.thread, user?.id ?? "");
           dispatch({ type: "ADD_THREAD", payload: thread });
           return thread;
-        } catch {
-          return null;
-        }
+        });
       },
       async addWorker(input) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can add workers.");
           const response = await workersApi.createWorker(workerPayload(input));
           const normalizedWorker = normalizeWorkerRecord(mapApiWorker(response.worker), null, state.projects);
           dispatch({ type: "ADD_WORKER", payload: normalizedWorker });
@@ -547,7 +552,7 @@ export function AppDataProvider({ children }) {
       },
       async updateWorker(workerId, input) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can update workers.");
           const response = await workersApi.updateWorker(workerId, workerPayload(input));
           const worker = response.worker ?? response;
           const temporaryPassword = response.temporaryPassword || "";
@@ -558,7 +563,7 @@ export function AppDataProvider({ children }) {
       },
       async deleteWorker(workerId) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can delete workers.");
           await workersApi.deleteWorker(workerId);
           dispatch({ type: "DELETE_WORKER", payload: { workerId } });
           return true;
@@ -566,7 +571,7 @@ export function AppDataProvider({ children }) {
       },
       async addProject(input) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can add projects.");
           const response = await projectsApi.createProject(projectPayload(input));
           const apiProject = mapApiProject(response.project);
           const normalizedProject = normalizeProjectRecord({
@@ -587,7 +592,7 @@ export function AppDataProvider({ children }) {
       },
       async updateProject(projectId, input) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can update projects.");
           const existingProject = projectsById.get(projectId);
           const response = await projectsApi.updateProject(projectId, projectPayload(input));
           const apiProject = mapApiProject(response.project);
@@ -612,7 +617,7 @@ export function AppDataProvider({ children }) {
       },
       async updateProjectStatus(projectId, status) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can update project status.");
           const response = await projectsApi.updateProject(projectId, {
             status: PROJECT_STATUS_TO_API[status] ?? status
           });
@@ -629,7 +634,7 @@ export function AppDataProvider({ children }) {
       },
       async addTask(input) {
         return runMutation(async () => {
-          if (user?.role && user.role !== "admin") return null;
+          if (user?.role && user.role !== "admin") throw new Error("Only admins can add tasks.");
           const response = await tasksApi.createTask(taskPayload(input));
           const normalizedTask = normalizeTaskRecord(mapApiTask(response.task), state.workers, state.projects);
           dispatch({ type: "ADD_TASK", payload: normalizedTask });
@@ -639,7 +644,7 @@ export function AppDataProvider({ children }) {
       async toggleTaskStatus(taskId) {
         return runMutation(async () => {
           const existingTask = state.tasks.find((task) => task.id === taskId);
-          if (!existingTask) return null;
+          if (!existingTask) throw new Error("Task not found.");
           const nextStatus = existingTask.status === "completed" ? "TODO" : "DONE";
           const response = await tasksApi.updateTask(taskId, { status: nextStatus });
           const normalizedTask = normalizeTaskRecord(mapApiTask(response.task), state.workers, state.projects, existingTask);
@@ -650,7 +655,8 @@ export function AppDataProvider({ children }) {
       async startWork(workerId, options = {}) {
         return runMutation(async () => {
           const currentWorkerId = getCurrentWorkerId(user);
-          if (user?.role === "employee" && workerId !== currentWorkerId) return null;
+          if (user?.role === "employee" && workerId !== currentWorkerId)
+            throw new Error("You can only start your own work session.");
           const response = await attendanceApi.start(attendanceLocationPayload(options));
           const attendanceRecord = mapApiAttendance(response.attendance);
           dispatch({ type: "SET_ATTENDANCE_RECORD", payload: attendanceRecord });
@@ -660,7 +666,8 @@ export function AppDataProvider({ children }) {
       async endWork(workerId, options = {}) {
         return runMutation(async () => {
           const currentWorkerId = getCurrentWorkerId(user);
-          if (user?.role === "employee" && workerId !== currentWorkerId) return null;
+          if (user?.role === "employee" && workerId !== currentWorkerId)
+            throw new Error("You can only end your own work session.");
           const response = await attendanceApi.end(attendanceLocationPayload(options));
           const attendanceRecord = mapApiAttendance(response.attendance);
           dispatch({ type: "SET_ATTENDANCE_RECORD", payload: attendanceRecord });
@@ -688,7 +695,7 @@ export function AppDataProvider({ children }) {
       },
       async updateMaterialRequestStatus(requestId, status) {
         return runMutation(async () => {
-          if (user?.role !== "admin") return null;
+          if (user?.role !== "admin") throw new Error("Only admins can update material request status.");
           const response = await materialsApi.updateStatus(requestId, MATERIAL_STATUS_TO_API[status] ?? status);
           const normalizedRequest = normalizeMaterialRequestRecord(
             mapApiMaterialRequest(response.materialRequest),

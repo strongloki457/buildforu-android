@@ -19,4 +19,15 @@ export const attendanceApi = {
       body: payload,
     });
   },
+
+  recordLocation(payload) {
+    return apiRequest("/api/attendance/location", {
+      method: "POST",
+      body: payload,
+    });
+  },
+
+  listLocations(attendanceId) {
+    return apiRequest(`/api/attendance/${attendanceId}/locations`);
+  },
 };

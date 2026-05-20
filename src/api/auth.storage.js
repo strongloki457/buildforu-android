@@ -1,4 +1,5 @@
 const TOKEN_KEY = "buildforu-auth-token";
+const REFRESH_TOKEN_KEY = "buildforu-refresh-token";
 const USER_KEY = "buildforu-auth-user";
 
 function getStorage(preferSession = false) {
@@ -43,6 +44,22 @@ export function removeToken() {
   removeStoredValue(TOKEN_KEY);
 }
 
+export function getRefreshToken() {
+  return getStoredValue(REFRESH_TOKEN_KEY);
+}
+
+export function setRefreshToken(token, remember = true) {
+  if (!token) {
+    removeStoredValue(REFRESH_TOKEN_KEY);
+    return;
+  }
+  setStoredValue(REFRESH_TOKEN_KEY, token, remember);
+}
+
+export function removeRefreshToken() {
+  removeStoredValue(REFRESH_TOKEN_KEY);
+}
+
 export function getStoredUser() {
   const rawUser = getStoredValue(USER_KEY);
 
@@ -69,5 +86,6 @@ export function setStoredUser(user, remember = true) {
 
 export function clearStoredAuth() {
   removeToken();
+  removeRefreshToken();
   removeStoredValue(USER_KEY);
 }

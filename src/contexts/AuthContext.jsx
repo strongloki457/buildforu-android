@@ -5,6 +5,7 @@ import {
   clearStoredAuth,
   getStoredUser,
   getToken,
+  setRefreshToken,
   setStoredUser,
   setToken,
   shouldRememberSession,
@@ -155,6 +156,7 @@ export function AuthProvider({ children }) {
     }
 
     setToken(token, remember);
+    if (options.refreshToken) setRefreshToken(options.refreshToken, remember);
     setStoredUser(normalizedUser, remember);
     setUser(normalizedUser);
     setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
@@ -235,7 +237,7 @@ export function AuthProvider({ children }) {
     async ({ email, password, rememberMe = true }) => {
       try {
         const response = await authApi.login({ email: normalizeEmail(email), password });
-        return persistSession(response.token, response.user, { remember: rememberMe });
+        return persistSession(response.token, response.user, { remember: rememberMe, refreshToken: response.refreshToken });
       } catch (error) {
         throw new Error(authErrorKey(error, "login"));
       }
@@ -259,7 +261,7 @@ export function AuthProvider({ children }) {
           password,
           plan,
         });
-        const registeredUser = persistSession(response.token, response.user, { remember: true });
+        const registeredUser = persistSession(response.token, response.user, { remember: true, refreshToken: response.refreshToken });
 
         return {
           company: registeredUser?.company,

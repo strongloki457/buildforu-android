@@ -12,7 +12,10 @@
   "languages": {
     "en": "Angielski",
     "pl": "Polski",
-    "fr": "Francuski"
+    "fr": "Francuski",
+    "de": "Niemiecki",
+    "es": "Hiszpanski",
+    "it": "Wloski"
   },
   "nav": {
     "dashboard": "Panel",
@@ -625,7 +628,28 @@
     "detailsTitle": "Obecność {{name}}",
     "detailsDescription": "Podejrzyj zapisany status obecności, znaczniki czasu i opcjonalne współrzędne lokalizacji.",
     "notStarted": "Praca nierozpoczęta",
-    "saveFailed": "Nie udało się zapisać obecności. Spróbuj ponownie."
+    "saveFailed": "Nie udało się zapisać obecności. Spróbuj ponownie.",
+    "trackingActiveNotice": "Śledzenie lokalizacji jest aktywne tylko podczas sesji pracy.",
+    "trackingPendingNotice": "Śledzenie lokalizacji działa tylko w czasie aktywnej sesji pracy.",
+    "trackingPrivacyNotice": "Lokalizacja służy tylko do weryfikacji obecności i zatrzymuje się po kliknięciu Zakończ pracę.",
+    "trackingStoppedNotice": "Praca zakończona. Śledzenie lokalizacji zostało zatrzymane.",
+    "locationPermissionDeniedWorkRecorded": "Odmówiono dostępu do lokalizacji. Czas pracy został zapisany bez lokalizacji.",
+    "lastKnownLocation": "Ostatnia znana lokalizacja",
+    "viewRoute": "Zobacz trasę",
+    "routeHistory": "Trasa sesji pracy",
+    "routeMapPlaceholder": "Tymczasowy widok mapy dla tej sesji pracy. Punkty GPS są pokazane poniżej w kolejności.",
+    "routeLoading": "Ładowanie trasy...",
+    "routeLoadFailed": "Nie udało się załadować trasy.",
+    "routePoint": "Punkt {{number}}",
+    "locationAccuracy": "Dokładność {{value}} m",
+    "noRoutePoints": "Nie zapisano punktów trasy dla tej sesji.",
+    "trackingStatus": "Status śledzenia",
+    "trackingActive": "Śledzenie aktywne",
+    "trackingInactive": "Śledzenie nieaktywne",
+    "gpsPoints": "Punkty GPS",
+    "gpsPointsRecorded": "Zapisane punkty GPS: {{count}}",
+    "lastLocationUpdate": "Ostatnia aktualizacja lokalizacji",
+    "routePointCount": "{{count}} punktów"
   },
   "landing": {
     "eyebrow": "SaaS dla operacji budowlanych",
