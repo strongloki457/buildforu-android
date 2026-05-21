@@ -1,16 +1,40 @@
-import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Shield, Users2 } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Pencil, Shield, Users2 } from "lucide-react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { apiRequest } from "../api/client";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useAppData } from "../hooks/useAppData";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
+function resizeImageToBase64(file, maxSize = 160) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(maxSize / img.width, maxSize / img.height, 1);
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
 export default function SettingsPage() {
-  const { company, user } = useAuth();
+  const { company, user, updateUser } = useAuth();
   const { workers } = useAppData();
   const { t } = useI18n();
+  const fileInputRef = useRef(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
   const [toggles, setToggles] = useState({
     alerts: true,
     summaries: true,
@@ -22,6 +46,50 @@ export default function SettingsPage() {
 
   const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));
 
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarError("");
+    if (!file.type.startsWith("image/")) {
+      setAvatarError(t("settings.avatarInvalidType", "Please select an image file."));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError(t("settings.avatarTooLarge", "File is too large. Max 5 MB."));
+      return;
+    }
+    setAvatarUploading(true);
+    try {
+      const avatarUrl = await resizeImageToBase64(file);
+      const { user: updated } = await apiRequest("/api/auth/me/avatar", {
+        method: "PATCH",
+        body: { avatarUrl }
+      });
+      updateUser({ avatarUrl: updated.avatarUrl });
+    } catch {
+      setAvatarError(t("settings.avatarUploadError", "Upload failed. Please try again."));
+    } finally {
+      setAvatarUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    setAvatarError("");
+    setAvatarUploading(true);
+    try {
+      await apiRequest("/api/auth/me/avatar", {
+        method: "PATCH",
+        body: { avatarUrl: null }
+      });
+      updateUser({ avatarUrl: null });
+    } catch {
+      setAvatarError(t("settings.avatarUploadError", "Upload failed. Please try again."));
+    } finally {
+      setAvatarUploading(false);
+    }
+  };
+
   const settingsItems = [
     { key: "alerts", title: t("settings.alertsTitle"), description: t("settings.alertsDescription"), icon: Bell },
     { key: "summaries", title: t("settings.summariesTitle"), description: t("settings.summariesDescription"), icon: Globe },
@@ -31,6 +99,60 @@ export default function SettingsPage() {
   return (
     <Card>
       <SectionHeader title={t("settings.title")} subtitle={t("settings.subtitle")} />
+
+      {/* Avatar */}
+      <div className="mb-6 rounded-[28px] bg-white/80 p-5">
+        <p className="mb-4 text-base text-slate-900">{t("settings.profilePhoto", "Profile photo")}</p>
+        <div className="flex items-center gap-5">
+          <div className="relative">
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 to-brand-500 text-2xl text-white">
+              {user?.avatarUrl
+                ? <img src={user.avatarUrl} alt={user?.name} className="h-full w-full object-cover" />
+                : user?.avatar}
+            </div>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={avatarUploading}
+              className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-brand-600 text-white shadow transition hover:bg-brand-500 disabled:opacity-60"
+            >
+              <Pencil size={12} />
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={avatarUploading}
+              className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+            >
+              {avatarUploading
+                ? t("common.loading", "Loading…")
+                : t("settings.uploadPhoto", "Upload photo")}
+            </button>
+            {user?.avatarUrl ? (
+              <button
+                type="button"
+                onClick={handleRemoveAvatar}
+                disabled={avatarUploading}
+                className="text-left text-sm text-rose-500 transition hover:text-rose-600 disabled:opacity-60"
+              >
+                {t("settings.removePhoto", "Remove photo")}
+              </button>
+            ) : null}
+            <p className="text-xs text-slate-400">{t("settings.avatarHint", "JPG, PNG or WebP · max 5 MB")}</p>
+            {avatarError ? <p className="text-xs text-rose-500">{avatarError}</p> : null}
+          </div>
+        </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
+      </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
         {settingsItems.map((item) => {

@@ -68,6 +68,7 @@ function normalizeApiUser(apiUser) {
     workspaceName: apiUser.workspaceName || company?.name || apiUser.companyName || "BuildForU",
     companyName: apiUser.companyName || company?.name || "BuildForU",
     plan: apiUser.plan || company?.plan || "pro",
+    avatarUrl: apiUser.avatarUrl || null,
     avatar: apiUser.avatar || createInitials(apiUser.name),
     title: apiUser.title || (role === "admin" ? "Company Admin" : "Employee"),
     isApiBacked: true,
@@ -251,6 +252,15 @@ export function AuthProvider({ children }) {
     setCompanyUsers([]);
   }, []);
 
+  const updateUser = useCallback((patch) => {
+    setUser((current) => {
+      if (!current) return current;
+      const updated = normalizeApiUser({ ...current, ...patch });
+      if (updated) setStoredUser(updated, shouldRememberSession());
+      return updated;
+    });
+  }, []);
+
   const registerCompany = useCallback(
     async ({ companyName, ownerName, email, password, plan }) => {
       try {
@@ -306,6 +316,7 @@ export function AuthProvider({ children }) {
       login,
       logout,
       registerCompany,
+      updateUser,
     }),
     [
       company,
@@ -314,6 +325,7 @@ export function AuthProvider({ children }) {
       login,
       logout,
       registerCompany,
+      updateUser,
       user,
     ],
   );

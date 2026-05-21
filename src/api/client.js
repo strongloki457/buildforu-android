@@ -1,6 +1,6 @@
 import { getRefreshToken, getToken, removeToken, setRefreshToken, setToken, shouldRememberSession } from "./auth.storage";
 
-const DEFAULT_API_URL = "http://localhost:5000";
+const DEFAULT_API_URL = "";
 
 export const API_BASE_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_URL).replace(/\/+$/, "");
 

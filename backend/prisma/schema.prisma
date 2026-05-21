@@ -57,6 +57,7 @@ model User {
   role                 Role
   companyId            String
   workerId             String?              @unique
+  avatarUrl            String?
   failedLoginAttempts  Int                  @default(0)
   lockedUntil          DateTime?
   company              Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)

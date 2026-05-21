@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { MapPinned } from "lucide-react";
 import { attendanceApi } from "../../api/attendance.api";
 import Modal from "../ui/Modal";
+import RouteMap from "./RouteMap";
 import StatusBadge from "../ui/StatusBadge";
 import { useI18n } from "../../hooks/useI18n";
 import { formatAttendanceCoordinates, formatAttendanceDateTime } from "../../utils/attendance";
@@ -134,11 +135,8 @@ export default function AttendanceDetailsModal({ worker, onClose }) {
 
           {showRoute ? (
             <div className="mt-4 rounded-[22px] border border-dashed border-slate-200 bg-white/75 p-4">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <p className="text-sm text-slate-900">{t("attendance.routeHistory")}</p>
-                  <p className="mt-1 text-xs leading-5 text-slate-500">{t("attendance.routeMapPlaceholder")}</p>
-                </div>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm text-slate-900">{t("attendance.routeHistory")}</p>
                 <span className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
                   {t("attendance.routePointCount", { count: routePoints.length }, "{{count}} points")}
                 </span>
@@ -149,31 +147,7 @@ export default function AttendanceDetailsModal({ worker, onClose }) {
               ) : routeError ? (
                 <p className="mt-4 text-sm text-amber-700">{routeError}</p>
               ) : routePoints.length ? (
-                <div className="mt-4 max-h-72 space-y-2 overflow-y-auto pr-1">
-                  {routePoints.map((point, index) => (
-                    <div key={point.id} className="rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                      <div className="flex items-start justify-between gap-3">
-                        <span className="text-slate-900">
-                          {t("attendance.routePoint", { number: index + 1 }, "Point {{number}}")}
-                        </span>
-                        <span className="text-xs text-slate-400">
-                          {formatAttendanceDateTime(point.recordedAt, locale)}
-                        </span>
-                      </div>
-                      <p className="mt-1">
-                        {formatAttendanceCoordinates({
-                          latitude: point.latitude,
-                          longitude: point.longitude
-                        })}
-                      </p>
-                      {Number.isFinite(Number(point.accuracy)) ? (
-                        <p className="mt-1 text-xs text-slate-400">
-                          {t("attendance.locationAccuracy", { value: Math.round(point.accuracy) }, "Accuracy {{value}} m")}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
+                <RouteMap points={routePoints} />
               ) : (
                 <p className="mt-4 text-sm text-slate-500">{t("attendance.noRoutePoints")}</p>
               )}

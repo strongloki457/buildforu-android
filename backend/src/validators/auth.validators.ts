@@ -34,7 +34,18 @@ export const resetPasswordSchema = z.object({
     })
 });
 
+export const updateAvatarSchema = z.object({
+  avatarUrl: z
+    .string()
+    .max(200_000, "Image is too large.")
+    .refine((v) => /^data:image\/(jpeg|png|webp|gif);base64,/.test(v), {
+      message: "Must be a valid base64 image data URL (jpeg, png, webp or gif)."
+    })
+    .nullable()
+});
+
 export type RegisterCompanyInput = z.infer<typeof registerCompanySchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type UpdateAvatarInput = z.infer<typeof updateAvatarSchema>;

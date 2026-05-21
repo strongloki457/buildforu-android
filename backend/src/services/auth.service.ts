@@ -18,6 +18,7 @@ const publicUserSelect = {
   role: true,
   companyId: true,
   workerId: true,
+  avatarUrl: true,
   createdAt: true,
   updatedAt: true,
   company: {
@@ -279,6 +280,16 @@ export async function resetPassword(input: ResetPasswordInput) {
   });
 
   return { message: "Password has been reset successfully." };
+}
+
+export async function updateAvatar(userId: string, avatarUrl: string | null) {
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { avatarUrl },
+    select: publicUserSelect
+  });
+
+  return { user };
 }
 
 export async function getCurrentUser(userId: string) {

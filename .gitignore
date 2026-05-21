@@ -12,3 +12,5 @@ backend/.env.*
 *.err
 
 .DS_Store
+
+*.zip

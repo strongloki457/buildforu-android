@@ -31,7 +31,8 @@ app.use(
       }
 
       const isLocalDevelopmentOrigin =
-        env.NODE_ENV !== "production" && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+        env.NODE_ENV !== "production" &&
+        /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?$/.test(origin);
 
       if (allowedOrigins.has(origin) || isLocalDevelopmentOrigin) {
         callback(null, true);
