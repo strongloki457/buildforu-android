@@ -1078,5 +1078,22 @@
     "de": "Tedesco",
     "es": "Spagnolo",
     "it": "Italiano"
+  },
+  "aiAssistant": {
+    "title": "Assistente edile AI",
+    "subtitle": "Fai domande su materiali, tecnologie o normative edilizie",
+    "emptyTitle": "Assistente edile",
+    "emptySubtitle": "Chiedi di materiali, tecnologie, normative e sicurezza",
+    "placeholder": "Fai una domanda edilizia…",
+    "send": "Invia",
+    "newConversation": "Nuova conversazione",
+    "errorFallback": "Impossibile connettersi all'assistente. Riprova.",
+    "suggestions": [
+      "Quanto cemento serve per 10 m² di pavimento?",
+      "Come calcolo il numero di mattoni per un muro?",
+      "Quali norme di sicurezza si applicano in cantiere?",
+      "Qual è la differenza tra calcestruzzo C20/25 e C25/30?",
+      "Come impermeabilizzare le fondamenta?"
+    ]
   }
 }

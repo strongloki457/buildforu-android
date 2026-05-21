@@ -1106,5 +1106,22 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "aiAssistant": {
+    "title": "Assistant construction IA",
+    "subtitle": "Posez des questions sur les matériaux, les technologies ou les normes de construction",
+    "emptyTitle": "Assistant construction",
+    "emptySubtitle": "Posez des questions sur les matériaux, les technologies, les normes et la sécurité",
+    "placeholder": "Posez une question de construction…",
+    "send": "Envoyer",
+    "newConversation": "Nouvelle conversation",
+    "errorFallback": "Impossible de se connecter à l'assistant. Veuillez réessayer.",
+    "suggestions": [
+      "Quelle quantité de ciment faut-il pour 10 m² de dalle ?",
+      "Comment calculer le nombre de briques pour un mur ?",
+      "Quelles normes de sécurité s'appliquent sur un chantier ?",
+      "Quelle est la différence entre le béton C20/25 et C25/30 ?",
+      "Comment imperméabiliser des fondations ?"
+    ]
   }
 }

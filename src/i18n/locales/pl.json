@@ -1106,5 +1106,22 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "aiAssistant": {
+    "title": "Asystent budowlany AI",
+    "subtitle": "Zadaj pytanie dotyczące materiałów, technologii lub norm budowlanych",
+    "emptyTitle": "Asystent budowlany",
+    "emptySubtitle": "Pytaj o materiały, technologie, normy i BHP",
+    "placeholder": "Zadaj pytanie budowlane…",
+    "send": "Wyślij",
+    "newConversation": "Nowa rozmowa",
+    "errorFallback": "Nie udało się połączyć z asystentem. Spróbuj ponownie.",
+    "suggestions": [
+      "Ile cementu potrzebuję na 10m² posadzki?",
+      "Jak obliczyć ilość cegieł na ścianę?",
+      "Jakie normy BHP obowiązują na budowie?",
+      "Czym różni się beton C20/25 od C25/30?",
+      "Jak zaizolować fundament przed wilgocią?"
+    ]
   }
 }

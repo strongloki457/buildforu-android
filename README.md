@@ -1,119 +1,151 @@
 # BuildForU
 
-BuildForU is a construction company management web application focused on helping office teams and field crews stay aligned in one workspace. The current product is a connected MVP: authentication, workers, projects, tasks/calendar, attendance, and material requests use the local backend API.
+BuildForU is a construction company management SaaS — a connected MVP for office teams and field crews. Authentication, workers, projects, tasks/calendar, attendance, material requests, and AI assistant use the local backend API backed by PostgreSQL.
 
-## Overview
+## Requirements
 
-BuildForU is designed as an internal operations platform for construction businesses. It provides role-based access to dashboards, workforce coordination tools, scheduling views, communication features, and market/store discovery. Admin and employee sessions use backend JWT auth, and core operational data is loaded from PostgreSQL through the Express/Prisma API.
+- **Node.js 20+ LTS** (required for both frontend and backend)
+- **PostgreSQL 14+** running locally or via a cloud provider
+- **npm 9+**
 
-## Main Features
+## Feature List
 
-- Backend-connected JWT registration, login, logout, and session restore
-- Admin dashboard for company-wide operations visibility
-- Employee dashboard focused on personal assignments and field activity
+- JWT registration, login, logout, and session restore (access + refresh tokens)
+- Role-based views: Admin (company-wide operations) and Employee (personal assignments)
 - Workers management with optional employee login creation
 - Projects with worker assignments and status updates
 - Calendar/tasks with worker and project linking
-- Attendance start/end tracking for employee accounts
-- Team chat
+- Attendance start/end tracking with optional GPS location
+- Team chat (frontend mock until backend services are added)
 - Material requests backed by the API
-- Find to Buy store finder mock flow
-- Multilingual UI
-- Responsive design for desktop and mobile usage
-- Local frontend persistence for selected language and the MVP JWT session
+- Find to Buy store finder (mock data)
+- Market Map (redirects to Materials/Find to Buy)
+- AI construction assistant (powered by Groq — free tier)
+- Multilingual UI: English, Polish, French, German, Spanish, Italian
+- Responsive design for desktop and mobile
 
-## Tech Stack
+## Quick Start
 
-- React
-- Vite
-- Tailwind CSS
-- React Router
-- Backend API integration for auth and core operational data
-
-## Getting Started
-
-### Installation
-
-```bash
-npm install
-```
-
-Create a frontend environment file:
-
-```bash
-cp .env.example .env
-```
-
-Set `VITE_API_URL` to the backend API URL. The local backend defaults to `http://localhost:5000`.
-
-### Run Development Server
-
-Start the backend first:
+### 1 — Backend setup
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
+# Edit .env and set DATABASE_URL, JWT_SECRET, JWT_REFRESH_SECRET, and GROQ_API_KEY
 npm run prisma:generate
 npm run prisma:migrate
 npm run seed
 npm run dev
 ```
 
-Then start the frontend from the repository root:
+The backend starts on `http://localhost:5000`.
+
+### 2 — Frontend setup
+
+Open a second terminal in the repository root:
 
 ```bash
+npm install
+cp .env.example .env
+# VITE_API_URL is pre-set to http://localhost:5000 for local development
 npm run dev
 ```
 
-After starting the development server, open the local URL shown in the terminal.
+The frontend starts on `http://localhost:5173`. The Vite dev server proxies `/api/*` to the backend automatically.
 
-### Production Build Check
+## Environment Variables
 
-```bash
-npm run build
-```
+### Backend (`backend/.env`)
+
+| Variable | Required | Description |
+|---|---|---|
+| `DATABASE_URL` | Yes | PostgreSQL connection string |
+| `JWT_SECRET` | Yes | Access token signing secret (min 32 chars) |
+| `JWT_EXPIRES_IN` | No | Access token TTL (default `15m`) |
+| `JWT_REFRESH_SECRET` | Yes | Refresh token signing secret (min 32 chars) |
+| `JWT_REFRESH_EXPIRES_IN` | No | Refresh token TTL (default `7d`) |
+| `GROQ_API_KEY` | Yes* | Groq API key for AI assistant (free at console.groq.com) |
+| `PORT` | No | Backend port (default `5000`) |
+| `NODE_ENV` | No | `development` / `production` |
+| `FRONTEND_URL` | No | Allowed CORS origin (default `http://localhost:5173`) |
+| `SMTP_HOST` | No | SMTP host for email (omit to log to console) |
+| `SMTP_PORT` | No | SMTP port (default `587`) |
+| `SMTP_USER` | No | SMTP username |
+| `SMTP_PASS` | No | SMTP password |
+| `SMTP_FROM` | No | From address for emails |
+
+*The AI assistant returns a 503 if `GROQ_API_KEY` is missing, but all other features work normally.
+
+### Frontend (`root .env`)
+
+| Variable | Required | Description |
+|---|---|---|
+| `VITE_API_URL` | No | Backend API base URL (default `http://localhost:5000`) |
 
 ## Seed Login Accounts
+
+These accounts are created by `npm run seed` in the backend:
 
 - Admin: `admin@buildforu.com` / `admin123`
 - Employee: `worker@buildforu.com` / `worker123`
 
-These accounts come from the backend seed data. New employee logins created from the Workers screen call the backend workers API and show the temporary password returned once by the API.
+## Production Deployment
+
+### Backend
+
+```bash
+cd backend
+npm install --production=false
+npm run build          # Compile TypeScript → dist/
+npx prisma migrate deploy   # Run pending migrations (safe, no data loss)
+npm start              # Runs dist/server.js
+```
+
+Required production env vars: `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `GROQ_API_KEY`, `NODE_ENV=production`, `FRONTEND_URL` (your deployed frontend URL).
+
+Generate strong secrets:
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+### Frontend
+
+```bash
+npm run build   # Outputs to dist/
+```
+
+Serve the `dist/` folder with any static host (Nginx, Vercel, Netlify, etc.). Point API calls to your deployed backend by setting `VITE_API_URL` at build time.
 
 ## Project Structure
 
 ```text
-src/
-  assets/         Logos and static visual assets
-  components/     Shared UI, navigation, dashboard, and auth guard components
-  contexts/       Global app state providers such as auth, i18n, and app API data
-  data/           Mock datasets still used for chat, finance, Find to Buy, and demo UI helpers
-  hooks/          Custom React hooks for accessing app contexts
-  i18n/           Locale dictionaries for the multilingual interface
-  layouts/        Shared application shell layouts
-  pages/          Route-level screens such as dashboard, login, chat, and settings
-  App.jsx         Main route composition
-  main.jsx        App bootstrap entry
+.
+├── backend/
+│   ├── prisma/           Prisma schema, migrations, seed
+│   └── src/
+│       ├── config/       env validation, Prisma client
+│       ├── controllers/  Route handler functions
+│       ├── middleware/   auth, role, error middleware
+│       ├── routes/       Express routers
+│       ├── services/     Business logic
+│       ├── utils/        JWT, password, error helpers
+│       └── validators/   Zod input schemas
+└── src/                  React frontend
+    ├── api/              Typed API client functions
+    ├── components/       Shared UI, dashboard, navigation
+    ├── contexts/         Auth, i18n, app-data providers
+    ├── hooks/            Custom React hooks
+    ├── i18n/locales/     Translation files (en, pl, fr, de, es, it)
+    ├── pages/            Route-level screens
+    └── utils/            Frontend helpers
 ```
 
-## Notes
+## Security Notes
 
-- Authentication and core operational screens are connected to the backend API through JWT.
-- Workers, projects, tasks/calendar, attendance, and material requests are backend-managed.
-- Chat, finance, and Find to Buy still use frontend mock data until those backend services are added.
-- JWT is stored in `localStorage` for the MVP only. A production deployment should review token storage, refresh/session strategy, CSRF posture, and deployment-specific security controls.
-- Backend passwords are hashed, but seed/demo passwords are not production-safe credentials.
-- Access control must continue to be enforced server-side; frontend role guards are only a UI convenience.
-- Start PostgreSQL before testing registration/login. Without the database on `localhost:5432`, the backend health route can respond while auth/data routes return database errors.
-
-## Future Plans
-
-- Add backend services for chat, finance, and Find to Buy
-- Support file uploads
-- Integrate real maps and geolocation services
-- Add AI-powered product and store search
-
-## Development Status
-
-BuildForU is currently positioned as a connected SaaS MVP. The frontend uses real backend APIs for authentication and the main operational modules, with mock-only areas limited to chat, finance, and Find to Buy until the next backend phase.
+- JWT is stored in `localStorage` for the MVP. A production deployment should review token storage, refresh strategy, and CSRF posture.
+- Backend passwords are bcryptjs-hashed (12 rounds). Seed/demo passwords are not production-safe.
+- `passwordHash` is never returned by any API endpoint.
+- Stack traces are suppressed in `NODE_ENV=production` error responses.
+- Rate limits: 300 req/15 min globally, 20 req/15 min on `/api/ai/chat`.
+- AI assistant errors and provider details are never exposed to the client.

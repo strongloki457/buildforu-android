@@ -18,6 +18,8 @@ Twoje kompetencje:
 
 Odpowiadaj po polsku, konkretnie i praktycznie. Jeśli pytanie dotyczy czegoś poza budownictwem, grzecznie nakieruj rozmowę z powrotem na tematy budowlane.`;
 
+const AI_TIMEOUT_MS = 30_000;
+
 const chatSchema = z.object({
   messages: z
     .array(
@@ -35,11 +37,30 @@ let groqClient: Groq | null = null;
 function getClient(): Groq {
   if (!groqClient) {
     if (!env.GROQ_API_KEY) {
-      throw new AppError(503, "AI assistant is not configured. Add GROQ_API_KEY to backend/.env (free at console.groq.com)", "AI_NOT_CONFIGURED");
+      throw new AppError(503, "AI assistant is not configured.", "AI_NOT_CONFIGURED");
     }
     groqClient = new Groq({ apiKey: env.GROQ_API_KEY });
   }
   return groqClient;
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new AppError(504, "The AI assistant took too long to respond. Please try again.", "AI_TIMEOUT"));
+    }, ms);
+
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
 }
 
 export async function chat(req: Request, res: Response, next: NextFunction) {
@@ -52,18 +73,26 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
 
     const client = getClient();
 
-    const response = await client.chat.completions.create({
-      model: "llama-3.1-8b-instant",
-      max_tokens: 1024,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages.map((m) => ({ role: m.role, content: m.content }))
-      ]
-    });
+    const response = await withTimeout(
+      client.chat.completions.create({
+        model: "llama-3.1-8b-instant",
+        max_tokens: 1024,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages.map((m) => ({ role: m.role, content: m.content }))
+        ]
+      }),
+      AI_TIMEOUT_MS
+    );
 
     const text = response.choices[0]?.message?.content ?? "";
     res.json({ reply: text });
   } catch (error) {
-    next(error);
+    if (error instanceof AppError) {
+      next(error);
+      return;
+    }
+    // Never expose provider errors or stack traces to the client
+    next(new AppError(502, "The AI assistant is temporarily unavailable. Please try again.", "AI_UNAVAILABLE"));
   }
 }

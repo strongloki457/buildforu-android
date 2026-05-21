@@ -3,14 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { aiApi } from "../api/ai.api";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
-
-const SUGGESTIONS = [
-  "Ile cementu potrzebuję na 10m² posadzki?",
-  "Jak obliczyć ilość cegieł na ścianę?",
-  "Jakie normy BHP obowiązują na budowie?",
-  "Czym różni się beton C20/25 od C25/30?",
-  "Jak zaizolować fundament przed wilgocią?"
-];
+import { useI18n } from "../hooks/useI18n";
 
 function TypingDots() {
   return (
@@ -23,12 +16,15 @@ function TypingDots() {
 }
 
 export default function AiAssistantPage() {
+  const { t } = useI18n();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+
+  const suggestions = t("aiAssistant.suggestions") ?? [];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -55,7 +51,7 @@ export default function AiAssistantPage() {
       };
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (err) {
-      setError(err?.message || "Nie udało się połączyć z asystentem. Sprawdź czy ANTHROPIC_API_KEY jest ustawiony w backend/.env");
+      setError(err?.message || t("aiAssistant.errorFallback"));
     } finally {
       setIsLoading(false);
       inputRef.current?.focus();
@@ -77,14 +73,14 @@ export default function AiAssistantPage() {
     <Card className="flex h-full flex-col">
       <div className="flex items-start justify-between gap-2">
         <SectionHeader
-          title="Asystent budowlany AI"
-          subtitle="Zadaj pytanie dotyczące materiałów, technologii lub norm budowlanych"
+          title={t("aiAssistant.title")}
+          subtitle={t("aiAssistant.subtitle")}
         />
         {messages.length > 0 && (
           <button
             type="button"
             onClick={handleReset}
-            title="Nowa rozmowa"
+            title={t("aiAssistant.newConversation")}
             className="mt-1 shrink-0 rounded-2xl border border-slate-200 bg-white p-2.5 text-slate-500 transition hover:bg-slate-50"
           >
             <RotateCcw size={15} />
@@ -100,11 +96,11 @@ export default function AiAssistantPage() {
               <Bot size={32} className="text-brand-600" />
             </div>
             <div className="text-center">
-              <p className="text-base font-medium text-slate-900">Asystent budowlany</p>
-              <p className="mt-1 text-sm text-slate-500">Pytaj o materiały, technologie, normy i BHP</p>
+              <p className="text-base font-medium text-slate-900">{t("aiAssistant.emptyTitle")}</p>
+              <p className="mt-1 text-sm text-slate-500">{t("aiAssistant.emptySubtitle")}</p>
             </div>
             <div className="flex w-full max-w-md flex-col gap-2">
-              {SUGGESTIONS.map((s) => (
+              {Array.isArray(suggestions) && suggestions.map((s) => (
                 <button
                   key={s}
                   type="button"
@@ -171,7 +167,7 @@ export default function AiAssistantPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Zadaj pytanie budowlane…"
+          placeholder={t("aiAssistant.placeholder")}
           disabled={isLoading}
           className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100 disabled:opacity-60"
         />
@@ -181,7 +177,7 @@ export default function AiAssistantPage() {
           className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-sm text-white transition hover:bg-brand-600 disabled:opacity-50"
         >
           <CornerDownLeft size={15} />
-          Wyślij
+          {t("aiAssistant.send")}
         </button>
       </form>
     </Card>

@@ -57,7 +57,10 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
       error: {
         code: error.code,
         message: error.message,
-        details: error.details
+        // Only surface details in non-production to avoid leaking internal context
+        ...(env.NODE_ENV !== "production" && error.details !== undefined
+          ? { details: error.details }
+          : {})
       }
     });
     return;

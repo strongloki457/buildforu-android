@@ -1078,5 +1078,22 @@
     "de": "Deutsch",
     "es": "Spanisch",
     "it": "Italienisch"
+  },
+  "aiAssistant": {
+    "title": "KI-Bauassistent",
+    "subtitle": "Fragen Sie nach Materialien, Technologien oder Bauvorschriften",
+    "emptyTitle": "Bauassistent",
+    "emptySubtitle": "Fragen Sie nach Materialien, Technologien, Normen und Arbeitssicherheit",
+    "placeholder": "Bauliche Frage stellen…",
+    "send": "Senden",
+    "newConversation": "Neues Gespräch",
+    "errorFallback": "Verbindung zum Assistenten fehlgeschlagen. Bitte erneut versuchen.",
+    "suggestions": [
+      "Wie viel Zement brauche ich für 10 m² Bodenbelag?",
+      "Wie berechnet man die Anzahl der Ziegel für eine Wand?",
+      "Welche Sicherheitsvorschriften gelten auf einer Baustelle?",
+      "Was ist der Unterschied zwischen C20/25 und C25/30 Beton?",
+      "Wie schützt man ein Fundament vor Feuchtigkeit?"
+    ]
   }
 }

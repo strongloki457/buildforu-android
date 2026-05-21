@@ -1106,5 +1106,22 @@
         "site": "Skyline Offices"
       }
     }
+  },
+  "aiAssistant": {
+    "title": "AI Construction Assistant",
+    "subtitle": "Ask about materials, technologies, or building standards",
+    "emptyTitle": "Construction assistant",
+    "emptySubtitle": "Ask about materials, technologies, standards and safety",
+    "placeholder": "Ask a construction question…",
+    "send": "Send",
+    "newConversation": "New conversation",
+    "errorFallback": "Could not connect to the assistant. Please try again.",
+    "suggestions": [
+      "How much cement do I need for 10 m² of flooring?",
+      "How do I calculate the number of bricks for a wall?",
+      "What safety regulations apply on a construction site?",
+      "What is the difference between C20/25 and C25/30 concrete?",
+      "How do I waterproof a foundation?"
+    ]
   }
 }
