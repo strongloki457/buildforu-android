@@ -1,0 +1,1 @@
+const o=[{email:"admin@buildforu.com",name:"Sophie Carter",role:"admin",companyName:"BuildForU Demo Construction"},{email:"worker@buildforu.com",name:"Alex Novak",role:"employee",companyName:"BuildForU Demo Construction"}],e=["starter","pro","enterprise"];export{e as a,o as d};
