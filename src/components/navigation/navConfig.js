@@ -1,4 +1,5 @@
 import {
+  Bot,
   CalendarDays,
   ClipboardList,
   FolderKanban,
@@ -17,6 +18,7 @@ const registry = {
   materials: Package,
   calendar: CalendarDays,
   chat: MessageSquare,
+  "ai-assistant": Bot,
   settings: Settings
 };
 
@@ -24,8 +26,8 @@ const pathRegistry = {
   dashboard: "/dashboard"
 };
 
-const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "settings"];
-const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "settings"];
+const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "ai-assistant", "settings"];
+const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "ai-assistant", "settings"];
 
 function normalizeRole(role) {
   return String(role || "").trim().toLowerCase();

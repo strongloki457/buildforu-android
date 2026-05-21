@@ -27,7 +27,8 @@
     "tasks": "Zadania",
     "chat": "Czat",
     "settings": "Ustawienia",
-    "marketMap": "Mapa marketów"
+    "marketMap": "Mapa marketów",
+    "ai-assistant": "Asystent AI"
   },
   "common": {
     "search": "Szukaj w aplikacji",

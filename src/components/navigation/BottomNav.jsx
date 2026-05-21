@@ -2,7 +2,8 @@ import { NavLink } from "react-router-dom";
 
 export default function BottomNav({ navItems }) {
   const primaryItems = navItems.filter((item) => item.key !== "settings");
-  const columnClass = primaryItems.length >= 6 ? "grid-cols-6" : "grid-cols-5";
+  const count = primaryItems.length;
+  const columnClass = count >= 7 ? "grid-cols-7" : count >= 6 ? "grid-cols-6" : "grid-cols-5";
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/70 bg-white/92 px-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-[0_-18px_45px_-34px_rgba(15,23,42,0.45)] backdrop-blur-xl lg:hidden">

@@ -12,6 +12,7 @@ import materialsRoutes from "./routes/materials.routes";
 import notificationsRoutes from "./routes/notifications.routes";
 import projectsRoutes from "./routes/projects.routes";
 import tasksRoutes from "./routes/tasks.routes";
+import aiRoutes from "./routes/ai.routes";
 import workersRoutes from "./routes/workers.routes";
 
 const allowedOrigins = new Set(getAllowedOrigins());
@@ -69,6 +70,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/workers", workersRoutes);

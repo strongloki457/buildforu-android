@@ -23,7 +23,8 @@ const envSchema = z
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
-    SMTP_FROM: z.string().email().default("noreply@buildforu.com")
+    SMTP_FROM: z.string().email().default("noreply@buildforu.com"),
+    ANTHROPIC_API_KEY: z.string().optional()
   })
   .superRefine((value, context) => {
     if (isProduction && value.JWT_SECRET === "development-only-buildforu-secret-change-me") {

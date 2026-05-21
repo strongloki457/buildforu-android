@@ -19,7 +19,8 @@
     "tasks": "Tareas",
     "chat": "Chat",
     "settings": "Configuración",
-    "marketMap": "Mapa de tiendas"
+    "marketMap": "Mapa de tiendas",
+    "ai-assistant": "Asistente IA"
   },
   "common": {
     "search": "Buscar en la aplicacion",

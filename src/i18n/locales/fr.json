@@ -27,7 +27,8 @@
     "tasks": "Tâches",
     "chat": "Chat",
     "settings": "Paramètres",
-    "marketMap": "Carte des magasins"
+    "marketMap": "Carte des magasins",
+    "ai-assistant": "Assistant IA"
   },
   "common": {
     "search": "Rechercher dans l'espace",

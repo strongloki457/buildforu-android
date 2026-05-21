@@ -53,7 +53,8 @@
     "tasks": "Tasks",
     "chat": "Chat",
     "settings": "Settings",
-    "marketMap": "Market Map"
+    "marketMap": "Market Map",
+    "ai-assistant": "AI Assistant"
   },
   "common": {
     "search": "Search workspace",

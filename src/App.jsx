@@ -7,6 +7,7 @@ import { useAuth } from "./hooks/useAuth";
 import { useI18n } from "./hooks/useI18n";
 import AppLayout from "./layouts/AppLayout";
 
+const AiAssistantPage = lazy(() => import("./pages/AiAssistantPage"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const BillingPage = lazy(() => import("./pages/BillingPage"));
 const CalendarPage = lazy(() => import("./pages/CalendarPage"));
@@ -78,6 +79,7 @@ export default function App() {
             <Route path="/tasks" element={<TasksPage />} />
             <Route path="/market-map" element={<MarketMapPage />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/ai-assistant" element={<AiAssistantPage />} />
             <Route
               path="/workers"
               element={
