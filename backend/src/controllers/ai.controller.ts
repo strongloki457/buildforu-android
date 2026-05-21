@@ -1,5 +1,6 @@
 import Groq from "groq-sdk";
 import { Request, Response, NextFunction } from "express";
+import { z } from "zod";
 import { env } from "../config/env";
 import { AppError } from "../utils/errors";
 
@@ -17,6 +18,18 @@ Twoje kompetencje:
 
 Odpowiadaj po polsku, konkretnie i praktycznie. Jeśli pytanie dotyczy czegoś poza budownictwem, grzecznie nakieruj rozmowę z powrotem na tematy budowlane.`;
 
+const chatSchema = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().min(1).max(4000)
+      })
+    )
+    .min(1)
+    .max(50)
+});
+
 let groqClient: Groq | null = null;
 
 function getClient(): Groq {
@@ -29,18 +42,13 @@ function getClient(): Groq {
   return groqClient;
 }
 
-interface MessageInput {
-  role: "user" | "assistant";
-  content: string;
-}
-
 export async function chat(req: Request, res: Response, next: NextFunction) {
   try {
-    const { messages } = req.body as { messages: MessageInput[] };
-
-    if (!Array.isArray(messages) || messages.length === 0) {
-      throw new AppError(400, "messages must be a non-empty array", "VALIDATION_ERROR");
+    const parsed = chatSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw new AppError(400, "Invalid messages format.", "VALIDATION_ERROR");
     }
+    const { messages } = parsed.data;
 
     const client = getClient();
 

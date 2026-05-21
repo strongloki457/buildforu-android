@@ -1,42 +1,17 @@
-import fs from "fs";
-import https from "https";
-import path from "path";
 import app from "./app";
 import { env } from "./config/env";
 import { prisma } from "./config/prisma";
 
-let server: ReturnType<typeof app.listen> | https.Server | null = null;
-
-function loadDevSslCert(): { key: string; cert: string } | null {
-  try {
-    const pemPath = path.resolve(__dirname, "../../node_modules/.vite/basic-ssl/_cert.pem");
-    if (!fs.existsSync(pemPath)) return null;
-    const pem = fs.readFileSync(pemPath, "utf8");
-    const keyMatch = pem.match(/-----BEGIN RSA PRIVATE KEY-----[\s\S]*?-----END RSA PRIVATE KEY-----/);
-    const certMatch = pem.match(/-----BEGIN CERTIFICATE-----[\s\S]*?-----END CERTIFICATE-----/);
-    if (!keyMatch || !certMatch) return null;
-    return { key: keyMatch[0], cert: certMatch[0] };
-  } catch {
-    return null;
-  }
-}
+let server: ReturnType<typeof app.listen> | null = null;
 
 async function startServer() {
   try {
     await prisma.$connect();
     process.stdout.write("Prisma connected to BuildForU database\n");
 
-    const ssl = env.NODE_ENV !== "production" ? loadDevSslCert() : null;
-
-    if (ssl) {
-      server = https.createServer(ssl, app).listen(env.PORT, () => {
-        process.stdout.write(`BuildForU backend listening on https port ${env.PORT}\n`);
-      });
-    } else {
-      server = app.listen(env.PORT, () => {
-        process.stdout.write(`BuildForU backend listening on port ${env.PORT}\n`);
-      });
-    }
+    server = app.listen(env.PORT, () => {
+      process.stdout.write(`BuildForU backend listening on port ${env.PORT}\n`);
+    });
 
     server.on("error", (error: NodeJS.ErrnoException) => {
       if (error.code === "EADDRINUSE") {

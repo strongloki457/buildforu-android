@@ -27,7 +27,7 @@ app.use(
     credentials: true,
     origin(origin, callback) {
       if (!origin) {
-        callback(null, true);
+        callback(null, env.NODE_ENV !== "production");
         return;
       }
 

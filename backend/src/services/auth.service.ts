@@ -242,15 +242,7 @@ export async function requestPasswordReset(input: ForgotPasswordInput) {
     process.stderr.write(`[auth] Failed to send reset email to ${input.email}: ${error}\n`);
   });
 
-  const result: { message: string; devToken?: string } = {
-    message: "If that email exists, a reset link has been sent."
-  };
-
-  if (env.NODE_ENV === "development") {
-    result.devToken = token;
-  }
-
-  return result;
+  return { message: "If that email exists, a reset link has been sent." };
 }
 
 export async function resetPassword(input: ResetPasswordInput) {
