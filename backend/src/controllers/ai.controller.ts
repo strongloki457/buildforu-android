@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import Groq from "groq-sdk";
 import { Request, Response, NextFunction } from "express";
 import { env } from "../config/env";
 import { AppError } from "../utils/errors";
@@ -17,16 +17,16 @@ Twoje kompetencje:
 
 Odpowiadaj po polsku, konkretnie i praktycznie. Jeśli pytanie dotyczy czegoś poza budownictwem, grzecznie nakieruj rozmowę z powrotem na tematy budowlane.`;
 
-let anthropicClient: Anthropic | null = null;
+let groqClient: Groq | null = null;
 
-function getClient(): Anthropic {
-  if (!anthropicClient) {
-    if (!env.ANTHROPIC_API_KEY) {
-      throw new AppError(503, "AI assistant is not configured. Add ANTHROPIC_API_KEY to backend/.env", "AI_NOT_CONFIGURED");
+function getClient(): Groq {
+  if (!groqClient) {
+    if (!env.GROQ_API_KEY) {
+      throw new AppError(503, "AI assistant is not configured. Add GROQ_API_KEY to backend/.env (free at console.groq.com)", "AI_NOT_CONFIGURED");
     }
-    anthropicClient = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    groqClient = new Groq({ apiKey: env.GROQ_API_KEY });
   }
-  return anthropicClient;
+  return groqClient;
 }
 
 interface MessageInput {
@@ -44,17 +44,16 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
 
     const client = getClient();
 
-    const response = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
+    const response = await client.chat.completions.create({
+      model: "llama-3.1-8b-instant",
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      messages: messages.map((m) => ({
-        role: m.role,
-        content: m.content
-      }))
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map((m) => ({ role: m.role, content: m.content }))
+      ]
     });
 
-    const text = response.content[0]?.type === "text" ? response.content[0].text : "";
+    const text = response.choices[0]?.message?.content ?? "";
     res.json({ reply: text });
   } catch (error) {
     next(error);
