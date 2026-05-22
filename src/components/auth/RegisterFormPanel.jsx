@@ -1,7 +1,6 @@
 import { ArrowRight, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { availablePlans } from "./authData";
 import { useI18n } from "../../hooks/useI18n";
 
 const strengthStyles = {
@@ -179,22 +178,6 @@ export default function RegisterFormPanel({
             </button>
           </div>
           <FieldFeedback isValid={fieldStatus.confirmPassword} messageKey={fieldErrors.confirmPassword} />
-        </label>
-
-        <label className="grid gap-2">
-          <span className="text-sm text-slate-600">{t("register.plan")}</span>
-          <select
-            disabled={isSubmitting}
-            value={form.plan}
-            onChange={(event) => onChange("plan", event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition focus:border-brand-300 focus:ring-4 focus:ring-brand-100 sm:text-sm"
-          >
-            {availablePlans.map((planId) => (
-              <option key={planId} value={planId}>
-                {t(`plans.${planId}`)}
-              </option>
-            ))}
-          </select>
         </label>
 
         <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white/85 p-4">

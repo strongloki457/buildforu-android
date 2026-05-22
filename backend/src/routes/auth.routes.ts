@@ -22,6 +22,8 @@ const authRateLimit = rateLimit({
 });
 
 router.post("/register-company", authRateLimit, validate({ body: registerCompanySchema }), authController.registerCompany);
+router.get("/verify-email", authController.verifyEmail);
+router.post("/resend-verification", authenticate, authController.resendVerification);
 router.post("/login", authRateLimit, validate({ body: loginSchema }), authController.login);
 router.post("/refresh", authController.refresh);
 router.get("/me", authenticate, authController.me);

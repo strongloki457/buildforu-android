@@ -2,8 +2,6 @@ import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import RegisterFormPanel from "../components/auth/RegisterFormPanel";
 import RegisterSidePanel from "../components/auth/RegisterSidePanel";
-import { availablePlans } from "../components/auth/authData";
-import { normalizePlan } from "../components/auth/registerUtils";
 import PublicShell from "../components/marketing/PublicShell";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
@@ -70,13 +68,14 @@ export default function RegisterCompanyPage() {
   const navigate = useNavigate();
   const { registerCompany } = useAuth();
   const { t } = useI18n();
+  const intendedPlan = location.state?.plan === "pro" ? "pro" : null;
+
   const [form, setForm] = useState({
     companyName: "",
     ownerName: "",
     email: "",
     password: "",
     confirmPassword: "",
-    plan: availablePlans.includes(normalizePlan(location.state?.plan)) ? normalizePlan(location.state?.plan) : "pro",
     termsAccepted: false
   });
   const [touched, setTouched] = useState({});
@@ -151,10 +150,10 @@ export default function RegisterCompanyPage() {
         ownerName: form.ownerName.trim(),
         email: form.email.trim(),
         password: form.password,
-        plan: form.plan
+        plan: "starter"
       });
 
-      navigate("/dashboard", { replace: true });
+      navigate("/verify-pending", { replace: true, state: { intendedPlan } });
     } catch (issue) {
       setError(t(issue.message, "We could not create this workspace. Check the details and try again."));
     } finally {

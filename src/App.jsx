@@ -24,6 +24,9 @@ const MaterialsPage = lazy(() => import("./pages/MaterialsPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const RegisterCompanyPage = lazy(() => import("./pages/RegisterCompanyPage"));
+const CheckoutSuccessPage = lazy(() => import("./pages/CheckoutSuccessPage"));
+const VerifyEmailPage = lazy(() => import("./pages/VerifyEmailPage"));
+const VerifyPendingPage = lazy(() => import("./pages/VerifyPendingPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const TasksPage = lazy(() => import("./pages/TasksPage"));
 const WorkersPage = lazy(() => import("./pages/WorkersPage"));
@@ -72,6 +75,9 @@ export default function App() {
         </Route>
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/verify-pending" element={<VerifyPendingPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardRouter />} />

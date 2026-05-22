@@ -32,9 +32,12 @@ enum MaterialRequestStatus {
 }
 
 model Company {
-  id               String            @id @default(cuid())
-  name             String
-  plan             String            @default("starter")
+  id                     String            @id @default(cuid())
+  name                   String
+  plan                   String            @default("starter")
+  stripeCustomerId       String?           @unique
+  stripeSubscriptionId   String?           @unique
+  stripeSubscriptionStatus String?
   users            User[]
   workers          Worker[]
   projects         Project[]
@@ -53,6 +56,7 @@ model User {
   id                   String               @id @default(cuid())
   name                 String
   email                String               @unique
+  emailVerified        Boolean              @default(false)
   passwordHash         String
   role                 Role
   companyId            String
@@ -62,10 +66,11 @@ model User {
   lockedUntil          DateTime?
   company              Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
   worker               Worker?              @relation(fields: [workerId], references: [id], onDelete: SetNull)
-  chatParticipations   ChatParticipant[]
-  sentMessages         ChatMessage[]
-  passwordResetTokens  PasswordResetToken[]
-  refreshTokens        RefreshToken[]
+  chatParticipations        ChatParticipant[]
+  sentMessages              ChatMessage[]
+  passwordResetTokens       PasswordResetToken[]
+  emailVerificationTokens   EmailVerificationToken[]
+  refreshTokens             RefreshToken[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
 
@@ -238,6 +243,25 @@ model ChatMessage {
 
   @@index([threadId])
   @@index([threadId, createdAt])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model StripeWebhookEvent {
+  id            String   @id @default(cuid())
+  stripeEventId String   @unique
+  processedAt   DateTime @default(now())
+
+  @@index([stripeEventId])
 }
 
 model PasswordResetToken {

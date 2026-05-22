@@ -1,5 +1,7 @@
+import { MailWarning, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { apiRequest } from "../api/client";
 import BottomNav from "../components/navigation/BottomNav";
 import Sidebar from "../components/navigation/Sidebar";
 import Topbar from "../components/navigation/Topbar";
@@ -14,6 +16,19 @@ export default function AppLayout() {
   const { t } = useI18n();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [verifyBannerDismissed, setVerifyBannerDismissed] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
+
+  const showVerifyBanner = !verifyBannerDismissed && user && user.emailVerified === false;
+
+  const handleResend = async () => {
+    try {
+      await apiRequest("/api/auth/resend-verification", { method: "POST" });
+      setResendSent(true);
+    } catch {
+      // ignore
+    }
+  };
 
   const navItems = useMemo(() => getNavigation(user?.role, t), [user?.role, t]);
   const activeItem =
@@ -38,6 +53,36 @@ export default function AppLayout() {
             notifications={notifications}
             onMenuOpen={() => setSidebarOpen(true)}
           />
+
+          {showVerifyBanner && (
+            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2">
+                <MailWarning size={16} className="shrink-0 text-amber-600" />
+                <span>
+                  {resendSent ? t("emailVerify.resentBanner") : t("emailVerify.banner")}
+                </span>
+              </div>
+              <div className="flex shrink-0 items-center gap-3">
+                {!resendSent && (
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    className="rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-amber-900 shadow-sm hover:bg-amber-100 transition"
+                  >
+                    {t("emailVerify.resend")}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setVerifyBannerDismissed(true)}
+                  className="text-amber-600 hover:text-amber-800 transition"
+                  aria-label={t("common.close")}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          )}
 
           {dataError ? (
             <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between">

@@ -19,5 +19,9 @@ export default function ProtectedRoute() {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
+  if (user.emailVerified === false) {
+    return <Navigate to="/verify-pending" replace />;
+  }
+
   return <Outlet />;
 }

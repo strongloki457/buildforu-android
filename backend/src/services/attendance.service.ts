@@ -213,6 +213,30 @@ export async function listAttendanceLocations(currentUser: AuthContext, attendan
   });
 }
 
+const AUTO_CLOSE_HOURS = 14;
+
+export async function autoCloseExpiredSessions(): Promise<number> {
+  const cutoff = new Date(Date.now() - AUTO_CLOSE_HOURS * 60 * 60 * 1000);
+
+  const expired = await prisma.attendance.findMany({
+    where: { endTime: null, startTime: { lt: cutoff } },
+    select: { id: true, startTime: true }
+  });
+
+  if (expired.length === 0) return 0;
+
+  await prisma.$transaction(
+    expired.map(({ id, startTime }) =>
+      prisma.attendance.update({
+        where: { id },
+        data: { endTime: new Date(startTime.getTime() + AUTO_CLOSE_HOURS * 60 * 60 * 1000) }
+      })
+    )
+  );
+
+  return expired.length;
+}
+
 export async function listAttendance(currentUser: AuthContext, query: PaginationQuery) {
   const pagination = getPagination(query);
   const where =

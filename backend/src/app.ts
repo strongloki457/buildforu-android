@@ -14,6 +14,7 @@ import projectsRoutes from "./routes/projects.routes";
 import tasksRoutes from "./routes/tasks.routes";
 import aiRoutes from "./routes/ai.routes";
 import workersRoutes from "./routes/workers.routes";
+import stripeRoutes from "./routes/stripe.routes";
 
 const allowedOrigins = new Set(getAllowedOrigins());
 const app = express();
@@ -44,6 +45,8 @@ app.use(
     }
   })
 );
+// Stripe webhook needs raw body — must be registered before express.json()
+app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "1mb" }));
 
 app.use(
@@ -78,6 +81,7 @@ app.use("/api/projects", projectsRoutes);
 app.use("/api/tasks", tasksRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/materials", materialsRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

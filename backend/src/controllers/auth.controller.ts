@@ -32,6 +32,21 @@ export const updateAvatar = asyncHandler(async (req: Request, res: Response) => 
   res.json(result);
 });
 
+export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
+  const { token } = req.query;
+  if (!token || typeof token !== "string") {
+    res.status(400).json({ error: { code: "MISSING_TOKEN", message: "Token is required." } });
+    return;
+  }
+  const result = await authService.verifyEmail(token);
+  res.json(result);
+});
+
+export const resendVerification = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.resendVerificationEmail(req.user!.userId);
+  res.json(result);
+});
+
 export const refresh = asyncHandler(async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
 

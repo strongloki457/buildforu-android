@@ -10,7 +10,8 @@ function createTransporter() {
     host: env.SMTP_HOST,
     port: env.SMTP_PORT,
     secure: env.SMTP_PORT === 465,
-    auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined
+    auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
+    tls: { rejectUnauthorized: false }
   });
 }
 
@@ -51,5 +52,20 @@ export async function sendPasswordChangedEmail(to: string, name: string): Promis
     `<p>Hi ${name},</p>
      <p>Your BuildForU password was successfully changed.</p>
      <p>If you did not make this change, contact support immediately and secure your account.</p>`
+  );
+}
+
+export async function sendEmailVerificationEmail(to: string, name: string, token: string): Promise<void> {
+  const link = `${env.FRONTEND_URL}/verify-email?token=${encodeURIComponent(token)}`;
+
+  await sendMail(
+    to,
+    "Verify your BuildForU email address",
+    `<p>Hi ${name},</p>
+     <p>Welcome to BuildForU! Please verify your email address to confirm your account.</p>
+     <p><a href="${link}" style="background:#1a56db;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;">Verify email</a></p>
+     <p>Or copy this link: <a href="${link}">${link}</a></p>
+     <p>This link expires in <strong>24 hours</strong>.</p>
+     <p>If you did not create a BuildForU account, you can safely ignore this email.</p>`
   );
 }

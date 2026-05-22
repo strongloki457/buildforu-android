@@ -1,4 +1,4 @@
-{
+﻿{
   "app": {
     "name": "BuildForU",
     "tagline": "Operacje budowlane w bardziej przejrzystym widoku.",
@@ -754,8 +754,8 @@
     "choosePlan": "Wybierz plan",
     "plans": {
       "starter": {
-        "price": "$29",
-        "subtitle": "Dla malych zespółow, ktore chca sie uporzadkowac.",
+        "price": "€12,95",
+        "subtitle": "Dla małych zespołów — 2 tygodnie za darmo, potem €12,95/mies.",
         "workers": "Do 5 pracowników",
         "features": {
           "1": "Logowanie oparte o role",
@@ -765,7 +765,7 @@
         }
       },
       "pro": {
-        "price": "$99",
+        "price": "€69,95",
         "subtitle": "Dla aktywnych firm z wieloma ekipami.",
         "workers": "Do 25 pracownikow",
         "features": {
@@ -867,12 +867,12 @@
     },
     "planCards": {
       "starter": {
-        "price": "$29/mies.",
+        "price": "€12,95/mies.",
         "workers": "Do 5 pracowników",
         "note": "Lekki punkt startowy dla mniejszych ekip budowlanych."
       },
       "pro": {
-        "price": "$99/mies.",
+        "price": "€69,95/mies.",
         "workers": "Do 25 pracownikow",
         "note": "Najlepszy wybor dla aktywnych firm prowadzacych kilka ekip i projektow."
       },
@@ -914,14 +914,39 @@
       "pro": "Stworzony dla aktywnych firm z wieloma zespółami.",
       "enterprise": "Gotowy dla wiekszych organizacji i wsparcia wdrozenia."
     },
+    "subscriptionActive": "Subskrypcja aktywna",
+    "manageSubscription": "Zarządzaj subskrypcją",
+    "activeCard": "Karta płatnicza aktywna",
+    "manageInStripe": "Zarządzaj w Stripe",
+    "noPaymentMethod": "Brak metody płatności",
+    "noPaymentMethodHint": "Wybierz plan poniżej, aby dodać kartę i aktywować subskrypcję.",
+    "perMonthShort": "/mies.",
+    "noActiveSubscription": "Brak aktywnej subskrypcji",
+    "availablePlans": "Dostępne plany",
+    "contactUs": "Skontaktuj się",
+    "customPrice": "Wycena indywidualna",
+    "enterprisePlan": "Jesteś na planie Enterprise",
+    "enterprisePlanHint": "Masz pełny dostęp do platformy. W razie pytań skontaktuj się z zespołem.",
+    "cancelTitle": "Anuluj subskrypcję",
+    "cancelHint": "Po anulowaniu zachowasz dostęp do końca opłaconego okresu. Twoje dane zostaną zachowane.",
+    "cancelButton": "Anuluj subskrypcję",
     "activity": {
       "invoiceTitle": "Faktura INV-2026-041",
-      "invoiceBody": "Oplacona pomyslnie - $99.00",
+      "invoiceBody": "Opłacona pomyślnie",
       "renewalTitle": "Przypomnienie o odnowieniu subskrypcji",
       "renewalBody": "Automatyczne odnowienie jest zaplanowane na koniec miesiąca.",
       "growthTitle": "Wskaznik wzrostu stanowisk",
       "growthBody": "Miescisz sie w limicie aktualnego planu i masz miejsce na dodatkowych pracownikow."
     }
+  },
+  "checkout": {
+    "successTitle": "Płatność zakończona!",
+    "successSubtitle": "Twoja subskrypcja jest aktywna. Możesz teraz korzystać z pełnych możliwości BuildForU.",
+    "goToDashboard": "Przejdź do panelu",
+    "viewBilling": "Zobacz rozliczenia",
+    "verifying": "Weryfikacja płatności...",
+    "invalidTitle": "Nie można potwierdzić płatności",
+    "invalidSubtitle": "Ten link jest nieprawidłowy lub sesja płatności wygasła. Sprawdź status subskrypcji w rozliczeniach."
   },
   "seed": {
     "common": {
@@ -1123,5 +1148,23 @@
       "Czym różni się beton C20/25 od C25/30?",
       "Jak zaizolować fundament przed wilgocią?"
     ]
+  },
+  "emailVerify": {
+    "verifying": "Weryfikacja adresu email...",
+    "successTitle": "Email zweryfikowany!",
+    "successSubtitle": "Twój adres email został potwierdzony. Możesz teraz korzystać z pełnych możliwości BuildForU.",
+    "invalidTitle": "Link wygasł lub jest nieprawidłowy",
+    "invalidSubtitle": "Ten link weryfikacyjny jest nieważny lub wygasł. Zaloguj się i wyślij nowy link z panelu.",
+    "goToDashboard": "Przejdź do panelu",
+    "banner": "Potwierdź swój adres email, aby aktywować konto. Sprawdź skrzynkę odbiorczą.",
+    "resentBanner": "Email weryfikacyjny został wysłany ponownie. Sprawdź skrzynkę odbiorczą.",
+    "resend": "Wyślij ponownie"
+  },
+  "verifyPending": {
+    "title": "Sprawdź swoją skrzynkę",
+    "subtitle": "Wysłaliśmy link weryfikacyjny na {{email}}. Kliknij go, aby aktywować konto.",
+    "resend": "Wyślij ponownie",
+    "resentConfirm": "Email wysłany! Sprawdź skrzynkę.",
+    "logout": "Zaloguj się na inne konto"
   }
 }

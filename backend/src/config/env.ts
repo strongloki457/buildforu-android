@@ -24,7 +24,11 @@ const envSchema = z
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
     SMTP_FROM: z.string().email().default("noreply@buildforu.com"),
-    GROQ_API_KEY: z.string().optional()
+    GROQ_API_KEY: z.string().optional(),
+    STRIPE_SECRET_KEY: z.string().optional(),
+    STRIPE_WEBHOOK_SECRET: z.string().optional(),
+    STRIPE_PRICE_ID_STARTER: z.string().optional(),
+    STRIPE_PRICE_ID_PRO: z.string().optional()
   })
   .superRefine((value, context) => {
     if (isProduction && value.JWT_SECRET === "development-only-buildforu-secret-change-me") {

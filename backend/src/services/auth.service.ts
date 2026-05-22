@@ -6,7 +6,7 @@ import type { ForgotPasswordInput, LoginInput, RegisterCompanyInput, ResetPasswo
 import { AppError, assertFound } from "../utils/errors";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../utils/jwt";
 import { hashPassword, verifyPassword } from "../utils/password";
-import { sendPasswordChangedEmail, sendPasswordResetEmail } from "./email.service";
+import { sendEmailVerificationEmail, sendPasswordChangedEmail, sendPasswordResetEmail } from "./email.service";
 
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
@@ -15,6 +15,7 @@ const publicUserSelect = {
   id: true,
   name: true,
   email: true,
+  emailVerified: true,
   role: true,
   companyId: true,
   workerId: true,
@@ -156,7 +157,62 @@ export async function registerCompany(input: RegisterCompanyInput) {
     });
   });
 
+  const EMAIL_VERIFY_TTL_MS = 24 * 60 * 60 * 1000;
+  const verifyToken = crypto.randomBytes(32).toString("hex");
+  await prisma.emailVerificationToken.create({
+    data: {
+      userId: user.id,
+      token: verifyToken,
+      expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS)
+    }
+  });
+
+  sendEmailVerificationEmail(email, input.name, verifyToken).catch((error) => {
+    process.stderr.write(`[auth] Failed to send verification email to ${email}: ${error}\n`);
+  });
+
   return buildAuthResponse(user);
+}
+
+export async function verifyEmail(token: string) {
+  const record = await prisma.emailVerificationToken.findUnique({
+    where: { token },
+    select: { id: true, userId: true, expiresAt: true }
+  });
+
+  if (!record || record.expiresAt < new Date()) {
+    throw new AppError(400, "Verification link is invalid or has expired.", "TOKEN_INVALID");
+  }
+
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: record.userId }, data: { emailVerified: true } }),
+    prisma.emailVerificationToken.delete({ where: { id: record.id } })
+  ]);
+
+  return { message: "Email verified successfully." };
+}
+
+export async function resendVerificationEmail(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, email: true, name: true, emailVerified: true }
+  });
+
+  if (!user) throw new AppError(404, "User not found.", "USER_NOT_FOUND");
+  if (user.emailVerified) throw new AppError(409, "Email is already verified.", "ALREADY_VERIFIED");
+
+  await prisma.emailVerificationToken.deleteMany({ where: { userId } });
+
+  const token = crypto.randomBytes(32).toString("hex");
+  await prisma.emailVerificationToken.create({
+    data: { userId, token, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) }
+  });
+
+  sendEmailVerificationEmail(user.email, user.name, token).catch((error) => {
+    process.stderr.write(`[auth] Failed to resend verification email: ${error}\n`);
+  });
+
+  return { message: "Verification email sent." };
 }
 
 export async function login(input: LoginInput) {

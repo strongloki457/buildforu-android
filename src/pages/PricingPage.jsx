@@ -19,6 +19,14 @@ export default function PricingPage() {
       <section className="mt-12 grid gap-5 xl:grid-cols-3">
         {planIds.map((planId) => {
           const highlighted = planId === "pro";
+          const isEnterprise = planId === "enterprise";
+
+          const ctaProps = isEnterprise
+            ? { as: "a", href: "mailto:kontakt@buildforu.pl" }
+            : { as: Link, to: "/register-company", state: { plan: planId } };
+
+          const CtaElement = ctaProps.as;
+
           return (
             <article
               key={planId}
@@ -61,17 +69,16 @@ export default function PricingPage() {
                 ))}
               </div>
 
-              <Link
-                to="/register-company"
-                state={{ plan: planId }}
+              <CtaElement
+                {...(isEnterprise ? { href: ctaProps.href } : { to: ctaProps.to, state: ctaProps.state })}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-sm transition ${
                   highlighted
                     ? "bg-brand-700 text-white hover:bg-brand-600"
                     : "border border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
                 }`}
               >
-                {t("pricing.choosePlan")}
-              </Link>
+                {isEnterprise ? t("pricing.contactUs", "Kontakt") : t("pricing.choosePlan")}
+              </CtaElement>
             </article>
           );
         })}
