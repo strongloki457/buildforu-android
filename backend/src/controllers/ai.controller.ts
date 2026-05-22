@@ -2,6 +2,7 @@ import Groq from "groq-sdk";
 import { Request, Response, NextFunction } from "express";
 import { z } from "zod";
 import { env } from "../config/env";
+import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
 
 const SYSTEM_PROMPT = `Jesteś pomocnym asystentem budowlanym dla aplikacji BuildForU. Pomagasz kierownikom budowy, pracownikom i firmom budowlanym.
@@ -70,6 +71,15 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       throw new AppError(400, "Invalid messages format.", "VALIDATION_ERROR");
     }
     const { messages } = parsed.data;
+
+    // Plan check — AI is Pro-only, enforced server-side
+    const company = await prisma.company.findUnique({
+      where: { id: req.user!.companyId },
+      select: { plan: true }
+    });
+    if (!company || company.plan !== "pro") {
+      throw new AppError(403, "AI assistant is available on the Pro plan only.", "PLAN_REQUIRED");
+    }
 
     const client = getClient();
 

@@ -11,7 +11,7 @@ export const registerCompanySchema = z.object({
     .refine((password) => /[a-z]/.test(password) && /[A-Z]/.test(password) && /\d/.test(password), {
       message: "Password must include uppercase, lowercase, and numeric characters."
     }),
-  plan: z.string().trim().max(40).optional().default("starter")
+  plan: z.literal("starter").optional().default("starter")
 });
 
 export const loginSchema = z.object({

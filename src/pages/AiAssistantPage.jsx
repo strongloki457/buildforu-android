@@ -1,8 +1,10 @@
-import { Bot, CornerDownLeft, RotateCcw, Sparkles } from "lucide-react";
+import { Bot, CornerDownLeft, Lock, RotateCcw, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { aiApi } from "../api/ai.api";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
+import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 function TypingDots() {
@@ -15,8 +17,29 @@ function TypingDots() {
   );
 }
 
+function UpgradeWall({ t }) {
+  return (
+    <Card>
+      <div className="flex flex-col items-center py-16 text-center">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-50">
+          <Lock size={36} className="text-brand-700" />
+        </div>
+        <h2 className="mt-6 text-2xl text-slate-950">{t("aiAssistant.proOnly.title")}</h2>
+        <p className="mt-3 max-w-md text-slate-500">{t("aiAssistant.proOnly.subtitle")}</p>
+        <Link
+          to="/settings/billing"
+          className="mt-8 inline-flex items-center justify-center rounded-2xl bg-brand-700 px-6 py-3.5 text-sm text-white hover:bg-brand-600 transition"
+        >
+          {t("aiAssistant.proOnly.cta")}
+        </Link>
+      </div>
+    </Card>
+  );
+}
+
 export default function AiAssistantPage() {
   const { t } = useI18n();
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +48,7 @@ export default function AiAssistantPage() {
   const inputRef = useRef(null);
 
   const suggestions = t("aiAssistant.suggestions") ?? [];
+  const isStarterPlan = (user?.plan ?? "starter") === "starter";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,6 +92,10 @@ export default function AiAssistantPage() {
     setError(null);
     inputRef.current?.focus();
   };
+
+  if (isStarterPlan) {
+    return <UpgradeWall t={t} />;
+  }
 
   return (
     <Card className="flex h-full flex-col">

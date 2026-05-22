@@ -1,4 +1,4 @@
-import { CircleDollarSign, CreditCard, Landmark, Receipt } from "lucide-react";
+import { CircleDollarSign, CreditCard, Construction, Landmark, Receipt } from "lucide-react";
 import Card from "../components/ui/Card";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
@@ -11,6 +11,10 @@ export default function FinancePage() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-center gap-3 rounded-[20px] border border-amber-200 bg-amber-50 px-5 py-4">
+        <Construction size={18} className="shrink-0 text-amber-600" />
+        <p className="text-sm text-amber-800">{t("finance.demoNotice")}</p>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard icon={Landmark} label={t("finance.revenue")} value={finance.revenue} detail={t("finance.revenueDetail")} />
         <MetricCard icon={CreditCard} label={t("finance.expenses")} value={finance.expenses} detail={t("finance.expensesDetail")} />

@@ -1,4 +1,4 @@
-﻿{
+{
     "app":  {
                 "name":  "BuildForU",
                 "tagline":  "Operazioni di cantiere con una vista piu chiara.",
@@ -494,7 +494,8 @@
                     "openInvoicesDetail":  "Pronto per dati backend live in futuro.",
                     "cashFlowOutlook":  "Prospettiva cash flow",
                     "monthOverMonth":  "+12,4% mese su mese",
-                    "weekLabel":  "S{{number}}"
+                    "weekLabel":  "S{{number}}",
+                    "demoNotice":  "Questa sezione mostra dati di esempio. Il modulo finanziario completo sarà disponibile a breve."
                 },
     "settings":  {
                      "title":  "Impostazioni",
@@ -673,7 +674,11 @@
                     "enterprisePlanHint":  "Hai accesso completo alla piattaforma.",
                     "cancelTitle":  "Annulla abbonamento",
                     "cancelHint":  "Dopo l\u0027annullamento mantieni l\u0027accesso fino alla fine del periodo pagato.",
-                    "cancelButton":  "Annulla abbonamento"
+                    "cancelButton":  "Annulla abbonamento",
+                    "cancelScheduledTitle":  "Annullamento programmato",
+                    "cancelScheduledHint":  "Il tuo abbonamento scadrà il {{date}}. Hai accesso completo fino ad allora.",
+                    "cancelScheduledHintNoDate":  "L'abbonamento sarà annullato alla fine del periodo corrente.",
+                    "manageInStripeShort":  "Gestisci in Stripe"
                 },
     "pricing":  {
                     "eyebrow":  "Prezzi",
@@ -1110,7 +1115,12 @@
                                             "Quali norme di sicurezza si applicano in cantiere?",
                                             "Qual è la differenza tra calcestruzzo C20/25 e C25/30?",
                                             "Come impermeabilizzare le fondamenta?"
-                                        ]
+                                        ],
+                        "proOnly":  {
+                                        "title":  "Assistente IA disponibile nel piano Pro",
+                                        "subtitle":  "Aggiorna il tuo piano per usare l\u0027assistente IA per l\u0027edilizia.",
+                                        "cta":  "Passa a Pro"
+                                    }
                     },
     "checkout":  {
                      "successTitle":  "Pagamento completato!",

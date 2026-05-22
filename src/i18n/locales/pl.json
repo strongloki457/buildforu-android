@@ -525,7 +525,8 @@
     "openInvoicesDetail": "Gotowe do podpięcia pod dane backendowe.",
     "cashFlowOutlook": "Prognoza przepływów",
     "monthOverMonth": "+12,4% miesiąc do miesiąca",
-    "weekLabel": "T{{number}}"
+    "weekLabel": "T{{number}}",
+    "demoNotice": "Ta sekcja prezentuje przykładowe dane poglądowe. Prawdziwy moduł finansowy będzie dostępny wkrótce."
   },
   "settings": {
     "title": "Ustawienia",
@@ -930,6 +931,10 @@
     "cancelTitle": "Anuluj subskrypcję",
     "cancelHint": "Po anulowaniu zachowasz dostęp do końca opłaconego okresu. Twoje dane zostaną zachowane.",
     "cancelButton": "Anuluj subskrypcję",
+    "cancelScheduledTitle": "Subskrypcja zaplanowana do anulowania",
+    "cancelScheduledHint": "Twoja subskrypcja wygaśnie {{date}}. Do tego czasu masz pełny dostęp.",
+    "cancelScheduledHintNoDate": "Twoja subskrypcja zostanie anulowana na koniec bieżącego okresu.",
+    "manageInStripeShort": "Zarządzaj w Stripe",
     "activity": {
       "invoiceTitle": "Faktura INV-2026-041",
       "invoiceBody": "Opłacona pomyślnie",
@@ -1147,7 +1152,12 @@
       "Jakie normy BHP obowiązują na budowie?",
       "Czym różni się beton C20/25 od C25/30?",
       "Jak zaizolować fundament przed wilgocią?"
-    ]
+    ],
+    "proOnly": {
+      "title": "Asystent AI dostępny w planie Pro",
+      "subtitle": "Uaktualnij swój plan, aby korzystać z asystenta budowlanego AI — zadawaj pytania o materiały, normy i technologie.",
+      "cta": "Przejdź na plan Pro"
+    }
   },
   "emailVerify": {
     "verifying": "Weryfikacja adresu email...",

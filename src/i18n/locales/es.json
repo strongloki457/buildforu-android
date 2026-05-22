@@ -494,7 +494,8 @@
                     "openInvoicesDetail":  "Listo para datos backend en el futuro.",
                     "cashFlowOutlook":  "Perspectiva de flujo de caja",
                     "monthOverMonth":  "+12,4% mes a mes",
-                    "weekLabel":  "S{{number}}"
+                    "weekLabel":  "S{{number}}",
+                    "demoNotice":  "Esta sección muestra datos de ejemplo. El módulo financiero completo estará disponible pronto."
                 },
     "settings":  {
                      "title":  "Configuracion",
@@ -673,7 +674,11 @@
                     "enterprisePlanHint":  "Tienes acceso completo a la plataforma.",
                     "cancelTitle":  "Cancelar suscripción",
                     "cancelHint":  "Después de cancelar, conservas el acceso hasta el final del período pagado.",
-                    "cancelButton":  "Cancelar suscripción"
+                    "cancelButton":  "Cancelar suscripción",
+                    "cancelScheduledTitle":  "Suscripción programada para cancelar",
+                    "cancelScheduledHint":  "Tu suscripción expirará el {{date}}. Tendrás acceso completo hasta entonces.",
+                    "cancelScheduledHintNoDate":  "Tu suscripción se cancelará al final del período actual.",
+                    "manageInStripeShort":  "Gestionar en Stripe"
                 },
     "pricing":  {
                     "eyebrow":  "Precios",
@@ -1110,7 +1115,12 @@
                                             "Que normas de seguridad se aplican en una obra?",
                                             "Cual es la diferencia entre hormigon C20/25 y C25/30?",
                                             "Como impermeabilizar una cimentacion?"
-                                        ]
+                                        ],
+                        "proOnly":  {
+                                        "title":  "Asistente IA disponible en plan Pro",
+                                        "subtitle":  "Actualiza tu plan para usar el asistente de construcción IA.",
+                                        "cta":  "Actualizar a Pro"
+                                    }
                     },
     "checkout":  {
                      "successTitle":  "Pago completado!",

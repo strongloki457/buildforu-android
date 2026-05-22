@@ -494,7 +494,8 @@
                     "openInvoicesDetail":  "Später bereit für Live-Backend-Daten.",
                     "cashFlowOutlook":  "Cashflow-Ausblick",
                     "monthOverMonth":  "+12,4% zum Vormonat",
-                    "weekLabel":  "W{{number}}"
+                    "weekLabel":  "W{{number}}",
+                    "demoNotice":  "Dieser Bereich zeigt Beispieldaten. Das vollständige Finanzmodul kommt bald."
                 },
     "settings":  {
                      "title":  "Einstellungen",
@@ -901,7 +902,11 @@
                     "enterprisePlanHint":  "Sie haben vollen Plattformzugang. Kontaktieren Sie unser Team bei Fragen.",
                     "cancelTitle":  "Abonnement kündigen",
                     "cancelHint":  "Nach der Kündigung behalten Sie den Zugang bis zum Ende des bezahlten Zeitraums.",
-                    "cancelButton":  "Abonnement kündigen"
+                    "cancelButton":  "Abonnement kündigen",
+                    "cancelScheduledTitle":  "Kündigung geplant",
+                    "cancelScheduledHint":  "Ihr Abonnement läuft am {{date}} aus. Bis dahin haben Sie vollen Zugang.",
+                    "cancelScheduledHintNoDate":  "Ihr Abonnement wird am Ende des aktuellen Zeitraums gekündigt.",
+                    "manageInStripeShort":  "In Stripe verwalten"
                 },
     "seed":  {
                  "common":  {
@@ -1110,7 +1115,12 @@
                                             "Welche Sicherheitsvorschriften gelten auf einer Baustelle?",
                                             "Was ist der Unterschied zwischen C20/25 und C25/30 Beton?",
                                             "Wie schützt man ein Fundament vor Feuchtigkeit?"
-                                        ]
+                                        ],
+                        "proOnly":  {
+                                        "title":  "KI-Assistent nur im Pro-Plan",
+                                        "subtitle":  "Upgraden Sie Ihren Plan, um den KI-Bauassistenten zu nutzen.",
+                                        "cta":  "Auf Pro upgraden"
+                                    }
                     },
     "checkout":  {
                      "successTitle":  "Zahlung abgeschlossen!",

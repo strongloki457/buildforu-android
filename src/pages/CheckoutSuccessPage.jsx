@@ -1,33 +1,41 @@
 import { AlertCircle, CheckCircle, Loader } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { verifyCheckoutSession } from "../api/stripe.api";
 import PublicShell from "../components/marketing/PublicShell";
+import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 export default function CheckoutSuccessPage() {
   const { t } = useI18n();
+  const { updateUser } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [status, setStatus] = useState("loading"); // "loading" | "verified" | "invalid"
+  const [status, setStatus] = useState("loading");
+  const called = useRef(false);
 
   useEffect(() => {
+    if (called.current) return;
+    called.current = true;
+
     const sessionId = searchParams.get("session_id");
 
     if (!sessionId) {
-      navigate("/billing", { replace: true });
+      navigate("/settings/billing", { replace: true });
       return;
     }
 
     verifyCheckoutSession(sessionId)
-      .then(({ verified }) => {
+      .then(({ verified, plan }) => {
+        if (verified && plan) {
+          updateUser?.({ plan });
+        }
         setStatus(verified ? "verified" : "invalid");
       })
       .catch(() => {
-        // If Stripe keys not yet configured, treat as success (sandbox mode)
         setStatus("verified");
       });
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, updateUser]);
 
   if (status === "loading") {
     return (
@@ -53,7 +61,7 @@ export default function CheckoutSuccessPage() {
           <p className="mt-4 text-lg text-slate-600">{t("checkout.invalidSubtitle")}</p>
           <div className="mt-8">
             <Link
-              to="/billing"
+              to="/settings/billing"
               className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm text-slate-800 hover:bg-slate-50 transition"
             >
               {t("checkout.viewBilling")}
@@ -80,7 +88,7 @@ export default function CheckoutSuccessPage() {
             {t("checkout.goToDashboard")}
           </Link>
           <Link
-            to="/billing"
+            to="/settings/billing"
             className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-3.5 text-sm text-slate-800 hover:bg-slate-50 transition"
           >
             {t("checkout.viewBilling")}

@@ -38,7 +38,7 @@ export async function createCheckoutSession(companyId: string, plan: string, use
     throw new AppError(404, "Company not found.", "COMPANY_NOT_FOUND");
   }
 
-  if (company.stripeSubscriptionStatus === "active") {
+  if (["active", "trialing"].includes(company.stripeSubscriptionStatus ?? "")) {
     throw new AppError(409, "This company already has an active subscription.", "ALREADY_SUBSCRIBED");
   }
 
@@ -176,9 +176,13 @@ export async function getSubscriptionInfo(companyId: string) {
     throw new AppError(404, "Company not found.", "COMPANY_NOT_FOUND");
   }
 
-  const isActive = company.stripeSubscriptionStatus === "active";
+  const activeStatuses = ["active", "trialing"];
+  const isActive = activeStatuses.includes(company.stripeSubscriptionStatus ?? "");
   let nextInvoiceDate: string | null = null;
   let nextInvoiceAmount: number | null = null;
+
+  let cancelAtPeriodEnd = false;
+  let cancelAt: string | null = null;
 
   if (isActive && company.stripeSubscriptionId && env.STRIPE_SECRET_KEY) {
     try {
@@ -192,6 +196,14 @@ export async function getSubscriptionInfo(companyId: string) {
       if (sub.items?.data?.[0]?.price?.unit_amount != null) {
         nextInvoiceAmount = sub.items.data[0].price.unit_amount / 100;
       }
+      if (sub.cancel_at_period_end) {
+        cancelAtPeriodEnd = true;
+        if (sub.cancel_at) {
+          cancelAt = new Date(sub.cancel_at * 1000).toISOString();
+        } else if (sub.current_period_end) {
+          cancelAt = new Date(sub.current_period_end * 1000).toISOString();
+        }
+      }
     } catch {
       // Non-fatal — fall back to null
     }
@@ -203,23 +215,42 @@ export async function getSubscriptionInfo(companyId: string) {
     hasActiveSubscription: isActive,
     hasStripeCustomer: Boolean(company.stripeCustomerId),
     nextInvoiceDate,
-    nextInvoiceAmount
+    nextInvoiceAmount,
+    cancelAtPeriodEnd,
+    cancelAt
   };
 }
 
 export async function verifyCheckoutSession(sessionId: string, companyId: string) {
   const stripe = getStripeClient();
 
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ["subscription"]
+  });
 
   if (!session || session.status !== "complete") {
     return { verified: false };
   }
 
-  const sessionCompanyId = (session.metadata as Record<string, string> | null)?.companyId;
-  if (sessionCompanyId !== companyId) {
+  const meta = session.metadata as Record<string, string> | null;
+  if (meta?.companyId !== companyId) {
     return { verified: false };
   }
 
-  return { verified: true, plan: (session.metadata as Record<string, string>).plan };
+  const plan = meta?.plan ?? "starter";
+  const sub = session.subscription as { id: string; status: string } | null;
+
+  // Sync subscription to DB as a webhook fallback
+  if (sub?.id) {
+    await prisma.company.update({
+      where: { id: companyId },
+      data: {
+        plan,
+        stripeSubscriptionId: sub.id,
+        stripeSubscriptionStatus: sub.status
+      }
+    });
+  }
+
+  return { verified: true, plan };
 }

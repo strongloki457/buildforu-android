@@ -602,7 +602,8 @@
                     "openInvoicesDetail":  "Ready for live backend data later.",
                     "cashFlowOutlook":  "Cash flow outlook",
                     "monthOverMonth":  "+12.4% month-over-month",
-                    "weekLabel":  "W{{number}}"
+                    "weekLabel":  "W{{number}}",
+                    "demoNotice":  "This section shows sample preview data. The full finance module is coming soon."
                 },
     "settings":  {
                      "title":  "Settings",
@@ -937,7 +938,11 @@
                     "enterprisePlanHint":  "You have full platform access. Contact our team for any questions.",
                     "cancelTitle":  "Cancel subscription",
                     "cancelHint":  "After cancelling you keep access until the end of the paid period. Your data will be preserved.",
-                    "cancelButton":  "Cancel subscription"
+                    "cancelButton":  "Cancel subscription",
+                    "cancelScheduledTitle":  "Subscription scheduled for cancellation",
+                    "cancelScheduledHint":  "Your subscription will expire on {{date}}. You have full access until then.",
+                    "cancelScheduledHintNoDate":  "Your subscription will be cancelled at the end of the current period.",
+                    "manageInStripeShort":  "Manage in Stripe"
                 },
     "seed":  {
                  "common":  {
@@ -1138,7 +1143,12 @@
                                             "What safety regulations apply on a construction site?",
                                             "What is the difference between C20/25 and C25/30 concrete?",
                                             "How do I waterproof a foundation?"
-                                        ]
+                                        ],
+                        "proOnly":  {
+                                        "title":  "AI Assistant available on Pro plan",
+                                        "subtitle":  "Upgrade your plan to use the AI construction assistant — ask about materials, standards and technologies.",
+                                        "cta":  "Upgrade to Pro"
+                                    }
                     },
     "checkout":  {
                      "successTitle":  "Payment complete!",

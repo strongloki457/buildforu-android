@@ -1,4 +1,4 @@
-﻿{
+{
     "app":  {
                 "name":  "BuildForU",
                 "tagline":  "Opérations de chantier avec une vue plus claire.",
@@ -525,7 +525,8 @@
                     "openInvoicesDetail":  "Prêt pour de futures données serveur.",
                     "cashFlowOutlook":  "Perspective de tresorerie",
                     "monthOverMonth":  "+12,4% mois sur mois",
-                    "weekLabel":  "S{{number}}"
+                    "weekLabel":  "S{{number}}",
+                    "demoNotice":  "Cette section affiche des données d'exemple. Le module financier complet sera disponible prochainement."
                 },
     "settings":  {
                      "title":  "Parametres",
@@ -937,7 +938,11 @@
                     "enterprisePlanHint":  "Vous avez un acces complet a la plateforme.",
                     "cancelTitle":  "Annuler l\u0027abonnement",
                     "cancelHint":  "Après annulation, vous gardez l\u0027accès jusqu\u0027à la fin de la période payée.",
-                    "cancelButton":  "Annuler l\u0027abonnement"
+                    "cancelButton":  "Annuler l\u0027abonnement",
+                    "cancelScheduledTitle":  "Résiliation programmée",
+                    "cancelScheduledHint":  "Votre abonnement expirera le {{date}}. Vous bénéficiez d'un accès complet jusqu'à cette date.",
+                    "cancelScheduledHintNoDate":  "Votre abonnement sera résilié à la fin de la période en cours.",
+                    "manageInStripeShort":  "Gérer dans Stripe"
                 },
     "seed":  {
                  "common":  {
@@ -1138,7 +1143,12 @@
                                             "Quelles normes de sécurité s\u0027appliquent sur un chantier ?",
                                             "Quelle est la différence entre le béton C20/25 et C25/30 ?",
                                             "Comment imperméabiliser des fondations ?"
-                                        ]
+                                        ],
+                        "proOnly":  {
+                                        "title":  "Assistant IA disponible en plan Pro",
+                                        "subtitle":  "Passez au plan Pro pour utiliser l\u0027assistant IA de construction.",
+                                        "cta":  "Passer au Pro"
+                                    }
                     },
     "checkout":  {
                      "successTitle":  "Paiement effectue!",

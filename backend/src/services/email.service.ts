@@ -11,7 +11,7 @@ function createTransporter() {
     port: env.SMTP_PORT,
     secure: env.SMTP_PORT === 465,
     auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
-    tls: { rejectUnauthorized: false }
+    tls: env.NODE_ENV !== "production" ? { rejectUnauthorized: false } : undefined
   });
 }
 

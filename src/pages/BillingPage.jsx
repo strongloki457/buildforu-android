@@ -39,13 +39,19 @@ export default function BillingPage() {
   const localizedWorkerLimit = workerLimit === "Unlimited" ? t("billing.unlimitedWorkers") : String(workerLimit);
   const hasActiveSubscription = subscription?.hasActiveSubscription;
   const hasStripeCustomer = subscription?.hasStripeCustomer;
+  const cancelAtPeriodEnd = subscription?.cancelAtPeriodEnd ?? false;
+  const cancelAtDate = subscription?.cancelAt
+    ? new Intl.DateTimeFormat(locale === "en" ? "en-GB" : locale, { dateStyle: "long" }).format(
+        new Date(subscription.cancelAt)
+      )
+    : null;
 
   const currentPlanIndex = PLAN_ORDER.indexOf(currentPlan);
   const upgradablePlans = PLAN_ORDER.slice(currentPlanIndex + 1);
 
   const currentPriceAmount =
     subscription?.nextInvoiceAmount != null
-      ? `$${subscription.nextInvoiceAmount.toFixed(2)}`
+      ? `€${subscription.nextInvoiceAmount.toFixed(2)}`
       : (PLAN_PRICES[currentPlan]?.amount ?? t("billing.customPrice"));
 
   const nextInvoiceDate = subscription?.nextInvoiceDate
@@ -256,16 +262,37 @@ export default function BillingPage() {
 
             {hasActiveSubscription && hasStripeCustomer && (
               <div className="rounded-[28px] border border-red-100 bg-red-50/60 p-5">
-                <p className="text-sm font-medium text-red-900">{t("billing.cancelTitle")}</p>
-                <p className="mt-1 text-sm text-red-700">{t("billing.cancelHint")}</p>
-                <button
-                  onClick={handleOpenPortal}
-                  disabled={loadingPortal}
-                  className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
-                >
-                  <XCircle size={15} />
-                  {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
-                </button>
+                {cancelAtPeriodEnd ? (
+                  <>
+                    <p className="text-sm font-medium text-red-900">{t("billing.cancelScheduledTitle")}</p>
+                    <p className="mt-1 text-sm text-red-700">
+                      {cancelAtDate
+                        ? t("billing.cancelScheduledHint", { date: cancelAtDate })
+                        : t("billing.cancelScheduledHintNoDate")}
+                    </p>
+                    <button
+                      onClick={handleOpenPortal}
+                      disabled={loadingPortal}
+                      className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
+                    >
+                      <ExternalLink size={15} />
+                      {loadingPortal ? t("common.loading") : t("billing.manageInStripeShort")}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-medium text-red-900">{t("billing.cancelTitle")}</p>
+                    <p className="mt-1 text-sm text-red-700">{t("billing.cancelHint")}</p>
+                    <button
+                      onClick={handleOpenPortal}
+                      disabled={loadingPortal}
+                      className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
+                    >
+                      <XCircle size={15} />
+                      {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
