@@ -9,6 +9,17 @@
                   "employee":  "Dipendente",
                   "admin":  "Capo"
               },
+    "languages":  {
+                      "en":  "Inglese",
+                      "pl":  "Polacco",
+                      "fr":  "Francese",
+                      "de":  "Tedesco",
+                      "es":  "Spagnolo",
+                      "it":  "Italiano",
+                      "ro":  "Rumeno",
+                      "tr":  "Turco",
+                      "uk":  "Ucraino"
+                  },
     "nav":  {
                 "dashboard":  "Dashboard",
                 "workers":  "Lavoratori",

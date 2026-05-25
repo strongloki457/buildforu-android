@@ -5,11 +5,14 @@ import es from "../i18n/locales/es.json";
 import fr from "../i18n/locales/fr.json";
 import it from "../i18n/locales/it.json";
 import pl from "../i18n/locales/pl.json";
+import ro from "../i18n/locales/ro.json";
+import tr from "../i18n/locales/tr.json";
+import uk from "../i18n/locales/uk.json";
 
 export const I18nContext = createContext(null);
 
 const STORAGE_KEY = "buildforu-locale";
-const dictionaries = { en, pl, fr, de, es, it };
+const dictionaries = { en, pl, fr, de, es, it, ro, tr, uk };
 const supportedLocales = Object.keys(dictionaries);
 
 const languageOptions = [
@@ -18,7 +21,10 @@ const languageOptions = [
   { value: "fr" },
   { value: "de" },
   { value: "es" },
-  { value: "it" }
+  { value: "it" },
+  { value: "ro" },
+  { value: "tr" },
+  { value: "uk" }
 ];
 
 function resolvePath(object, path) {

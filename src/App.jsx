@@ -8,6 +8,7 @@ import { useI18n } from "./hooks/useI18n";
 import AppLayout from "./layouts/AppLayout";
 
 const AiAssistantPage = lazy(() => import("./pages/AiAssistantPage"));
+const AttendanceReportsPage = lazy(() => import("./pages/AttendanceReportsPage"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const BillingPage = lazy(() => import("./pages/BillingPage"));
 const CalendarPage = lazy(() => import("./pages/CalendarPage"));
@@ -115,6 +116,14 @@ export default function App() {
               element={
                 <RoleGuard allowedRoles={["admin"]}>
                   <FinancePage />
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/attendance-reports"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <AttendanceReportsPage />
                 </RoleGuard>
               }
             />

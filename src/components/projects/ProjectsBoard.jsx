@@ -1,5 +1,8 @@
 import { ClipboardList, FolderKanban, PackageCheck, Plus, RotateCw, Users2 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 import { projectStatusOptions } from "../../data/options";
 import { useI18n } from "../../hooks/useI18n";
 import Button from "../ui/Button";
@@ -45,6 +48,36 @@ function ProjectsLoadingState() {
   );
 }
 
+function DraggableProjectCard({ project, onStatusChange, onViewDetails }) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: project.id });
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.4 : 1,
+    cursor: "grab"
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+      <ProjectCard project={project} onStatusChange={onStatusChange} onViewDetails={onViewDetails} />
+    </div>
+  );
+}
+
+function DroppableColumn({ status, children, isOver }) {
+  const { setNodeRef } = useDroppable({ id: status });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`min-h-[120px] mt-4 grid gap-4 rounded-xl transition-colors duration-150 ${
+        isOver ? "bg-brand-50/40 ring-2 ring-brand-300 ring-offset-2" : ""
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function ProjectsBoard({
   isLoading = false,
   loadError = "",
@@ -60,9 +93,18 @@ export default function ProjectsBoard({
   const { t } = useI18n();
   const [activeProjectId, setActiveProjectId] = useState("");
   const [projectModal, setProjectModal] = useState(null);
+  const [draggedProjectId, setDraggedProjectId] = useState(null);
+  const [overColumn, setOverColumn] = useState(null);
+
   const activeProject = projects.find((project) => project.id === activeProjectId) ?? null;
+  const draggedProject = projects.find((p) => p.id === draggedProjectId) ?? null;
   const canCreateProject = Boolean(onCreateProject);
   const canEditProject = Boolean(onEditProject);
+  const canDrag = Boolean(onStatusChange);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
+  );
 
   const groupedProjects = useMemo(
     () =>
@@ -72,11 +114,7 @@ export default function ProjectsBoard({
           ? Math.round(statusProjects.reduce((sum, project) => sum + Number(project.progress || 0), 0) / statusProjects.length)
           : 0;
 
-        return {
-          status,
-          averageProgress,
-          projects: statusProjects
-        };
+        return { status, averageProgress, projects: statusProjects };
       }),
     [projects]
   );
@@ -98,6 +136,77 @@ export default function ProjectsBoard({
       workerCount: workerIds.size
     };
   }, [projects]);
+
+  function handleDragStart({ active }) {
+    setDraggedProjectId(active.id);
+  }
+
+  function handleDragOver({ over }) {
+    setOverColumn(over?.id ?? null);
+  }
+
+  function handleDragEnd({ active, over }) {
+    setDraggedProjectId(null);
+    setOverColumn(null);
+    if (!over || !onStatusChange) return;
+    const project = projects.find((p) => p.id === active.id);
+    if (project && project.status !== over.id) {
+      onStatusChange(active.id, over.id);
+    }
+  }
+
+  const board = (
+    <div className="grid gap-4 xl:grid-cols-3">
+      {groupedProjects.map((group) => (
+        <section key={group.status} className="min-w-0 rounded-lg border border-white/70 bg-white/55 p-3 sm:p-4">
+          <div className="flex min-w-0 items-start justify-between gap-3 border-b border-white/80 pb-4">
+            <div className="min-w-0">
+              <h3 className="break-anywhere text-sm text-slate-900">
+                {t(`statusLabels.${group.status.toLowerCase()}`, group.status)}
+              </h3>
+              <p className="mt-1 text-xs uppercase text-slate-400">
+                {t("projects.projectCount", { count: group.projects.length }, "{{count}} projects")}
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-white px-3 py-1 text-xs text-slate-500">
+              {group.averageProgress}%
+            </span>
+          </div>
+
+          <DroppableColumn status={group.status} isOver={overColumn === group.status && draggedProject?.status !== group.status}>
+            {group.projects.length ? (
+              group.projects.map((project) =>
+                canDrag ? (
+                  <DraggableProjectCard
+                    key={project.id}
+                    project={project}
+                    onStatusChange={onStatusChange}
+                    onViewDetails={setActiveProjectId}
+                  />
+                ) : (
+                  <ProjectCard
+                    key={project.id}
+                    onStatusChange={onStatusChange}
+                    onViewDetails={setActiveProjectId}
+                    project={project}
+                  />
+                )
+              )
+            ) : (
+              <div className="rounded-lg border border-dashed border-slate-200 bg-white/75 px-4 py-5 text-sm text-slate-500">
+                <p>{t("projects.emptyStatusGroup", "No projects in this status yet.")}</p>
+                <p className="mt-1 text-xs leading-5 text-slate-400">
+                  {canDrag
+                    ? t("projects.dragHere", "Drag a project card here to change its status.")
+                    : t("projects.emptyStatusHint", "Move a project here when the site reaches this stage.")}
+                </p>
+              </div>
+            )}
+          </DroppableColumn>
+        </section>
+      ))}
+    </div>
+  );
 
   return (
     <section className="min-w-0">
@@ -167,45 +276,25 @@ export default function ProjectsBoard({
             />
           </div>
 
-          <div className="grid gap-4 xl:grid-cols-3">
-            {groupedProjects.map((group) => (
-              <section key={group.status} className="min-w-0 rounded-lg border border-white/70 bg-white/55 p-3 sm:p-4">
-                <div className="flex min-w-0 items-start justify-between gap-3 border-b border-white/80 pb-4">
-                  <div className="min-w-0">
-                    <h3 className="break-anywhere text-sm text-slate-900">
-                      {t(`statusLabels.${group.status.toLowerCase()}`, group.status)}
-                    </h3>
-                    <p className="mt-1 text-xs uppercase text-slate-400">
-                      {t("projects.projectCount", { count: group.projects.length }, "{{count}} projects")}
-                    </p>
+          {canDrag ? (
+            <DndContext
+              sensors={sensors}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDragEnd={handleDragEnd}
+            >
+              {board}
+              <DragOverlay>
+                {draggedProject ? (
+                  <div className="rotate-1 opacity-90 shadow-xl">
+                    <ProjectCard project={draggedProject} onStatusChange={null} onViewDetails={null} />
                   </div>
-                  <span className="shrink-0 rounded-full bg-white px-3 py-1 text-xs text-slate-500">
-                    {group.averageProgress}%
-                  </span>
-                </div>
-
-                <div className="mt-4 grid gap-4">
-                  {group.projects.length ? (
-                    group.projects.map((project) => (
-                      <ProjectCard
-                        key={project.id}
-                        onStatusChange={onStatusChange}
-                        onViewDetails={setActiveProjectId}
-                        project={project}
-                      />
-                    ))
-                  ) : (
-                    <div className="rounded-lg border border-dashed border-slate-200 bg-white/75 px-4 py-5 text-sm text-slate-500">
-                      <p>{t("projects.emptyStatusGroup", "No projects in this status yet.")}</p>
-                      <p className="mt-1 text-xs leading-5 text-slate-400">
-                        {t("projects.emptyStatusHint", "Move a project here when the site reaches this stage.")}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </section>
-            ))}
-          </div>
+                ) : null}
+              </DragOverlay>
+            </DndContext>
+          ) : (
+            board
+          )}
         </div>
       ) : (
         <div className="rounded-lg border border-dashed border-slate-200 bg-white/75 px-5 py-10 text-center">

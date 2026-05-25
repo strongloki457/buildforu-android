@@ -3,7 +3,8 @@ import { chatApi } from "../api/chat.api";
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
-import { useEffect, useState } from "react";
+import { useSocket } from "../hooks/useSocket";
+import { useCallback, useEffect, useState } from "react";
 
 export default function ChatPage() {
   const { user } = useAuth();
@@ -11,37 +12,42 @@ export default function ChatPage() {
   const { t } = useI18n();
   const [contacts, setContacts] = useState([]);
   const [isContactsLoading, setIsContactsLoading] = useState(false);
+  const [liveMessages, setLiveMessages] = useState({});
 
-  const scopedThreads = threads.filter((thread) => {
-    const participants = Array.isArray(thread.participants) ? thread.participants : [];
-    return participants.includes(user.id);
-  });
+  const scopedThreads = threads
+    .filter((thread) => {
+      const participants = Array.isArray(thread.participants) ? thread.participants : [];
+      return participants.includes(user.id);
+    })
+    .map((thread) => {
+      const extras = liveMessages[thread.id];
+      if (!extras?.length) return thread;
+      const existingIds = new Set(thread.messages.map((m) => m.id));
+      const newOnes = extras.filter((m) => !existingIds.has(m.id));
+      return newOnes.length ? { ...thread, messages: [...thread.messages, ...newOnes] } : thread;
+    });
+
+  const handleSocketMessage = useCallback(({ threadId, message }) => {
+    if (message.senderId === user.id) return;
+    const ts = new Date(message.createdAt);
+    const formatted = `${String(ts.getHours()).padStart(2, "0")}:${String(ts.getMinutes()).padStart(2, "0")}`;
+    setLiveMessages((prev) => ({
+      ...prev,
+      [threadId]: [...(prev[threadId] ?? []), { id: message.id, senderId: message.senderId, text: message.text, timestamp: formatted }]
+    }));
+  }, [user.id]);
+
+  useSocket(handleSocketMessage);
 
   useEffect(() => {
     let isMounted = true;
-
     setIsContactsLoading(true);
     chatApi
       .getCompanyUsers()
-      .then((response) => {
-        if (isMounted) {
-          setContacts(response?.users ?? []);
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setContacts([]);
-        }
-      })
-      .finally(() => {
-        if (isMounted) {
-          setIsContactsLoading(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
+      .then((response) => { if (isMounted) setContacts(response?.users ?? []); })
+      .catch(() => { if (isMounted) setContacts([]); })
+      .finally(() => { if (isMounted) setIsContactsLoading(false); });
+    return () => { isMounted = false; };
   }, []);
 
   return (

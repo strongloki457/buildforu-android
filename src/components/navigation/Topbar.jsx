@@ -1,13 +1,32 @@
-import { Bell, Menu } from "lucide-react";
+import { Bell, BellOff, Menu } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import UserMenu from "./UserMenu";
 import { useI18n } from "../../hooks/useI18n";
 
+const NOTIFICATION_ICONS = {
+  material: "📦",
+  task: "✅",
+  attendance: "📍"
+};
+
 export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const { t } = useI18n();
+  const dropdownRef = useRef(null);
+  const unreadCount = notifications.length;
+
+  useEffect(() => {
+    if (!showNotifications) return;
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showNotifications]);
 
   return (
     <header className="glass-nav sticky top-2 z-20 rounded-[20px] p-2.5 sm:top-4 sm:rounded-[28px] sm:p-4">
@@ -24,26 +43,44 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
 
           <LanguageSwitcher />
 
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowNotifications((current) => !current)}
               className="relative min-h-11 min-w-11 rounded-2xl bg-white/80 p-3 text-slate-700 transition hover:bg-white"
               aria-label={t("common.notifications")}
             >
               <Bell size={18} />
-              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-brand-500" />
+              {unreadCount > 0 ? (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-500 px-1 text-[10px] font-medium text-white">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              ) : null}
             </button>
 
             {showNotifications ? (
-              <div className="absolute right-0 z-30 mt-3 max-h-[60vh] w-[min(18rem,calc(100vw-1.5rem))] overflow-y-auto rounded-3xl border border-white/70 bg-white/95 p-4 shadow-soft backdrop-blur-xl">
-                <p className="text-sm text-slate-900">{t("common.notifications")}</p>
-                <div className="mt-4 space-y-3">
-                  {notifications.map((notification) => (
-                    <div key={notification.id} className="rounded-2xl bg-slate-50 p-3">
-                      <p className="text-sm text-slate-800">{t(notification.titleKey, notification.title)}</p>
-                      <p className="mt-1 text-xs text-slate-400">{t(notification.timeKey, notification.time)}</p>
+              <div className="absolute right-0 z-30 mt-3 w-[min(20rem,calc(100vw-1.5rem))] rounded-3xl border border-white/70 bg-white/95 shadow-soft backdrop-blur-xl">
+                <div className="border-b border-slate-100 px-4 pt-4 pb-3">
+                  <p className="text-sm font-medium text-slate-900">{t("common.notifications")}</p>
+                </div>
+                <div className="max-h-[50vh] overflow-y-auto">
+                  {notifications.length ? (
+                    <div className="space-y-1 p-2">
+                      {notifications.map((notification) => (
+                        <div key={notification.id} className="flex items-start gap-3 rounded-2xl px-3 py-3 hover:bg-slate-50">
+                          <span className="mt-0.5 text-base leading-none">{NOTIFICATION_ICONS[notification.type] ?? "🔔"}</span>
+                          <div className="min-w-0">
+                            <p className="break-anywhere text-sm text-slate-800">{t(notification.titleKey, notification.title)}</p>
+                            <p className="mt-0.5 text-xs text-slate-400">{t(notification.timeKey, notification.time)}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
+                      <BellOff size={22} className="text-slate-300" />
+                      <p className="text-sm text-slate-400">{t("notifications.empty", "All caught up — no new alerts.")}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : null}

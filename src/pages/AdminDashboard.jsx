@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AssignmentPanel from "../components/dashboard/AssignmentPanel";
 import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
 import MaterialsSummaryCard from "../components/dashboard/MaterialsSummaryCard";
+import OnboardingChecklist from "../components/dashboard/OnboardingChecklist";
 import ProjectsOverviewCard from "../components/dashboard/ProjectsOverviewCard";
 import TaskListCard from "../components/dashboard/TaskListCard";
 import WorkersPanel from "../components/dashboard/WorkersPanel";
@@ -83,6 +84,15 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      <OnboardingChecklist
+        workers={workers}
+        projects={projects}
+        tasks={tasks}
+        onAddWorker={() => setShowWorkerModal(true)}
+        onAddProject={() => setShowProjectModal(true)}
+        onAddTask={() => setShowTaskModal(true)}
+      />
+
       <DashboardQuickActions
         title={t("dashboard.quickActions", "Quick actions")}
         subtitle={t(

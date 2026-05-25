@@ -184,6 +184,7 @@ export default function WorkersPage() {
         ) : (
           <WorkersList
             filteredWorkers={filteredWorkers}
+            totalWorkers={workers.length}
             locale={locale}
             onCreate={openCreateModal}
             onDelete={setWorkerToDelete}

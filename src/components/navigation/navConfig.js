@@ -7,6 +7,7 @@ import {
   MessageSquare,
   Package,
   Settings,
+  Timer,
   Users2
 } from "lucide-react";
 
@@ -19,6 +20,7 @@ const registry = {
   calendar: CalendarDays,
   chat: MessageSquare,
   "ai-assistant": Bot,
+  "attendance-reports": Timer,
   settings: Settings
 };
 
@@ -27,7 +29,7 @@ const pathRegistry = {
 };
 
 const employeeItems = ["dashboard", "tasks", "calendar", "materials", "chat", "ai-assistant", "settings"];
-const adminItems = ["dashboard", "workers", "projects", "calendar", "materials", "chat", "ai-assistant", "settings"];
+const adminItems = ["dashboard", "workers", "attendance-reports", "projects", "calendar", "materials", "chat", "ai-assistant", "settings"];
 
 function normalizeRole(role) {
   return String(role || "").trim().toLowerCase();

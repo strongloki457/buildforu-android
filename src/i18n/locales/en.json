@@ -15,7 +15,10 @@
                       "fr":  "French",
                       "de":  "German",
                       "es":  "Spanish",
-                      "it":  "Italian"
+                      "it":  "Italian",
+                      "ro":  "Romanian",
+                      "tr":  "Turkish",
+                      "uk":  "Ukrainian"
                   },
     "plans":  {
                   "starter":  "Starter",
@@ -54,7 +57,8 @@
                 "chat":  "Chat",
                 "settings":  "Settings",
                 "marketMap":  "Market Map",
-                "ai-assistant":  "AI Assistant"
+                "ai-assistant":  "AI Assistant",
+                "attendance-reports":  "Reports"
             },
     "common":  {
                    "search":  "Search workspace",
@@ -86,7 +90,8 @@
                    "toggleStatus":  "Toggle status",
                    "all":  "All",
                    "project":  "Project",
-                   "retry":  "Retry"
+                   "retry":  "Retry",
+                   "dismiss":  "Dismiss"
                },
     "statusLabels":  {
                          "pending":  "Pending",
@@ -118,19 +123,18 @@
                            "low":  "Low"
                        },
     "notifications":  {
-                          "n-1":  {
-                                      "title":  "New task assigned to Mia",
-                                      "time":  "5 min ago"
-                                  },
-                          "n-2":  {
-                                      "title":  "Concrete delivery confirmed",
-                                      "time":  "18 min ago"
-                                  },
-                          "n-3":  {
-                                      "title":  "Invoice #204 approved",
-                                      "time":  "1 hour ago"
-                                  }
+                          "empty":  "All caught up — no new alerts."
                       },
+    "onboarding":  {
+                       "title":  "Get started — {{done}}/{{total}} steps completed",
+                       "subtitle":  "Complete these steps to get the most out of BuildForU.",
+                       "addWorker":  "Add your first worker",
+                       "addWorkerDesc":  "Register crew members and give them access to the app.",
+                       "addProject":  "Create your first project",
+                       "addProjectDesc":  "Set up a job site to track tasks and materials.",
+                       "addTask":  "Assign the first task",
+                       "addTaskDesc":  "Schedule work and put it on the team calendar."
+                   },
     "login":  {
                   "title":  "Manage field operations without the noise.",
                   "subtitle":  "Sign in to access schedules, tasks, team communication and project visibility for your role.",

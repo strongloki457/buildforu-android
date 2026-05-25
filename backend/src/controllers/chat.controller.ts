@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import * as chatService from "../services/chat.service";
+import { io } from "../server";
 
 export const listThreads = asyncHandler(async (req: Request, res: Response) => {
   const { userId, companyId } = req.user!;
@@ -20,6 +21,17 @@ export const postMessage = asyncHandler(async (req: Request, res: Response) => {
   const { threadId } = req.params;
   const { text } = req.body;
   const message = await chatService.sendMessage(threadId, userId, companyId, text);
+
+  io?.to(`company:${companyId}`).emit("chat:message", {
+    threadId,
+    message: {
+      id: message.id,
+      senderId: message.senderId,
+      text: message.text,
+      createdAt: message.createdAt
+    }
+  });
+
   res.status(201).json({ message });
 });
 

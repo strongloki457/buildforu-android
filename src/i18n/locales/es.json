@@ -9,6 +9,17 @@
                   "employee":  "Empleado",
                   "admin":  "Jefe"
               },
+    "languages":  {
+                      "en":  "Inglés",
+                      "pl":  "Polaco",
+                      "fr":  "Francés",
+                      "de":  "Alemán",
+                      "es":  "Español",
+                      "it":  "Italiano",
+                      "ro":  "Rumano",
+                      "tr":  "Turco",
+                      "uk":  "Ucraniano"
+                  },
     "nav":  {
                 "dashboard":  "Panel",
                 "workers":  "Trabajadores",

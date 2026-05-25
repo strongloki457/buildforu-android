@@ -15,7 +15,10 @@
                       "fr":  "Français",
                       "de":  "Allemand",
                       "es":  "Espagnol",
-                      "it":  "Italien"
+                      "it":  "Italien",
+                      "ro":  "Roumain",
+                      "tr":  "Turc",
+                      "uk":  "Ukrainien"
                   },
     "nav":  {
                 "dashboard":  "Tableau",

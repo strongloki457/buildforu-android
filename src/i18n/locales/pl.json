@@ -15,7 +15,10 @@
     "fr": "Francuski",
     "de": "Niemiecki",
     "es": "Hiszpanski",
-    "it": "Wloski"
+    "it": "Wloski",
+    "ro": "Rumunski",
+    "tr": "Turecki",
+    "uk": "Ukrainski"
   },
   "nav": {
     "dashboard": "Panel",
@@ -28,7 +31,8 @@
     "chat": "Czat",
     "settings": "Ustawienia",
     "marketMap": "Mapa marketów",
-    "ai-assistant": "Asystent AI"
+    "ai-assistant": "Asystent AI",
+    "attendance-reports": "Raporty"
   },
   "common": {
     "search": "Szukaj w aplikacji",
@@ -60,7 +64,8 @@
     "toggleStatus": "Zmień status",
     "all": "Wszystkie",
     "project": "Projekt",
-    "retry": "Ponów"
+    "retry": "Ponów",
+    "dismiss": "Odrzuć"
   },
   "statusLabels": {
     "pending": "Oczekujące",
@@ -92,18 +97,17 @@
     "low": "Niski"
   },
   "notifications": {
-    "n-1": {
-      "title": "Nowe zadanie przypisane do Mii",
-      "time": "5 min temu"
-    },
-    "n-2": {
-      "title": "Dostawa betonu potwierdzona",
-      "time": "18 min temu"
-    },
-    "n-3": {
-      "title": "Faktura #204 została zatwierdzona",
-      "time": "1 godz. temu"
-    }
+    "empty": "Wszystko pod kontrolą — brak nowych alertów."
+  },
+  "onboarding": {
+    "title": "Zacznij pracę — {{done}}/{{total}} kroki ukończone",
+    "subtitle": "Wykonaj te kroki, aby w pełni korzystać z BuildForU.",
+    "addWorker": "Dodaj pierwszego pracownika",
+    "addWorkerDesc": "Zarejestruj członków ekipy i daj im dostęp do aplikacji.",
+    "addProject": "Utwórz pierwszy projekt",
+    "addProjectDesc": "Skonfiguruj plac budowy, aby śledzić zadania i materiały.",
+    "addTask": "Przypisz pierwsze zadanie",
+    "addTaskDesc": "Zaplanuj pracę i dodaj ją do kalendarza ekipy."
   },
   "login": {
     "title": "Prowadź każdy projekt z pełną kontrolą.",
@@ -351,7 +355,9 @@
     "notScheduled": "Nie zaplanowano",
     "completionRate": "Poziom realizacji",
     "noWorkersFound": "Nie znaleziono pracowników",
-    "noWorkersSubtitle": "Spróbuj innej kombinacji filtrów albo dodaj nowego członka ekipy.",
+    "noWorkersSubtitle": "Dodaj pierwszego pracownika, aby zarządzać ekipą.",
+    "noMatchTitle": "Brak wyników wyszukiwania",
+    "noMatchSubtitle": "Zmień frazy wyszukiwania lub filtry, aby znaleźć pracownika.",
     "deleteWorkerTitle": "Usuń pracownika",
     "deleteWorkerDescription": "Czy na pewno chcesz usunąć {{name}} z listy ekipy? To wpłynie tylko na lokalne dane testowe.",
     "keepWorker": "Zachowaj pracownika",
@@ -510,11 +516,39 @@
     "noFinderResultsTitle": "Brak sklepów dla tego wyszukiwania",
     "projectDropHint": "Strefa dostawy projektu",
     "projectLinked": "Powiązane z projektem",
-    "selectFinderResult": "Wybierz wynik, aby wyróżnić go na mapie."
+    "selectFinderResult": "Wybierz wynik, aby wyróżnić go na mapie.",
+    "storeFinderComingSoon": "Wyszukiwarka sklepów — wkrótce",
+    "storeFinderComingSoonDesc": "Budujemy narzędzie do wyszukiwania sklepów budowlanych w pobliżu placu budowy, porównywania cen i zamawiania bezpośrednio z aplikacji.",
+    "storeFinderEta": "Planowane w v0.2 — na razie korzystaj z zakładki Zgłoszenia.",
+    "storeFeature": {
+      "nearbyStores": "Sklepy w pobliżu placu budowy",
+      "priceComparison": "Porównanie cen w czasie rzeczywistym",
+      "oneClickOrder": "Zamówienie jednym kliknięciem"
+    },
+    "requestsBoardSubtitleAdmin": "Przejrzyj każde zgłoszenie, filtruj według statusu lub projektu i aktualizuj postęp."
   },
   "finance": {
+    "eyebrow": "Operacje",
+    "pageTitle": "Przegląd operacyjny",
+    "pageSubtitle": "Aktualny stan projektów, ekipy i materiałów w całej firmie.",
     "title": "Finanse",
     "subtitle": "Przeglądaj przychody, koszty i postęp faktur.",
+    "activeProjects": "Aktywne projekty",
+    "completedProjectsDetail": "{{count}} ukończonych łącznie",
+    "onSiteToday": "Na budowie dziś",
+    "totalWorkersDetail": "{{count}} pracowników w firmie",
+    "taskCompletion": "Realizacja zadań",
+    "todayTasksDetail": "{{count}} zadań na dziś",
+    "materialsPurchased": "Kupione materiały",
+    "pendingMaterialsDetail": "{{count}} oczekuje na zatwierdzenie",
+    "taskProgressTitle": "Aktywność zadań",
+    "taskProgressSubtitle": "Ukończone zadania na tydzień we wszystkich projektach.",
+    "weeklyTasksLabel": "Ukończone zadania — ostatnie 7 tygodni",
+    "recentPurchasesTitle": "Ostatnio kupione materiały",
+    "recentPurchasesSubtitle": "Ostatnie materiały oznaczone jako zakupione.",
+    "noPurchasesYet": "Brak materiałów oznaczonych jako zakupione.",
+    "budgetComingSoon": "Budżety projektów i fakturowanie — planowane w v0.2",
+    "budgetComingSoonDesc": "Dodaj budżety projektów, śledź wydatki na plac budowy i eksportuj raporty bezpośrednio do księgowej.",
     "revenue": "Przychód",
     "revenueDetail": "Aktualny przykładowy obraz przychodów.",
     "expenses": "Koszty",
@@ -657,6 +691,33 @@
     "eyebrow": "SaaS dla operacji budowlanych",
     "title": "Prowadź ekipy, harmonogramy i komunikację z budowy w jednej przestrzeni BuildForU.",
     "subtitle": "BuildForU pomaga firmom budowlanym zarządzać pracownikami, zadaniami, planowaniem, czatem zespołu i narzędziami zakupowymi w dopracowanym panelu dla biura i terenu.",
+    "howEyebrow": "Pierwsze kroki",
+    "howTitle": "Gotowe do pracy w mniej niż 5 minut",
+    "how": {
+      "register": {
+        "title": "Zarejestruj firmę",
+        "description": "Utwórz przestrzeń firmy, skonfiguruj konto administratora — bez karty kredytowej."
+      },
+      "setup": {
+        "title": "Dodaj pracowników i projekty",
+        "description": "Zaproś ekipę, utwórz projekty, przypisz zadania i skonfiguruj materiały."
+      },
+      "manage": {
+        "title": "Zarządzaj z jednego miejsca",
+        "description": "Śledź postęp budowy, zmiany ekip i materiały w czasie rzeczywistym."
+      }
+    },
+    "aiEyebrow": "Asystent AI — funkcja Pro",
+    "aiTitle": "Twój osobisty ekspert budowlany dostępny 24/7",
+    "aiSubtitle": "Zapytaj o ilości materiałów, kosztorysy, polskie przepisy budowlane lub harmonogramowanie. Odpowiedzi w sekundy, nie godziny.",
+    "aiCta": "Wypróbuj z planem Pro",
+    "aiOnline": "Dostępny",
+    "aiCapability": {
+      "estimates": "Kosztorysy i ilości materiałów",
+      "scheduling": "Planowanie harmonogramów budowy",
+      "regulations": "Polskie przepisy budowlane",
+      "materials": "Dobór i specyfikacja materiałów"
+    },
     "featuresEyebrow": "Główne możliwości",
     "featuresTitle": "Zaprojektowane wokół codziennego rytmu firmy budowlanej.",
     "ctaEyebrow": "Gotowe do startu",
@@ -751,7 +812,15 @@
     "title": "Wybierz plan dopasowany do etapu Twojej firmy.",
     "subtitle": "Zacznij od prostego układu zespołu i przejdź do pełnej przestrzeńi operacyjnej wraz ze wzrostem ekip i projektow.",
     "mostPopular": "Najpopularniejszy",
-    "perMonth": "miesiecznie",
+    "monthly": "Miesięcznie",
+    "annually": "Rocznie",
+    "annualSavings": "Oszczędzasz 20%",
+    "annualSavingsAmount": "Oszczędzasz {{amount}}/rok",
+    "perMonth": "miesięcznie",
+    "perMonthAnnual": "/ mies., rozliczenie roczne ({{total}}/rok)",
+    "noCard": "Bez karty kredytowej · Anuluj kiedy chcesz · 14 dni za darmo",
+    "enterprisePrice": "Wycena",
+    "enterprisePriceDetail": "Dostosowane do rozmiaru Twojego zespołu",
     "choosePlan": "Wybierz plan",
     "plans": {
       "starter": {
