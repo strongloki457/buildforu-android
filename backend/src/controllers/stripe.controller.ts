@@ -5,14 +5,15 @@ import * as stripeService from "../services/stripe.service";
 export const createCheckoutSession = asyncHandler(async (req: Request, res: Response) => {
   const companyId = req.user!.companyId;
   const userEmail = req.user!.email;
-  const { plan } = req.body;
+  const { plan, billing } = req.body;
 
   if (!plan || typeof plan !== "string") {
     res.status(400).json({ error: { code: "MISSING_PLAN", message: "Plan is required." } });
     return;
   }
 
-  const result = await stripeService.createCheckoutSession(companyId, plan, userEmail);
+  const billingCycle: "monthly" | "annual" = billing === "annual" ? "annual" : "monthly";
+  const result = await stripeService.createCheckoutSession(companyId, plan, userEmail, billingCycle);
   res.json(result);
 });
 

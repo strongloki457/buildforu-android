@@ -101,17 +101,13 @@ export default function PricingPage() {
                     </div>
                     <p className="mt-2 text-sm text-slate-500">
                       {isAnnual
-                        ? t("pricing.perMonthAnnual", "/ month, billed annually ({{total}}/yr)", {
-                            total: formatPrice(effectiveMonthly * 12)
-                          })
+                        ? t("pricing.perMonthAnnual", { total: formatPrice(effectiveMonthly * 12) })
                         : t("pricing.perMonth")}
                     </p>
                     {isAnnual ? (
                       <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs text-green-700">
                         <Zap size={11} />
-                        {t("pricing.annualSavingsAmount", "You save {{amount}}/yr", {
-                          amount: formatPrice(monthlyPrice * ANNUAL_DISCOUNT * 12)
-                        })}
+                        {t("pricing.annualSavingsAmount", { amount: formatPrice(monthlyPrice * ANNUAL_DISCOUNT * 12) })}
                       </div>
                     ) : null}
                   </>

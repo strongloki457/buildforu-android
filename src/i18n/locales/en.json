@@ -607,7 +607,11 @@
                     "cashFlowOutlook":  "Cash flow outlook",
                     "monthOverMonth":  "+12.4% month-over-month",
                     "weekLabel":  "W{{number}}",
-                    "demoNotice":  "This section shows sample preview data. The full finance module is coming soon."
+                    "demoNotice":  "This section shows sample preview data. The full finance module is coming soon.",
+                    "completedProjectsDetail":  "{{count}} completed total",
+                    "totalWorkersDetail":  "{{count}} workers in company",
+                    "todayTasksDetail":  "{{count}} tasks scheduled today",
+                    "pendingMaterialsDetail":  "{{count}} pending approval"
                 },
     "settings":  {
                      "title":  "Settings",
@@ -755,7 +759,16 @@
                     "title":  "Choose the plan that fits your company stage.",
                     "subtitle":  "Start with a simple team setup and move toward a full operational workspace as your crews and projects grow.",
                     "mostPopular":  "Most popular",
+                    "monthly":  "Monthly",
+                    "annually":  "Annually",
+                    "annualSavings":  "Save 20%",
+                    "annualSavingsAmount":  "You save {{amount}}/yr",
                     "perMonth":  "per month",
+                    "perMonthAnnual":  "/ mo, billed annually ({{total}}/yr)",
+                    "noCard":  "No credit card required · Cancel anytime · 14-day free trial",
+                    "enterprisePrice":  "Custom",
+                    "enterprisePriceDetail":  "Tailored to your team size",
+                    "contactUs":  "Contact",
                     "choosePlan":  "Choose plan",
                     "plans":  {
                                   "starter":  {

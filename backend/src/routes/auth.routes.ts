@@ -28,6 +28,7 @@ router.post("/login", authRateLimit, validate({ body: loginSchema }), authContro
 router.post("/refresh", authController.refresh);
 router.get("/me", authenticate, authController.me);
 router.patch("/me/avatar", authenticate, validate({ body: updateAvatarSchema }), authController.updateAvatar);
+router.delete("/me", authenticate, authController.deleteMe);
 router.post("/forgot-password", authRateLimit, validate({ body: forgotPasswordSchema }), authController.forgotPassword);
 router.post("/reset-password", authRateLimit, validate({ body: resetPasswordSchema }), authController.resetPassword);
 

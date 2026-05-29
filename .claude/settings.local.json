@@ -7,7 +7,9 @@
       "PowerShell(Invoke-WebRequest -Uri \"http://localhost:5173\" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty StatusCode)",
       "PowerShell(Invoke-WebRequest -Uri \"http://localhost:5000/api/health\" -UseBasicParsing -TimeoutSec 3 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty StatusCode)",
       "Bash(curl *)",
-      "PowerShell(Get-NetTCPConnection *)"
+      "PowerShell(Get-NetTCPConnection *)",
+      "Bash(Start-Sleep -Seconds 4)",
+      "Bash(Get-Content \"C:\\\\Users\\\\macie\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-macie-Aplikacja-BuildForU\\\\a9921e21-1873-441f-95fa-95d583248f8f\\\\tasks\\\\btrs890ia.output\")"
     ]
   }
 }

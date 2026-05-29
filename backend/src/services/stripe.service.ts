@@ -6,9 +6,9 @@ import { AppError } from "../utils/errors";
 
 type StripeInstance = ReturnType<typeof StripeLib>;
 
-const PLAN_PRICE_MAP: Record<string, string | undefined> = {
-  starter: env.STRIPE_PRICE_ID_STARTER,
-  pro: env.STRIPE_PRICE_ID_PRO
+const PLAN_PRICE_MAP: Record<string, Record<string, string | undefined>> = {
+  starter: { monthly: env.STRIPE_PRICE_ID_STARTER, annual: env.STRIPE_PRICE_ID_STARTER_ANNUAL },
+  pro: { monthly: env.STRIPE_PRICE_ID_PRO, annual: env.STRIPE_PRICE_ID_PRO_ANNUAL }
 };
 
 function getStripeClient(): StripeInstance {
@@ -25,10 +25,10 @@ function getStripeClient(): StripeInstance {
   return new StripeLib(env.STRIPE_SECRET_KEY);
 }
 
-export async function createCheckoutSession(companyId: string, plan: string, userEmail: string) {
+export async function createCheckoutSession(companyId: string, plan: string, userEmail: string, billing: "monthly" | "annual" = "monthly") {
   const stripe = getStripeClient();
 
-  const priceId = PLAN_PRICE_MAP[plan];
+  const priceId = PLAN_PRICE_MAP[plan]?.[billing] ?? PLAN_PRICE_MAP[plan]?.["monthly"];
   if (!priceId) {
     throw new AppError(400, `No Stripe price configured for plan: ${plan}`, "INVALID_PLAN");
   }
@@ -66,7 +66,7 @@ export async function createCheckoutSession(companyId: string, plan: string, use
     metadata: { companyId, plan },
     subscription_data: {
       metadata: { companyId, plan },
-      ...(plan === "starter" ? { trial_period_days: 14 } : {})
+      ...(plan === "starter" && billing !== "annual" ? { trial_period_days: 14 } : {})
     }
   });
 
@@ -83,7 +83,7 @@ export async function createBillingPortalSession(companyId: string) {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: company.stripeCustomerId,
-    return_url: `${env.FRONTEND_URL}/billing`
+    return_url: `${env.FRONTEND_URL}/settings/billing`
   });
 
   return { url: session.url as string };

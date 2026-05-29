@@ -49,14 +49,16 @@ async function main() {
       passwordHash: adminPasswordHash,
       role: Role.ADMIN,
       companyId: company.id,
-      workerId: null
+      workerId: null,
+      emailVerified: true
     },
     create: {
       name: "Sophie Carter",
       email: "admin@buildforu.com",
       passwordHash: adminPasswordHash,
       role: Role.ADMIN,
-      companyId: company.id
+      companyId: company.id,
+      emailVerified: true
     }
   });
 
@@ -67,7 +69,8 @@ async function main() {
       passwordHash: employeePasswordHash,
       role: Role.EMPLOYEE,
       companyId: company.id,
-      workerId: worker.id
+      workerId: worker.id,
+      emailVerified: true
     },
     create: {
       name: "Alex Novak",
@@ -75,7 +78,8 @@ async function main() {
       passwordHash: employeePasswordHash,
       role: Role.EMPLOYEE,
       companyId: company.id,
-      workerId: worker.id
+      workerId: worker.id,
+      emailVerified: true
     }
   });
 

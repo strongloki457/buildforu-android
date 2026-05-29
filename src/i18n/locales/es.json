@@ -696,7 +696,16 @@
                     "title":  "Elige el plan que encaja con el momento de tu empresa.",
                     "subtitle":  "Empieza con una configuracion simple y avanza hacia un espacio operativo completo a medida que crecen tus equipos.",
                     "mostPopular":  "El mas popular",
+                    "monthly":  "Mensual",
+                    "annually":  "Anual",
+                    "annualSavings":  "Ahorra 20%",
+                    "annualSavingsAmount":  "Ahorras {{amount}}/año",
                     "perMonth":  "por mes",
+                    "perMonthAnnual":  "/ mes, facturado anualmente ({{total}}/año)",
+                    "noCard":  "Sin tarjeta · Cancela cuando quieras · 14 días gratis",
+                    "enterprisePrice":  "Presupuesto",
+                    "enterprisePriceDetail":  "Adaptado al tamaño de tu equipo",
+                    "contactUs":  "Contacto",
                     "choosePlan":  "Elegir plan",
                     "plans":  {
                                   "starter":  {

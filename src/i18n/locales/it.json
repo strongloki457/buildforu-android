@@ -696,7 +696,16 @@
                     "title":  "Scegli il piano adatto alla fase della tua azienda.",
                     "subtitle":  "Inizia con una configurazione semplice e passa a uno spazio operativo completo man mano che le squadre crescono.",
                     "mostPopular":  "Il piu scelto",
+                    "monthly":  "Mensile",
+                    "annually":  "Annuale",
+                    "annualSavings":  "Risparmia 20%",
+                    "annualSavingsAmount":  "Risparmi {{amount}}/anno",
                     "perMonth":  "al mese",
+                    "perMonthAnnual":  "/ mese, fatturato annualmente ({{total}}/anno)",
+                    "noCard":  "Senza carta · Annulla quando vuoi · 14 giorni gratis",
+                    "enterprisePrice":  "Preventivo",
+                    "enterprisePriceDetail":  "Adattato alla dimensione del tuo team",
+                    "contactUs":  "Contatto",
                     "choosePlan":  "Scegli piano",
                     "plans":  {
                                   "starter":  {

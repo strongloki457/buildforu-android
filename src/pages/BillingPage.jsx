@@ -23,6 +23,7 @@ export default function BillingPage() {
   const [subscription, setSubscription] = useState(null);
   const [loadingPortal, setLoadingPortal] = useState(false);
   const [loadingCheckout, setLoadingCheckout] = useState(null);
+  const [isAnnual, setIsAnnual] = useState(false);
 
   useEffect(() => {
     getSubscription()
@@ -46,8 +47,7 @@ export default function BillingPage() {
       )
     : null;
 
-  const currentPlanIndex = PLAN_ORDER.indexOf(currentPlan);
-  const upgradablePlans = PLAN_ORDER.slice(currentPlanIndex + 1);
+  const switchablePlans = PLAN_ORDER.filter((p) => p !== currentPlan);
 
   const currentPriceAmount =
     subscription?.nextInvoiceAmount != null
@@ -73,7 +73,7 @@ export default function BillingPage() {
   const handleUpgrade = async (plan) => {
     setLoadingCheckout(plan);
     try {
-      const { url } = await createCheckoutSession(plan);
+      const { url } = await createCheckoutSession(plan, isAnnual ? "annual" : "monthly");
       window.location.href = url;
     } catch {
       setLoadingCheckout(null);
@@ -108,13 +108,6 @@ export default function BillingPage() {
                 {loadingPortal ? t("common.loading") : t("billing.manageSubscription")}
                 <ExternalLink size={16} />
               </Button>
-            ) : upgradablePlans.length > 0 ? (
-              <Link to="/pricing">
-                <Button className="w-full gap-2 sm:w-auto">
-                  {t("billing.upgradePlan")}
-                  <ArrowUpRight size={16} />
-                </Button>
-              </Link>
             ) : null
           }
         />
@@ -189,16 +182,36 @@ export default function BillingPage() {
               )}
             </div>
 
-            {!hasActiveSubscription && upgradablePlans.length > 0 && (
+            {switchablePlans.length > 0 && (
               <div className="space-y-3">
-                <p className="px-1 text-xs uppercase tracking-[0.24em] text-slate-400">{t("billing.availablePlans")}</p>
-                {upgradablePlans.map((plan) => {
+                <div className="flex items-center justify-between px-1">
+                  <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{t("billing.availablePlans")}</p>
+                  {!hasActiveSubscription && (
+                    <div className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-0.5 text-xs">
+                      <button
+                        type="button"
+                        onClick={() => setIsAnnual(false)}
+                        className={`rounded-lg px-2.5 py-1 transition ${!isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
+                      >
+                        {t("pricing.monthly", "Monthly")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsAnnual(true)}
+                        className={`rounded-lg px-2.5 py-1 transition ${isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
+                      >
+                        {t("pricing.annually", "Annual")} <span className={`ml-1 ${isAnnual ? "text-white/80" : "text-green-600"}`}>-20%</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {switchablePlans.map((plan) => {
                   const price = PLAN_PRICES[plan];
-                  if (!price.hasStripe) {
+                  if (!price.hasStripe || plan === "enterprise") {
                     return (
                       <a
                         key={plan}
-                        href="mailto:sales@buildforu.com"
+                        href="mailto:kontakt@buildforu.pl"
                         className="flex w-full items-center justify-between rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-left hover:bg-slate-50 transition"
                       >
                         <div>
@@ -210,6 +223,27 @@ export default function BillingPage() {
                           <Mail size={16} className="text-brand-700" />
                         </div>
                       </a>
+                    );
+                  }
+                  if (hasActiveSubscription && hasStripeCustomer) {
+                    return (
+                      <button
+                        key={plan}
+                        onClick={handleOpenPortal}
+                        disabled={loadingPortal}
+                        className="w-full rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-left hover:bg-slate-50 transition disabled:opacity-50"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-slate-900">{t(`plans.${plan}`)}</p>
+                            <p className="mt-0.5 text-sm text-slate-500">{t(`billing.planDescriptions.${plan}`)}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-slate-500">{price.monthly}{t("billing.perMonthShort")}</span>
+                            <ExternalLink size={16} className="text-brand-700" />
+                          </div>
+                        </div>
+                      </button>
                     );
                   }
                   return (
@@ -226,7 +260,11 @@ export default function BillingPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-slate-700">
-                            {loadingCheckout === plan ? t("common.loading") : `${price.monthly}${t("billing.perMonthShort")}`}
+                            {loadingCheckout === plan
+                              ? t("common.loading")
+                              : isAnnual && price.monthly
+                                ? `€${(parseFloat(price.monthly.replace("€", "")) * 0.8).toFixed(2).replace(".", ",")}${t("billing.perMonthShort")}`
+                                : `${price.monthly}${t("billing.perMonthShort")}`}
                           </span>
                           <ArrowUpRight size={16} className="text-brand-700" />
                         </div>
@@ -260,9 +298,9 @@ export default function BillingPage() {
               </div>
             )}
 
-            {hasActiveSubscription && hasStripeCustomer && (
-              <div className="rounded-[28px] border border-red-100 bg-red-50/60 p-5">
-                {cancelAtPeriodEnd ? (
+            <div className="rounded-[28px] border border-red-100 bg-red-50/60 p-5">
+              {hasActiveSubscription && hasStripeCustomer ? (
+                cancelAtPeriodEnd ? (
                   <>
                     <p className="text-sm font-medium text-red-900">{t("billing.cancelScheduledTitle")}</p>
                     <p className="mt-1 text-sm text-red-700">
@@ -292,9 +330,21 @@ export default function BillingPage() {
                       {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
                     </button>
                   </>
-                )}
-              </div>
-            )}
+                )
+              ) : (
+                <>
+                  <p className="text-sm font-medium text-red-900">{t("billing.cancelTitle", "Cancel subscription")}</p>
+                  <p className="mt-1 text-sm text-red-700">{t("billing.noActiveSubCancel", "You don't have an active subscription to cancel. Contact us if you need help.")}</p>
+                  <a
+                    href="mailto:kontakt@buildforu.pl"
+                    className="mt-4 inline-flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition"
+                  >
+                    <Mail size={15} />
+                    {t("billing.contactSupport", "Contact support")}
+                  </a>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </Card>

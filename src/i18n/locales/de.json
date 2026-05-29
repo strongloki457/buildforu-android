@@ -731,8 +731,17 @@
                     "title":  "Wählen Sie den Plan, der zur Phase Ihres Unternehmens passt.",
                     "subtitle":  "Starten Sie mit einem einfachen Team-Setup und wachsen Sie in einen vollständigen operativen Arbeitsbereich hinein.",
                     "mostPopular":  "Am beliebtesten",
+                    "monthly":  "Monatlich",
+                    "annually":  "Jährlich",
+                    "annualSavings":  "20% sparen",
+                    "annualSavingsAmount":  "Sie sparen {{amount}}/Jahr",
                     "perMonth":  "pro Monat",
-                    "choosePlan":  "Plan wahlen",
+                    "perMonthAnnual":  "/ Mon., jährlich abgerechnet ({{total}}/Jahr)",
+                    "noCard":  "Keine Kreditkarte · Jederzeit kündbar · 14 Tage kostenlos",
+                    "enterprisePrice":  "Angebot",
+                    "enterprisePriceDetail":  "Auf Ihre Teamgröße abgestimmt",
+                    "contactUs":  "Kontakt",
+                    "choosePlan":  "Plan wählen",
                     "plans":  {
                                   "starter":  {
                                                   "price":  "€12.95",

@@ -12,14 +12,14 @@ function durationHours(startTime, endTime) {
   return diff / (1000 * 60 * 60);
 }
 
-function formatTime(iso) {
+function formatTime(iso, locale = "en") {
   if (!iso) return "—";
-  return new Intl.DateTimeFormat("pl-PL", { hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+  return new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
 }
 
-function formatDate(iso) {
+function formatDate(iso, locale = "en") {
   if (!iso) return "—";
-  return new Intl.DateTimeFormat("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(iso));
+  return new Intl.DateTimeFormat(locale, { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(iso));
 }
 
 function formatHours(h) {
@@ -29,7 +29,7 @@ function formatHours(h) {
   return `${hrs}h ${mins}m`;
 }
 
-function exportCsv(records, t) {
+function exportCsv(records, t, locale = "en") {
   const header = [
     t("attendance.csvWorker", "Worker"),
     t("attendance.csvDate", "Date"),
@@ -42,26 +42,28 @@ function exportCsv(records, t) {
     const hrs = durationHours(r.startTime, r.endTime);
     return [
       `"${r.workerName ?? ""}"`,
-      formatDate(r.startTime),
-      formatTime(r.startTime),
-      formatTime(r.endTime),
+      formatDate(r.startTime, locale),
+      formatTime(r.startTime, locale),
+      formatTime(r.endTime, locale),
       hrs !== null ? hrs.toFixed(2) : ""
     ].join(",");
   });
 
   const csv = [header, ...rows].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = `attendance_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
 export default function AttendanceReportsPage() {
   const { workers } = useAppData();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -77,7 +79,7 @@ export default function AttendanceReportsPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await attendanceApi.list({ limit: 500 });
+      const res = await attendanceApi.list({ limit: 1000 });
       const raw = Array.isArray(res) ? res : (res?.data ?? []);
       setRecords(
         raw.map((r) => ({
@@ -176,7 +178,7 @@ export default function AttendanceReportsPage() {
               </button>
               <button
                 type="button"
-                onClick={() => exportCsv(filtered, t)}
+                onClick={() => exportCsv(filtered, t, locale)}
                 disabled={!filtered.length}
                 className="inline-flex min-h-10 items-center gap-2 rounded-2xl bg-brand-700 px-4 py-2 text-sm text-white hover:bg-brand-600 transition disabled:opacity-40"
               >
@@ -240,9 +242,9 @@ export default function AttendanceReportsPage() {
                 return (
                   <div key={r.id} className="bg-white/55 px-5 py-3.5 sm:grid sm:grid-cols-[1.8fr_1fr_1fr_1fr_1fr] sm:items-center sm:gap-4">
                     <p className="text-sm text-slate-900">{r.workerName || "—"}</p>
-                    <p className="mt-1 text-xs text-slate-500 sm:mt-0 sm:text-sm">{formatDate(r.startTime)}</p>
-                    <p className="text-xs text-slate-500 sm:text-sm">{formatTime(r.startTime)}</p>
-                    <p className="text-xs text-slate-500 sm:text-sm">{formatTime(r.endTime)}</p>
+                    <p className="mt-1 text-xs text-slate-500 sm:mt-0 sm:text-sm">{formatDate(r.startTime, locale)}</p>
+                    <p className="text-xs text-slate-500 sm:text-sm">{formatTime(r.startTime, locale)}</p>
+                    <p className="text-xs text-slate-500 sm:text-sm">{formatTime(r.endTime, locale)}</p>
                     <p className={`text-sm font-medium ${hrs !== null ? "text-brand-700" : "text-slate-400"}`}>
                       {formatHours(hrs)}
                     </p>

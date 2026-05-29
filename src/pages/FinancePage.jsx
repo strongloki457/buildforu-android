@@ -120,25 +120,25 @@ export default function FinancePage() {
           icon={FolderKanban}
           label={t("finance.activeProjects", "Active projects")}
           value={String(metrics.activeProjects)}
-          detail={t("finance.completedProjectsDetail", "{{count}} completed total", { count: metrics.completedProjects })}
+          detail={t("finance.completedProjectsDetail", { count: metrics.completedProjects })}
         />
         <MetricCard
           icon={Users2}
           label={t("finance.onSiteToday", "On site today")}
           value={String(metrics.onSiteToday)}
-          detail={t("finance.totalWorkersDetail", "{{count}} workers in company", { count: metrics.totalWorkers })}
+          detail={t("finance.totalWorkersDetail", { count: metrics.totalWorkers })}
         />
         <MetricCard
           icon={CalendarCheck2}
           label={t("finance.taskCompletion", "Task completion")}
           value={`${metrics.completionRate}%`}
-          detail={t("finance.todayTasksDetail", "{{count}} tasks scheduled today", { count: metrics.todayTasks })}
+          detail={t("finance.todayTasksDetail", { count: metrics.todayTasks })}
         />
         <MetricCard
           icon={PackageCheck}
           label={t("finance.materialsPurchased", "Materials purchased")}
           value={String(metrics.purchasedMaterials)}
-          detail={t("finance.pendingMaterialsDetail", "{{count}} pending approval", { count: metrics.pendingMaterials })}
+          detail={t("finance.pendingMaterialsDetail", { count: metrics.pendingMaterials })}
         />
       </div>
 

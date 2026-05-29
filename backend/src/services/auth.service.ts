@@ -348,3 +348,7 @@ export async function getCurrentUser(userId: string) {
 
   return assertFound(user, "Current user was not found.");
 }
+
+export async function deleteAccount(userId: string) {
+  await prisma.user.delete({ where: { id: userId } });
+}

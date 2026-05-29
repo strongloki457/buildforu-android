@@ -1,9 +1,9 @@
 import { apiRequest } from "./client";
 
-export function createCheckoutSession(plan) {
+export function createCheckoutSession(plan, billing = "monthly") {
   return apiRequest("/api/stripe/create-checkout-session", {
     method: "POST",
-    body: { plan }
+    body: { plan, billing }
   });
 }
 

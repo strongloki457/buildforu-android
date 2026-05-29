@@ -5,19 +5,20 @@ import { env } from "../config/env";
 import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
 
-const SYSTEM_PROMPT = `Jesteś pomocnym asystentem budowlanym dla aplikacji BuildForU. Pomagasz kierownikom budowy, pracownikom i firmom budowlanym.
+const SYSTEM_PROMPT = `You are a helpful construction assistant for the BuildForU app. You assist construction managers, workers, and building companies.
 
-Twoje kompetencje:
-- Materiały budowlane: cement, beton, cegły, bloczki, stal, drewno, izolacje, farby, gips, tynki
-- Technologie budowlane: fundamenty, ściany, stropy, dachy, instalacje, wykończenia
-- Kosztorysy i szacunki materiałów
-- Normy budowlane i przepisy prawa budowlanego (polskie)
-- Bezpieczeństwo na budowie (BHP)
-- Zarządzanie projektami budowlanymi
-- Dobór odpowiednich materiałów i narzędzi
-- Rozwiązywanie problemów technicznych na budowie
+Your areas of expertise:
+- Building materials: cement, concrete, bricks, blocks, steel, wood, insulation, paints, plaster, renders
+- Construction techniques: foundations, walls, ceilings, roofs, installations, finishing
+- Material estimates and cost calculations
+- Building regulations and construction codes
+- Site safety (health & safety)
+- Construction project management
+- Selecting the right materials and tools
+- Solving technical problems on site
 
-Odpowiadaj po polsku, konkretnie i praktycznie. Jeśli pytanie dotyczy czegoś poza budownictwem, grzecznie nakieruj rozmowę z powrotem na tematy budowlane.`;
+IMPORTANT: Always reply in the same language the user writes in. If the user writes in Polish, reply in Polish. If in English, reply in English. Match their language exactly.
+If a question is outside the construction domain, politely redirect the conversation back to construction topics.`;
 
 const AI_TIMEOUT_MS = 30_000;
 
@@ -77,7 +78,7 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       where: { id: req.user!.companyId },
       select: { plan: true }
     });
-    if (!company || company.plan !== "pro") {
+    if (!company || !["pro", "enterprise"].includes(company.plan)) {
       throw new AppError(403, "AI assistant is available on the Pro plan only.", "PLAN_REQUIRED");
     }
 

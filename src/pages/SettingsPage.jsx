@@ -1,4 +1,4 @@
-import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Pencil, Shield, Users2 } from "lucide-react";
+import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Pencil, Shield, Trash2, Users2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
@@ -29,22 +29,31 @@ function resizeImageToBase64(file, maxSize = 160) {
 }
 
 export default function SettingsPage() {
-  const { company, user, updateUser } = useAuth();
+  const { company, user, updateUser, logout } = useAuth();
   const { workers } = useAppData();
   const { t } = useI18n();
   const fileInputRef = useRef(null);
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarError, setAvatarError] = useState("");
-  const [toggles, setToggles] = useState({
-    alerts: true,
-    summaries: true,
-    privacy: false
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+  const [deactivating, setDeactivating] = useState(false);
+  const [deactivateError, setDeactivateError] = useState("");
+  const [toggles, setToggles] = useState(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("buildforu-settings-toggles") || "null");
+      if (stored && typeof stored === "object") return stored;
+    } catch {}
+    return { alerts: true, summaries: true, privacy: false };
   });
   const adminCount = user?.role === "admin" ? 1 : 0;
   const employeeCount = workers.filter((worker) => worker.hasLinkedLogin).length;
   const isAdmin = user?.role === "admin";
 
-  const toggle = (key) => setToggles((current) => ({ ...current, [key]: !current[key] }));
+  const toggle = (key) => setToggles((current) => {
+    const next = { ...current, [key]: !current[key] };
+    try { window.localStorage.setItem("buildforu-settings-toggles", JSON.stringify(next)); } catch {}
+    return next;
+  });
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files?.[0];
@@ -71,6 +80,18 @@ export default function SettingsPage() {
     } finally {
       setAvatarUploading(false);
       e.target.value = "";
+    }
+  };
+
+  const handleDeactivateAccount = async () => {
+    setDeactivating(true);
+    setDeactivateError("");
+    try {
+      await apiRequest("/api/auth/me", { method: "DELETE" });
+      logout();
+    } catch {
+      setDeactivateError(t("settings.deactivateError", "Failed to deactivate account. Please try again."));
+      setDeactivating(false);
     }
   };
 
@@ -265,6 +286,65 @@ export default function SettingsPage() {
               {t("settings.manageBilling")}
               <ArrowUpRight size={16} />
             </Link>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="mt-6 rounded-[28px] border border-red-100 bg-red-50/60 p-6">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="rounded-2xl bg-red-100 p-3 text-red-600">
+              <Trash2 size={18} />
+            </div>
+            <div>
+              <p className="text-base font-medium text-red-900">{t("settings.deactivateTitle", "Deactivate account")}</p>
+              <p className="mt-1 max-w-xl text-sm text-red-700">
+                {user?.role === "admin"
+                  ? t("settings.deactivateHintAdmin", "Your login will be permanently removed. Company data and workers will be preserved.")
+                  : t("settings.deactivateHint", "Your login will be permanently removed. Your work history will be preserved.")}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setDeactivateError(""); setShowDeactivateModal(true); }}
+            className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 transition hover:bg-red-50"
+          >
+            <Trash2 size={15} />
+            {t("settings.deactivateButton", "Deactivate account")}
+          </button>
+        </div>
+      </div>
+
+      {showDeactivateModal ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-[28px] bg-white p-6 shadow-xl">
+            <h2 className="text-lg font-medium text-slate-900">{t("settings.deactivateConfirmTitle", "Deactivate your account?")}</h2>
+            <p className="mt-2 text-sm text-slate-500">
+              {user?.role === "admin"
+                ? t("settings.deactivateConfirmBodyAdmin", "This will permanently remove your admin login. Company data and all workers will remain. This cannot be undone.")
+                : t("settings.deactivateConfirmBody", "This will permanently remove your login. Your work history will remain. This cannot be undone.")}
+            </p>
+            {deactivateError ? <p className="mt-3 text-sm text-red-600">{deactivateError}</p> : null}
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={() => setShowDeactivateModal(false)}
+                disabled={deactivating}
+                className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+              >
+                {t("common.cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={handleDeactivateAccount}
+                disabled={deactivating}
+                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-red-600 px-4 py-2.5 text-sm text-white transition hover:bg-red-700 disabled:opacity-50"
+              >
+                <Trash2 size={15} />
+                {deactivating ? t("common.loading", "Loading…") : t("settings.deactivateConfirm", "Yes, deactivate")}
+              </button>
+            </div>
           </div>
         </div>
       ) : null}

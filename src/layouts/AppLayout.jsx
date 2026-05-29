@@ -2,7 +2,6 @@ import { MailWarning, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { apiRequest } from "../api/client";
-import BottomNav from "../components/navigation/BottomNav";
 import Sidebar from "../components/navigation/Sidebar";
 import Topbar from "../components/navigation/Topbar";
 import { getNavigation } from "../components/navigation/navConfig";
@@ -37,7 +36,7 @@ export default function AppLayout() {
       .sort((left, right) => right.path.length - left.path.length)[0] ?? navItems[0];
 
   return (
-    <div className="mobile-safe-bottom min-h-screen px-2 py-2 sm:px-4 sm:py-4 lg:px-5 lg:py-5">
+    <div className="min-h-screen px-2 py-2 sm:px-4 sm:py-4 lg:px-5 lg:py-5">
       <div className="mx-auto grid min-h-[calc(100vh-1rem)] max-w-[1680px] gap-3 sm:gap-4 lg:min-h-[calc(100vh-2rem)] lg:grid-cols-[280px_minmax(0,1fr)]">
         <Sidebar
           navItems={navItems}
@@ -108,7 +107,6 @@ export default function AppLayout() {
           </main>
         </div>
       </div>
-      <BottomNav navItems={navItems} />
     </div>
   );
 }

@@ -754,7 +754,16 @@
                     "title":  "Choisissez le plan adapte a letape de votre entreprise.",
                     "subtitle":  "Commencez avec une configuration simple et passez vers un espace operationnel complet a mesure que vos equipes grandissent.",
                     "mostPopular":  "Le plus populaire",
+                    "monthly":  "Mensuel",
+                    "annually":  "Annuel",
+                    "annualSavings":  "Économisez 20%",
+                    "annualSavingsAmount":  "Vous économisez {{amount}}/an",
                     "perMonth":  "par mois",
+                    "perMonthAnnual":  "/ mois, facturé annuellement ({{total}}/an)",
+                    "noCard":  "Sans carte bancaire · Annulez à tout moment · 14 jours gratuits",
+                    "enterprisePrice":  "Devis",
+                    "enterprisePriceDetail":  "Adapté à la taille de votre équipe",
+                    "contactUs":  "Contact",
                     "choosePlan":  "Choisir ce plan",
                     "plans":  {
                                   "starter":  {

@@ -2,9 +2,9 @@ import { CalendarDays, ClipboardPlus, FolderPlus, UserPlus } from "lucide-react"
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import AssignmentPanel from "../components/dashboard/AssignmentPanel";
+import OnboardingChecklist from "../components/dashboard/OnboardingChecklist";
 import DashboardQuickActions from "../components/dashboard/DashboardQuickActions";
 import MaterialsSummaryCard from "../components/dashboard/MaterialsSummaryCard";
-import OnboardingChecklist from "../components/dashboard/OnboardingChecklist";
 import ProjectsOverviewCard from "../components/dashboard/ProjectsOverviewCard";
 import TaskListCard from "../components/dashboard/TaskListCard";
 import WorkersPanel from "../components/dashboard/WorkersPanel";

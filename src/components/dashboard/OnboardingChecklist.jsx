@@ -56,7 +56,7 @@ export default function OnboardingChecklist({ workers, projects, tasks, onAddWor
           </div>
           <div>
             <h3 className="text-sm font-medium text-slate-900">
-              {t("onboarding.title", "Get started — {{done}}/{{total}} steps completed", {
+              {t("onboarding.title", {
                 done: completedCount,
                 total: steps.length
               })}

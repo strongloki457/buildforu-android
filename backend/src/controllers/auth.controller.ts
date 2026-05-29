@@ -58,3 +58,8 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
   const result = await authService.refreshAccessToken(refreshToken);
   res.json(result);
 });
+
+export const deleteMe = asyncHandler(async (req: Request, res: Response) => {
+  await authService.deleteAccount(req.user!.userId);
+  res.status(204).send();
+});

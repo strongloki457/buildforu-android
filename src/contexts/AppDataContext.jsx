@@ -390,11 +390,11 @@ export function AppDataProvider({ children }) {
     try {
       const [workersResponse, projectsResponse, tasksResponse, attendanceResponse, materialsResponse] =
         await Promise.all([
-          user.role === "admin" ? workersApi.list({ limit: 100 }) : Promise.resolve({ data: [] }),
-          projectsApi.list({ limit: 100 }),
-          tasksApi.list({ limit: 100 }),
-          attendanceApi.list({ limit: 100 }),
-          materialsApi.list({ limit: 100 })
+          user.role === "admin" ? workersApi.list({ limit: 500 }) : Promise.resolve({ data: [] }),
+          projectsApi.list({ limit: 500 }),
+          tasksApi.list({ limit: 500 }),
+          attendanceApi.list({ limit: 500 }),
+          materialsApi.list({ limit: 500 })
         ]);
 
       const mappedProjects = getPageData(projectsResponse).map(mapApiProject);
@@ -527,7 +527,8 @@ export function AppDataProvider({ children }) {
             id: msg.id,
             senderId: msg.senderId,
             text: msg.text,
-            timestamp: formatTimestamp(msg.createdAt)
+            timestamp: formatTimestamp(msg.createdAt),
+            attachments: attachments.length ? attachments : undefined
           };
           dispatch({ type: "SEND_MESSAGE", payload: { threadId, message: mappedMsg } });
           return mappedMsg;
