@@ -12,6 +12,7 @@ export const createMaterialRequestSchema = z.object({
   itemName: z.string().trim().min(1).max(180),
   quantity: z.string().trim().max(120).optional(),
   note: optionalText,
+  imageBase64: z.string().max(700_000).optional(),
   projectId: z.string().min(1).optional().or(z.literal("")),
   requesterWorkerId: z.string().min(1).optional().or(z.literal(""))
 });

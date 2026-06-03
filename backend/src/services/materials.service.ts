@@ -94,6 +94,7 @@ export async function createMaterialRequest(currentUser: AuthContext, input: Cre
       itemName: input.itemName,
       quantity: input.quantity || null,
       note: input.note || null,
+      imageBase64: input.imageBase64 || null,
       status: MaterialRequestStatus.PENDING,
       companyId: currentUser.companyId,
       requesterWorkerId,

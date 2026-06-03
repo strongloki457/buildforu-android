@@ -61,6 +61,16 @@ export default function MaterialRequestCard({ request, isAdmin, locale, onDelete
             <p className="break-anywhere mt-2 text-slate-600">{getMaterialRequestNote(t, request)}</p>
           </div>
         ) : null}
+
+        {request.imageBase64 ? (
+          <div className="sm:col-span-2">
+            <img
+              src={request.imageBase64}
+              alt=""
+              className="w-full rounded-[20px] object-cover max-h-64"
+            />
+          </div>
+        ) : null}
       </div>
 
       {isAdmin ? (

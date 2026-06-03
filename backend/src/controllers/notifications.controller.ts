@@ -19,7 +19,8 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
         id: "n-pending-materials",
         title: `${pendingMaterials} material request${pendingMaterials > 1 ? "s" : ""} pending approval`,
         time: "Today",
-        type: "material"
+        type: "material",
+        link: "/materials"
       });
     }
 
@@ -28,7 +29,8 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
         id: "n-completed-tasks",
         title: `${completedTasks} task${completedTasks > 1 ? "s" : ""} completed today`,
         time: "Today",
-        type: "task"
+        type: "task",
+        link: "/calendar"
       });
     }
 
@@ -37,7 +39,8 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
         id: "n-on-site",
         title: `${onSiteCount} worker${onSiteCount > 1 ? "s" : ""} currently on site`,
         time: "Now",
-        type: "attendance"
+        type: "attendance",
+        link: "/attendance-reports"
       });
     }
   } else if (workerId) {
@@ -65,7 +68,8 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
         id: "n-due-tasks",
         title: `${dueTasks} task${dueTasks > 1 ? "s" : ""} due today`,
         time: "Today",
-        type: "task"
+        type: "task",
+        link: "/calendar"
       });
     }
 
@@ -74,7 +78,8 @@ export const listNotifications = asyncHandler(async (req: Request, res: Response
         id: "n-material-updates",
         title: `${updatedRequests} material request${updatedRequests > 1 ? "s" : ""} updated`,
         time: "Today",
-        type: "material"
+        type: "material",
+        link: "/materials"
       });
     }
   }

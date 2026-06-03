@@ -1,10 +1,27 @@
-import { PackagePlus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Camera, PackagePlus, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
 import { useI18n } from "../../hooks/useI18n";
 import { getProjectName } from "../../utils/localizedValue";
+
+function compressImage(file, maxWidth = 900, quality = 0.72) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", quality));
+    };
+    img.src = url;
+  });
+}
 
 export default function MaterialRequestForm({ projectName, projectOptions, defaultProjectId, onSubmit }) {
   const { t } = useI18n();
@@ -14,7 +31,9 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
     note: "",
     projectId: defaultProjectId ?? projectOptions[0]?.id ?? ""
   });
+  const [pendingImage, setPendingImage] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setForm((current) => ({
@@ -27,6 +46,14 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
 
   const handleChange = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleImagePick = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const compressed = await compressImage(file);
+    setPendingImage(compressed);
   };
 
   const handleSubmit = async (event) => {
@@ -47,6 +74,7 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
         itemName,
         quantity,
         note,
+        imageBase64: pendingImage || undefined,
         projectId: form.projectId
       });
 
@@ -57,6 +85,7 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
           note: "",
           projectId: defaultProjectId ?? projectOptions[0]?.id ?? ""
         });
+        setPendingImage(null);
       }
     } finally {
       setIsSaving(false);
@@ -130,6 +159,45 @@ export default function MaterialRequestForm({ projectName, projectOptions, defau
             className="rounded-lg border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
           />
         </label>
+
+        <div className="grid gap-2">
+          <span className="text-sm text-slate-600">{t("materials.photo", "Photo")}</span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImagePick}
+          />
+          {pendingImage ? (
+            <div className="flex items-start gap-3">
+              <div className="relative">
+                <img
+                  src={pendingImage}
+                  alt=""
+                  className="h-24 w-24 rounded-xl object-cover border border-slate-200"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPendingImage(null)}
+                  className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-white hover:bg-slate-900"
+                >
+                  <X size={10} />
+                </button>
+              </div>
+              <p className="mt-1 text-xs text-slate-400">{t("materials.photoReady", "Photo ready to send")}</p>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-500 transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
+            >
+              <Camera size={16} />
+              {t("materials.addPhoto", "Take a photo or choose from gallery")}
+            </button>
+          )}
+        </div>
 
         {!projectOptions.length ? (
           <div className="rounded-lg border border-dashed border-slate-200 bg-slate-50/80 px-4 py-3 text-sm text-slate-500">

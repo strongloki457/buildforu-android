@@ -9,7 +9,8 @@
       "Bash(curl *)",
       "PowerShell(Get-NetTCPConnection *)",
       "Bash(Start-Sleep -Seconds 4)",
-      "Bash(Get-Content \"C:\\\\Users\\\\macie\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-macie-Aplikacja-BuildForU\\\\a9921e21-1873-441f-95fa-95d583248f8f\\\\tasks\\\\btrs890ia.output\")"
+      "Bash(Get-Content \"C:\\\\Users\\\\macie\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-macie-Aplikacja-BuildForU\\\\a9921e21-1873-441f-95fa-95d583248f8f\\\\tasks\\\\btrs890ia.output\")",
+      "Bash(xargs grep -l \"task.*request\\\\|request.*task\")"
     ]
   }
 }

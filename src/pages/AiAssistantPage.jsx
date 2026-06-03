@@ -1,4 +1,4 @@
-import { Bot, CornerDownLeft, Lock, RotateCcw, Sparkles } from "lucide-react";
+import { Bot, Camera, CornerDownLeft, Lock, RotateCcw, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { aiApi } from "../api/ai.api";
@@ -37,15 +37,34 @@ function UpgradeWall({ t }) {
   );
 }
 
+function compressImage(file, maxWidth = 900, quality = 0.75) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxWidth / img.width);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/jpeg", quality));
+    };
+    img.src = url;
+  });
+}
+
 export default function AiAssistantPage() {
   const { t } = useI18n();
   const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [pendingImage, setPendingImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const suggestions = t("aiAssistant.suggestions") ?? [];
   const isStarterPlan = (user?.plan ?? "starter") === "starter";
@@ -54,19 +73,33 @@ export default function AiAssistantPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const sendMessage = async (text) => {
-    const trimmed = text.trim();
-    if (!trimmed || isLoading) return;
+  const handleImagePick = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    const compressed = await compressImage(file);
+    setPendingImage(compressed);
+    inputRef.current?.focus();
+  };
 
-    const userMsg = { role: "user", content: trimmed, id: Date.now() };
+  const sendMessage = async (text, imageData = pendingImage) => {
+    const trimmed = text.trim();
+    if ((!trimmed && !imageData) || isLoading) return;
+
+    const userMsg = { role: "user", content: trimmed, image: imageData || undefined, id: Date.now() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput("");
+    setPendingImage(null);
     setIsLoading(true);
     setError(null);
 
     try {
-      const apiMessages = newMessages.map((m) => ({ role: m.role, content: m.content }));
+      const apiMessages = newMessages.map((m) => ({
+        role: m.role,
+        content: m.content,
+        ...(m.image && { image: m.image })
+      }));
       const response = await aiApi.chat(apiMessages);
       const assistantMsg = {
         role: "assistant",
@@ -90,6 +123,7 @@ export default function AiAssistantPage() {
   const handleReset = () => {
     setMessages([]);
     setError(null);
+    setPendingImage(null);
     inputRef.current?.focus();
   };
 
@@ -161,6 +195,13 @@ export default function AiAssistantPage() {
                   }`}
                   style={{ whiteSpace: "pre-wrap" }}
                 >
+                  {msg.image && (
+                    <img
+                      src={msg.image}
+                      alt=""
+                      className="mb-2 max-h-48 w-full rounded-xl object-cover"
+                    />
+                  )}
                   {msg.content}
                 </div>
               </div>
@@ -188,8 +229,45 @@ export default function AiAssistantPage() {
         )}
       </div>
 
+      {/* Image preview */}
+      {pendingImage && (
+        <div className="mt-3 flex items-start gap-2">
+          <div className="relative">
+            <img
+              src={pendingImage}
+              alt=""
+              className="h-20 w-20 rounded-2xl object-cover border border-slate-200"
+            />
+            <button
+              type="button"
+              onClick={() => setPendingImage(null)}
+              className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-white hover:bg-slate-900"
+            >
+              <X size={10} />
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-slate-400">Zdjęcie gotowe do wysłania</p>
+        </div>
+      )}
+
       {/* Input */}
       <form onSubmit={handleSubmit} className="mt-3 flex gap-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImagePick}
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isLoading}
+          title="Dodaj zdjęcie"
+          className="shrink-0 rounded-2xl border border-slate-200 bg-white p-3 text-slate-500 transition hover:bg-slate-50 hover:text-brand-700 disabled:opacity-50"
+        >
+          <Camera size={16} />
+        </button>
         <input
           ref={inputRef}
           type="text"
@@ -201,7 +279,7 @@ export default function AiAssistantPage() {
         />
         <button
           type="submit"
-          disabled={!input.trim() || isLoading}
+          disabled={(!input.trim() && !pendingImage) || isLoading}
           className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-4 py-3 text-sm text-white transition hover:bg-brand-600 disabled:opacity-50"
         >
           <CornerDownLeft size={15} />

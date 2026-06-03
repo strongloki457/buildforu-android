@@ -22,16 +22,18 @@ If a question is outside the construction domain, politely redirect the conversa
 
 const AI_TIMEOUT_MS = 30_000;
 
+const messageSchema = z
+  .object({
+    role: z.enum(["user", "assistant"]),
+    content: z.string().max(4000),
+    image: z.string().max(700_000).optional()
+  })
+  .refine((m) => m.content.trim().length > 0 || !!m.image, {
+    message: "Message must have content or image"
+  });
+
 const chatSchema = z.object({
-  messages: z
-    .array(
-      z.object({
-        role: z.enum(["user", "assistant"]),
-        content: z.string().min(1).max(4000)
-      })
-    )
-    .min(1)
-    .max(50)
+  messages: z.array(messageSchema).min(1).max(50)
 });
 
 let groqClient: Groq | null = null;
@@ -84,13 +86,29 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
 
     const client = getClient();
 
+    const hasImage = messages.some((m) => !!m.image);
+    const model = hasImage ? "meta-llama/llama-4-scout-17b-16e-instruct" : "llama-3.1-8b-instant";
+
+    const builtMessages = messages.map((m) => {
+      if (m.image) {
+        return {
+          role: m.role as "user" | "assistant",
+          content: [
+            { type: "image_url" as const, image_url: { url: m.image } },
+            ...(m.content.trim() ? [{ type: "text" as const, text: m.content }] : [])
+          ]
+        };
+      }
+      return { role: m.role as "user" | "assistant", content: m.content };
+    });
+
     const response = await withTimeout(
       client.chat.completions.create({
-        model: "llama-3.1-8b-instant",
+        model,
         max_tokens: 1024,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...messages.map((m) => ({ role: m.role, content: m.content }))
+          ...builtMessages
         ]
       }),
       AI_TIMEOUT_MS

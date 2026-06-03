@@ -20,7 +20,7 @@ import {
   getProjectName
 } from "../utils/localizedValue";
 
-const tabOptions = ["requests", "find"];
+const ALL_TAB_OPTIONS = ["requests", "find"];
 
 export default function MaterialsPage() {
   const { user } = useAuth();
@@ -44,6 +44,7 @@ export default function MaterialsPage() {
   const [projectFilter, setProjectFilter] = useState("all");
 
   const isAdmin = user.role === "admin";
+  const tabOptions = isAdmin ? ALL_TAB_OPTIONS : ["requests"];
   const requesterId = user.apiWorkerId || user.workerId || user.id;
   const workerProjects = useMemo(
     () => visibleProjects.filter((project) => linkedWorker?.projectIds?.includes(project.id)),
@@ -223,9 +224,9 @@ export default function MaterialsPage() {
             </Card>
           </div>
         </div>
-      ) : (
+      ) : isAdmin ? (
         <MaterialsStoreFinderTab />
-      )}
+      ) : null}
     </div>
   );
 }

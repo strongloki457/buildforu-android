@@ -1,5 +1,5 @@
-import { Bell, BellOff, Menu } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Bell, BellOff, ChevronRight, Menu } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import UserMenu from "./UserMenu";
@@ -8,11 +8,22 @@ import { useI18n } from "../../hooks/useI18n";
 const NOTIFICATION_ICONS = {
   material: "📦",
   task: "✅",
-  attendance: "📍"
+  attendance: "📍",
+  chat: "💬",
+  project: "🏗️"
+};
+
+const NOTIFICATION_LINKS = {
+  material: "/materials",
+  task: "/calendar",
+  attendance: "/attendance-reports",
+  chat: "/chat",
+  project: "/projects"
 };
 
 export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen }) {
   const [showNotifications, setShowNotifications] = useState(false);
+  const navigate = useNavigate();
   const { t } = useI18n();
   const dropdownRef = useRef(null);
   const unreadCount = notifications.length;
@@ -65,15 +76,42 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
                 <div className="max-h-[50vh] overflow-y-auto">
                   {notifications.length ? (
                     <div className="space-y-1 p-2">
-                      {notifications.map((notification) => (
-                        <div key={notification.id} className="flex items-start gap-3 rounded-2xl px-3 py-3 hover:bg-slate-50">
-                          <span className="mt-0.5 text-base leading-none">{NOTIFICATION_ICONS[notification.type] ?? "🔔"}</span>
-                          <div className="min-w-0">
-                            <p className="break-anywhere text-sm text-slate-800">{t(notification.titleKey, notification.title)}</p>
-                            <p className="mt-0.5 text-xs text-slate-400">{t(notification.timeKey, notification.time)}</p>
+                      {notifications.map((notification) => {
+                        const link = notification.link ?? NOTIFICATION_LINKS[notification.type];
+                        const inner = (
+                          <>
+                            <span className="mt-0.5 text-base leading-none">{NOTIFICATION_ICONS[notification.type] ?? "🔔"}</span>
+                            <div className="min-w-0 flex-1">
+                              <p className="break-anywhere text-sm text-slate-800">{t(notification.titleKey, notification.title)}</p>
+                              <p className="mt-0.5 text-xs text-slate-400">{t(notification.timeKey, notification.time)}</p>
+                            </div>
+                            {link && <ChevronRight size={14} className="mt-0.5 shrink-0 text-slate-300" />}
+                          </>
+                        );
+
+                        if (link) {
+                          return (
+                            <button
+                              key={notification.id}
+                              type="button"
+                              onClick={() => {
+                                setShowNotifications(false);
+                                navigate(link);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              className="flex w-full items-start gap-3 rounded-2xl px-3 py-3 text-left transition hover:bg-brand-50"
+                            >
+                              {inner}
+                            </button>
+                          );
+                        }
+
+                        return (
+                          <div key={notification.id} className="flex items-start gap-3 rounded-2xl px-3 py-3 hover:bg-slate-50">
+                            {inner}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">

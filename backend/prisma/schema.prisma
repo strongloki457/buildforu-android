@@ -280,6 +280,7 @@ model MaterialRequest {
   itemName          String
   quantity          String?
   note              String?
+  imageBase64       String?
   status            MaterialRequestStatus @default(PENDING)
   companyId         String
   requesterWorkerId String
