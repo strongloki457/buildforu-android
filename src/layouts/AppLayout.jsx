@@ -11,7 +11,7 @@ import { useI18n } from "../hooks/useI18n";
 
 export default function AppLayout() {
   const { user } = useAuth();
-  const { dataError, isDataLoading, notifications, refreshData } = useAppData();
+  const { dataError, isDataLoading, notifications, dismissNotification, refreshData } = useAppData();
   const { t } = useI18n();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -50,6 +50,7 @@ export default function AppLayout() {
             navItems={navItems}
             pageTitle={activeItem?.label ?? t("nav.dashboard")}
             notifications={notifications}
+            onDismissNotification={dismissNotification}
             onMenuOpen={() => setSidebarOpen(true)}
           />
 

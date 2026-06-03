@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import PublicShell from "../components/marketing/PublicShell";
 import { useI18n } from "../hooks/useI18n";
 
-const planIds = ["starter", "pro", "enterprise"];
+const planIds = ["starter", "pro", "business"];
 
-const MONTHLY_PRICES = { starter: 12.95, pro: 69.95 };
+const MONTHLY_PRICES = { starter: 14.95, pro: 39.95, business: 79.95 };
 const ANNUAL_DISCOUNT = 0.2;
 
 function formatPrice(amount) {
@@ -54,18 +54,12 @@ export default function PricingPage() {
       <section className="mt-12 grid gap-5 xl:grid-cols-3">
         {planIds.map((planId) => {
           const highlighted = planId === "pro";
-          const isEnterprise = planId === "enterprise";
           const monthlyPrice = MONTHLY_PRICES[planId];
-          const effectiveMonthly = monthlyPrice
-            ? isAnnual
-              ? monthlyPrice * (1 - ANNUAL_DISCOUNT)
-              : monthlyPrice
-            : null;
+          const effectiveMonthly = isAnnual
+            ? monthlyPrice * (1 - ANNUAL_DISCOUNT)
+            : monthlyPrice;
 
-          const ctaProps = isEnterprise
-            ? { as: "a", href: "mailto:kontakt@buildforu.pl" }
-            : { as: Link, to: "/register-company", state: { plan: planId } };
-
+          const ctaProps = { as: Link, to: "/register-company", state: { plan: planId } };
           const CtaElement = ctaProps.as;
 
           return (
@@ -91,32 +85,23 @@ export default function PricingPage() {
               </div>
 
               <div className="mt-8">
-                {effectiveMonthly ? (
-                  <>
-                    <div className="flex items-end gap-2">
-                      <p className="text-4xl text-slate-950">{formatPrice(effectiveMonthly)}</p>
-                      {isAnnual && monthlyPrice ? (
-                        <p className="mb-1 text-sm text-slate-400 line-through">{formatPrice(monthlyPrice)}</p>
-                      ) : null}
-                    </div>
-                    <p className="mt-2 text-sm text-slate-500">
-                      {isAnnual
-                        ? t("pricing.perMonthAnnual", { total: formatPrice(effectiveMonthly * 12) })
-                        : t("pricing.perMonth")}
-                    </p>
-                    {isAnnual ? (
-                      <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs text-green-700">
-                        <Zap size={11} />
-                        {t("pricing.annualSavingsAmount", { amount: formatPrice(monthlyPrice * ANNUAL_DISCOUNT * 12) })}
-                      </div>
-                    ) : null}
-                  </>
-                ) : (
-                  <>
-                    <p className="text-4xl text-slate-950">{t("pricing.enterprisePrice", "Custom")}</p>
-                    <p className="mt-2 text-sm text-slate-500">{t("pricing.enterprisePriceDetail", "Tailored for your team size")}</p>
-                  </>
-                )}
+                <div className="flex items-end gap-2">
+                  <p className="text-4xl text-slate-950">{formatPrice(effectiveMonthly)}</p>
+                  {isAnnual ? (
+                    <p className="mb-1 text-sm text-slate-400 line-through">{formatPrice(monthlyPrice)}</p>
+                  ) : null}
+                </div>
+                <p className="mt-2 text-sm text-slate-500">
+                  {isAnnual
+                    ? t("pricing.perMonthAnnual", { total: formatPrice(effectiveMonthly * 12) })
+                    : t("pricing.perMonth")}
+                </p>
+                {isAnnual ? (
+                  <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs text-green-700">
+                    <Zap size={11} />
+                    {t("pricing.annualSavingsAmount", { amount: formatPrice(monthlyPrice * ANNUAL_DISCOUNT * 12) })}
+                  </div>
+                ) : null}
               </div>
 
               <div className="mt-6 rounded-[24px] bg-slate-50/90 px-4 py-4 text-sm text-slate-700">
@@ -135,14 +120,15 @@ export default function PricingPage() {
               </div>
 
               <CtaElement
-                {...(isEnterprise ? { href: ctaProps.href } : { to: ctaProps.to, state: { ...ctaProps.state, billing: isAnnual ? "annual" : "monthly" } })}
+                to={ctaProps.to}
+                state={{ ...ctaProps.state, billing: isAnnual ? "annual" : "monthly" }}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-sm transition ${
                   highlighted
                     ? "bg-brand-700 text-white hover:bg-brand-600"
                     : "border border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
                 }`}
               >
-                {isEnterprise ? t("pricing.contactUs", "Kontakt") : t("pricing.choosePlan")}
+                {t("pricing.choosePlan")}
               </CtaElement>
             </article>
           );

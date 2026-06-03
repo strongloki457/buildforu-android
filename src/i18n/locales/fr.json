@@ -582,7 +582,7 @@
     "plans":  {
                   "starter":  "Starter",
                   "pro":  "Pro",
-                  "enterprise":  "Enterprise"
+                  "business":  "Business"
               },
     "publicNav":  {
                       "home":  "Accueil",
@@ -767,9 +767,9 @@
                     "choosePlan":  "Choisir ce plan",
                     "plans":  {
                                   "starter":  {
-                                                  "price":  "€12.95",
+                                                  "price":  "€14.95",
                                                   "subtitle":  "Pour les petites equipes qui veulent se structurer.",
-                                                  "workers":  "Jusqua 5 travailleurs",
+                                                  "workers":  "Jusqu'à 5 travailleurs",
                                                   "features":  {
                                                                    "1":  "Connexion par role",
                                                                    "2":  "Vues taches et calendrier",
@@ -778,25 +778,25 @@
                                                                }
                                               },
                                   "pro":  {
-                                              "price":  "€69.95",
-                                              "subtitle":  "Pour les entreprises actives avec plusieurs equipes.",
-                                              "workers":  "Jusqua 25 travailleurs",
+                                              "price":  "€39.95",
+                                              "subtitle":  "Pour les entreprises actives — IA et toutes les fonctionnalités.",
+                                              "workers":  "Jusqu'à 15 travailleurs",
                                               "features":  {
                                                                "1":  "Tout du Starter",
                                                                "2":  "Gestion des travailleurs",
                                                                "3":  "Tableau operationnel admin",
-                                                               "4":  "Accompagnement prioritaire"
+                                                               "4":  "Assistant IA construction"
                                                            }
                                           },
-                                  "enterprise":  {
-                                                     "price":  "Sur mesure",
-                                                     "subtitle":  "Pour les operations plus grandes et un deploiement adapte.",
+                                  "business":  {
+                                                     "price":  "€79.95",
+                                                     "subtitle":  "Pour les grandes opérations avec équipes illimitées.",
                                                      "workers":  "Travailleurs illimites",
                                                      "features":  {
                                                                       "1":  "Tout du Pro",
                                                                       "2":  "Montee en charge illimitee",
-                                                                      "3":  "Accompagnement personnalisé",
-                                                                      "4":  "Futur déploiement prêt pour API"
+                                                                      "3":  "Support prioritaire",
+                                                                      "4":  "Gestionnaire de compte dédié"
                                                                   }
                                                  }
                               }
@@ -880,19 +880,19 @@
                                },
                      "planCards":  {
                                        "starter":  {
-                                                       "price":  "€12.95",
-                                                       "workers":  "Jusqua 5 travailleurs",
+                                                       "price":  "€14.95",
+                                                       "workers":  "Jusqu'à 5 travailleurs",
                                                        "note":  "Point de depart leger pour les petites equipes du batiment."
                                                    },
                                        "pro":  {
-                                                   "price":  "€69.95",
-                                                   "workers":  "Jusqua 25 travailleurs",
+                                                   "price":  "€39.95",
+                                                   "workers":  "Jusqu'à 15 travailleurs",
                                                    "note":  "Ideal pour les entreprises actives gerant plusieurs equipes et projets."
                                                },
-                                       "enterprise":  {
-                                                          "price":  "Tarification personnalisee",
+                                       "business":  {
+                                                          "price":  "€79.95",
                                                           "workers":  "Travailleurs illimites",
-                                                          "note":  "Pour les grandes organisations qui ont besoin de flexibilite et de support de deploiement."
+                                                          "note":  "Pour les grandes organisations qui ont besoin de flexibilite et de support prioritaire."
                                                       }
                                    },
                      "confirmPassword":  "Confirmer le mot de passe",
@@ -925,7 +925,7 @@
                     "planDescriptions":  {
                                              "starter":  "Un espace leger pour les petites entreprises.",
                                              "pro":  "Concu pour les entreprises actives avec plusieurs equipes.",
-                                             "enterprise":  "Pret pour les organisations plus grandes et le support de deploiement."
+                                             "business":  "Pret pour les grandes organisations avec support prioritaire."
                                          },
                     "activity":  {
                                      "invoiceTitle":  "Facture INV-2026-041",
@@ -946,8 +946,8 @@
                     "availablePlans":  "Plans disponibles",
                     "contactUs":  "Nous contacter",
                     "customPrice":  "Tarification personnalisee",
-                    "enterprisePlan":  "Vous etes sur le plan Enterprise",
-                    "enterprisePlanHint":  "Vous avez un acces complet a la plateforme.",
+                    "businessPlan":  "Vous etes sur le plan Business",
+                    "businessPlanHint":  "Vous avez un acces complet a la plateforme avec support prioritaire.",
                     "cancelTitle":  "Annuler l\u0027abonnement",
                     "cancelHint":  "Après annulation, vous gardez l\u0027accès jusqu\u0027à la fin de la période payée.",
                     "cancelButton":  "Annuler l\u0027abonnement",

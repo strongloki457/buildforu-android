@@ -559,7 +559,7 @@
     "plans":  {
                   "starter":  "Starter",
                   "pro":  "Pro",
-                  "enterprise":  "Enterprise"
+                  "business":  "Business"
               },
     "publicNav":  {
                       "home":  "Inicio",
@@ -660,7 +660,7 @@
                     "planDescriptions":  {
                                              "starter":  "Un espacio ligero para empresas pequenas.",
                                              "pro":  "Pensado para empresas activas con varios equipos.",
-                                             "enterprise":  "Listo para organizaciones grandes y soporte de despliegue."
+                                             "business":  "Listo para organizaciones grandes con soporte prioritario."
                                          },
                     "activity":  {
                                      "invoiceTitle":  "Factura INV-2026-041",
@@ -681,8 +681,8 @@
                     "availablePlans":  "Planes disponibles",
                     "contactUs":  "Contactanos",
                     "customPrice":  "Precio personalizado",
-                    "enterprisePlan":  "Estas en el plan Enterprise",
-                    "enterprisePlanHint":  "Tienes acceso completo a la plataforma.",
+                    "businessPlan":  "Estas en el plan Business",
+                    "businessPlanHint":  "Tienes acceso completo a la plataforma con soporte prioritario.",
                     "cancelTitle":  "Cancelar suscripción",
                     "cancelHint":  "Después de cancelar, conservas el acceso hasta el final del período pagado.",
                     "cancelButton":  "Cancelar suscripción",
@@ -709,7 +709,7 @@
                     "choosePlan":  "Elegir plan",
                     "plans":  {
                                   "starter":  {
-                                                  "price":  "€12.95",
+                                                  "price":  "€14.95",
                                                   "subtitle":  "Para equipos pequenos que quieren organizarse.",
                                                   "workers":  "Hasta 5 trabajadores",
                                                   "features":  {
@@ -720,25 +720,25 @@
                                                                }
                                               },
                                   "pro":  {
-                                              "price":  "€69.95",
-                                              "subtitle":  "Para empresas activas con varias cuadrillas.",
-                                              "workers":  "Hasta 25 trabajadores",
+                                              "price":  "€39.95",
+                                              "subtitle":  "Para empresas activas — IA y todas las funciones.",
+                                              "workers":  "Hasta 15 trabajadores",
                                               "features":  {
                                                                "1":  "Todo lo de Starter",
                                                                "2":  "Gestion de trabajadores",
                                                                "3":  "Panel operativo admin",
-                                                               "4":  "Onboarding prioritario"
+                                                               "4":  "Asistente IA de construccion"
                                                            }
                                           },
-                                  "enterprise":  {
-                                                     "price":  "Personalizado",
-                                                     "subtitle":  "Para operaciones grandes y despliegues a medida.",
+                                  "business":  {
+                                                     "price":  "€79.95",
+                                                     "subtitle":  "Para operaciones grandes con equipos ilimitados.",
                                                      "workers":  "Trabajadores ilimitados",
                                                      "features":  {
                                                                       "1":  "Todo lo de Pro",
                                                                       "2":  "Escalado ilimitado",
-                                                                      "3":  "Soporte personalizado",
-                                                                      "4":  "Despliegue futuro listo para API"
+                                                                      "3":  "Soporte prioritario",
+                                                                      "4":  "Gestor de cuenta dedicado"
                                                                   }
                                                  }
                               }
@@ -819,19 +819,19 @@
                                },
                      "planCards":  {
                                        "starter":  {
-                                                       "price":  "€12.95",
+                                                       "price":  "€14.95",
                                                        "workers":  "Hasta 5 trabajadores",
                                                        "note":  "Punto de partida ligero para equipos de construccion mas pequenos."
                                                    },
                                        "pro":  {
-                                                   "price":  "€69.95",
-                                                   "workers":  "Hasta 25 trabajadores",
+                                                   "price":  "€39.95",
+                                                   "workers":  "Hasta 15 trabajadores",
                                                    "note":  "La mejor opcion para empresas activas con varias cuadrillas y proyectos."
                                                },
-                                       "enterprise":  {
-                                                          "price":  "Precio personalizado",
+                                       "business":  {
+                                                          "price":  "€79.95",
                                                           "workers":  "Trabajadores ilimitados",
-                                                          "note":  "Para organizaciones grandes que necesitan flexibilidad y soporte de despliegue."
+                                                          "note":  "Para organizaciones grandes que necesitan flexibilidad y soporte prioritario."
                                                       }
                                    }
                  },

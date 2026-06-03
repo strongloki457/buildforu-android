@@ -29,8 +29,10 @@ const envSchema = z
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
     STRIPE_PRICE_ID_STARTER: z.string().optional(),
     STRIPE_PRICE_ID_PRO: z.string().optional(),
+    STRIPE_PRICE_ID_BUSINESS: z.string().optional(),
     STRIPE_PRICE_ID_STARTER_ANNUAL: z.string().optional(),
-    STRIPE_PRICE_ID_PRO_ANNUAL: z.string().optional()
+    STRIPE_PRICE_ID_PRO_ANNUAL: z.string().optional(),
+    STRIPE_PRICE_ID_BUSINESS_ANNUAL: z.string().optional()
   })
   .superRefine((value, context) => {
     if (isProduction && value.JWT_SECRET === "development-only-buildforu-secret-change-me") {

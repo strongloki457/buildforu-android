@@ -23,7 +23,7 @@
     "plans":  {
                   "starter":  "Starter",
                   "pro":  "Pro",
-                  "enterprise":  "Enterprise"
+                  "business":  "Business"
               },
     "publicNav":  {
                       "home":  "Home",
@@ -772,7 +772,7 @@
                     "choosePlan":  "Choose plan",
                     "plans":  {
                                   "starter":  {
-                                                  "price":  "€12.95",
+                                                  "price":  "€14.95",
                                                   "subtitle":  "For small teams getting organized.",
                                                   "workers":  "Up to 5 workers",
                                                   "features":  {
@@ -783,25 +783,25 @@
                                                                }
                                               },
                                   "pro":  {
-                                              "price":  "€69.95",
-                                              "subtitle":  "For active companies with multiple crews.",
-                                              "workers":  "Up to 25 workers",
+                                              "price":  "€39.95",
+                                              "subtitle":  "For active companies with multiple crews — AI and all features.",
+                                              "workers":  "Up to 15 workers",
                                               "features":  {
                                                                "1":  "Everything in Starter",
                                                                "2":  "Workers management",
                                                                "3":  "Admin operations dashboard",
-                                                               "4":  "Priority onboarding"
+                                                               "4":  "AI Construction Assistant"
                                                            }
                                           },
-                                  "enterprise":  {
-                                                     "price":  "Custom",
-                                                     "subtitle":  "For larger operations and custom rollout needs.",
+                                  "business":  {
+                                                     "price":  "€79.95",
+                                                     "subtitle":  "For larger operations with unlimited teams.",
                                                      "workers":  "Unlimited workers",
                                                      "features":  {
                                                                       "1":  "Everything in Pro",
                                                                       "2":  "Unlimited worker scaling",
-                                                                      "3":  "Custom onboarding support",
-                                                                      "4":  "Future API-ready rollout"
+                                                                      "3":  "Priority onboarding support",
+                                                                      "4":  "Dedicated account manager"
                                                                   }
                                                  }
                               }
@@ -887,19 +887,19 @@
                                },
                      "planCards":  {
                                        "starter":  {
-                                                       "price":  "€12.95",
+                                                       "price":  "€14.95",
                                                        "workers":  "Up to 5 workers",
                                                        "note":  "A lightweight starting point for smaller construction teams."
                                                    },
                                        "pro":  {
-                                                   "price":  "€69.95",
-                                                   "workers":  "Up to 25 workers",
+                                                   "price":  "€39.95",
+                                                   "workers":  "Up to 15 workers",
                                                    "note":  "Best fit for active companies managing several crews and projects."
                                                },
-                                       "enterprise":  {
-                                                          "price":  "Custom pricing",
+                                       "business":  {
+                                                          "price":  "€79.95",
                                                           "workers":  "Unlimited workers",
-                                                          "note":  "For larger organizations that need flexibility and rollout support."
+                                                          "note":  "For larger organizations that need flexibility and priority support."
                                                       }
                                    }
                  },
@@ -930,7 +930,7 @@
                     "planDescriptions":  {
                                              "starter":  "A lightweight workspace for small companies.",
                                              "pro":  "Built for active companies with multiple teams.",
-                                             "enterprise":  "Ready for larger organizations and rollout support."
+                                             "business":  "Ready for larger organizations with priority support."
                                          },
                     "activity":  {
                                      "invoiceTitle":  "Invoice INV-2026-041",
@@ -951,8 +951,8 @@
                     "availablePlans":  "Available plans",
                     "contactUs":  "Contact us",
                     "customPrice":  "Custom pricing",
-                    "enterprisePlan":  "You are on the Enterprise plan",
-                    "enterprisePlanHint":  "You have full platform access. Contact our team for any questions.",
+                    "businessPlan":  "You are on the Business plan",
+                    "businessPlanHint":  "You have full platform access with priority support. Contact our team for any questions.",
                     "cancelTitle":  "Cancel subscription",
                     "cancelHint":  "After cancelling you keep access until the end of the paid period. Your data will be preserved.",
                     "cancelButton":  "Cancel subscription",

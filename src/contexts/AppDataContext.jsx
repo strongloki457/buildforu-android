@@ -516,6 +516,10 @@ export function AppDataProvider({ children }) {
     return () => clearInterval(interval);
   }, [user]);
 
+  const dismissNotification = useCallback((id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
   const actions = useMemo(
     () => ({
       async sendMessage({ threadId, text, attachments = [] }) {
@@ -729,6 +733,7 @@ export function AppDataProvider({ children }) {
       projects,
       finance: mockFinance,
       notifications,
+      dismissNotification,
       isDataLoading,
       dataError,
       ...actions

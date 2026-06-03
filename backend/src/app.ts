@@ -47,7 +47,7 @@ app.use(
 );
 // Stripe webhook needs raw body — must be registered before express.json()
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json({ limit: "4mb" }));
 
 app.use(
   "/api",

@@ -1,4 +1,4 @@
-import { ArrowUpRight, CreditCard, ExternalLink, Mail, ReceiptText, Users2, XCircle } from "lucide-react";
+import { ArrowUpRight, Check, CreditCard, ExternalLink, Mail, ReceiptText, Users2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createCheckoutSession, createPortalSession, getSubscription } from "../api/stripe.api";
@@ -9,12 +9,12 @@ import SectionHeader from "../components/ui/SectionHeader";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 
-const PLAN_ORDER = ["starter", "pro", "enterprise"];
+const PLAN_ORDER = ["starter", "pro", "business"];
 
 const PLAN_PRICES = {
-  starter: { amount: "€12.95", monthly: "€12.95", hasStripe: true },
-  pro: { amount: "€69.95", monthly: "€69.95", hasStripe: true },
-  enterprise: { amount: null, monthly: null, hasStripe: false }
+  starter: { amount: "€14.95", monthly: "€14.95", hasStripe: true },
+  pro: { amount: "€39.95", monthly: "€39.95", hasStripe: true },
+  business: { amount: "€79.95", monthly: "€79.95", hasStripe: true }
 };
 
 export default function BillingPage() {
@@ -32,8 +32,8 @@ export default function BillingPage() {
   }, []);
 
   const workerCount = workers.length;
-  const currentPlan = subscription?.plan ?? (workerCount <= 5 ? "starter" : workerCount <= 25 ? "pro" : "enterprise");
-  const workerLimit = currentPlan === "starter" ? 5 : currentPlan === "pro" ? 25 : "Unlimited";
+  const currentPlan = subscription?.plan ?? (workerCount <= 5 ? "starter" : workerCount <= 15 ? "pro" : "business");
+  const workerLimit = currentPlan === "starter" ? 5 : currentPlan === "pro" ? 15 : "Unlimited";
   const usagePercentage =
     workerLimit === "Unlimited" ? 18 : Math.min(100, Math.round((workerCount / Number(workerLimit)) * 100));
   const localizedPlan = t(`plans.${currentPlan}`);
@@ -186,99 +186,83 @@ export default function BillingPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between px-1">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{t("billing.availablePlans")}</p>
-                  {!hasActiveSubscription && (
-                    <div className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-0.5 text-xs">
-                      <button
-                        type="button"
-                        onClick={() => setIsAnnual(false)}
-                        className={`rounded-lg px-2.5 py-1 transition ${!isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
-                      >
-                        {t("pricing.monthly", "Monthly")}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsAnnual(true)}
-                        className={`rounded-lg px-2.5 py-1 transition ${isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
-                      >
-                        {t("pricing.annually", "Annual")} <span className={`ml-1 ${isAnnual ? "text-white/80" : "text-green-600"}`}>-20%</span>
-                      </button>
-                    </div>
-                  )}
+                  <div className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-0.5 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setIsAnnual(false)}
+                      className={`rounded-lg px-2.5 py-1 transition ${!isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
+                    >
+                      {t("pricing.monthly", "Monthly")}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsAnnual(true)}
+                      className={`rounded-lg px-2.5 py-1 transition ${isAnnual ? "bg-brand-700 text-white shadow" : "text-slate-500 hover:text-slate-700"}`}
+                    >
+                      {t("pricing.annually", "Annual")} <span className={`ml-1 ${isAnnual ? "text-white/80" : "text-green-600"}`}>-20%</span>
+                    </button>
+                  </div>
                 </div>
+
                 {switchablePlans.map((plan) => {
                   const price = PLAN_PRICES[plan];
-                  if (!price.hasStripe || plan === "enterprise") {
-                    return (
-                      <a
-                        key={plan}
-                        href="mailto:kontakt@buildforu.pl"
-                        className="flex w-full items-center justify-between rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-left hover:bg-slate-50 transition"
-                      >
-                        <div>
-                          <p className="text-sm font-medium text-slate-900">{t(`plans.${plan}`)}</p>
-                          <p className="mt-0.5 text-sm text-slate-500">{t(`billing.planDescriptions.${plan}`)}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-slate-500">{t("billing.contactUs")}</span>
-                          <Mail size={16} className="text-brand-700" />
-                        </div>
-                      </a>
-                    );
-                  }
-                  if (hasActiveSubscription && hasStripeCustomer) {
-                    return (
-                      <button
-                        key={plan}
-                        onClick={handleOpenPortal}
-                        disabled={loadingPortal}
-                        className="w-full rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-left hover:bg-slate-50 transition disabled:opacity-50"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-slate-900">{t(`plans.${plan}`)}</p>
-                            <p className="mt-0.5 text-sm text-slate-500">{t(`billing.planDescriptions.${plan}`)}</p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-slate-500">{price.monthly}{t("billing.perMonthShort")}</span>
-                            <ExternalLink size={16} className="text-brand-700" />
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  }
+                  const monthlyNum = parseFloat(price.monthly.replace("€", ""));
+                  const displayPrice = isAnnual
+                    ? `€${(monthlyNum * 0.8).toFixed(2).replace(".", ",")}`
+                    : price.monthly;
+                  const isLoading = loadingCheckout === plan || loadingPortal;
+
                   return (
-                    <button
-                      key={plan}
-                      onClick={() => handleUpgrade(plan)}
-                      disabled={loadingCheckout === plan}
-                      className="w-full rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-left hover:bg-slate-50 transition disabled:opacity-50"
-                    >
-                      <div className="flex items-center justify-between">
+                    <div key={plan} className="rounded-[24px] border border-slate-200 bg-white p-5">
+                      <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-medium text-slate-900">{t(`plans.${plan}`)}</p>
-                          <p className="mt-0.5 text-sm text-slate-500">{t(`billing.planDescriptions.${plan}`)}</p>
+                          <p className="font-medium text-slate-900">{t(`plans.${plan}`)}</p>
+                          <p className="mt-0.5 text-xs text-slate-500">{t(`billing.planDescriptions.${plan}`)}</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-slate-700">
-                            {loadingCheckout === plan
-                              ? t("common.loading")
-                              : isAnnual && price.monthly
-                                ? `€${(parseFloat(price.monthly.replace("€", "")) * 0.8).toFixed(2).replace(".", ",")}${t("billing.perMonthShort")}`
-                                : `${price.monthly}${t("billing.perMonthShort")}`}
-                          </span>
-                          <ArrowUpRight size={16} className="text-brand-700" />
+                        <div className="shrink-0 text-right">
+                          <p className="text-lg font-semibold text-slate-900">
+                            {displayPrice}<span className="text-xs font-normal text-slate-400">{t("billing.perMonthShort")}</span>
+                          </p>
+                          {isAnnual && (
+                            <p className="text-xs text-slate-400 line-through">{price.monthly}</p>
+                          )}
                         </div>
                       </div>
-                    </button>
+
+                      <div className="mt-3 rounded-2xl bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600">
+                        {t(`pricing.plans.${plan}.workers`)}
+                      </div>
+
+                      <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div key={i} className="flex items-start gap-1.5">
+                            <Check size={11} className="mt-0.5 shrink-0 text-brand-700" />
+                            <span className="text-xs text-slate-600">{t(`pricing.plans.${plan}.features.${i}`)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={hasActiveSubscription && hasStripeCustomer ? handleOpenPortal : () => handleUpgrade(plan)}
+                        disabled={isLoading}
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-brand-700 px-4 py-2.5 text-sm text-white transition hover:bg-brand-600 disabled:opacity-50"
+                      >
+                        {isLoading ? t("common.loading") : t("billing.upgradePlan")}
+                        {!isLoading && (hasActiveSubscription && hasStripeCustomer
+                          ? <ExternalLink size={14} />
+                          : <ArrowUpRight size={14} />
+                        )}
+                      </button>
+                    </div>
                   );
                 })}
               </div>
             )}
 
-            {currentPlan === "enterprise" && (
+            {currentPlan === "business" && (
               <div className="rounded-[28px] border border-brand-100 bg-brand-50/60 p-5">
-                <p className="text-sm font-medium text-brand-900">{t("billing.enterprisePlan")}</p>
-                <p className="mt-1 text-sm text-brand-700">{t("billing.enterprisePlanHint")}</p>
+                <p className="text-sm font-medium text-brand-900">{t("billing.businessPlan")}</p>
+                <p className="mt-1 text-sm text-brand-700">{t("billing.businessPlanHint")}</p>
               </div>
             )}
 
@@ -298,9 +282,9 @@ export default function BillingPage() {
               </div>
             )}
 
-            <div className="rounded-[28px] border border-red-100 bg-red-50/60 p-5">
-              {hasActiveSubscription && hasStripeCustomer ? (
-                cancelAtPeriodEnd ? (
+            {hasActiveSubscription && hasStripeCustomer && (
+              <div className="rounded-[28px] border border-red-100 bg-red-50/60 p-5">
+                {cancelAtPeriodEnd ? (
                   <>
                     <p className="text-sm font-medium text-red-900">{t("billing.cancelScheduledTitle")}</p>
                     <p className="mt-1 text-sm text-red-700">
@@ -330,21 +314,9 @@ export default function BillingPage() {
                       {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
                     </button>
                   </>
-                )
-              ) : (
-                <>
-                  <p className="text-sm font-medium text-red-900">{t("billing.cancelTitle", "Cancel subscription")}</p>
-                  <p className="mt-1 text-sm text-red-700">{t("billing.noActiveSubCancel", "You don't have an active subscription to cancel. Contact us if you need help.")}</p>
-                  <a
-                    href="mailto:kontakt@buildforu.pl"
-                    className="mt-4 inline-flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition"
-                  >
-                    <Mail size={15} />
-                    {t("billing.contactSupport", "Contact support")}
-                  </a>
-                </>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Card>

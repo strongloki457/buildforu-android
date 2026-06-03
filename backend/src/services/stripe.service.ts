@@ -8,7 +8,8 @@ type StripeInstance = ReturnType<typeof StripeLib>;
 
 const PLAN_PRICE_MAP: Record<string, Record<string, string | undefined>> = {
   starter: { monthly: env.STRIPE_PRICE_ID_STARTER, annual: env.STRIPE_PRICE_ID_STARTER_ANNUAL },
-  pro: { monthly: env.STRIPE_PRICE_ID_PRO, annual: env.STRIPE_PRICE_ID_PRO_ANNUAL }
+  pro: { monthly: env.STRIPE_PRICE_ID_PRO, annual: env.STRIPE_PRICE_ID_PRO_ANNUAL },
+  business: { monthly: env.STRIPE_PRICE_ID_BUSINESS, annual: env.STRIPE_PRICE_ID_BUSINESS_ANNUAL }
 };
 
 function getStripeClient(): StripeInstance {

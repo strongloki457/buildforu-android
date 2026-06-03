@@ -559,7 +559,7 @@
     "plans":  {
                   "starter":  "Starter",
                   "pro":  "Pro",
-                  "enterprise":  "Enterprise"
+                  "business":  "Business"
               },
     "publicNav":  {
                       "home":  "Start",
@@ -744,7 +744,7 @@
                     "choosePlan":  "Plan wählen",
                     "plans":  {
                                   "starter":  {
-                                                  "price":  "€12.95",
+                                                  "price":  "€14.95",
                                                   "subtitle":  "Für kleine Teams, die Struktur schaffen wollen.",
                                                   "workers":  "Bis zu 5 Mitarbeiter",
                                                   "features":  {
@@ -755,25 +755,25 @@
                                                                }
                                               },
                                   "pro":  {
-                                              "price":  "€69.95",
-                                              "subtitle":  "Für aktive Firmen mit mehreren Teams.",
-                                              "workers":  "Bis zu 25 Mitarbeiter",
+                                              "price":  "€39.95",
+                                              "subtitle":  "Für aktive Firmen mit mehreren Teams — KI und alle Funktionen.",
+                                              "workers":  "Bis zu 15 Mitarbeiter",
                                               "features":  {
                                                                "1":  "Alles aus Starter",
                                                                "2":  "Mitarbeiterverwaltung",
                                                                "3":  "Operatives Admin-Dashboard",
-                                                               "4":  "Priorisierter Onboarding-Support"
+                                                               "4":  "KI-Bauassistent"
                                                            }
                                           },
-                                  "enterprise":  {
-                                                     "price":  "Individuell",
-                                                     "subtitle":  "Für größere Abläufe und individuelle Einführung.",
+                                  "business":  {
+                                                     "price":  "€79.95",
+                                                     "subtitle":  "Für größere Betriebe mit unbegrenztem Team.",
                                                      "workers":  "Unbegrenzte Mitarbeiter",
                                                      "features":  {
                                                                       "1":  "Alles aus Pro",
                                                                       "2":  "Unbegrenzte Skalierung",
-                                                                      "3":  "Individuelle Einführung",
-                                                                      "4":  "Zukunftige API-fähige Einführung"
+                                                                      "3":  "Prioritärer Onboarding-Support",
+                                                                      "4":  "Dedizierter Account-Manager"
                                                                   }
                                                  }
                               }
@@ -854,19 +854,19 @@
                                },
                      "planCards":  {
                                        "starter":  {
-                                                       "price":  "€12.95",
+                                                       "price":  "€14.95",
                                                        "workers":  "Bis zu 5 Mitarbeiter",
                                                        "note":  "Ein leichter Startpunkt für kleinere Bauteams."
                                                    },
                                        "pro":  {
-                                                   "price":  "€69.95",
-                                                   "workers":  "Bis zu 25 Mitarbeiter",
+                                                   "price":  "€39.95",
+                                                   "workers":  "Bis zu 15 Mitarbeiter",
                                                    "note":  "Passt am besten zu aktiven Firmen mit mehreren Teams und Projekten."
                                                },
-                                       "enterprise":  {
-                                                          "price":  "Individuelle Preise",
+                                       "business":  {
+                                                          "price":  "€79.95",
                                                           "workers":  "Unbegrenzte Mitarbeiter",
-                                                          "note":  "Für größere Organisationen mit Flexibilität und Rollout-Unterstützung."
+                                                          "note":  "Für größere Organisationen mit Flexibilität und Prioritätssupport."
                                                       }
                                    }
                  },
@@ -897,7 +897,7 @@
                     "planDescriptions":  {
                                              "starter":  "Ein leichter Arbeitsbereich für kleine Firmen.",
                                              "pro":  "Gebaut für aktive Firmen mit mehreren Teams.",
-                                             "enterprise":  "Bereit für größere Organisationen und Rollout-Unterstützung."
+                                             "business":  "Bereit für größere Organisationen mit Prioritätssupport."
                                          },
                     "activity":  {
                                      "invoiceTitle":  "Rechnung INV-2026-041",
@@ -918,8 +918,8 @@
                     "availablePlans":  "Verfuegbare Plaene",
                     "contactUs":  "Kontaktieren Sie uns",
                     "customPrice":  "Individuelle Preisgestaltung",
-                    "enterprisePlan":  "Sie nutzen den Enterprise-Plan",
-                    "enterprisePlanHint":  "Sie haben vollen Plattformzugang. Kontaktieren Sie unser Team bei Fragen.",
+                    "businessPlan":  "Sie nutzen den Business-Plan",
+                    "businessPlanHint":  "Sie haben vollen Plattformzugang mit Prioritätssupport. Kontaktieren Sie unser Team bei Fragen.",
                     "cancelTitle":  "Abonnement kündigen",
                     "cancelHint":  "Nach der Kündigung behalten Sie den Zugang bis zum Ende des bezahlten Zeitraums.",
                     "cancelButton":  "Abonnement kündigen",

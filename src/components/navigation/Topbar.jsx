@@ -21,7 +21,7 @@ const NOTIFICATION_LINKS = {
   project: "/projects"
 };
 
-export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen }) {
+export default function Topbar({ navItems, pageTitle, notifications, onDismissNotification, onMenuOpen }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
   const { t } = useI18n();
@@ -96,6 +96,7 @@ export default function Topbar({ navItems, pageTitle, notifications, onMenuOpen 
                               type="button"
                               onClick={() => {
                                 setShowNotifications(false);
+                                onDismissNotification?.(notification.id);
                                 navigate(link);
                                 window.scrollTo({ top: 0, behavior: "smooth" });
                               }}

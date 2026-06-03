@@ -613,7 +613,7 @@
   "plans": {
     "starter": "Starter",
     "pro": "Pro",
-    "enterprise": "Enterprise"
+    "business": "Business"
   },
   "publicNav": {
     "home": "Start",
@@ -825,36 +825,36 @@
     "choosePlan": "Wybierz plan",
     "plans": {
       "starter": {
-        "price": "€12,95",
-        "subtitle": "Dla małych zespołów — 2 tygodnie za darmo, potem €12,95/mies.",
+        "price": "€14,95",
+        "subtitle": "Dla małych zespołów — 2 tygodnie za darmo, potem €14,95/mies.",
         "workers": "Do 5 pracowników",
         "features": {
           "1": "Logowanie oparte o role",
-          "2": "Widoki zadan i kalendarza",
-          "3": "Czat zespółowy",
-          "4": "Dostęp do mapy marketow"
+          "2": "Widoki zadań i kalendarza",
+          "3": "Czat zespołowy",
+          "4": "Dostęp do mapy marketów"
         }
       },
       "pro": {
-        "price": "€69,95",
-        "subtitle": "Dla aktywnych firm z wieloma ekipami.",
-        "workers": "Do 25 pracownikow",
+        "price": "€39,95",
+        "subtitle": "Dla aktywnych firm z wieloma ekipami — AI i wszystkie funkcje.",
+        "workers": "Do 15 pracowników",
         "features": {
           "1": "Wszystko ze Startera",
           "2": "Zarządzanie pracownikami",
           "3": "Panel operacyjny administratora",
-          "4": "Priorytetowe wdrożenie"
+          "4": "Asystent AI (GPT budowlany)"
         }
       },
-      "enterprise": {
-        "price": "Wycena indywidualna",
-        "subtitle": "Dla wiekszych operacji i niestandardowego wdrozenia.",
-        "workers": "Nielimitowana liczba pracownikow",
+      "business": {
+        "price": "€79,95",
+        "subtitle": "Dla większych operacji z nielimitowanym zespołem.",
+        "workers": "Nielimitowana liczba pracowników",
         "features": {
           "1": "Wszystko z Pro",
-          "2": "Nielimitowane skalowanie pracownikow",
-          "3": "Dedykowane wsparcie wdrozeniowe",
-          "4": "Przyszłe wdrożenie gotowe pod API"
+          "2": "Nielimitowane skalowanie pracowników",
+          "3": "Priorytetowe wsparcie wdrożeniowe",
+          "4": "Dedykowany opiekun konta"
         }
       }
     }
@@ -938,19 +938,19 @@
     },
     "planCards": {
       "starter": {
-        "price": "€12,95/mies.",
+        "price": "€14,95/mies.",
         "workers": "Do 5 pracowników",
         "note": "Lekki punkt startowy dla mniejszych ekip budowlanych."
       },
       "pro": {
-        "price": "€69,95/mies.",
-        "workers": "Do 25 pracownikow",
-        "note": "Najlepszy wybor dla aktywnych firm prowadzacych kilka ekip i projektow."
+        "price": "€39,95/mies.",
+        "workers": "Do 15 pracowników",
+        "note": "Najlepszy wybór dla aktywnych firm prowadzących kilka ekip i projektów."
       },
-      "enterprise": {
-        "price": "Wycena indywidualna",
-        "workers": "Nielimitowana liczba pracownikow",
-        "note": "Dla wiekszych organizacji, ktore potrzebuja elastycznosci i wsparcia wdrozenia."
+      "business": {
+        "price": "€79,95/mies.",
+        "workers": "Nielimitowana liczba pracowników",
+        "note": "Dla większych organizacji, które potrzebują elastyczności i priorytetowego wsparcia."
       }
     },
     "confirmPassword": "Potwierdź hasło",
@@ -981,9 +981,9 @@
     "recentActivity": "Ostatnia aktywnosc rozliczeńiowa",
     "unlimitedWorkers": "Bez limitu",
     "planDescriptions": {
-      "starter": "Lekka przestrzeń robocza dla malych firm.",
-      "pro": "Stworzony dla aktywnych firm z wieloma zespółami.",
-      "enterprise": "Gotowy dla wiekszych organizacji i wsparcia wdrozenia."
+      "starter": "Lekka przestrzeń robocza dla małych firm.",
+      "pro": "Stworzony dla aktywnych firm z wieloma zespołami.",
+      "business": "Gotowy dla większych organizacji z priorytetowym wsparciem."
     },
     "subscriptionActive": "Subskrypcja aktywna",
     "manageSubscription": "Zarządzaj subskrypcją",
@@ -996,8 +996,8 @@
     "availablePlans": "Dostępne plany",
     "contactUs": "Skontaktuj się",
     "customPrice": "Wycena indywidualna",
-    "enterprisePlan": "Jesteś na planie Enterprise",
-    "enterprisePlanHint": "Masz pełny dostęp do platformy. W razie pytań skontaktuj się z zespołem.",
+    "businessPlan": "Jesteś na planie Business",
+    "businessPlanHint": "Masz pełny dostęp do platformy z priorytetowym wsparciem. W razie pytań skontaktuj się z nami.",
     "cancelTitle": "Anuluj subskrypcję",
     "cancelHint": "Po anulowaniu zachowasz dostęp do końca opłaconego okresu. Twoje dane zostaną zachowane.",
     "cancelButton": "Anuluj subskrypcję",
