@@ -124,7 +124,7 @@ export async function refreshAccessToken(rawRefreshToken: string) {
   return buildAuthResponse(user);
 }
 
-export async function registerCompany(input: RegisterCompanyInput) {
+export async function registerCompany(input: RegisterCompanyInput, lang?: string) {
   const email = normalizeEmail(input.email);
   const existingUser = await prisma.user.findUnique({
     where: { email },
@@ -167,7 +167,7 @@ export async function registerCompany(input: RegisterCompanyInput) {
     }
   });
 
-  sendEmailVerificationEmail(email, input.name, verifyToken).catch((error) => {
+  sendEmailVerificationEmail(email, input.name, verifyToken, lang).catch((error) => {
     process.stderr.write(`[auth] Failed to send verification email to ${email}: ${error}\n`);
   });
 
@@ -192,7 +192,7 @@ export async function verifyEmail(token: string) {
   return { message: "Email verified successfully." };
 }
 
-export async function resendVerificationEmail(userId: string) {
+export async function resendVerificationEmail(userId: string, lang?: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { id: true, email: true, name: true, emailVerified: true }
@@ -208,7 +208,7 @@ export async function resendVerificationEmail(userId: string) {
     data: { userId, token, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) }
   });
 
-  sendEmailVerificationEmail(user.email, user.name, token).catch((error) => {
+  sendEmailVerificationEmail(user.email, user.name, token, lang).catch((error) => {
     process.stderr.write(`[auth] Failed to resend verification email: ${error}\n`);
   });
 
@@ -275,7 +275,7 @@ export async function login(input: LoginInput) {
   return buildAuthResponse(publicUser);
 }
 
-export async function requestPasswordReset(input: ForgotPasswordInput) {
+export async function requestPasswordReset(input: ForgotPasswordInput, lang?: string) {
   const user = await prisma.user.findUnique({
     where: { email: input.email },
     select: { id: true }
@@ -294,14 +294,14 @@ export async function requestPasswordReset(input: ForgotPasswordInput) {
     data: { userId: user.id, token, expiresAt }
   });
 
-  sendPasswordResetEmail(input.email, token).catch((error) => {
+  sendPasswordResetEmail(input.email, token, lang).catch((error) => {
     process.stderr.write(`[auth] Failed to send reset email to ${input.email}: ${error}\n`);
   });
 
   return { message: "If that email exists, a reset link has been sent." };
 }
 
-export async function resetPassword(input: ResetPasswordInput) {
+export async function resetPassword(input: ResetPasswordInput, lang?: string) {
   const resetToken = await prisma.passwordResetToken.findUnique({
     where: { token: input.token },
     select: { id: true, userId: true, expiresAt: true }
@@ -323,7 +323,7 @@ export async function resetPassword(input: ResetPasswordInput) {
     prisma.refreshToken.deleteMany({ where: { userId: resetToken.userId } })
   ]);
 
-  sendPasswordChangedEmail(updatedUser.email, updatedUser.name).catch((error) => {
+  sendPasswordChangedEmail(updatedUser.email, updatedUser.name, lang).catch((error) => {
     process.stderr.write(`[auth] Failed to send password-changed email to ${updatedUser.email}: ${error}\n`);
   });
 

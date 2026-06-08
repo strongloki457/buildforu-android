@@ -2,8 +2,14 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import * as authService from "../services/auth.service";
 
+function getLang(req: Request): string | undefined {
+  const header = req.headers["accept-language"];
+  if (!header || typeof header !== "string") return undefined;
+  return header.split(",")[0].trim().split("-")[0].toLowerCase() || undefined;
+}
+
 export const registerCompany = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.registerCompany(req.body);
+  const result = await authService.registerCompany(req.body, getLang(req));
   res.status(201).json(result);
 });
 
@@ -18,12 +24,12 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.requestPasswordReset(req.body);
+  const result = await authService.requestPasswordReset(req.body, getLang(req));
   res.json(result);
 });
 
 export const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.resetPassword(req.body);
+  const result = await authService.resetPassword(req.body, getLang(req));
   res.json(result);
 });
 
@@ -43,7 +49,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const resendVerification = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.resendVerificationEmail(req.user!.userId);
+  const result = await authService.resendVerificationEmail(req.user!.userId, getLang(req));
   res.json(result);
 });
 

@@ -74,6 +74,11 @@ export async function apiRequest(path, options = {}) {
     headers.set("Content-Type", "application/json");
   }
 
+  if (!headers.has("Accept-Language")) {
+    const locale = window.localStorage.getItem("buildforu-locale") || "en";
+    headers.set("Accept-Language", locale);
+  }
+
   const token = options.auth === false ? null : getToken();
 
   if (token) {
