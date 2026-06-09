@@ -78,9 +78,9 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
     // Plan check — AI is Pro-only, enforced server-side
     const company = await prisma.company.findUnique({
       where: { id: req.user!.companyId },
-      select: { plan: true }
+      select: { plan: true, isFree: true }
     });
-    if (!company || !["pro", "enterprise"].includes(company.plan)) {
+    if (!company || (!company.isFree && !["pro", "enterprise"].includes(company.plan))) {
       throw new AppError(403, "AI assistant is available on the Pro plan only.", "PLAN_REQUIRED");
     }
 

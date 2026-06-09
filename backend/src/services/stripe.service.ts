@@ -167,6 +167,7 @@ export async function getSubscriptionInfo(companyId: string) {
     where: { id: companyId },
     select: {
       plan: true,
+      isFree: true,
       stripeSubscriptionId: true,
       stripeSubscriptionStatus: true,
       stripeCustomerId: true
@@ -175,6 +176,19 @@ export async function getSubscriptionInfo(companyId: string) {
 
   if (!company) {
     throw new AppError(404, "Company not found.", "COMPANY_NOT_FOUND");
+  }
+
+  if (company.isFree) {
+    return {
+      plan: company.plan,
+      subscriptionStatus: "active",
+      hasActiveSubscription: true,
+      hasStripeCustomer: false,
+      nextInvoiceDate: null,
+      nextInvoiceAmount: null,
+      cancelAtPeriodEnd: false,
+      cancelAt: null
+    };
   }
 
   const activeStatuses = ["active", "trialing"];
