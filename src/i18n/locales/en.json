@@ -36,14 +36,31 @@
     "legal":  {
                   "eyebrow":  "Legal",
                   "terms":  {
-                                "title":  "Terms",
-                                "body1":  "BuildForU is an MVP workspace for construction operations. Use it with accurate company information and only invite users who should access your workspace.",
-                                "body2":  "Production contracts, billing terms, and service-level commitments should be reviewed before using this software in a live commercial environment."
+                                "title":  "Terms of Service",
+                                "lastUpdated": "Last updated: June 9, 2026",
+                                "sections": [
+                                  { "title": "1. General Provisions", "body": "BuildForU is a SaaS platform for managing construction business operations, operated by BuildForU. Using the Platform constitutes full acceptance of these Terms of Service." },
+                                  { "title": "2. Services", "body": "The Platform enables management of workers, projects, tasks, materials, attendance, and company finances within the limits of your chosen subscription plan." },
+                                  { "title": "3. Registration and Account", "body": "Using the Platform requires creating a company account with accurate information. You are responsible for account security and for all activities carried out under your account." },
+                                  { "title": "4. Subscription Plans and Payments", "body": "Access to the Platform is paid according to the current pricing. Payments are processed by Stripe. Subscriptions renew automatically and can be cancelled at any time in account settings." },
+                                  { "title": "5. User Obligations", "body": "You agree to use the Platform lawfully, not to share access with unauthorized persons, and to maintain regular backups of important data." },
+                                  { "title": "6. Liability", "body": "The Operator is not liable for data loss due to force majeure or user error. The Operator's liability is limited to fees paid by the User in the last 3 months." },
+                                  { "title": "7. Intellectual Property", "body": "All rights to the Platform belong to the Operator. You receive only a license to use the Platform in accordance with these Terms — no intellectual property rights are transferred." },
+                                  { "title": "8. Changes and Termination", "body": "The Operator may amend these Terms with 14 days' email notice. Accounts can be deleted at any time in settings. The Operator may suspend accounts for Terms violations." }
+                                ]
                             },
                   "privacy":  {
                                   "title":  "Privacy Policy",
-                                  "body1":  "BuildForU stores account and workspace data needed to run the application, including users, workers, projects, tasks, attendance, and material requests.",
-                                  "body2":  "Do not store sensitive production data in this MVP until your deployment, data retention, access control, and security policies are reviewed."
+                                  "lastUpdated": "Last updated: June 9, 2026",
+                                  "sections": [
+                                    { "title": "1. Data Controller", "body": "The data controller is the BuildForU Operator. For data protection inquiries, please contact: kontakt@buildforu.eu" },
+                                    { "title": "2. Data Collected", "body": "We collect registration data (email, company name), operational data entered by the User (workers, projects, tasks, materials, attendance), and technical data (IP addresses, system logs)." },
+                                    { "title": "3. Purpose of Processing", "body": "Data is processed to provide Platform services, process Stripe payments, and communicate with the User. The legal basis is contract performance (Art. 6(1)(b) GDPR)." },
+                                    { "title": "4. Data Sharing", "body": "Data may be shared with infrastructure providers (Neon, Railway), the payment processor (Stripe), and the email provider. Data is not sold to third parties." },
+                                    { "title": "5. Retention Period", "body": "Account data is retained for the duration of the subscription and 30 days after it ends. Financial data is retained for 5 years per tax regulations." },
+                                    { "title": "6. User Rights", "body": "You have the right to access, rectify, delete, restrict processing, and port your data. Submit requests to: kontakt@buildforu.eu" },
+                                    { "title": "7. Cookies", "body": "We use only essential cookies for session management. We do not use advertising or tracking cookies." }
+                                  ]
                               }
               },
     "nav":  {
@@ -770,6 +787,17 @@
                     "enterprisePriceDetail":  "Tailored to your team size",
                     "contactUs":  "Contact",
                     "choosePlan":  "Choose plan",
+                    "termsModal": {
+                      "title": "Before you begin",
+                      "description": "You are selecting the {{plan}} plan. Please accept the terms before continuing.",
+                      "checkboxPre": "I accept the",
+                      "termsLink": "Terms of Service",
+                      "and": "and",
+                      "privacyLink": "Privacy Policy",
+                      "checkboxPost": "of BuildForU",
+                      "cancel": "Cancel",
+                      "continue": "Continue"
+                    },
                     "plans":  {
                                   "starter":  {
                                                   "price":  "€14.95",

@@ -627,13 +627,30 @@
     "eyebrow": "Informacje prawne",
     "terms": {
       "title": "Regulamin",
-      "body1": "BuildForU jest przestrzenią MVP do obsługi operacji budowlanych. Używaj jej z prawdziwymi danymi firmy i zapraszaj tylko osoby, które powinny mieć dostęp do przestrzeni.",
-      "body2": "Umowy produkcyjne, warunki rozliczeń i zobowiązania dotyczące poziomu usług powinny zostać sprawdzone przed użyciem tego oprogramowania w środowisku komercyjnym."
+      "lastUpdated": "Ostatnia aktualizacja: 9 czerwca 2026",
+      "sections": [
+        { "title": "1. Postanowienia ogólne", "body": "BuildForU to platforma SaaS do zarządzania operacjami firm budowlanych, świadczona przez operatora BuildForU. Korzystanie z Platformy oznacza akceptację niniejszego Regulaminu w całości." },
+        { "title": "2. Zakres usług", "body": "Platforma umożliwia zarządzanie pracownikami, projektami, zadaniami, materiałami, obecnościami i finansami firmy budowlanej w ramach wybranego planu abonamentowego." },
+        { "title": "3. Rejestracja i konto", "body": "Korzystanie z Platformy wymaga założenia konta firmowego z poprawnymi danymi. Użytkownik odpowiada za bezpieczeństwo danych dostępowych i za działania wszystkich osób korzystających z konta." },
+        { "title": "4. Plany abonamentowe i płatności", "body": "Dostęp do Platformy jest odpłatny zgodnie z aktualnym cennikiem. Płatności obsługuje Stripe. Subskrypcja odnawia się automatycznie i może być anulowana w każdej chwili w ustawieniach konta." },
+        { "title": "5. Obowiązki Użytkownika", "body": "Użytkownik zobowiązuje się korzystać z Platformy zgodnie z prawem, nie udostępniać dostępu osobom nieuprawnionym oraz regularnie tworzyć kopie zapasowe ważnych danych." },
+        { "title": "6. Odpowiedzialność", "body": "Operator nie odpowiada za utratę danych wynikającą z siły wyższej lub błędów użytkownika. Odpowiedzialność Operatora jest ograniczona do sumy opłat uiszczonych przez Użytkownika w ciągu ostatnich 3 miesięcy." },
+        { "title": "7. Własność intelektualna", "body": "Wszelkie prawa do Platformy należą do Operatora. Użytkownik nie nabywa żadnych praw własności intelektualnej — jedynie licencję na korzystanie z Platformy zgodnie z Regulaminem." },
+        { "title": "8. Zmiany i rozwiązanie umowy", "body": "Operator może zmienić Regulamin z 14-dniowym powiadomieniem e-mail. Konto można usunąć w dowolnej chwili z poziomu ustawień. Operator może zawiesić konto w przypadku naruszenia Regulaminu." }
+      ]
     },
     "privacy": {
       "title": "Polityka prywatności",
-      "body1": "BuildForU przechowuje dane konta i przestrzeni potrzebne do działania aplikacji, w tym użytkowników, pracowników, projekty, zadania, obecność i zgłoszenia materiałowe.",
-      "body2": "Nie zapisuj w tym MVP wrażliwych danych produkcyjnych, dopóki nie sprawdzisz wdrożenia, retencji danych, kontroli dostępu i zasad bezpieczeństwa."
+      "lastUpdated": "Ostatnia aktualizacja: 9 czerwca 2026",
+      "sections": [
+        { "title": "1. Administrator danych", "body": "Administratorem danych osobowych jest Operator BuildForU. W sprawach dotyczących danych osobowych prosimy o kontakt pod adresem: kontakt@buildforu.eu" },
+        { "title": "2. Zakres zbieranych danych", "body": "Zbieramy dane rejestracyjne (email, nazwa firmy), dane operacyjne wprowadzone przez Użytkownika (pracownicy, projekty, zadania, materiały, obecności) oraz dane techniczne (adresy IP, logi systemowe)." },
+        { "title": "3. Cel przetwarzania", "body": "Dane przetwarzane są w celu świadczenia usług Platformy, obsługi płatności przez Stripe oraz komunikacji z Użytkownikiem. Podstawą prawną jest wykonanie umowy (art. 6 ust. 1 lit. b RODO)." },
+        { "title": "4. Przekazywanie danych", "body": "Dane mogą być przekazywane dostawcom infrastruktury (Neon, Railway), procesorowi płatności (Stripe) i dostawcy poczty e-mail. Dane nie są sprzedawane podmiotom trzecim." },
+        { "title": "5. Okres przechowywania", "body": "Dane konta przechowujemy przez czas trwania subskrypcji i 30 dni po jej zakończeniu. Dane finansowe przechowujemy przez 5 lat zgodnie z przepisami podatkowymi." },
+        { "title": "6. Prawa użytkownika", "body": "Przysługuje Ci prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania i przenoszenia danych. Wnioski kieruj na adres: kontakt@buildforu.eu" },
+        { "title": "7. Pliki cookies", "body": "Używamy wyłącznie niezbędnych cookies do obsługi sesji użytkownika. Nie używamy cookies reklamowych ani śledzących." }
+      ]
     }
   },
   "attendance": {
@@ -823,6 +840,17 @@
     "enterprisePriceDetail": "Dostosowane do rozmiaru Twojego zespołu",
     "contactUs": "Kontakt",
     "choosePlan": "Wybierz plan",
+    "termsModal": {
+      "title": "Zanim zaczniesz",
+      "description": "Wybierasz plan {{plan}}. Przed kontynuowaniem zaakceptuj warunki korzystania z usługi.",
+      "checkboxPre": "Akceptuję",
+      "termsLink": "Regulamin",
+      "and": "i",
+      "privacyLink": "Politykę Prywatności",
+      "checkboxPost": "BuildForU",
+      "cancel": "Anuluj",
+      "continue": "Kontynuuj"
+    },
     "plans": {
       "starter": {
         "price": "€14,95",

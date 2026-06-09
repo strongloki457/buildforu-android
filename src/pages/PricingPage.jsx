@@ -58,10 +58,6 @@ export default function PricingPage() {
           const effectiveMonthly = isAnnual
             ? monthlyPrice * (1 - ANNUAL_DISCOUNT)
             : monthlyPrice;
-
-          const ctaProps = { as: Link, to: "/register-company", state: { plan: planId } };
-          const CtaElement = ctaProps.as;
-
           return (
             <article
               key={planId}
@@ -119,9 +115,9 @@ export default function PricingPage() {
                 ))}
               </div>
 
-              <CtaElement
-                to={ctaProps.to}
-                state={{ ...ctaProps.state, billing: isAnnual ? "annual" : "monthly" }}
+              <Link
+                to="/register-company"
+                state={{ plan: planId, billing: isAnnual ? "annual" : "monthly" }}
                 className={`mt-8 inline-flex w-full items-center justify-center rounded-2xl px-4 py-3.5 text-sm transition ${
                   highlighted
                     ? "bg-brand-700 text-white hover:bg-brand-600"
@@ -129,7 +125,7 @@ export default function PricingPage() {
                 }`}
               >
                 {t("pricing.choosePlan")}
-              </CtaElement>
+              </Link>
             </article>
           );
         })}

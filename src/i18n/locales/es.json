@@ -572,14 +572,31 @@
     "legal":  {
                   "eyebrow":  "Legal",
                   "terms":  {
-                                "title":  "T?rminos",
-                                "body1":  "BuildForU es un espacio MVP para operaciones de construcci?n. ?salo con informaci?n de empresa precisa e invita solo a usuarios que deban acceder a tu espacio.",
-                                "body2":  "Los contratos de producci?n, las condiciones de facturaci?n y los compromisos de servicio deben revisarse antes de usar este software en un entorno comercial real."
+                                "title":  "Términos de servicio",
+                                "lastUpdated": "Última actualización: 9 de junio de 2026",
+                                "sections": [
+                                  { "title": "1. Disposiciones generales", "body": "BuildForU es una plataforma SaaS para la gestión de operaciones de empresas de construcción, operada por el operador de BuildForU. El uso de la Plataforma implica la aceptación completa de estos Términos." },
+                                  { "title": "2. Alcance de los servicios", "body": "La Plataforma permite gestionar trabajadores, proyectos, tareas, materiales, asistencia y finanzas de la empresa dentro del plan de suscripción elegido." },
+                                  { "title": "3. Registro y cuenta", "body": "El uso de la Plataforma requiere crear una cuenta de empresa con información precisa. Usted es responsable de la seguridad de la cuenta y de todas las actividades realizadas en ella." },
+                                  { "title": "4. Planes de suscripción y pagos", "body": "El acceso a la Plataforma es de pago según el precio actual. Los pagos son procesados por Stripe. Las suscripciones se renuevan automáticamente y pueden cancelarse en cualquier momento en la configuración de la cuenta." },
+                                  { "title": "5. Obligaciones del usuario", "body": "Usted se compromete a usar la Plataforma de forma legal, a no compartir el acceso con personas no autorizadas y a realizar copias de seguridad de los datos importantes." },
+                                  { "title": "6. Responsabilidad", "body": "El Operador no es responsable de la pérdida de datos por fuerza mayor o error del usuario. La responsabilidad del Operador se limita a las tarifas pagadas en los últimos 3 meses." },
+                                  { "title": "7. Propiedad intelectual", "body": "Todos los derechos sobre la Plataforma pertenecen al Operador. Usted recibe únicamente una licencia para usar la Plataforma — no se transfieren derechos de propiedad intelectual." },
+                                  { "title": "8. Cambios y rescisión", "body": "El Operador puede modificar estos Términos con 14 días de aviso por e-mail. Las cuentas pueden eliminarse en cualquier momento en la configuración. El Operador puede suspender cuentas por incumplimiento." }
+                                ]
                             },
                   "privacy":  {
-                                  "title":  "Pol?tica de privacidad",
-                                  "body1":  "BuildForU almacena los datos de cuenta y espacio necesarios para operar la aplicaci?n, incluidos usuarios, trabajadores, proyectos, tareas, asistencia y solicitudes de materiales.",
-                                  "body2":  "No guardes datos sensibles de producci?n en este MVP hasta revisar el despliegue, la retenci?n de datos, el control de acceso y las pol?ticas de seguridad."
+                                  "title":  "Política de privacidad",
+                                  "lastUpdated": "Última actualización: 9 de junio de 2026",
+                                  "sections": [
+                                    { "title": "1. Responsable del tratamiento", "body": "El responsable del tratamiento de datos es el Operador de BuildForU. Para consultas de protección de datos: kontakt@buildforu.eu" },
+                                    { "title": "2. Datos recopilados", "body": "Recopilamos datos de registro (e-mail, nombre de empresa), datos operativos introducidos por el Usuario (trabajadores, proyectos, tareas, materiales, asistencia) y datos técnicos (direcciones IP, registros)." },
+                                    { "title": "3. Finalidad del tratamiento", "body": "Los datos se procesan para prestar los servicios de la Plataforma, procesar pagos de Stripe y comunicarse con el Usuario. La base legal es la ejecución del contrato (Art. 6(1)(b) RGPD)." },
+                                    { "title": "4. Transferencia de datos", "body": "Los datos pueden compartirse con proveedores de infraestructura (Neon, Railway), el procesador de pagos (Stripe) y el proveedor de correo electrónico. Los datos no se venden a terceros." },
+                                    { "title": "5. Período de conservación", "body": "Los datos de cuenta se conservan durante la suscripción y 30 días después. Los datos financieros se conservan 5 años según la normativa fiscal." },
+                                    { "title": "6. Derechos del usuario", "body": "Tiene derecho a acceder, rectificar, eliminar, limitar el procesamiento y portar sus datos. Envíe solicitudes a: kontakt@buildforu.eu" },
+                                    { "title": "7. Cookies", "body": "Usamos únicamente cookies esenciales para la gestión de sesiones. No usamos cookies de publicidad ni de seguimiento." }
+                                  ]
                               }
               },
     "attendance":  {
@@ -707,6 +724,17 @@
                     "enterprisePriceDetail":  "Adaptado al tamaño de tu equipo",
                     "contactUs":  "Contacto",
                     "choosePlan":  "Elegir plan",
+                    "termsModal": {
+                      "title": "Antes de empezar",
+                      "description": "Está seleccionando el plan {{plan}}. Acepte los términos antes de continuar.",
+                      "checkboxPre": "Acepto los",
+                      "termsLink": "Términos de servicio",
+                      "and": "y la",
+                      "privacyLink": "Política de privacidad",
+                      "checkboxPost": "de BuildForU",
+                      "cancel": "Cancelar",
+                      "continue": "Continuar"
+                    },
                     "plans":  {
                                   "starter":  {
                                                   "price":  "€14.95",
