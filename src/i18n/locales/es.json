@@ -589,12 +589,12 @@
                                   "title":  "Política de privacidad",
                                   "lastUpdated": "Última actualización: 9 de junio de 2026",
                                   "sections": [
-                                    { "title": "1. Responsable del tratamiento", "body": "El responsable del tratamiento de datos es el Operador de BuildForU. Para consultas de protección de datos: kontakt@buildforu.eu" },
+                                    { "title": "1. Responsable del tratamiento", "body": "El responsable del tratamiento de datos es el Operador de BuildForU. Para consultas de protección de datos: info@buildforu.eu" },
                                     { "title": "2. Datos recopilados", "body": "Recopilamos datos de registro (e-mail, nombre de empresa), datos operativos introducidos por el Usuario (trabajadores, proyectos, tareas, materiales, asistencia) y datos técnicos (direcciones IP, registros)." },
                                     { "title": "3. Finalidad del tratamiento", "body": "Los datos se procesan para prestar los servicios de la Plataforma, procesar pagos de Stripe y comunicarse con el Usuario. La base legal es la ejecución del contrato (Art. 6(1)(b) RGPD)." },
                                     { "title": "4. Transferencia de datos", "body": "Los datos pueden compartirse con proveedores de infraestructura (Neon, Railway), el procesador de pagos (Stripe) y el proveedor de correo electrónico. Los datos no se venden a terceros." },
                                     { "title": "5. Período de conservación", "body": "Los datos de cuenta se conservan durante la suscripción y 30 días después. Los datos financieros se conservan 5 años según la normativa fiscal." },
-                                    { "title": "6. Derechos del usuario", "body": "Tiene derecho a acceder, rectificar, eliminar, limitar el procesamiento y portar sus datos. Envíe solicitudes a: kontakt@buildforu.eu" },
+                                    { "title": "6. Derechos del usuario", "body": "Tiene derecho a acceder, rectificar, eliminar, limitar el procesamiento y portar sus datos. Envíe solicitudes a: info@buildforu.eu" },
                                     { "title": "7. Cookies", "body": "Usamos únicamente cookies esenciales para la gestión de sesiones. No usamos cookies de publicidad ni de seguimiento." }
                                   ]
                               }
@@ -1198,3 +1198,4 @@
                           "logout":  "Iniciar sesión con otra cuenta"
                       }
 }
+

@@ -65,7 +65,12 @@ export default function PublicShell({ children }) {
         <main className="flex-1 py-8 sm:py-10">{children}</main>
 
         <footer className="border-t border-white/60 px-2 py-6 text-sm text-slate-500">
-          {t("publicNav.footer")}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span>{t("publicNav.footer")}</span>
+            <a href="mailto:info@buildforu.eu" className="transition hover:text-brand-700">
+              info@buildforu.eu
+            </a>
+          </div>
         </footer>
       </div>
     </div>

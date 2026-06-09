@@ -643,12 +643,12 @@
       "title": "Polityka prywatności",
       "lastUpdated": "Ostatnia aktualizacja: 9 czerwca 2026",
       "sections": [
-        { "title": "1. Administrator danych", "body": "Administratorem danych osobowych jest Operator BuildForU. W sprawach dotyczących danych osobowych prosimy o kontakt pod adresem: kontakt@buildforu.eu" },
+        { "title": "1. Administrator danych", "body": "Administratorem danych osobowych jest Operator BuildForU. W sprawach dotyczących danych osobowych prosimy o kontakt pod adresem: info@buildforu.eu" },
         { "title": "2. Zakres zbieranych danych", "body": "Zbieramy dane rejestracyjne (email, nazwa firmy), dane operacyjne wprowadzone przez Użytkownika (pracownicy, projekty, zadania, materiały, obecności) oraz dane techniczne (adresy IP, logi systemowe)." },
         { "title": "3. Cel przetwarzania", "body": "Dane przetwarzane są w celu świadczenia usług Platformy, obsługi płatności przez Stripe oraz komunikacji z Użytkownikiem. Podstawą prawną jest wykonanie umowy (art. 6 ust. 1 lit. b RODO)." },
         { "title": "4. Przekazywanie danych", "body": "Dane mogą być przekazywane dostawcom infrastruktury (Neon, Railway), procesorowi płatności (Stripe) i dostawcy poczty e-mail. Dane nie są sprzedawane podmiotom trzecim." },
         { "title": "5. Okres przechowywania", "body": "Dane konta przechowujemy przez czas trwania subskrypcji i 30 dni po jej zakończeniu. Dane finansowe przechowujemy przez 5 lat zgodnie z przepisami podatkowymi." },
-        { "title": "6. Prawa użytkownika", "body": "Przysługuje Ci prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania i przenoszenia danych. Wnioski kieruj na adres: kontakt@buildforu.eu" },
+        { "title": "6. Prawa użytkownika", "body": "Przysługuje Ci prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania i przenoszenia danych. Wnioski kieruj na adres: info@buildforu.eu" },
         { "title": "7. Pliki cookies", "body": "Używamy wyłącznie niezbędnych cookies do obsługi sesji użytkownika. Nie używamy cookies reklamowych ani śledzących." }
       ]
     }
@@ -1276,3 +1276,4 @@
     "logout": "Zaloguj się na inne konto"
   }
 }
+

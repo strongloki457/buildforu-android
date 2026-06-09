@@ -589,12 +589,12 @@
                                   "title":  "Informativa sulla privacy",
                                   "lastUpdated": "Ultimo aggiornamento: 9 giugno 2026",
                                   "sections": [
-                                    { "title": "1. Titolare del trattamento", "body": "Il titolare e l'Operatore BuildForU. Per richieste sulla protezione dei dati: kontakt@buildforu.eu" },
+                                    { "title": "1. Titolare del trattamento", "body": "Il titolare e l'Operatore BuildForU. Per richieste sulla protezione dei dati: info@buildforu.eu" },
                                     { "title": "2. Dati raccolti", "body": "Raccogliamo dati di registrazione (e-mail, nome azienda), dati operativi (lavoratori, progetti, attivita, materiali, presenze) e dati tecnici (IP, log)." },
                                     { "title": "3. Finalita del trattamento", "body": "I dati vengono trattati per fornire i servizi, elaborare pagamenti Stripe e comunicare con l'Utente. Base giuridica: esecuzione del contratto (Art. 6(1)(b) GDPR)." },
                                     { "title": "4. Condivisione dei dati", "body": "I dati possono essere condivisi con fornitori di infrastrutture (Neon, Railway), processore di pagamento (Stripe) e fornitore e-mail. Non vengono venduti a terzi." },
                                     { "title": "5. Periodo di conservazione", "body": "I dati dell'account vengono conservati per la durata dell'abbonamento e 30 giorni dopo. I dati finanziari si conservano 5 anni ai sensi della normativa fiscale." },
-                                    { "title": "6. Diritti dell'utente", "body": "Hai diritto di accesso, rettifica, cancellazione, limitazione e portabilita dei dati. Invia richieste a: kontakt@buildforu.eu" },
+                                    { "title": "6. Diritti dell'utente", "body": "Hai diritto di accesso, rettifica, cancellazione, limitazione e portabilita dei dati. Invia richieste a: info@buildforu.eu" },
                                     { "title": "7. Cookie", "body": "Utilizziamo solo cookie essenziali per la gestione delle sessioni. Non utilizziamo cookie pubblicitari o di tracciamento." }
                                   ]
                               }
@@ -1197,4 +1197,5 @@
                           "logout":  "Accedi con un altro account"
                       }
 }
+
 

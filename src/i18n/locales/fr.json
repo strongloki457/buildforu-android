@@ -1,4 +1,4 @@
-{
+﻿{
     "app":  {
                 "name":  "BuildForU",
                 "tagline":  "Opérations de chantier avec une vue plus claire.",
@@ -612,12 +612,12 @@
                                   "title":  "Politique de confidentialité",
                                   "lastUpdated": "Dernière mise à jour : 9 juin 2026",
                                   "sections": [
-                                    { "title": "1. Responsable du traitement", "body": "Le responsable du traitement des données est l’Opérateur BuildForU. Pour les demandes relatives à la protection des données : kontakt@buildforu.eu" },
+                                    { "title": "1. Responsable du traitement", "body": "Le responsable du traitement des données est l’Opérateur BuildForU. Pour les demandes relatives à la protection des données : info@buildforu.eu" },
                                     { "title": "2. Données collectées", "body": "Nous collectons les données d’inscription (e-mail, nom de l’entreprise), les données opérationnelles saisies par l’Utilisateur (travailleurs, projets, tâches, matériaux, présences) et les données techniques (adresses IP, journaux)." },
                                     { "title": "3. Finalité du traitement", "body": "Les données sont traitées pour fournir les services de la Plateforme, traiter les paiements Stripe et communiquer avec l’Utilisateur. La base légale est l’exécution du contrat (art. 6(1)(b) RGPD)." },
                                     { "title": "4. Partage des données", "body": "Les données peuvent être partagées avec les fournisseurs d’infrastructure (Neon, Railway), le processeur de paiement (Stripe) et le fournisseur d’e-mail. Les données ne sont pas vendues à des tiers." },
                                     { "title": "5. Durée de conservation", "body": "Les données de compte sont conservées pendant la durée de l’abonnement et 30 jours après sa fin. Les données financières sont conservées 5 ans conformément aux réglementations fiscales." },
-                                    { "title": "6. Droits de l’utilisateur", "body": "Vous avez le droit d’accéder, de rectifier, de supprimer, de limiter le traitement et de transférer vos données. Adressez vos demandes à : kontakt@buildforu.eu" },
+                                    { "title": "6. Droits de l’utilisateur", "body": "Vous avez le droit d’accéder, de rectifier, de supprimer, de limiter le traitement et de transférer vos données. Adressez vos demandes à : info@buildforu.eu" },
                                     { "title": "7. Cookies", "body": "Nous utilisons uniquement les cookies essentiels pour la gestion des sessions. Nous n’utilisons pas de cookies publicitaires ou de suivi." }
                                   ]
                               }
@@ -1218,3 +1218,4 @@
                           "logout":  "Se connecter avec un autre compte"
                       }
 }
+

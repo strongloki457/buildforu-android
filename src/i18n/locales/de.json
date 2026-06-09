@@ -589,12 +589,12 @@
                                   "title":  "Datenschutzrichtlinie",
                                   "lastUpdated": "Zuletzt aktualisiert: 9. Juni 2026",
                                   "sections": [
-                                    { "title": "1. Verantwortlicher", "body": "Verantwortlicher für die Datenverarbeitung ist der BuildForU-Betreiber. Datenschutzanfragen richten Sie an: kontakt@buildforu.eu" },
+                                    { "title": "1. Verantwortlicher", "body": "Verantwortlicher für die Datenverarbeitung ist der BuildForU-Betreiber. Datenschutzanfragen richten Sie an: info@buildforu.eu" },
                                     { "title": "2. Erhobene Daten", "body": "Wir erheben Registrierungsdaten (E-Mail, Firmenname), vom Nutzer eingegebene Betriebsdaten (Mitarbeiter, Projekte, Aufgaben, Materialien, Anwesenheiten) sowie technische Daten (IP-Adressen, Protokolle)." },
                                     { "title": "3. Verarbeitungszweck", "body": "Daten werden zur Erbringung der Plattformdienste, zur Verarbeitung von Stripe-Zahlungen und zur Kommunikation mit dem Nutzer verarbeitet. Rechtsgrundlage ist die Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO)." },
                                     { "title": "4. Datenweitergabe", "body": "Daten können an Infrastrukturanbieter (Neon, Railway), den Zahlungsabwickler (Stripe) und den E-Mail-Anbieter weitergegeben werden. Daten werden nicht an Dritte verkauft." },
                                     { "title": "5. Aufbewahrungsdauer", "body": "Kontodaten werden für die Dauer des Abonnements und 30 Tage danach gespeichert. Finanzdaten werden gemäß Steuervorschriften 5 Jahre aufbewahrt." },
-                                    { "title": "6. Nutzerrechte", "body": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung und Datenübertragbarkeit. Anträge senden Sie an: kontakt@buildforu.eu" },
+                                    { "title": "6. Nutzerrechte", "body": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung und Datenübertragbarkeit. Anträge senden Sie an: info@buildforu.eu" },
                                     { "title": "7. Cookies", "body": "Wir verwenden ausschließlich notwendige Cookies für die Sitzungsverwaltung. Wir verwenden keine Werbe- oder Tracking-Cookies." }
                                   ]
                               }
@@ -1198,3 +1198,4 @@
                           "logout":  "Mit anderem Konto anmelden"
                       }
 }
+

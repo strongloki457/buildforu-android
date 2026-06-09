@@ -266,6 +266,17 @@ export default function BillingPage() {
               </div>
             )}
 
+            <div className="rounded-[28px] border border-slate-200 bg-white/80 p-5">
+              <p className="text-sm font-medium text-slate-800">{t("billing.supportTitle", "Need help?")}</p>
+              <p className="mt-1 text-sm text-slate-500">{t("billing.supportHint", "Questions about your plan, invoice or account? Write to us.")}</p>
+              <a
+                href="mailto:info@buildforu.eu"
+                className="mt-3 inline-block text-sm font-medium text-brand-700 transition hover:text-brand-600"
+              >
+                info@buildforu.eu
+              </a>
+            </div>
+
             {hasActiveSubscription && (
               <div className="rounded-[28px] bg-white/82 p-6">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{t("billing.recentActivity")}</p>

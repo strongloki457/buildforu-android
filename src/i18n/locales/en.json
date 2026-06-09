@@ -53,12 +53,12 @@
                                   "title":  "Privacy Policy",
                                   "lastUpdated": "Last updated: June 9, 2026",
                                   "sections": [
-                                    { "title": "1. Data Controller", "body": "The data controller is the BuildForU Operator. For data protection inquiries, please contact: kontakt@buildforu.eu" },
+                                    { "title": "1. Data Controller", "body": "The data controller is the BuildForU Operator. For data protection inquiries, please contact: info@buildforu.eu" },
                                     { "title": "2. Data Collected", "body": "We collect registration data (email, company name), operational data entered by the User (workers, projects, tasks, materials, attendance), and technical data (IP addresses, system logs)." },
                                     { "title": "3. Purpose of Processing", "body": "Data is processed to provide Platform services, process Stripe payments, and communicate with the User. The legal basis is contract performance (Art. 6(1)(b) GDPR)." },
                                     { "title": "4. Data Sharing", "body": "Data may be shared with infrastructure providers (Neon, Railway), the payment processor (Stripe), and the email provider. Data is not sold to third parties." },
                                     { "title": "5. Retention Period", "body": "Account data is retained for the duration of the subscription and 30 days after it ends. Financial data is retained for 5 years per tax regulations." },
-                                    { "title": "6. User Rights", "body": "You have the right to access, rectify, delete, restrict processing, and port your data. Submit requests to: kontakt@buildforu.eu" },
+                                    { "title": "6. User Rights", "body": "You have the right to access, rectify, delete, restrict processing, and port your data. Submit requests to: info@buildforu.eu" },
                                     { "title": "7. Cookies", "body": "We use only essential cookies for session management. We do not use advertising or tracking cookies." }
                                   ]
                               }
@@ -1223,3 +1223,4 @@
                           "logout":  "Sign in with another account"
                       }
 }
+

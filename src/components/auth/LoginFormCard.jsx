@@ -139,6 +139,12 @@ export default function LoginFormCard({
             {t("login.createWorkspace", "Create workspace")}
           </Link>
         </p>
+        <p className="mt-3 text-center text-sm text-slate-400">
+          {t("login.needHelp", "Need help?")}{" "}
+          <a href="mailto:info@buildforu.eu" className="text-brand-700 transition hover:text-brand-600">
+            info@buildforu.eu
+          </a>
+        </p>
       </div>
     </section>
   );

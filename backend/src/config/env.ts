@@ -23,7 +23,7 @@ const envSchema = z
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
-    SMTP_FROM: z.string().email().default("noreply@buildforu.com"),
+    SMTP_FROM: z.string().default("BuildForU <info@buildforu.eu>"),
     GROQ_API_KEY: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_WEBHOOK_SECRET: z.string().optional(),
