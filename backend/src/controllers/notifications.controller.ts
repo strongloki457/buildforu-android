@@ -4,7 +4,7 @@ import { prisma } from "../config/prisma";
 
 export const listNotifications = asyncHandler(async (req: Request, res: Response) => {
   const { userId, companyId, role, workerId } = req.user!;
-  const notifications: { id: string; title: string; time: string; type: string }[] = [];
+  const notifications: { id: string; title: string; time: string; type: string; link?: string }[] = [];
   const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
   if (role === "ADMIN") {

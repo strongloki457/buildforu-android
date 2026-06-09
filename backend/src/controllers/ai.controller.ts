@@ -89,12 +89,12 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
     const hasImage = messages.some((m) => !!m.image);
     const model = hasImage ? "meta-llama/llama-4-scout-17b-16e-instruct" : "llama-3.1-8b-instant";
 
-    const builtMessages = messages.map((m) => {
+    const builtMessages: Groq.Chat.ChatCompletionMessageParam[] = messages.map((m) => {
       if (m.image) {
         return {
-          role: m.role as "user" | "assistant",
+          role: "user" as const,
           content: [
-            { type: "image_url" as const, image_url: { url: m.image } },
+            { type: "image_url" as const, image_url: { url: m.image! } },
             ...(m.content.trim() ? [{ type: "text" as const, text: m.content }] : [])
           ]
         };
@@ -106,11 +106,12 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       client.chat.completions.create({
         model,
         max_tokens: 1024,
+        stream: false,
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system" as const, content: SYSTEM_PROMPT },
           ...builtMessages
         ]
-      }),
+      }) as Promise<Groq.Chat.ChatCompletion>,
       AI_TIMEOUT_MS
     );
 
