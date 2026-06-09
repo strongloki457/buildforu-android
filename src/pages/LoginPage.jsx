@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { demoAccounts } from "../components/auth/authData";
 import LoginFormCard from "../components/auth/LoginFormCard";
 import LoginHeroPanel from "../components/auth/LoginHeroPanel";
+import LanguageSwitcher from "../components/navigation/LanguageSwitcher";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
@@ -79,6 +80,10 @@ export default function LoginPage() {
     <div className="relative min-h-screen overflow-hidden bg-[#f4f7f3] px-3 py-4 text-slate-900 sm:px-4 sm:py-6">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.12),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(20,83,45,0.12),transparent_28%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(20,83,45,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(20,83,45,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
+
+      <div className="absolute right-4 top-4 z-10 sm:right-6 sm:top-5">
+        <LanguageSwitcher />
+      </div>
 
       <div className="relative mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl items-center sm:min-h-[calc(100vh-3rem)]">
         <div className="grid w-full min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center lg:gap-10">

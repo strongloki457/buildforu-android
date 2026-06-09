@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logoFull from "../../assets/logo-full.svg";
+import LanguageSwitcher from "../navigation/LanguageSwitcher";
 import { useAuth } from "../../hooks/useAuth";
 import { useI18n } from "../../hooks/useI18n";
 
@@ -45,6 +46,7 @@ export default function PublicShell({ children }) {
             </nav>
 
             <div className="flex items-center gap-3">
+              <LanguageSwitcher />
               <Link
                 to={user ? "/dashboard" : "/login"}
                 className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
