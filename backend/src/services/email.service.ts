@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { env } from "../config/env";
 
 const SUPPORTED_LOCALES = ["en", "pl", "de", "fr", "es", "it", "ro", "tr", "uk"] as const;
@@ -15,32 +16,44 @@ function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function createTransporter() {
-  if (!env.SMTP_HOST) {
-    return null;
+async function sendMail(to: string, subject: string, html: string): Promise<void> {
+  // Resend SDK path
+  if (env.SMTP_PASS && (env.SMTP_HOST === "smtp.resend.com" || !env.SMTP_HOST)) {
+    const resend = new Resend(env.SMTP_PASS);
+    const { error } = await resend.emails.send({
+      from: env.SMTP_FROM,
+      to,
+      subject,
+      html
+    });
+    if (error) {
+      process.stderr.write(`[email] Resend error sending "${subject}" to ${to}: ${JSON.stringify(error)}\n`);
+    } else {
+      process.stdout.write(`[email] Sent "${subject}" to ${to} via Resend\n`);
+    }
+    return;
   }
 
-  return nodemailer.createTransport({
-    host: env.SMTP_HOST,
-    port: env.SMTP_PORT,
-    secure: env.SMTP_PORT === 465,
-    auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
-    tls: env.NODE_ENV !== "production" ? { rejectUnauthorized: false } : undefined
-  });
-}
-
-async function sendMail(to: string, subject: string, html: string): Promise<void> {
-  const transporter = createTransporter();
-
-  if (!transporter) {
+  // No provider configured — dev log
+  if (!env.SMTP_HOST) {
     process.stdout.write(
       `[email-dev] To: ${to} | Subject: ${subject}\n${html.replace(/<[^>]+>/g, "")}\n`
     );
     return;
   }
 
+  // Nodemailer SMTP fallback
+  const transporter = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    secure: env.SMTP_PORT === 465,
+    auth: env.SMTP_USER ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
+    tls: env.NODE_ENV !== "production" ? { rejectUnauthorized: false } : undefined
+  });
+
   try {
     await transporter.sendMail({ from: env.SMTP_FROM, to, subject, html });
+    process.stdout.write(`[email] Sent "${subject}" to ${to} via SMTP\n`);
   } catch (error) {
     process.stderr.write(`[email] Failed to send "${subject}" to ${to}: ${error}\n`);
   }

@@ -401,6 +401,8 @@
                     "completionRate":  "Completion rate",
                     "noWorkersFound":  "No workers found",
                     "noWorkersSubtitle":  "Try another filter combination or add a new crew member to get started.",
+                    "noMatchTitle":  "No search results",
+                    "noMatchSubtitle":  "Change the search term or filters to find a worker.",
                     "deleteWorkerTitle":  "Delete worker",
                     "deleteWorkerDescription":  "Are you sure you want to remove {{name}} from the crew list? This only affects local mock data.",
                     "keepWorker":  "Keep worker",
@@ -608,9 +610,33 @@
                       "noFinderResultsTitle":  "No stores match this search",
                       "projectDropHint":  "Project drop zone",
                       "projectLinked":  "Linked to project",
-                      "selectFinderResult":  "Select a result to focus it on the map preview."
+                      "selectFinderResult":  "Select a result to focus it on the map preview.",
+                      "storeFinderComingSoon":  "Store finder — coming soon",
+                      "storeFinderComingSoonDesc":  "We are building a tool to find nearby construction stores, compare prices and order directly from the app.",
+                      "storeFinderEta":  "Planned for v0.2 — use the Requests tab in the meantime.",
+                      "storeFeature":  {
+                                           "nearbyStores":  "Nearby stores by job site",
+                                           "priceComparison":  "Real-time price comparison",
+                                           "oneClickOrder":  "One-click ordering"
+                                       },
+                      "requestsBoardSubtitleAdmin":  "Review each request, filter by status or project and update progress."
                   },
     "finance":  {
+                    "eyebrow":  "Operations",
+                    "pageTitle":  "Operational overview",
+                    "pageSubtitle":  "Current state of projects, crew and materials across the company.",
+                    "activeProjects":  "Active projects",
+                    "onSiteToday":  "On site today",
+                    "taskCompletion":  "Task completion",
+                    "materialsPurchased":  "Materials purchased",
+                    "taskProgressTitle":  "Task activity",
+                    "taskProgressSubtitle":  "Completed tasks per week across all projects.",
+                    "weeklyTasksLabel":  "Completed tasks — last 7 weeks",
+                    "recentPurchasesTitle":  "Recently purchased materials",
+                    "recentPurchasesSubtitle":  "Latest materials marked as purchased.",
+                    "noPurchasesYet":  "No materials marked as purchased yet.",
+                    "budgetComingSoon":  "Project budgets and invoicing — coming in v0.2",
+                    "budgetComingSoonDesc":  "Add project budgets, track site expenses and export reports directly to your accountant.",
                     "title":  "Finance",
                     "subtitle":  "Review revenue, expenses and invoice progress.",
                     "revenue":  "Revenue",
@@ -682,6 +708,33 @@
                     "eyebrow":  "Construction operations SaaS",
                     "title":  "Run crews, schedules and site communication from one BuildForU workspace.",
                     "subtitle":  "BuildForU helps construction companies manage workers, tasks, planning, team chat and sourcing tools with a polished dashboard experience for office teams and field staff.",
+                    "howEyebrow":  "Getting started",
+                    "howTitle":  "Ready to use in under 5 minutes",
+                    "how":  {
+                                "register":  {
+                                                 "title":  "Register your company",
+                                                 "description":  "Create your company workspace and admin account — no credit card required."
+                                             },
+                                "setup":  {
+                                              "title":  "Add workers and projects",
+                                              "description":  "Invite your crew, create projects, assign tasks and configure materials."
+                                          },
+                                "manage":  {
+                                               "title":  "Manage from one place",
+                                               "description":  "Track construction progress, crew changes and materials in real time."
+                                           }
+                            },
+                    "aiEyebrow":  "AI Assistant — Pro feature",
+                    "aiTitle":  "Your personal construction expert, available 24/7",
+                    "aiSubtitle":  "Ask about material quantities, cost estimates, building regulations or scheduling. Answers in seconds, not hours.",
+                    "aiCta":  "Try with Pro plan",
+                    "aiOnline":  "Online",
+                    "aiCapability":  {
+                                         "estimates":  "Cost estimates and material quantities",
+                                         "scheduling":  "Construction schedule planning",
+                                         "regulations":  "Building regulations and standards",
+                                         "materials":  "Material selection and specification"
+                                     },
                     "featuresEyebrow":  "Core capabilities",
                     "featuresTitle":  "Built around the daily rhythm of a construction company.",
                     "ctaEyebrow":  "Ready to launch",
