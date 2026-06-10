@@ -5,5 +5,5 @@ export const emptyWorkerForm = {
   position: "",
   notes: "",
   projectIds: [],
-  createLogin: false
+  createLogin: true
 };

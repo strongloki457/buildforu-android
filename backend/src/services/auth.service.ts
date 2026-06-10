@@ -101,25 +101,29 @@ export async function refreshAccessToken(rawRefreshToken: string) {
     throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
   }
 
-  const stored = await prisma.refreshToken.findUnique({
-    where: { token: rawRefreshToken },
-    select: { id: true, userId: true, expiresAt: true }
-  });
+  const user = await prisma.$transaction(async (tx) => {
+    const stored = await tx.refreshToken.findUnique({
+      where: { token: rawRefreshToken },
+      select: { id: true, userId: true, expiresAt: true }
+    });
 
-  if (!stored || stored.userId !== payload.userId || stored.expiresAt < new Date()) {
-    throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
-  }
+    if (!stored || stored.userId !== payload.userId || stored.expiresAt < new Date()) {
+      throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
+    }
 
-  const user = await prisma.user.findUnique({
-    where: { id: stored.userId },
-    select: publicUserSelect
-  });
+    await tx.refreshToken.delete({ where: { id: stored.id } });
 
-  if (!user) {
-    throw new AppError(401, "User not found.", "AUTH_INVALID");
-  }
+    const foundUser = await tx.user.findUnique({
+      where: { id: stored.userId },
+      select: publicUserSelect
+    });
 
-  await prisma.refreshToken.delete({ where: { id: stored.id } });
+    if (!foundUser) {
+      throw new AppError(401, "User not found.", "AUTH_INVALID");
+    }
+
+    return foundUser;
+  }, { isolationLevel: "Serializable" });
 
   return buildAuthResponse(user);
 }

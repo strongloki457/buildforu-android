@@ -72,31 +72,7 @@ const PLAN_WORKER_LIMITS: Record<string, number> = {
   enterprise: Infinity
 };
 
-async function assertWorkerLimitNotExceeded(companyId: string): Promise<void> {
-  const company = await prisma.company.findUnique({
-    where: { id: companyId },
-    select: { plan: true }
-  });
-
-  const limit = PLAN_WORKER_LIMITS[company?.plan ?? "starter"] ?? 5;
-  if (!isFinite(limit)) return;
-
-  const count = await prisma.worker.count({
-    where: { companyId, deletedAt: null }
-  });
-
-  if (count >= limit) {
-    throw new AppError(
-      403,
-      `Your ${company?.plan ?? "starter"} plan allows a maximum of ${limit} workers. Upgrade to add more.`,
-      "WORKER_LIMIT_EXCEEDED"
-    );
-  }
-}
-
 export async function createWorker(currentUser: AuthContext, input: CreateWorkerInput) {
-  await assertWorkerLimitNotExceeded(currentUser.companyId);
-
   const projectIds = await ensureProjectsBelongToCompany(input.projectIds, currentUser.companyId);
   const email = normalizeEmail(input.email);
   let temporaryPassword: string | null = null;
@@ -113,6 +89,21 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
   }
 
   const createdWorker = await prisma.$transaction(async (tx) => {
+    const company = await tx.company.findUnique({
+      where: { id: currentUser.companyId },
+      select: { plan: true }
+    });
+    const limit = PLAN_WORKER_LIMITS[company?.plan ?? "starter"] ?? 5;
+    if (isFinite(limit)) {
+      const count = await tx.worker.count({ where: { companyId: currentUser.companyId, deletedAt: null } });
+      if (count >= limit) {
+        throw new AppError(
+          403,
+          `Your ${company?.plan ?? "starter"} plan allows a maximum of ${limit} workers. Upgrade to add more.`,
+          "WORKER_LIMIT_EXCEEDED"
+        );
+      }
+    }
     const worker = await tx.worker.create({
       data: {
         name: input.name,
@@ -145,7 +136,7 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
     }
 
     return worker;
-  });
+  }, { isolationLevel: "Serializable" });
 
   const worker = await prisma.worker.findUniqueOrThrow({
     where: { id: createdWorker.id },

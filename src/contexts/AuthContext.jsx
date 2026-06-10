@@ -1,13 +1,10 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { authApi } from "../api/auth.api";
-import { ApiError } from "../api/client";
+import { ApiError, apiRequest } from "../api/client";
 import {
   clearStoredAuth,
   getStoredUser,
-  getToken,
-  setRefreshToken,
   setStoredUser,
-  setToken,
   shouldRememberSession,
 } from "../api/auth.storage";
 
@@ -145,19 +142,17 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [companyUsers, setCompanyUsers] = useState(() => (initialStoredUser ? [initialStoredUser] : []));
 
-  const persistSession = useCallback((token, apiUser, options = {}) => {
+  const persistSession = useCallback((apiUser, options = {}) => {
     const normalizedUser = normalizeApiUser(apiUser);
     const remember = options.remember !== false;
 
-    if (!token || !normalizedUser) {
+    if (!normalizedUser) {
       clearStoredAuth();
       setUser(null);
       setCompanyUsers([]);
       return null;
     }
 
-    setToken(token, remember);
-    if (options.refreshToken) setRefreshToken(options.refreshToken, remember);
     setStoredUser(normalizedUser, remember);
     setUser(normalizedUser);
     setCompanyUsers((members) => mergeCompanyUser(members, normalizedUser));
@@ -169,18 +164,6 @@ export function AuthProvider({ children }) {
     let isMounted = true;
 
     async function bootstrapSession() {
-      if (!getToken()) {
-        clearStoredAuth();
-
-        if (isMounted) {
-          setUser(null);
-          setCompanyUsers([]);
-          setIsLoading(false);
-        }
-
-        return;
-      }
-
       try {
         const response = await authApi.me();
         const normalizedUser = normalizeApiUser(response.user);
@@ -199,6 +182,7 @@ export function AuthProvider({ children }) {
         const isNetworkError = error instanceof ApiError && error.code === "NETWORK_ERROR";
 
         if (!isNetworkError) {
+          // No valid cookie session — clear any stale user cache
           clearStoredAuth();
 
           if (isMounted) {
@@ -237,8 +221,8 @@ export function AuthProvider({ children }) {
   const login = useCallback(
     async ({ email, password, rememberMe = true }) => {
       try {
-        const response = await authApi.login({ email: normalizeEmail(email), password });
-        return persistSession(response.token, response.user, { remember: rememberMe, refreshToken: response.refreshToken });
+        const response = await authApi.login({ email: normalizeEmail(email), password, rememberMe });
+        return persistSession(response.user, { remember: rememberMe });
       } catch (error) {
         throw new Error(authErrorKey(error, "login"));
       }
@@ -246,7 +230,12 @@ export function AuthProvider({ children }) {
     [persistSession],
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    try {
+      await apiRequest("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore — clear local state regardless
+    }
     clearStoredAuth();
     setUser(null);
     setCompanyUsers([]);
@@ -271,7 +260,7 @@ export function AuthProvider({ children }) {
           password,
           plan,
         });
-        const registeredUser = persistSession(response.token, response.user, { remember: true, refreshToken: response.refreshToken });
+        const registeredUser = persistSession(response.user, { remember: true });
 
         return {
           company: registeredUser?.company,

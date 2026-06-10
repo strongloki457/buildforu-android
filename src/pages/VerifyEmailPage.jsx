@@ -1,6 +1,7 @@
 import { AlertCircle, CheckCircle, Loader } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { createCheckoutSession } from "../api/stripe.api";
 import { apiRequest } from "../api/client";
 import PublicShell from "../components/marketing/PublicShell";
 import { useAuth } from "../hooks/useAuth";
@@ -11,6 +12,7 @@ export default function VerifyEmailPage() {
   const { updateUser } = useAuth();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState("loading");
+  const [redirectingToCheckout, setRedirectingToCheckout] = useState(false);
   const called = useRef(false);
 
   useEffect(() => {
@@ -27,6 +29,18 @@ export default function VerifyEmailPage() {
       .then(() => {
         updateUser?.({ emailVerified: true });
         setStatus("success");
+
+        const pendingPlan = localStorage.getItem("bfu_pending_plan");
+        const pendingBilling = localStorage.getItem("bfu_pending_billing") || "monthly";
+
+        if (pendingPlan && pendingPlan !== "starter") {
+          localStorage.removeItem("bfu_pending_plan");
+          localStorage.removeItem("bfu_pending_billing");
+          setRedirectingToCheckout(true);
+          createCheckoutSession(pendingPlan, pendingBilling)
+            .then(({ url }) => { window.location.href = url; })
+            .catch(() => setRedirectingToCheckout(false));
+        }
       })
       .catch(() => setStatus("invalid"));
   }, [searchParams, updateUser]);
@@ -49,14 +63,20 @@ export default function VerifyEmailPage() {
               <CheckCircle size={40} className="text-green-600" />
             </div>
             <h1 className="mt-6 text-4xl text-slate-950">{t("emailVerify.successTitle")}</h1>
-            <p className="mt-4 text-lg text-slate-600">{t("emailVerify.successSubtitle")}</p>
+            <p className="mt-4 text-lg text-slate-600">
+              {redirectingToCheckout ? t("emailVerify.redirectingToCheckout", "Redirecting to payment…") : t("emailVerify.successSubtitle")}
+            </p>
             <div className="mt-8">
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center justify-center rounded-2xl bg-brand-700 px-6 py-3.5 text-sm text-white hover:bg-brand-600 transition"
-              >
-                {t("emailVerify.goToDashboard")}
-              </Link>
+              {redirectingToCheckout ? (
+                <Loader size={28} className="mx-auto animate-spin text-brand-700" />
+              ) : (
+                <Link
+                  to="/dashboard"
+                  className="inline-flex items-center justify-center rounded-2xl bg-brand-700 px-6 py-3.5 text-sm text-white hover:bg-brand-600 transition"
+                >
+                  {t("emailVerify.goToDashboard")}
+                </Link>
+              )}
             </div>
           </>
         )}

@@ -16,7 +16,8 @@ export const registerCompanySchema = z.object({
 
 export const loginSchema = z.object({
   email: z.string().trim().email().toLowerCase(),
-  password: z.string().min(1).max(128)
+  password: z.string().min(1).max(128),
+  rememberMe: z.boolean().optional().default(true)
 });
 
 export const forgotPasswordSchema = z.object({
@@ -37,7 +38,7 @@ export const resetPasswordSchema = z.object({
 export const updateAvatarSchema = z.object({
   avatarUrl: z
     .string()
-    .max(200_000, "Image is too large.")
+    .max(50_000, "Image is too large (max 50 KB).")
     .refine((v) => /^data:image\/(jpeg|png|webp|gif);base64,/.test(v), {
       message: "Must be a valid base64 image data URL (jpeg, png, webp or gif)."
     })

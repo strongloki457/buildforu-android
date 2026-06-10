@@ -3,19 +3,21 @@ import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
 import { verifyAccessToken } from "../utils/jwt";
 
-function getBearerToken(req: Request) {
+function getTokenFromRequest(req: Request): string {
+  // Cookie-based auth (httpOnly — preferred, not accessible to JS)
+  const cookieToken = req.cookies?.authToken;
+  if (cookieToken && typeof cookieToken === "string") return cookieToken.trim();
+
+  // Authorization header fallback (backwards compatibility)
   const header = req.header("authorization");
+  if (header?.startsWith("Bearer ")) return header.slice(7).trim();
 
-  if (!header?.startsWith("Bearer ")) {
-    return "";
-  }
-
-  return header.slice("Bearer ".length).trim();
+  return "";
 }
 
 export async function authenticate(req: Request, _res: Response, next: NextFunction) {
   try {
-    const token = getBearerToken(req);
+    const token = getTokenFromRequest(req);
 
     if (!token) {
       throw new AppError(401, "Authentication token is required.", "AUTH_REQUIRED");

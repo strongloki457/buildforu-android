@@ -1264,6 +1264,7 @@
                         "invalidTitle":  "Link expired or invalid",
                         "invalidSubtitle":  "This verification link is invalid or has expired. Sign in and request a new one from your dashboard.",
                         "goToDashboard":  "Go to dashboard",
+                        "redirectingToCheckout":  "Redirecting to payment…",
                         "banner":  "Please verify your email address to activate your account. Check your inbox.",
                         "resentBanner":  "Verification email resent. Please check your inbox.",
                         "resend":  "Resend"

@@ -1264,6 +1264,7 @@
     "invalidTitle": "Link wygasł lub jest nieprawidłowy",
     "invalidSubtitle": "Ten link weryfikacyjny jest nieważny lub wygasł. Zaloguj się i wyślij nowy link z panelu.",
     "goToDashboard": "Przejdź do panelu",
+    "redirectingToCheckout": "Przekierowujemy do płatności…",
     "banner": "Potwierdź swój adres email, aby aktywować konto. Sprawdź skrzynkę odbiorczą.",
     "resentBanner": "Email weryfikacyjny został wysłany ponownie. Sprawdź skrzynkę odbiorczą.",
     "resend": "Wyślij ponownie"

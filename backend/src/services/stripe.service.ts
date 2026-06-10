@@ -61,6 +61,7 @@ export async function createCheckoutSession(companyId: string, plan: string, use
     customer: customerId,
     mode: "subscription",
     payment_method_types: ["card"],
+    payment_method_collection: "if_required",
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${env.FRONTEND_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${env.FRONTEND_URL}/settings/billing`,
@@ -114,9 +115,18 @@ export async function handleWebhook(rawBody: Buffer, signature: string) {
 
   switch (event.type) {
     case "checkout.session.completed": {
-      const session = event.data.object as { metadata?: Record<string, string>; subscription?: string };
+      const session = event.data.object as { metadata?: Record<string, string>; subscription?: string; customer?: string };
       const { companyId, plan } = session.metadata ?? {};
       if (companyId && plan && session.subscription) {
+        if (session.customer) {
+          const company = await prisma.company.findUnique({
+            where: { id: companyId },
+            select: { stripeCustomerId: true }
+          });
+          if (company?.stripeCustomerId && company.stripeCustomerId !== session.customer) {
+            break;
+          }
+        }
         await prisma.company.update({
           where: { id: companyId },
           data: {

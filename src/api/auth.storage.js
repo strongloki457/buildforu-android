@@ -1,21 +1,14 @@
-const TOKEN_KEY = "buildforu-auth-token";
-const REFRESH_TOKEN_KEY = "buildforu-refresh-token";
 const USER_KEY = "buildforu-auth-user";
-
-function getStorage(preferSession = false) {
-  return preferSession ? window.sessionStorage : window.localStorage;
-}
 
 function getStoredValue(key) {
   return window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
 }
 
 function setStoredValue(key, value, remember = true) {
-  const primaryStorage = getStorage(!remember);
-  const secondaryStorage = getStorage(remember);
-
-  secondaryStorage.removeItem(key);
-  primaryStorage.setItem(key, value);
+  const primary = remember ? window.localStorage : window.sessionStorage;
+  const secondary = remember ? window.sessionStorage : window.localStorage;
+  secondary.removeItem(key);
+  primary.setItem(key, value);
 }
 
 function removeStoredValue(key) {
@@ -23,50 +16,19 @@ function removeStoredValue(key) {
   window.sessionStorage.removeItem(key);
 }
 
-export function getToken() {
-  return getStoredValue(TOKEN_KEY);
-}
-
 export function shouldRememberSession() {
-  return Boolean(window.localStorage.getItem(TOKEN_KEY));
+  // Kept for compatibility — cookies handle remember-me on the backend now
+  return true;
 }
 
-export function setToken(token, remember = true) {
-  if (!token) {
-    removeToken();
-    return;
-  }
-
-  setStoredValue(TOKEN_KEY, token, remember);
-}
-
-export function removeToken() {
-  removeStoredValue(TOKEN_KEY);
-}
-
-export function getRefreshToken() {
-  return getStoredValue(REFRESH_TOKEN_KEY);
-}
-
-export function setRefreshToken(token, remember = true) {
-  if (!token) {
-    removeStoredValue(REFRESH_TOKEN_KEY);
-    return;
-  }
-  setStoredValue(REFRESH_TOKEN_KEY, token, remember);
-}
-
-export function removeRefreshToken() {
-  removeStoredValue(REFRESH_TOKEN_KEY);
+export function getToken() {
+  // Tokens live in httpOnly cookies — not accessible from JS
+  return null;
 }
 
 export function getStoredUser() {
   const rawUser = getStoredValue(USER_KEY);
-
-  if (!rawUser) {
-    return null;
-  }
-
+  if (!rawUser) return null;
   try {
     return JSON.parse(rawUser);
   } catch {
@@ -80,12 +42,10 @@ export function setStoredUser(user, remember = true) {
     removeStoredValue(USER_KEY);
     return;
   }
-
   setStoredValue(USER_KEY, JSON.stringify(user), remember);
 }
 
 export function clearStoredAuth() {
-  removeToken();
-  removeRefreshToken();
   removeStoredValue(USER_KEY);
+  // Tokens are cleared by the backend /api/auth/logout endpoint
 }

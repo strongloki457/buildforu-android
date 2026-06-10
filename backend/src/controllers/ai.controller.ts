@@ -26,7 +26,14 @@ const messageSchema = z
   .object({
     role: z.enum(["user", "assistant"]),
     content: z.string().max(4000),
-    image: z.string().max(700_000).optional()
+    image: z
+      .string()
+      .max(200_000, "Image is too large (max ~150 KB).")
+      .refine(
+        (v) => /^data:image\/(jpeg|png|webp|gif);base64,/.test(v),
+        "Must be a valid base64 image (jpeg, png, webp or gif)."
+      )
+      .optional()
   })
   .refine((m) => m.content.trim().length > 0 || !!m.image, {
     message: "Message must have content or image"

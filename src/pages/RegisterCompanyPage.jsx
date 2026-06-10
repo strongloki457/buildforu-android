@@ -68,7 +68,8 @@ export default function RegisterCompanyPage() {
   const navigate = useNavigate();
   const { registerCompany } = useAuth();
   const { t } = useI18n();
-  const intendedPlan = location.state?.plan === "pro" ? "pro" : null;
+  const intendedPlan = location.state?.plan ?? null;
+  const intendedBilling = location.state?.billing ?? "monthly";
 
   const [form, setForm] = useState({
     companyName: "",
@@ -152,6 +153,11 @@ export default function RegisterCompanyPage() {
         password: form.password,
         plan: "starter"
       });
+
+      if (intendedPlan && intendedPlan !== "starter") {
+        localStorage.setItem("bfu_pending_plan", intendedPlan);
+        localStorage.setItem("bfu_pending_billing", intendedBilling);
+      }
 
       navigate("/verify-pending", { replace: true, state: { intendedPlan } });
     } catch (issue) {

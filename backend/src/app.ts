@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import rateLimit from "express-rate-limit";
@@ -45,9 +46,14 @@ app.use(
     }
   })
 );
+app.use(cookieParser());
 // Stripe webhook needs raw body — must be registered before express.json()
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
-app.use(express.json({ limit: "4mb" }));
+app.use(express.json({ limit: "1.5mb" }));
+
+const rateLimitMessage = {
+  error: { code: "RATE_LIMITED", message: "Too many requests. Please try again later." }
+};
 
 app.use(
   "/api",
@@ -56,14 +62,17 @@ app.use(
     limit: 300,
     standardHeaders: "draft-7",
     legacyHeaders: false,
-    message: {
-      error: {
-        code: "RATE_LIMITED",
-        message: "Too many requests. Please try again later."
-      }
-    }
+    message: rateLimitMessage
   })
 );
+
+const crudRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 150,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: rateLimitMessage
+});
 
 app.get("/api/health", (_req, res) => {
   res.json({
@@ -74,13 +83,13 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
-app.use("/api/chat", chatRoutes);
-app.use("/api/notifications", notificationsRoutes);
-app.use("/api/workers", workersRoutes);
-app.use("/api/projects", projectsRoutes);
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/attendance", attendanceRoutes);
-app.use("/api/materials", materialsRoutes);
+app.use("/api/chat", crudRateLimit, chatRoutes);
+app.use("/api/notifications", crudRateLimit, notificationsRoutes);
+app.use("/api/workers", crudRateLimit, workersRoutes);
+app.use("/api/projects", crudRateLimit, projectsRoutes);
+app.use("/api/tasks", crudRateLimit, tasksRoutes);
+app.use("/api/attendance", crudRateLimit, attendanceRoutes);
+app.use("/api/materials", crudRateLimit, materialsRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 app.use(notFoundHandler);
