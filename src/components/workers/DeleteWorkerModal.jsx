@@ -11,6 +11,11 @@ export default function DeleteWorkerModal({ worker, onClose, onConfirm }) {
       title={t("workers.deleteWorkerTitle")}
       description={t("workers.deleteWorkerDescription", { name: worker.name })}
     >
+      {worker.hasLinkedLogin ? (
+        <div className="mb-4 rounded-2xl border border-rose-100 bg-rose-50/70 px-4 py-3 text-sm text-rose-700">
+          {t("workers.deleteLoginWarning", "This worker has an employee login. It will also be permanently removed.")}
+        </div>
+      ) : null}
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <Button variant="ghost" className="w-full sm:w-auto" onClick={onClose}>
           {t("workers.keepWorker")}
