@@ -7,7 +7,6 @@ import Card from "../components/ui/Card";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useAppData } from "../hooks/useAppData";
-import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
 const PLAN_ORDER = ["starter", "pro", "business"];
@@ -20,7 +19,6 @@ const PLAN_PRICES = {
 
 export default function BillingPage() {
   const { workers } = useAppData();
-  const { user } = useAuth();
   const { locale, t } = useI18n();
   const [subscription, setSubscription] = useState(null);
   const [loadingPortal, setLoadingPortal] = useState(false);
@@ -156,7 +154,7 @@ export default function BillingPage() {
               </div>
               <div className="rounded-[24px] border border-slate-200/80 bg-slate-50/85 p-5">
                 <p className="text-sm text-slate-500">{t("billing.billingContact")}</p>
-                <p className="mt-3 text-2xl text-slate-950">{user?.email ?? t("billing.billingContactEmail")}</p>
+                <p className="mt-3 text-2xl text-slate-950">{t("billing.billingContactEmail")}</p>
                 <p className="mt-2 text-sm text-slate-500">{t("billing.billingContactHint")}</p>
               </div>
             </div>
