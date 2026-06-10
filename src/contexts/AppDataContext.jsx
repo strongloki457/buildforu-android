@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { ApiError } from "../api/client";
 import { attendanceApi } from "../api/attendance.api";
 import { chatApi } from "../api/chat.api";
@@ -438,15 +438,22 @@ export function AppDataProvider({ children }) {
     loadBackendData();
   }, [loadBackendData]);
 
+  const lastMutationErrorRef = useRef(null);
+
   const runMutation = useCallback(async (operation) => {
+    lastMutationErrorRef.current = null;
     try {
       setDataError("");
       return await operation();
     } catch (error) {
-      setDataError(formatDataError(error));
+      const message = formatDataError(error);
+      lastMutationErrorRef.current = message;
+      setDataError(message);
       return null;
     }
   }, []);
+
+  const getLastMutationError = useCallback(() => lastMutationErrorRef.current, []);
 
   const projectsById = useMemo(() => createLookup(state.projects), [state.projects]);
   const attendanceByWorkerId = useMemo(
@@ -718,9 +725,10 @@ export function AppDataProvider({ children }) {
         });
       },
       refreshData: loadBackendData,
-      clearDataError: () => setDataError("")
+      clearDataError: () => setDataError(""),
+      getLastMutationError
     }),
-    [loadBackendData, projectsById, runMutation, state.projects, state.tasks, state.workers, user, workersById]
+    [getLastMutationError, loadBackendData, projectsById, runMutation, state.projects, state.tasks, state.workers, user, workersById]
   );
 
   const value = useMemo(

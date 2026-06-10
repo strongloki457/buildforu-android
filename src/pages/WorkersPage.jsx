@@ -20,7 +20,7 @@ function normalizeEmail(value) {
 }
 
 export default function WorkersPage() {
-  const { workers, projects, addWorker, updateWorker, deleteWorker, dataError, isDataLoading, refreshData } = useAppData();
+  const { workers, projects, addWorker, updateWorker, deleteWorker, dataError, isDataLoading, refreshData, getLastMutationError } = useAppData();
   const { locale, t } = useI18n();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -108,6 +108,7 @@ export default function WorkersPage() {
     }
 
     if (!savedWorker) {
+      setFormError(getLastMutationError() || t("workers.saveError", "Could not save. Please check your input and try again."));
       return;
     }
 
