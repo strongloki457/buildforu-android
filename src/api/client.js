@@ -1,8 +1,10 @@
-const DEFAULT_API_URL = import.meta.env.PROD
-  ? "https://api.buildforu.eu"
-  : "";
+export const API_BASE_URL = (
+  import.meta.env.PROD
+    ? "https://api.buildforu.eu"
+    : (import.meta.env.VITE_API_URL || "")
+).replace(/\/+$/, "");
 
-export const API_BASE_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_URL).replace(/\/+$/, "");
+import { getStoredToken, getStoredRefreshToken, setStoredToken, setStoredRefreshToken } from "./auth.storage";
 
 export class ApiError extends Error {
   constructor(message, options = {}) {
@@ -24,12 +26,19 @@ let refreshPromise = null;
 async function attemptTokenRefresh() {
   if (refreshPromise) return refreshPromise;
 
+  const storedRefreshToken = getStoredRefreshToken();
+
   refreshPromise = fetch(`${API_BASE_URL}/api/auth/refresh`, {
     method: "POST",
-    credentials: "include"
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: storedRefreshToken ? JSON.stringify({ refreshToken: storedRefreshToken }) : undefined
   })
-    .then((res) => {
+    .then(async (res) => {
       if (!res.ok) throw new Error("Refresh failed");
+      const data = await res.json().catch(() => null);
+      if (data?.token) setStoredToken(data.token, true);
+      if (data?.refreshToken) setStoredRefreshToken(data.refreshToken, true);
     })
     .finally(() => {
       refreshPromise = null;
@@ -60,6 +69,11 @@ export async function apiRequest(path, options = {}) {
   if (!headers.has("Accept-Language")) {
     const locale = window.localStorage.getItem("buildforu-locale") || "en";
     headers.set("Accept-Language", locale);
+  }
+
+  const storedToken = getStoredToken();
+  if (storedToken && !headers.has("Authorization")) {
+    headers.set("Authorization", `Bearer ${storedToken}`);
   }
 
   let response;

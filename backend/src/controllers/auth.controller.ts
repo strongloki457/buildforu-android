@@ -41,14 +41,14 @@ function getLang(req: Request): string | undefined {
 export const registerCompany = asyncHandler(async (req: Request, res: Response) => {
   const { token, refreshToken, user } = await authService.registerCompany(req.body, getLang(req));
   setAuthCookies(res, token, refreshToken, true);
-  res.status(201).json({ user });
+  res.status(201).json({ user, token, refreshToken });
 });
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const remember: boolean = req.body.rememberMe !== false;
   const { token, refreshToken, user } = await authService.login(req.body);
   setAuthCookies(res, token, refreshToken, remember);
-  res.json({ user });
+  res.json({ user, token, refreshToken });
 });
 
 export const logout = asyncHandler(async (_req: Request, res: Response) => {
@@ -62,7 +62,7 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const refresh = asyncHandler(async (req: Request, res: Response) => {
-  const rawRefreshToken = req.cookies?.refreshToken;
+  const rawRefreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
   if (!rawRefreshToken || typeof rawRefreshToken !== "string") {
     res.status(401).json({ error: { code: "MISSING_REFRESH_TOKEN", message: "Refresh token is required." } });
     return;
@@ -70,7 +70,7 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
 
   const { token, refreshToken, user } = await authService.refreshAccessToken(rawRefreshToken);
   setAuthCookies(res, token, refreshToken, true);
-  res.json({ user });
+  res.json({ user, token, refreshToken });
 });
 
 export const forgotPassword = asyncHandler(async (req: Request, res: Response) => {

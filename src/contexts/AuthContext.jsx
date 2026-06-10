@@ -5,6 +5,8 @@ import {
   clearStoredAuth,
   getStoredUser,
   setStoredUser,
+  setStoredToken,
+  setStoredRefreshToken,
   shouldRememberSession,
 } from "../api/auth.storage";
 
@@ -221,6 +223,8 @@ export function AuthProvider({ children }) {
       loginCalledRef.current = true;
       try {
         const response = await authApi.login({ email: normalizeEmail(email), password, rememberMe });
+        if (response.token) setStoredToken(response.token, rememberMe);
+        if (response.refreshToken) setStoredRefreshToken(response.refreshToken, rememberMe);
         return persistSession(response.user, { remember: rememberMe });
       } catch (error) {
         loginCalledRef.current = false;
@@ -260,6 +264,8 @@ export function AuthProvider({ children }) {
           password,
           plan,
         });
+        if (response.token) setStoredToken(response.token, true);
+        if (response.refreshToken) setStoredRefreshToken(response.refreshToken, true);
         const registeredUser = persistSession(response.user, { remember: true });
 
         return {

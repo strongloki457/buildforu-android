@@ -1,4 +1,6 @@
 const USER_KEY = "buildforu-auth-user";
+const TOKEN_KEY = "buildforu-auth-token";
+const REFRESH_KEY = "buildforu-auth-refresh";
 
 function getStoredValue(key) {
   return window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
@@ -17,13 +19,25 @@ function removeStoredValue(key) {
 }
 
 export function shouldRememberSession() {
-  // Kept for compatibility — cookies handle remember-me on the backend now
   return true;
 }
 
-export function getToken() {
-  // Tokens live in httpOnly cookies — not accessible from JS
-  return null;
+export function getStoredToken() {
+  return getStoredValue(TOKEN_KEY);
+}
+
+export function setStoredToken(token, remember = true) {
+  if (!token) { removeStoredValue(TOKEN_KEY); return; }
+  setStoredValue(TOKEN_KEY, token, remember);
+}
+
+export function getStoredRefreshToken() {
+  return getStoredValue(REFRESH_KEY);
+}
+
+export function setStoredRefreshToken(token, remember = true) {
+  if (!token) { removeStoredValue(REFRESH_KEY); return; }
+  setStoredValue(REFRESH_KEY, token, remember);
 }
 
 export function getStoredUser() {
@@ -47,5 +61,6 @@ export function setStoredUser(user, remember = true) {
 
 export function clearStoredAuth() {
   removeStoredValue(USER_KEY);
-  // Tokens are cleared by the backend /api/auth/logout endpoint
+  removeStoredValue(TOKEN_KEY);
+  removeStoredValue(REFRESH_KEY);
 }
