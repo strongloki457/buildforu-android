@@ -559,7 +559,8 @@
     "plans":  {
                   "starter":  "Starter",
                   "pro":  "Pro",
-                  "business":  "Business"
+                  "business":  "Business",
+                  "enterprise":  "Enterprise"
               },
     "publicNav":  {
                       "home":  "Inicio",
