@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { Role } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import { env } from "../config/env";
-import type { ForgotPasswordInput, LoginInput, RegisterCompanyInput, ResetPasswordInput } from "../validators/auth.validators";
+import type { ChangePasswordInput, ForgotPasswordInput, LoginInput, RegisterCompanyInput, ResetPasswordInput } from "../validators/auth.validators";
 import { AppError, assertFound } from "../utils/errors";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../utils/jwt";
 import { hashPassword, verifyPassword } from "../utils/password";
@@ -332,6 +332,34 @@ export async function resetPassword(input: ResetPasswordInput, lang?: string) {
   });
 
   return { message: "Password has been reset successfully." };
+}
+
+export async function changePassword(userId: string, input: ChangePasswordInput, lang?: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, name: true, passwordHash: true }
+  });
+
+  if (!user?.passwordHash) {
+    throw new AppError(400, "No password set on this account.", "NO_PASSWORD");
+  }
+
+  const isValid = await verifyPassword(input.currentPassword, user.passwordHash);
+  if (!isValid) {
+    throw new AppError(400, "Current password is incorrect.", "WRONG_PASSWORD");
+  }
+
+  const passwordHash = await hashPassword(input.newPassword);
+  await prisma.user.update({
+    where: { id: userId },
+    data: { passwordHash }
+  });
+
+  sendPasswordChangedEmail(user.email, user.name, lang).catch((error) => {
+    process.stderr.write(`[auth] Failed to send password-changed email to ${user.email}: ${error}\n`);
+  });
+
+  return { message: "Password changed successfully." };
 }
 
 export async function updateAvatar(userId: string, avatarUrl: string | null) {

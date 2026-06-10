@@ -1,4 +1,4 @@
-import { ArrowUpRight, Bell, Building2, CreditCard, Globe, Pencil, Shield, Trash2, Users2 } from "lucide-react";
+import { ArrowUpRight, Bell, Building2, CreditCard, Globe, KeyRound, Pencil, Shield, Trash2, Users2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiRequest } from "../api/client";
@@ -38,6 +38,10 @@ export default function SettingsPage() {
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [deactivating, setDeactivating] = useState(false);
   const [deactivateError, setDeactivateError] = useState("");
+  const [pwForm, setPwForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwError, setPwError] = useState("");
+  const [pwSuccess, setPwSuccess] = useState(false);
   const [toggles, setToggles] = useState(() => {
     try {
       const stored = JSON.parse(window.localStorage.getItem("buildforu-settings-toggles") || "null");
@@ -111,6 +115,34 @@ export default function SettingsPage() {
     }
   };
 
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setPwError("");
+    setPwSuccess(false);
+    if (pwForm.newPassword !== pwForm.confirmPassword) {
+      setPwError(t("settings.passwordMismatch", "New passwords do not match."));
+      return;
+    }
+    setPwSaving(true);
+    try {
+      await apiRequest("/api/auth/me/password", {
+        method: "PATCH",
+        body: { currentPassword: pwForm.currentPassword, newPassword: pwForm.newPassword }
+      });
+      setPwSuccess(true);
+      setPwForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err) {
+      const msg = err?.message || "";
+      if (msg.includes("incorrect") || msg.includes("WRONG_PASSWORD")) {
+        setPwError(t("settings.wrongCurrentPassword", "Current password is incorrect."));
+      } else {
+        setPwError(t("settings.passwordChangeError", "Failed to change password. Please try again."));
+      }
+    } finally {
+      setPwSaving(false);
+    }
+  };
+
   const settingsItems = [
     { key: "alerts", title: t("settings.alertsTitle"), description: t("settings.alertsDescription"), icon: Bell },
     { key: "summaries", title: t("settings.summariesTitle"), description: t("settings.summariesDescription"), icon: Globe },
@@ -173,6 +205,62 @@ export default function SettingsPage() {
           className="hidden"
           onChange={handleAvatarChange}
         />
+      </div>
+
+      {/* Change password */}
+      <div className="mb-6 rounded-[28px] bg-white/80 p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="rounded-2xl bg-brand-50 p-2.5 text-brand-700">
+            <KeyRound size={16} />
+          </div>
+          <p className="text-base text-slate-900">{t("settings.changePasswordTitle", "Change password")}</p>
+        </div>
+        <form onSubmit={handleChangePassword} className="grid gap-3 sm:grid-cols-3">
+          <label className="grid gap-1.5">
+            <span className="text-xs text-slate-500">{t("settings.currentPassword", "Current password")}</span>
+            <input
+              type="password"
+              value={pwForm.currentPassword}
+              onChange={(e) => setPwForm((f) => ({ ...f, currentPassword: e.target.value }))}
+              required
+              autoComplete="current-password"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
+            />
+          </label>
+          <label className="grid gap-1.5">
+            <span className="text-xs text-slate-500">{t("settings.newPassword", "New password")}</span>
+            <input
+              type="password"
+              value={pwForm.newPassword}
+              onChange={(e) => setPwForm((f) => ({ ...f, newPassword: e.target.value }))}
+              required
+              autoComplete="new-password"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
+            />
+          </label>
+          <label className="grid gap-1.5">
+            <span className="text-xs text-slate-500">{t("settings.confirmPassword", "Confirm new password")}</span>
+            <input
+              type="password"
+              value={pwForm.confirmPassword}
+              onChange={(e) => setPwForm((f) => ({ ...f, confirmPassword: e.target.value }))}
+              required
+              autoComplete="new-password"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
+            />
+          </label>
+          {pwError ? <p className="text-sm text-rose-600 sm:col-span-3">{pwError}</p> : null}
+          {pwSuccess ? <p className="text-sm text-green-600 sm:col-span-3">{t("settings.passwordChanged", "Password changed successfully.")}</p> : null}
+          <div className="sm:col-span-3 flex justify-end">
+            <button
+              type="submit"
+              disabled={pwSaving}
+              className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-5 py-2.5 text-sm text-white transition hover:bg-brand-600 disabled:opacity-50"
+            >
+              {pwSaving ? t("common.saving", "Saving…") : t("settings.changePasswordButton", "Update password")}
+            </button>
+          </div>
+        </form>
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">

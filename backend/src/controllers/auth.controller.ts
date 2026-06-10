@@ -83,6 +83,11 @@ export const resetPassword = asyncHandler(async (req: Request, res: Response) =>
   res.json(result);
 });
 
+export const changePassword = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.changePassword(req.user!.userId, req.body, getLang(req));
+  res.json(result);
+});
+
 export const updateAvatar = asyncHandler(async (req: Request, res: Response) => {
   const result = await authService.updateAvatar(req.user!.userId, req.body.avatarUrl);
   res.json(result);

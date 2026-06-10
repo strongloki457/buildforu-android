@@ -35,6 +35,17 @@ export const resetPasswordSchema = z.object({
     })
 });
 
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1).max(128),
+  newPassword: z
+    .string()
+    .min(8)
+    .max(128)
+    .refine((p) => /[a-z]/.test(p) && /[A-Z]/.test(p) && /\d/.test(p), {
+      message: "Password must include uppercase, lowercase, and numeric characters."
+    })
+});
+
 export const updateAvatarSchema = z.object({
   avatarUrl: z
     .string()
@@ -49,4 +60,5 @@ export type RegisterCompanyInput = z.infer<typeof registerCompanySchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type UpdateAvatarInput = z.infer<typeof updateAvatarSchema>;
