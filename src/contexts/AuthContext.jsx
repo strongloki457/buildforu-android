@@ -181,14 +181,14 @@ export function AuthProvider({ children }) {
       } catch (error) {
         const isNetworkError = error instanceof ApiError && error.code === "NETWORK_ERROR";
 
-        if (!isNetworkError) {
-          // No valid cookie session — clear any stale user cache
-          clearStoredAuth();
-
-          if (isMounted) {
-            setUser(null);
-            setCompanyUsers([]);
-          }
+        if (!isNetworkError && isMounted) {
+          // Only clear if login hasn't already set a user while this bootstrap was in-flight
+          setUser((current) => {
+            if (current !== null) return current;
+            clearStoredAuth();
+            return null;
+          });
+          setCompanyUsers((current) => (current.length > 0 ? current : []));
         }
       } finally {
         if (isMounted) {
