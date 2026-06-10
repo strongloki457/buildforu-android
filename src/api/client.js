@@ -1,10 +1,10 @@
+import { getStoredToken, getStoredRefreshToken, setStoredToken, setStoredRefreshToken } from "./auth.storage";
+
 export const API_BASE_URL = (
   import.meta.env.PROD
     ? "https://api.buildforu.eu"
     : (import.meta.env.VITE_API_URL || "")
 ).replace(/\/+$/, "");
-
-import { getStoredToken, getStoredRefreshToken, setStoredToken, setStoredRefreshToken } from "./auth.storage";
 
 export class ApiError extends Error {
   constructor(message, options = {}) {

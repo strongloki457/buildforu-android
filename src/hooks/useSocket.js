@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { API_BASE_URL } from "../api/client";
-import { getToken } from "../api/auth.storage";
+import { getStoredToken } from "../api/auth.storage";
 
 let sharedSocket = null;
 let socketRefCount = 0;
@@ -24,7 +24,7 @@ export function useSocket(onMessage) {
   handlerRef.current = onMessage;
 
   useEffect(() => {
-    const token = getToken();
+    const token = getStoredToken();
     if (!token) return;
 
     const socket = getSocket(token);
