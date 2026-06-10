@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { authApi } from "../api/auth.api";
 import { ApiError, apiRequest } from "../api/client";
 import {
@@ -141,6 +141,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => initialStoredUser);
   const [isLoading, setIsLoading] = useState(true);
   const [companyUsers, setCompanyUsers] = useState(() => (initialStoredUser ? [initialStoredUser] : []));
+  const loginCalledRef = useRef(false);
 
   const persistSession = useCallback((apiUser, options = {}) => {
     const normalizedUser = normalizeApiUser(apiUser);
@@ -181,14 +182,11 @@ export function AuthProvider({ children }) {
       } catch (error) {
         const isNetworkError = error instanceof ApiError && error.code === "NETWORK_ERROR";
 
-        if (!isNetworkError && isMounted) {
-          // Only clear if login hasn't already set a user while this bootstrap was in-flight
-          setUser((current) => {
-            if (current !== null) return current;
-            clearStoredAuth();
-            return null;
-          });
-          setCompanyUsers((current) => (current.length > 0 ? current : []));
+        if (!isNetworkError && isMounted && !loginCalledRef.current) {
+          // No valid cookie session and no concurrent login — clear stale cache
+          clearStoredAuth();
+          setUser(null);
+          setCompanyUsers([]);
         }
       } finally {
         if (isMounted) {
@@ -220,10 +218,12 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(
     async ({ email, password, rememberMe = true }) => {
+      loginCalledRef.current = true;
       try {
         const response = await authApi.login({ email: normalizeEmail(email), password, rememberMe });
         return persistSession(response.user, { remember: rememberMe });
       } catch (error) {
+        loginCalledRef.current = false;
         throw new Error(authErrorKey(error, "login"));
       }
     },
