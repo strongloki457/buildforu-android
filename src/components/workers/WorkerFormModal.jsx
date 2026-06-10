@@ -31,7 +31,7 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
     setIsSaving(true);
 
     try {
-      await onSave(form);
+      await onSave({ ...form, createLogin: Boolean(form.email?.trim()) });
     } finally {
       setIsSaving(false);
     }
@@ -64,29 +64,8 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
               value={form.email}
               onChange={(event) => handleChange("email", event.target.value)}
               placeholder={t("workers.placeholderEmail")}
-              required={Boolean(form.createLogin)}
               className="rounded-2xl border border-white/70 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition focus:border-brand-200 focus:ring-2 focus:ring-brand-100"
             />
-          </label>
-
-          <label className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-4 py-4 md:col-span-2">
-            <input
-              type="checkbox"
-              checked={Boolean(form.createLogin)}
-              onChange={(event) => handleChange("createLogin", event.target.checked)}
-              disabled={Boolean(form.hasLinkedLogin) || isSaving}
-              className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-200"
-            />
-            <span className="min-w-0">
-              <span className="block text-sm text-slate-900">
-                {t("workers.createEmployeeLogin", "Create employee login")}
-              </span>
-              <span className="mt-1 block text-sm text-slate-500">
-                {form.hasLinkedLogin
-                  ? t("workers.loginAlreadyLinked", "This worker already has a linked employee login.")
-                  : t("workers.createEmployeeLoginHint", "Enable this when the worker should sign in and see their own tasks.")}
-              </span>
-            </span>
           </label>
 
           <label className="grid gap-2">
@@ -154,7 +133,7 @@ export default function WorkerFormModal({ errorMessage = "", initialValues, mode
         </div>
 
         <p className="text-sm text-slate-500">{t("workers.attendanceManagedByEmployee")}</p>
-        {form.createLogin ? (
+        {form.email?.trim() && !form.hasLinkedLogin ? (
           <p className="text-sm text-slate-500">
             {t(
               "workers.employeeLoginProvisioning",
