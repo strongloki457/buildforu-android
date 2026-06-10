@@ -199,7 +199,16 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
 
       if (input.name !== undefined) userData.name = input.name;
       const normalizedInputEmail = normalizeEmail(input.email);
-      if (normalizedInputEmail) userData.email = normalizedInputEmail;
+      if (normalizedInputEmail) {
+        const emailConflict = await tx.user.findFirst({
+          where: { email: normalizedInputEmail, NOT: [{ workerId }] },
+          select: { id: true }
+        });
+        if (emailConflict) {
+          throw new AppError(409, "An account with this email already exists.", "EMAIL_IN_USE");
+        }
+        userData.email = normalizedInputEmail;
+      }
 
       if (Object.keys(userData).length) {
         await tx.user.updateMany({

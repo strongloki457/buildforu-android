@@ -113,11 +113,17 @@ export async function handleWebhook(rawBody: Buffer, signature: string) {
     return;
   }
 
+  const VALID_PLANS = Object.keys(PLAN_PRICE_MAP);
+
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as { metadata?: Record<string, string>; subscription?: string; customer?: string };
       const { companyId, plan } = session.metadata ?? {};
       if (companyId && plan && session.subscription) {
+        if (!VALID_PLANS.includes(plan)) {
+          process.stderr.write(`[stripe] Unknown plan in checkout.session.completed webhook: ${plan}\n`);
+          break;
+        }
         if (session.customer) {
           const company = await prisma.company.findUnique({
             where: { id: companyId },
@@ -143,6 +149,10 @@ export async function handleWebhook(rawBody: Buffer, signature: string) {
       const sub = event.data.object as { metadata?: Record<string, string>; status: string };
       const { companyId, plan } = sub.metadata ?? {};
       if (companyId) {
+        if (plan && !VALID_PLANS.includes(plan)) {
+          process.stderr.write(`[stripe] Unknown plan in customer.subscription.updated webhook: ${plan}\n`);
+          break;
+        }
         await prisma.company.update({
           where: { id: companyId },
           data: {
