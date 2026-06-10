@@ -77,15 +77,30 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
   const email = normalizeEmail(input.email);
   let temporaryPassword: string | null = null;
   let temporaryPasswordHash: string | null = null;
+  let existingUserToLink: { id: string } | null = null;
 
   if (input.createLogin) {
     if (!email) {
       throw new AppError(400, "Email is required to create employee login.", "EMAIL_REQUIRED");
     }
 
-    await assertEmployeeEmailAvailable(email, currentUser.companyId);
-    temporaryPassword = generateTemporaryPassword();
-    temporaryPasswordHash = await hashPassword(temporaryPassword);
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true, companyId: true, workerId: true }
+    });
+
+    if (existingUser) {
+      if (existingUser.companyId !== currentUser.companyId) {
+        throw new AppError(409, "An account with this email already exists.", "EMAIL_IN_USE");
+      }
+      if (existingUser.workerId) {
+        throw new AppError(409, "This user is already linked to another worker.", "USER_ALREADY_LINKED");
+      }
+      existingUserToLink = existingUser;
+    } else {
+      temporaryPassword = generateTemporaryPassword();
+      temporaryPasswordHash = await hashPassword(temporaryPassword);
+    }
   }
 
   const createdWorker = await prisma.$transaction(async (tx) => {
@@ -122,17 +137,24 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
       }
     });
 
-    if (input.createLogin && email && temporaryPasswordHash) {
-      await tx.user.create({
-        data: {
-          name: worker.name,
-          email,
-          passwordHash: temporaryPasswordHash,
-          role: Role.EMPLOYEE,
-          companyId: currentUser.companyId,
-          workerId: worker.id
-        }
-      });
+    if (input.createLogin && email) {
+      if (existingUserToLink) {
+        await tx.user.update({
+          where: { id: existingUserToLink.id },
+          data: { workerId: worker.id }
+        });
+      } else if (temporaryPasswordHash) {
+        await tx.user.create({
+          data: {
+            name: worker.name,
+            email,
+            passwordHash: temporaryPasswordHash,
+            role: Role.EMPLOYEE,
+            companyId: currentUser.companyId,
+            workerId: worker.id
+          }
+        });
+      }
     }
 
     return worker;
