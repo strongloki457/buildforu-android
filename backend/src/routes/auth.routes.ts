@@ -25,6 +25,7 @@ router.post("/register-company", authRateLimit, validate({ body: registerCompany
 router.get("/verify-email", authController.verifyEmail);
 router.post("/resend-verification", authenticate, authController.resendVerification);
 router.post("/login", authRateLimit, validate({ body: loginSchema }), authController.login);
+router.post("/select-company", authRateLimit, authController.selectCompany);
 router.post("/logout", authController.logout);
 router.post("/refresh", authController.refresh);
 router.get("/me", authenticate, authController.me);

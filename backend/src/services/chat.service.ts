@@ -5,7 +5,7 @@ const threadInclude = {
   participants: {
     select: {
       userId: true,
-      user: { select: { id: true, name: true, role: true } }
+      user: { select: { id: true, name: true } }
     }
   },
   messages: {
@@ -42,12 +42,14 @@ export async function getOrCreateThread(userId: string, otherUserId: string, com
 
   if (existing) return existing;
 
-  const otherUser = await prisma.user.findUnique({
-    where: { id: otherUserId },
-    select: { id: true, companyId: true }
+  const otherMembership = await prisma.userCompany.findUnique({
+    where: {
+      userId_companyId: { userId: otherUserId, companyId }
+    },
+    select: { id: true }
   });
 
-  if (!otherUser || otherUser.companyId !== companyId) {
+  if (!otherMembership) {
     throw new AppError(404, "User not found.", "NOT_FOUND");
   }
 
@@ -82,8 +84,17 @@ export async function sendMessage(threadId: string, senderId: string, companyId:
 }
 
 export async function getCompanyUsers(userId: string, companyId: string) {
-  return prisma.user.findMany({
-    where: { companyId, id: { not: userId } },
-    select: { id: true, name: true, role: true }
+  const memberships = await prisma.userCompany.findMany({
+    where: { companyId, userId: { not: userId } },
+    select: {
+      role: true,
+      user: { select: { id: true, name: true } }
+    }
   });
+
+  return memberships.map((m) => ({
+    id: m.user.id,
+    name: m.user.name,
+    role: m.role
+  }));
 }

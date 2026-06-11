@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import * as authService from "../services/auth.service";
+import { verifyAccessToken } from "../utils/jwt";
+import { AppError } from "../utils/errors";
 import { env } from "../config/env";
 
 const IS_PRODUCTION = env.NODE_ENV === "production";
@@ -46,7 +48,43 @@ export const registerCompany = asyncHandler(async (req: Request, res: Response) 
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const remember: boolean = req.body.rememberMe !== false;
-  const { token, refreshToken, user } = await authService.login(req.body);
+  const result = await authService.login(req.body);
+
+  // Multi-company: don't set cookies yet, let frontend pick a company
+  if ("requiresCompanySelection" in result && result.requiresCompanySelection) {
+    res.json(result);
+    return;
+  }
+
+  const { token, refreshToken, user } = result as { token: string; refreshToken: string; user: unknown };
+  setAuthCookies(res, token, refreshToken, remember);
+  res.json({ user, token, refreshToken });
+});
+
+export const selectCompany = asyncHandler(async (req: Request, res: Response) => {
+  const remember: boolean = req.body.rememberMe !== false;
+  const { companyId, selectionToken } = req.body;
+
+  if (!companyId || typeof companyId !== "string") {
+    throw new AppError(400, "companyId is required.", "VALIDATION_ERROR");
+  }
+
+  if (!selectionToken || typeof selectionToken !== "string") {
+    throw new AppError(400, "selectionToken is required.", "VALIDATION_ERROR");
+  }
+
+  let userId: string;
+  try {
+    const payload = verifyAccessToken(selectionToken);
+    if (payload.companyId !== "__pending__") {
+      throw new Error("not a selection token");
+    }
+    userId = payload.userId;
+  } catch {
+    throw new AppError(401, "Selection token is invalid or has expired.", "AUTH_INVALID");
+  }
+
+  const { token, refreshToken, user } = await authService.selectCompany(userId, companyId);
   setAuthCookies(res, token, refreshToken, remember);
   res.json({ user, token, refreshToken });
 });
@@ -57,7 +95,7 @@ export const logout = asyncHandler(async (_req: Request, res: Response) => {
 });
 
 export const me = asyncHandler(async (req: Request, res: Response) => {
-  const user = await authService.getCurrentUser(req.user!.userId);
+  const user = await authService.getCurrentUser(req.user!.userId, req.user!.companyId);
   res.json({ user });
 });
 
@@ -89,7 +127,7 @@ export const changePassword = asyncHandler(async (req: Request, res: Response) =
 });
 
 export const updateAvatar = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.updateAvatar(req.user!.userId, req.body.avatarUrl);
+  const result = await authService.updateAvatar(req.user!.userId, req.user!.companyId, req.body.avatarUrl);
   res.json(result);
 });
 

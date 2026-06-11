@@ -17,6 +17,14 @@ export const authApi = {
     });
   },
 
+  selectCompany(payload) {
+    return apiRequest("/api/auth/select-company", {
+      method: "POST",
+      body: payload,
+      auth: false,
+    });
+  },
+
   me() {
     return apiRequest("/api/auth/me");
   },

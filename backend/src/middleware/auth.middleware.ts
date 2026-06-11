@@ -24,29 +24,53 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
     }
 
     const payload = verifyAccessToken(token);
-    const user = await prisma.user.findUnique({
-      where: { id: payload.userId },
+
+    // Allow pending selection token through (it has companyId = "__pending__")
+    // selectCompany endpoint handles its own validation
+    if (payload.companyId === "__pending__") {
+      req.user = {
+        userId: payload.userId,
+        name: "",
+        email: "",
+        role: payload.role,
+        companyId: "__pending__",
+        workerId: null
+      };
+      next();
+      return;
+    }
+
+    const membership = await prisma.userCompany.findUnique({
+      where: {
+        userId_companyId: {
+          userId: payload.userId,
+          companyId: payload.companyId
+        }
+      },
       select: {
-        id: true,
-        name: true,
-        email: true,
         role: true,
-        companyId: true,
-        workerId: true
+        workerId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true
+          }
+        }
       }
     });
 
-    if (!user || user.companyId !== payload.companyId) {
+    if (!membership) {
       throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
     }
 
     req.user = {
-      userId: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      companyId: user.companyId,
-      workerId: user.workerId
+      userId: membership.user.id,
+      name: membership.user.name,
+      email: membership.user.email,
+      role: membership.role,
+      companyId: payload.companyId,
+      workerId: membership.workerId
     };
 
     next();

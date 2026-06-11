@@ -10,18 +10,12 @@ import { sendEmailVerificationEmail, sendPasswordChangedEmail, sendPasswordReset
 
 const MAX_FAILED_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
+const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
-const publicUserSelect = {
+const userCompanySelect = {
   id: true,
-  name: true,
-  email: true,
-  emailVerified: true,
   role: true,
-  companyId: true,
   workerId: true,
-  avatarUrl: true,
-  createdAt: true,
-  updatedAt: true,
   company: {
     select: {
       id: true,
@@ -31,20 +25,37 @@ const publicUserSelect = {
   }
 } as const;
 
-type PublicUserRecord = {
+const publicUserSelect = {
+  id: true,
+  name: true,
+  email: true,
+  emailVerified: true,
+  avatarUrl: true,
+  createdAt: true,
+  updatedAt: true,
+  userCompanies: {
+    select: userCompanySelect
+  }
+} as const;
+
+type UserWithCompanies = {
   id: string;
   name: string;
   email: string;
-  role: Role;
-  companyId: string;
-  workerId: string | null;
+  emailVerified: boolean;
+  avatarUrl: string | null;
   createdAt: Date;
   updatedAt: Date;
-  company?: {
+  userCompanies: Array<{
     id: string;
-    name: string;
-    plan: string;
-  };
+    role: Role;
+    workerId: string | null;
+    company: {
+      id: string;
+      name: string;
+      plan: string;
+    };
+  }>;
 };
 
 function normalizeEmail(email: string) {
@@ -69,17 +80,20 @@ function logAuthFailure(details: {
   );
 }
 
-const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+async function buildAuthResponse(user: UserWithCompanies, companyId: string) {
+  const membership = user.userCompanies.find((uc) => uc.company.id === companyId);
+  if (!membership) {
+    throw new AppError(403, "User does not belong to this company.", "AUTH_INVALID");
+  }
 
-async function buildAuthResponse(user: PublicUserRecord) {
   const token = signAccessToken({
     userId: user.id,
-    role: user.role,
-    companyId: user.companyId,
-    workerId: user.workerId
+    role: membership.role,
+    companyId: membership.company.id,
+    workerId: membership.workerId
   });
 
-  const refreshToken = signRefreshToken({ userId: user.id });
+  const refreshToken = signRefreshToken({ userId: user.id, companyId: membership.company.id });
 
   await prisma.refreshToken.create({
     data: {
@@ -89,11 +103,34 @@ async function buildAuthResponse(user: PublicUserRecord) {
     }
   });
 
-  return { token, refreshToken, user };
+  return {
+    token,
+    refreshToken,
+    user: formatPublicUser(user, companyId)
+  };
+}
+
+function formatPublicUser(user: UserWithCompanies, companyId: string) {
+  const membership = user.userCompanies.find((uc) => uc.company.id === companyId);
+  if (!membership) return null;
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    emailVerified: user.emailVerified,
+    avatarUrl: user.avatarUrl,
+    role: membership.role,
+    companyId: membership.company.id,
+    workerId: membership.workerId,
+    company: membership.company,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  };
 }
 
 export async function refreshAccessToken(rawRefreshToken: string) {
-  let payload: { userId: string };
+  let payload: { userId: string; companyId?: string };
 
   try {
     payload = verifyRefreshToken(rawRefreshToken);
@@ -101,7 +138,7 @@ export async function refreshAccessToken(rawRefreshToken: string) {
     throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
   }
 
-  const user = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     const stored = await tx.refreshToken.findUnique({
       where: { token: rawRefreshToken },
       select: { id: true, userId: true, expiresAt: true }
@@ -118,14 +155,22 @@ export async function refreshAccessToken(rawRefreshToken: string) {
       select: publicUserSelect
     });
 
-    if (!foundUser) {
+    if (!foundUser || !foundUser.userCompanies.length) {
       throw new AppError(401, "User not found.", "AUTH_INVALID");
     }
 
     return foundUser;
   }, { isolationLevel: "Serializable" });
 
-  return buildAuthResponse(user);
+  // Use companyId from refresh token if present, otherwise fall back to first membership
+  const companyId = payload.companyId || result.userCompanies[0].company.id;
+
+  const hasMembership = result.userCompanies.some((uc) => uc.company.id === companyId);
+  if (!hasMembership) {
+    throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
+  }
+
+  return buildAuthResponse(result, companyId);
 }
 
 export async function registerCompany(input: RegisterCompanyInput, lang?: string) {
@@ -149,14 +194,24 @@ export async function registerCompany(input: RegisterCompanyInput, lang?: string
       }
     });
 
-    return tx.user.create({
+    const newUser = await tx.user.create({
       data: {
         name: input.name,
         email,
-        passwordHash,
-        role: Role.ADMIN,
-        companyId: company.id
-      },
+        passwordHash
+      }
+    });
+
+    await tx.userCompany.create({
+      data: {
+        userId: newUser.id,
+        companyId: company.id,
+        role: Role.ADMIN
+      }
+    });
+
+    return tx.user.findUniqueOrThrow({
+      where: { id: newUser.id },
       select: publicUserSelect
     });
   });
@@ -175,7 +230,8 @@ export async function registerCompany(input: RegisterCompanyInput, lang?: string
     process.stderr.write(`[auth] Failed to send verification email to ${email}: ${error}\n`);
   });
 
-  return buildAuthResponse(user);
+  const companyId = user.userCompanies[0].company.id;
+  return buildAuthResponse(user, companyId);
 }
 
 export async function verifyEmail(token: string) {
@@ -224,11 +280,10 @@ export async function login(input: LoginInput) {
   const user = await prisma.user.findUnique({
     where: { email },
     include: {
-      company: {
+      userCompanies: {
         select: {
-          id: true,
-          name: true,
-          plan: true
+          ...userCompanySelect,
+          id: true
         }
       }
     }
@@ -275,8 +330,50 @@ export async function login(input: LoginInput) {
     data: { failedLoginAttempts: 0, lockedUntil: null }
   });
 
+  // If user belongs to multiple companies, ask them to pick one
+  if (user.userCompanies.length > 1) {
+    return {
+      requiresCompanySelection: true,
+      companies: user.userCompanies.map((uc) => ({
+        id: uc.company.id,
+        name: uc.company.name,
+        plan: uc.company.plan,
+        role: uc.role
+      })),
+      // Temporary token so frontend can call /select-company without sending credentials again
+      selectionToken: signAccessToken({
+        userId: user.id,
+        role: Role.EMPLOYEE, // placeholder — real role set after selection
+        companyId: "__pending__",
+        workerId: null
+      })
+    };
+  }
+
+  if (!user.userCompanies.length) {
+    throw new AppError(401, "Account has no company membership.", "AUTH_INVALID");
+  }
+
   const { passwordHash: _pw, failedLoginAttempts: _fa, lockedUntil: _lu, ...publicUser } = user;
-  return buildAuthResponse(publicUser);
+  return buildAuthResponse(publicUser, user.userCompanies[0].company.id);
+}
+
+export async function selectCompany(userId: string, companyId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: publicUserSelect
+  });
+
+  if (!user) {
+    throw new AppError(401, "User not found.", "AUTH_INVALID");
+  }
+
+  const hasMembership = user.userCompanies.some((uc) => uc.company.id === companyId);
+  if (!hasMembership) {
+    throw new AppError(403, "You are not a member of this company.", "FORBIDDEN");
+  }
+
+  return buildAuthResponse(user, companyId);
 }
 
 export async function requestPasswordReset(input: ForgotPasswordInput, lang?: string) {
@@ -362,23 +459,26 @@ export async function changePassword(userId: string, input: ChangePasswordInput,
   return { message: "Password changed successfully." };
 }
 
-export async function updateAvatar(userId: string, avatarUrl: string | null) {
+export async function updateAvatar(userId: string, companyId: string, avatarUrl: string | null) {
   const user = await prisma.user.update({
     where: { id: userId },
     data: { avatarUrl },
     select: publicUserSelect
   });
 
-  return { user };
+  return { user: formatPublicUser(user, companyId) };
 }
 
-export async function getCurrentUser(userId: string) {
+export async function getCurrentUser(userId: string, companyId: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: publicUserSelect
   });
 
-  return assertFound(user, "Current user was not found.");
+  const found = assertFound(user, "Current user was not found.");
+  const formatted = formatPublicUser(found, companyId);
+  if (!formatted) throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
+  return formatted;
 }
 
 export async function deleteAccount(userId: string) {

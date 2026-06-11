@@ -1,4 +1,4 @@
-import { Plus, RotateCw } from "lucide-react";
+import { Link2, Plus, RotateCw } from "lucide-react";
 import { useMemo, useState } from "react";
 import AttendanceDetailsModal from "../components/workers/AttendanceDetailsModal";
 import DeleteWorkerModal from "../components/workers/DeleteWorkerModal";
@@ -10,13 +10,49 @@ import WorkersMetrics from "../components/workers/WorkersMetrics";
 import { emptyWorkerForm } from "../components/workers/workerFormState";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
+import Modal from "../components/ui/Modal";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
 import { getProjectName, getWorkerPosition } from "../utils/localizedValue";
+import { ApiError } from "../api/client";
 
 function normalizeEmail(value) {
   return String(value ?? "").trim().toLowerCase();
+}
+
+function LinkAccountModal({ existingUserName, onConfirm, onCancel, isLinking }) {
+  const { t } = useI18n();
+  return (
+    <Modal
+      onClose={onCancel}
+      title="Podlinkuj istniejące konto"
+      description={`Konto ${existingUserName} jest już zarejestrowane w innej firmie.`}
+    >
+      <div className="grid gap-4">
+        <div className="rounded-2xl bg-brand-50 px-4 py-4 text-sm text-brand-900">
+          <p className="flex items-center gap-2 font-medium">
+            <Link2 size={15} />
+            {existingUserName}
+          </p>
+          <p className="mt-2 text-brand-700">
+            Ta osoba ma już konto (jest bossem / pracownikiem w innej firmie). Możesz podlinkować to konto — będą mogli się logować
+            jednym emailem i wybierać firmę po zalogowaniu.
+          </p>
+        </div>
+        <p className="text-sm text-slate-500">Nie zostanie utworzone nowe hasło — osoba loguje się swoim dotychczasowym hasłem.</p>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button variant="ghost" className="w-full sm:w-auto" onClick={onCancel} disabled={isLinking}>
+            {t("common.cancel")}
+          </Button>
+          <Button className="w-full gap-2 sm:w-auto" onClick={onConfirm} disabled={isLinking}>
+            <Link2 size={15} />
+            {isLinking ? "Linkuję..." : "Podlinkuj konto"}
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  );
 }
 
 export default function WorkersPage() {
@@ -30,6 +66,8 @@ export default function WorkersPage() {
   const [workerToDelete, setWorkerToDelete] = useState(null);
   const [attendanceWorker, setAttendanceWorker] = useState(null);
   const [workerAccess, setWorkerAccess] = useState(null);
+  const [linkPrompt, setLinkPrompt] = useState(null); // { existingUserId, existingUserName, pendingPayload, mode, workerId }
+  const [isLinking, setIsLinking] = useState(false);
 
   const filteredWorkers = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -77,6 +115,17 @@ export default function WorkersPage() {
     });
   };
 
+  const finalizeSave = (savedWorker, normalizedEmail, shouldSyncLogin) => {
+    if (shouldSyncLogin && savedWorker._temporaryPassword) {
+      setWorkerAccess({
+        email: normalizedEmail,
+        temporaryPassword: savedWorker._temporaryPassword
+      });
+    }
+    setFormError("");
+    setFormModal(null);
+  };
+
   const handleSaveWorker = async (payload) => {
     const normalizedEmail = normalizeEmail(payload.email);
     const shouldSyncLogin = Boolean(payload.createLogin || payload.hasLinkedLogin);
@@ -99,28 +148,66 @@ export default function WorkersPage() {
       return;
     }
 
-    let savedWorker = null;
+    try {
+      let savedWorker = null;
 
-    if (formModal?.mode === "edit") {
-      savedWorker = await updateWorker(formModal.workerId, payload);
-    } else {
-      savedWorker = await addWorker(payload);
+      if (formModal?.mode === "edit") {
+        savedWorker = await updateWorker(formModal.workerId, payload);
+      } else {
+        savedWorker = await addWorker(payload);
+      }
+
+      if (!savedWorker) {
+        setFormError(getLastMutationError() || t("workers.saveError", "Could not save. Please check your input and try again."));
+        return;
+      }
+
+      finalizeSave(savedWorker, normalizedEmail, shouldSyncLogin);
+    } catch (error) {
+      if (error instanceof ApiError && error.code === "EMAIL_EXISTS_OTHER_COMPANY") {
+        // Email belongs to a user in another company — offer to link
+        setLinkPrompt({
+          existingUserId: error.details?.existingUserId,
+          existingUserName: error.details?.existingUserName ?? "ten użytkownik",
+          pendingPayload: payload,
+          mode: formModal?.mode,
+          workerId: formModal?.workerId
+        });
+        return;
+      }
+      setFormError(error.message || t("workers.saveError", "Could not save. Please check your input and try again."));
     }
+  };
 
-    if (!savedWorker) {
-      setFormError(getLastMutationError() || t("workers.saveError", "Could not save. Please check your input and try again."));
-      return;
+  const handleConfirmLink = async () => {
+    if (!linkPrompt) return;
+    setIsLinking(true);
+    try {
+      const payloadWithLink = { ...linkPrompt.pendingPayload, linkExistingUserId: linkPrompt.existingUserId, createLogin: true };
+      let savedWorker = null;
+
+      if (linkPrompt.mode === "edit") {
+        savedWorker = await updateWorker(linkPrompt.workerId, payloadWithLink);
+      } else {
+        savedWorker = await addWorker(payloadWithLink);
+      }
+
+      if (!savedWorker) {
+        setFormError(getLastMutationError() || t("workers.saveError", "Could not link account. Please try again."));
+        setLinkPrompt(null);
+        return;
+      }
+
+      setLinkPrompt(null);
+      // Linked account — no temporary password
+      setFormError("");
+      setFormModal(null);
+    } catch {
+      setFormError(t("workers.saveError", "Could not link account. Please try again."));
+      setLinkPrompt(null);
+    } finally {
+      setIsLinking(false);
     }
-
-    if (shouldSyncLogin && savedWorker._temporaryPassword) {
-      setWorkerAccess({
-        email: normalizedEmail,
-        temporaryPassword: savedWorker._temporaryPassword
-      });
-    }
-
-    setFormError("");
-    setFormModal(null);
   };
 
   const handleDeleteWorker = async () => {
@@ -222,6 +309,15 @@ export default function WorkersPage() {
       ) : null}
 
       {workerAccess ? <WorkerAccessModal access={workerAccess} onClose={() => setWorkerAccess(null)} /> : null}
+
+      {linkPrompt ? (
+        <LinkAccountModal
+          existingUserName={linkPrompt.existingUserName}
+          onConfirm={handleConfirmLink}
+          onCancel={() => setLinkPrompt(null)}
+          isLinking={isLinking}
+        />
+      ) : null}
     </div>
   );
 }

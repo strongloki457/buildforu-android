@@ -143,6 +143,8 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => initialStoredUser);
   const [isLoading, setIsLoading] = useState(true);
   const [companyUsers, setCompanyUsers] = useState(() => (initialStoredUser ? [initialStoredUser] : []));
+  const [pendingCompanies, setPendingCompanies] = useState(null); // list of companies when multi-company login
+  const [pendingSelectionToken, setPendingSelectionToken] = useState(null);
   const loginCalledRef = useRef(false);
 
   const persistSession = useCallback((apiUser, options = {}) => {
@@ -223,6 +225,13 @@ export function AuthProvider({ children }) {
       loginCalledRef.current = true;
       try {
         const response = await authApi.login({ email: normalizeEmail(email), password, rememberMe });
+
+        if (response.requiresCompanySelection) {
+          setPendingCompanies(response.companies);
+          setPendingSelectionToken(response.selectionToken);
+          return { requiresCompanySelection: true, companies: response.companies };
+        }
+
         if (response.token) setStoredToken(response.token, rememberMe);
         if (response.refreshToken) setStoredRefreshToken(response.refreshToken, rememberMe);
         return persistSession(response.user, { remember: rememberMe });
@@ -234,6 +243,29 @@ export function AuthProvider({ children }) {
     [persistSession],
   );
 
+  const selectCompany = useCallback(
+    async (companyId, { rememberMe = true } = {}) => {
+      try {
+        const response = await authApi.selectCompany({
+          companyId,
+          selectionToken: pendingSelectionToken,
+          rememberMe,
+        });
+
+        if (response.token) setStoredToken(response.token, rememberMe);
+        if (response.refreshToken) setStoredRefreshToken(response.refreshToken, rememberMe);
+
+        setPendingCompanies(null);
+        setPendingSelectionToken(null);
+
+        return persistSession(response.user, { remember: rememberMe });
+      } catch (error) {
+        throw new Error(authErrorKey(error, "login"));
+      }
+    },
+    [pendingSelectionToken, persistSession],
+  );
+
   const logout = useCallback(async () => {
     try {
       await apiRequest("/api/auth/logout", { method: "POST" });
@@ -243,6 +275,8 @@ export function AuthProvider({ children }) {
     clearStoredAuth();
     setUser(null);
     setCompanyUsers([]);
+    setPendingCompanies(null);
+    setPendingSelectionToken(null);
   }, []);
 
   const updateUser = useCallback((patch) => {
@@ -308,8 +342,11 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(user),
       isLoading,
       isBooting: isLoading,
+      pendingCompanies,
+      requiresCompanySelection: Boolean(pendingCompanies),
       login,
       logout,
+      selectCompany,
       registerCompany,
       updateUser,
     }),
@@ -319,6 +356,8 @@ export function AuthProvider({ children }) {
       isLoading,
       login,
       logout,
+      pendingCompanies,
+      selectCompany,
       registerCompany,
       updateUser,
       user,

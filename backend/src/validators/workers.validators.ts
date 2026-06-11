@@ -8,10 +8,11 @@ export const createWorkerSchema = z
     phone: z.string().trim().max(60).optional(),
     notes: optionalText,
     projectIds: z.array(z.string().min(1)).optional().default([]),
-    createLogin: z.boolean().optional().default(false)
+    createLogin: z.boolean().optional().default(false),
+    linkExistingUserId: z.string().optional()
   })
   .superRefine((value, context) => {
-    if (value.createLogin && !value.email) {
+    if (value.createLogin && !value.email && !value.linkExistingUserId) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["email"],
@@ -26,9 +27,10 @@ export const updateWorkerSchema = z.object({
   phone: z.string().trim().max(60).optional(),
   notes: optionalText,
   projectIds: z.array(z.string().min(1)).optional(),
-  createLogin: z.boolean().optional().default(false)
+  createLogin: z.boolean().optional().default(false),
+  linkExistingUserId: z.string().optional()
 }).superRefine((value, context) => {
-  if (value.createLogin && value.email === "") {
+  if (value.createLogin && value.email === "" && !value.linkExistingUserId) {
     context.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["email"],

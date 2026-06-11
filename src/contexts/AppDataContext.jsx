@@ -440,12 +440,15 @@ export function AppDataProvider({ children }) {
 
   const lastMutationErrorRef = useRef(null);
 
-  const runMutation = useCallback(async (operation) => {
+  const runMutation = useCallback(async (operation, { rethrowCodes = [] } = {}) => {
     lastMutationErrorRef.current = null;
     try {
       setDataError("");
       return await operation();
     } catch (error) {
+      if (rethrowCodes.length && error instanceof ApiError && rethrowCodes.includes(error.code)) {
+        throw error;
+      }
       const message = formatDataError(error);
       lastMutationErrorRef.current = message;
       setDataError(message);
@@ -560,7 +563,7 @@ export function AppDataProvider({ children }) {
           const normalizedWorker = normalizeWorkerRecord(mapApiWorker(response.worker), null, state.projects);
           dispatch({ type: "ADD_WORKER", payload: normalizedWorker });
           return { ...normalizedWorker, _temporaryPassword: response.temporaryPassword || "" };
-        });
+        }, { rethrowCodes: ["EMAIL_EXISTS_OTHER_COMPANY"] });
       },
       async updateWorker(workerId, input) {
         return runMutation(async () => {
@@ -571,7 +574,7 @@ export function AppDataProvider({ children }) {
           const normalizedWorker = normalizeWorkerRecord(mapApiWorker(worker), workersById.get(workerId), state.projects);
           dispatch({ type: "UPDATE_WORKER", payload: normalizedWorker });
           return { ...normalizedWorker, _temporaryPassword: temporaryPassword };
-        });
+        }, { rethrowCodes: ["EMAIL_EXISTS_OTHER_COMPANY"] });
       },
       async deleteWorker(workerId) {
         return runMutation(async () => {

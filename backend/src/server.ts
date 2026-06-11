@@ -57,11 +57,16 @@ async function startServer() {
       if (!token) { next(new Error("Authentication required")); return; }
       try {
         const payload = verifyAccessToken(token);
-        const user = await prisma.user.findFirst({
-          where: { id: payload.userId, companyId: payload.companyId },
+        const membership = await prisma.userCompany.findUnique({
+          where: {
+            userId_companyId: {
+              userId: payload.userId,
+              companyId: payload.companyId
+            }
+          },
           select: { id: true }
         });
-        if (!user) { next(new Error("User not found")); return; }
+        if (!membership) { next(new Error("User not found")); return; }
         (socket as typeof socket & { companyId: string; userId: string }).companyId = payload.companyId;
         (socket as typeof socket & { companyId: string; userId: string }).userId = payload.userId;
         next();

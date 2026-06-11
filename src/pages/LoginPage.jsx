@@ -1,3 +1,4 @@
+import { Building2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { demoAccounts } from "../components/auth/authData";
@@ -10,8 +11,41 @@ import { useI18n } from "../hooks/useI18n";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PUBLIC_AUTH_PATHS = new Set(["/login", "/register-company"]);
 
+const ROLE_LABELS = { ADMIN: "Admin", EMPLOYEE: "Pracownik" };
+
+function CompanyPicker({ companies, onSelect, isSubmitting }) {
+  return (
+    <div className="w-full min-w-0 rounded-[24px] border border-slate-200/80 bg-white/92 p-4 shadow-[0_28px_70px_-44px_rgba(15,23,42,0.38)] backdrop-blur sm:rounded-[32px] sm:p-8">
+      <div className="mb-6">
+        <h2 className="text-2xl text-slate-950 sm:text-3xl">Wybierz firmę</h2>
+        <p className="mt-2 text-sm text-slate-500">Twoje konto należy do kilku firm. Wybierz z której chcesz korzystać.</p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {companies.map((company) => (
+          <button
+            key={company.id}
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => onSelect(company.id)}
+            className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-left transition hover:border-brand-300 hover:bg-brand-50 disabled:opacity-60"
+          >
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
+              <Building2 size={18} />
+            </div>
+            <div className="min-w-0">
+              <p className="font-medium text-slate-900">{company.name}</p>
+              <p className="mt-0.5 text-xs text-slate-500">{ROLE_LABELS[company.role] ?? company.role}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, selectCompany } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
@@ -22,6 +56,7 @@ export default function LoginPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [pendingCompanies, setPendingCompanies] = useState(null);
 
   const detectedRole = useMemo(() => {
     const email = form.email.trim().toLowerCase();
@@ -39,6 +74,12 @@ export default function LoginPage() {
       email: account.email,
       password: demoPassword
     }));
+  };
+
+  const navigateAfterLogin = () => {
+    const requestedPath = location.state?.from?.pathname;
+    const destination = requestedPath && !PUBLIC_AUTH_PATHS.has(requestedPath) ? requestedPath : "/dashboard";
+    navigate(destination, { replace: true });
   };
 
   const handleSubmit = async (event) => {
@@ -61,16 +102,34 @@ export default function LoginPage() {
     }
 
     try {
-      await login(form);
-      const requestedPath = location.state?.from?.pathname;
-      const destination = requestedPath && !PUBLIC_AUTH_PATHS.has(requestedPath) ? requestedPath : "/dashboard";
-      navigate(destination, { replace: true });
+      const result = await login(form);
+
+      if (result?.requiresCompanySelection) {
+        setPendingCompanies(result.companies);
+        return;
+      }
+
+      navigateAfterLogin();
     } catch (issue) {
       setError(
         issue.message === "login.invalidCredentials"
           ? t("login.invalidCredentials", "Invalid email or password.")
           : t(issue.message, issue.message)
       );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSelectCompany = async (companyId) => {
+    setIsSubmitting(true);
+    setError("");
+    try {
+      await selectCompany(companyId, { rememberMe: form.rememberMe });
+      navigateAfterLogin();
+    } catch (issue) {
+      setError(t(issue.message, issue.message));
+      setPendingCompanies(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -88,15 +147,25 @@ export default function LoginPage() {
       <div className="relative mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl items-center sm:min-h-[calc(100vh-3rem)]">
         <div className="grid w-full min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center lg:gap-10">
           <LoginHeroPanel />
-          <LoginFormCard
-            detectedRole={detectedRole}
-            error={error}
-            form={form}
-            isSubmitting={isSubmitting}
-            onChange={handleChange}
-            onSelectDemoAccount={handleSelectDemoAccount}
-            onSubmit={handleSubmit}
-          />
+          {pendingCompanies ? (
+            <section className="flex items-center lg:justify-end">
+              <CompanyPicker
+                companies={pendingCompanies}
+                onSelect={handleSelectCompany}
+                isSubmitting={isSubmitting}
+              />
+            </section>
+          ) : (
+            <LoginFormCard
+              detectedRole={detectedRole}
+              error={error}
+              form={form}
+              isSubmitting={isSubmitting}
+              onChange={handleChange}
+              onSelectDemoAccount={handleSelectDemoAccount}
+              onSubmit={handleSubmit}
+            />
+          )}
         </div>
       </div>
     </div>
