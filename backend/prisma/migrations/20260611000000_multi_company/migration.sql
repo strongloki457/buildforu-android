@@ -40,9 +40,9 @@ ALTER TABLE "UserCompany" ADD CONSTRAINT "UserCompany_workerId_fkey" FOREIGN KEY
 -- Drop old columns from User (drop FK constraints first)
 ALTER TABLE "User" DROP CONSTRAINT IF EXISTS "User_companyId_fkey";
 ALTER TABLE "User" DROP CONSTRAINT IF EXISTS "User_workerId_fkey";
-ALTER TABLE "User" DROP INDEX IF EXISTS "User_workerId_key";
-ALTER TABLE "User" DROP INDEX IF EXISTS "User_companyId_idx";
-ALTER TABLE "User" DROP INDEX IF EXISTS "User_role_idx";
+DROP INDEX IF EXISTS "User_workerId_key";
+DROP INDEX IF EXISTS "User_companyId_idx";
+DROP INDEX IF EXISTS "User_role_idx";
 ALTER TABLE "User" DROP COLUMN "role";
 ALTER TABLE "User" DROP COLUMN "companyId";
 ALTER TABLE "User" DROP COLUMN "workerId";
