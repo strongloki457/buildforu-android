@@ -292,7 +292,8 @@ function workerPayload(input) {
     phone: input.phone || "",
     notes: input.notes || "",
     projectIds: input.projectIds || [],
-    createLogin: Boolean(input.createLogin && !input.hasLinkedLogin)
+    createLogin: Boolean(input.createLogin),
+    ...(input.linkExistingUserId ? { linkExistingUserId: input.linkExistingUserId } : {})
   };
 }
 
