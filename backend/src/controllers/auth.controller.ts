@@ -99,6 +99,22 @@ export const me = asyncHandler(async (req: Request, res: Response) => {
   res.json({ user });
 });
 
+export const switchCompany = asyncHandler(async (req: Request, res: Response) => {
+  const remember: boolean = req.body.rememberMe !== false;
+  const { companyId } = req.body;
+
+  if (!companyId || typeof companyId !== "string") {
+    throw new AppError(400, "companyId is required.", "VALIDATION_ERROR");
+  }
+
+  const { token, refreshToken, user } = await authService.switchCompany(
+    req.user!.userId,
+    companyId
+  );
+  setAuthCookies(res, token, refreshToken, remember);
+  res.json({ user, token, refreshToken });
+});
+
 export const switchRole = asyncHandler(async (req: Request, res: Response) => {
   const remember: boolean = req.body.rememberMe !== false;
   const targetRole = req.body.role;

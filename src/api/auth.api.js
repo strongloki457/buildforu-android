@@ -36,6 +36,13 @@ export const authApi = {
     });
   },
 
+  switchCompany(companyId) {
+    return apiRequest("/api/auth/switch-company", {
+      method: "POST",
+      body: { companyId },
+    });
+  },
+
   refresh(refreshToken) {
     return apiRequest("/api/auth/refresh", {
       method: "POST",

@@ -140,6 +140,12 @@ function formatPublicUser(user: UserWithCompanies, companyId: string, effectiveR
     companyId: membership.company.id,
     workerId: membership.workerId,
     company: membership.company,
+    availableCompanies: user.userCompanies.map((uc) => ({
+      id: uc.company.id,
+      name: uc.company.name,
+      plan: uc.company.plan,
+      role: uc.role
+    })),
     createdAt: user.createdAt,
     updatedAt: user.updatedAt
   };
@@ -527,6 +533,24 @@ export async function switchRole(userId: string, companyId: string, targetRole: 
   }
 
   return buildAuthResponse(user, companyId, targetRole === "EMPLOYEE" ? Role.EMPLOYEE : Role.ADMIN);
+}
+
+export async function switchCompany(userId: string, targetCompanyId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: publicUserSelect
+  });
+
+  if (!user) {
+    throw new AppError(401, "User not found.", "AUTH_INVALID");
+  }
+
+  const hasMembership = user.userCompanies.some((uc) => uc.company.id === targetCompanyId);
+  if (!hasMembership) {
+    throw new AppError(403, "You are not a member of this company.", "FORBIDDEN");
+  }
+
+  return buildAuthResponse(user, targetCompanyId);
 }
 
 export async function deleteAccount(userId: string) {

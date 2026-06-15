@@ -70,6 +70,7 @@ function normalizeApiUser(apiUser) {
     workspaceName: apiUser.workspaceName || company?.name || apiUser.companyName || "BuildForU",
     companyName: apiUser.companyName || company?.name || "BuildForU",
     plan: apiUser.plan || company?.plan || "pro",
+    availableCompanies: apiUser.availableCompanies || [],
     avatarUrl: apiUser.avatarUrl || null,
     avatar: apiUser.avatar || createInitials(apiUser.name),
     title: apiUser.title || (role === "admin" ? "Company Admin" : "Employee"),
@@ -356,6 +357,20 @@ export function AuthProvider({ children }) {
     [persistSession],
   );
 
+  const switchCompany = useCallback(
+    async (companyId) => {
+      try {
+        const response = await authApi.switchCompany(companyId);
+        if (response.token) setStoredToken(response.token, shouldRememberSession());
+        if (response.refreshToken) setStoredRefreshToken(response.refreshToken, shouldRememberSession());
+        return persistSession(response.user);
+      } catch (error) {
+        throw new Error(error?.message || "Company switch failed.");
+      }
+    },
+    [persistSession],
+  );
+
   const value = useMemo(
     () => ({
       user,
@@ -378,6 +393,7 @@ export function AuthProvider({ children }) {
       registerCompany,
       updateUser,
       switchRole,
+      switchCompany,
       refreshUser,
     }),
     [
@@ -391,6 +407,7 @@ export function AuthProvider({ children }) {
       registerCompany,
       updateUser,
       switchRole,
+      switchCompany,
       refreshUser,
       user,
     ],

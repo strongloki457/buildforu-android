@@ -1,4 +1,4 @@
-import { ArrowLeftRight, ChevronDown, LogOut, UserCircle } from "lucide-react";
+import { ArrowLeftRight, Building2, ChevronDown, LogOut, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -8,7 +8,7 @@ import { getUserTitle } from "../../utils/localizedValue";
 export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
-  const { user, logout, switchRole } = useAuth();
+  const { user, logout, switchRole, switchCompany } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
 
@@ -24,7 +24,22 @@ export default function UserMenu() {
     }
   };
 
+  const handleSwitchCompany = async (companyId) => {
+    setIsSwitching(true);
+    setOpen(false);
+    try {
+      await switchCompany(companyId);
+    } catch {
+      // ignore — user stays in current company
+    } finally {
+      setIsSwitching(false);
+    }
+  };
+
   const isEmployeeMode = user?.role === "employee" && user?.canSwitchToAdmin;
+  const otherCompanies = (user?.availableCompanies || []).filter(
+    (c) => c.id !== user?.companyId
+  );
 
   return (
     <div className="relative">
@@ -60,6 +75,28 @@ export default function UserMenu() {
             {user?.companyName ? <p className="mt-1 text-xs text-slate-500">{user.companyName}</p> : null}
             <p className="mt-1 text-xs uppercase tracking-[0.2em] text-brand-600">{t(`roles.${user?.role}`, user?.role)}</p>
           </div>
+
+          {otherCompanies.length > 0 && (
+            <div className="mt-3">
+              <p className="px-3 pb-1 text-[10px] uppercase tracking-widest text-slate-400">Przełącz firmę</p>
+              {otherCompanies.map((company) => (
+                <button
+                  key={company.id}
+                  onClick={() => handleSwitchCompany(company.id)}
+                  disabled={isSwitching}
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-left text-sm text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+                >
+                  <Building2 size={16} className="shrink-0 text-slate-400" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate">{company.name}</span>
+                    <span className="block text-xs text-slate-400">
+                      {company.role === "ADMIN" ? "Admin" : "Pracownik"}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
 
           {user?.canSwitchToEmployee && (
             <button

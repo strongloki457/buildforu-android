@@ -32,6 +32,7 @@ router.get("/me", authenticate, authController.me);
 router.patch("/me/avatar", authenticate, validate({ body: updateAvatarSchema }), authController.updateAvatar);
 router.patch("/me/password", authenticate, validate({ body: changePasswordSchema }), authController.changePassword);
 router.delete("/me", authenticate, authController.deleteMe);
+router.post("/switch-company", authenticate, authController.switchCompany);
 router.post("/switch-role", authenticate, authController.switchRole);
 router.post("/forgot-password", authRateLimit, validate({ body: forgotPasswordSchema }), authController.forgotPassword);
 router.post("/reset-password", authRateLimit, validate({ body: resetPasswordSchema }), authController.resetPassword);
