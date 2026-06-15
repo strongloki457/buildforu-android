@@ -42,6 +42,20 @@ const envSchema = z
         message: "JWT_SECRET must be configured with a strong production secret."
       });
     }
+    if (isProduction && value.JWT_REFRESH_SECRET === "development-only-refresh-secret-change-me") {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["JWT_REFRESH_SECRET"],
+        message: "JWT_REFRESH_SECRET must be configured with a strong production secret."
+      });
+    }
+    if (value.JWT_SECRET === value.JWT_REFRESH_SECRET) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["JWT_REFRESH_SECRET"],
+        message: "JWT_REFRESH_SECRET must be different from JWT_SECRET."
+      });
+    }
   });
 
 const parsedEnv = envSchema.safeParse(process.env);

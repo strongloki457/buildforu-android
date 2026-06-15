@@ -23,6 +23,6 @@ router.patch(
   validate({ params: idParamSchema, body: updateMaterialStatusSchema }),
   materialsController.updateMaterialRequestStatus
 );
-router.delete("/:id", requireRole(Role.ADMIN), validate({ params: idParamSchema }), materialsController.deleteMaterialRequest);
+router.delete("/:id", validate({ params: idParamSchema }), materialsController.deleteMaterialRequest);
 
 export default router;

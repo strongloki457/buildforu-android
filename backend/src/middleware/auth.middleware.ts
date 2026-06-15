@@ -26,9 +26,12 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
 
     const payload = verifyAccessToken(token);
 
-    // Allow pending selection token through (it has companyId = "__pending__")
-    // selectCompany endpoint handles its own validation
+    // Pending selection token is only valid for /select-company — block all other routes
     if (payload.companyId === "__pending__") {
+      const isPendingAllowed = req.path === "/select-company" || req.originalUrl.endsWith("/select-company");
+      if (!isPendingAllowed) {
+        throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
+      }
       req.user = {
         userId: payload.userId,
         name: "",

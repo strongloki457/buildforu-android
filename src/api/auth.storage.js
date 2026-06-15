@@ -19,7 +19,7 @@ function removeStoredValue(key) {
 }
 
 export function shouldRememberSession() {
-  return true;
+  return window.localStorage.getItem(TOKEN_KEY) !== null;
 }
 
 export function getStoredToken() {
@@ -32,12 +32,12 @@ export function setStoredToken(token, remember = true) {
 }
 
 export function getStoredRefreshToken() {
-  return getStoredValue(REFRESH_KEY);
+  // Refresh token lives only in httpOnly cookie — not exposed to JS
+  return null;
 }
 
-export function setStoredRefreshToken(token, remember = true) {
-  if (!token) { removeStoredValue(REFRESH_KEY); return; }
-  setStoredValue(REFRESH_KEY, token, remember);
+export function setStoredRefreshToken(_token, _remember = true) {
+  // Intentionally no-op: refresh token is stored server-side in httpOnly cookie only
 }
 
 export function getStoredUser() {
