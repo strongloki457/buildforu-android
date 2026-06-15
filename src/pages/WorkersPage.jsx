@@ -181,6 +181,13 @@ export default function WorkersPage() {
 
   const handleConfirmLink = async () => {
     if (!linkPrompt) return;
+
+    if (!linkPrompt.existingUserId) {
+      setFormError("Nie można podlinkować konta — brak ID użytkownika. Spróbuj ponownie.");
+      setLinkPrompt(null);
+      return;
+    }
+
     setIsLinking(true);
     try {
       const payloadWithLink = { ...linkPrompt.pendingPayload, linkExistingUserId: linkPrompt.existingUserId, createLogin: true };
@@ -193,17 +200,26 @@ export default function WorkersPage() {
       }
 
       if (!savedWorker) {
-        setFormError(getLastMutationError() || t("workers.saveError", "Could not link account. Please try again."));
+        setFormError(getLastMutationError() || "Nie udało się podlinkować konta. Spróbuj ponownie.");
         setLinkPrompt(null);
         return;
       }
 
       setLinkPrompt(null);
-      // Linked account — no temporary password
       setFormError("");
       setFormModal(null);
-    } catch {
-      setFormError(t("workers.saveError", "Could not link account. Please try again."));
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.code === "EMAIL_IN_USE") {
+          setFormError("To konto jest już członkiem tej firmy.");
+        } else if (error.code === "USER_NOT_FOUND") {
+          setFormError("Nie znaleziono konta do podlinkowania. Spróbuj ponownie.");
+        } else {
+          setFormError(error.message || "Nie udało się podlinkować konta. Spróbuj ponownie.");
+        }
+      } else {
+        setFormError("Nie udało się podlinkować konta. Spróbuj ponownie.");
+      }
       setLinkPrompt(null);
     } finally {
       setIsLinking(false);
