@@ -63,7 +63,9 @@
                    "toggleStatus":  "Changer le statut",
                    "all":  "Tous",
                    "project":  "Projet",
-                   "retry":  "Réessayer"
+                   "retry":  "Réessayer",
+                   "dismiss":  "Ignorer",
+                   "loadError":  "Impossible de charger les données."
                },
     "statusLabels":  {
                          "pending":  "En attente",
@@ -378,7 +380,8 @@
                     "employeeAccessSubtitle":  "Transmettez à l’employé ses identifiants temporaires.",
                     "employeeAccessTitle":  "Accès employé",
                     "employeeAccessHint":  "L’employé pourra changer ce mot de passe lorsque l’authentification côté serveur sera connectée.",
-                    "employeeLoginProvisioning":  "Un accès employé lié sera créé avec un mot de passe temporaire."
+                    "employeeLoginProvisioning":  "Un accès employé lié sera créé avec un mot de passe temporaire.",
+                    "saveError":  "Impossible d'enregistrer. Vérifiez vos informations et réessayez."
                 },
     "projects":  {
                      "title":  "Projets",
@@ -546,7 +549,32 @@
                      "billingDescription":  "Ouvrez la vue abonnement pour vérifier le forfait, l’utilisation des employés et les informations de facturation d’exemple.",
                      "manageBilling":  "Gerer la facturation",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "L’accès à l’espace de travail est simulé dans ce MVP."
+                     "workspaceAccessHint":  "L’accès à l’espace de travail est simulé dans ce MVP.",
+                     "profilePhoto":  "Photo de profil",
+                     "uploadPhoto":  "Télécharger une photo",
+                     "removePhoto":  "Supprimer la photo",
+                     "avatarHint":  "JPG, PNG ou WebP · max 5 Mo",
+                     "changePasswordTitle":  "Changer le mot de passe",
+                     "currentPassword":  "Mot de passe actuel",
+                     "newPassword":  "Nouveau mot de passe",
+                     "confirmPassword":  "Confirmer le nouveau mot de passe",
+                     "passwordChanged":  "Mot de passe modifié avec succès.",
+                     "changePasswordButton":  "Mettre à jour le mot de passe",
+                     "deactivateTitle":  "Désactiver le compte",
+                     "deactivateHint":  "Votre connexion sera définitivement supprimée. Votre historique de travail sera conservé.",
+                     "deactivateHintAdmin":  "Votre connexion sera définitivement supprimée. Les données de l’entreprise et les employés seront conservés.",
+                     "deactivateButton":  "Désactiver le compte",
+                     "deactivateConfirmTitle":  "Désactiver votre compte ?",
+                     "deactivateConfirmBody":  "Votre connexion sera définitivement supprimée. Votre historique de travail restera. Cette action est irréversible.",
+                     "deactivateConfirmBodyAdmin":  "Votre connexion administrateur sera définitivement supprimée. Les données de l’entreprise et tous les employés resteront. Cette action est irréversible.",
+                     "deactivateConfirm":  "Oui, désactiver",
+                     "avatarInvalidType":  "Veuillez sélectionner un fichier image (JPG, PNG ou WebP).",
+                     "avatarTooLarge":  "Le fichier est trop volumineux. Max 5 Mo.",
+                     "avatarUploadError":  "Le téléchargement a échoué. Veuillez réessayer.",
+                     "deactivateError":  "Impossible de désactiver le compte. Veuillez réessayer.",
+                     "passwordMismatch":  "Les nouveaux mots de passe ne correspondent pas.",
+                     "wrongCurrentPassword":  "Le mot de passe actuel est incorrect.",
+                     "passwordChangeError":  "Impossible de modifier le mot de passe. Veuillez réessayer."
                  },
     "marketMap":  {
                       "title":  "Carte des magasins",
@@ -672,7 +700,24 @@
                        "gpsPoints":  "Points GPS",
                        "gpsPointsRecorded":  "{{count}} points GPS enregistres",
                        "lastLocationUpdate":  "Derniere mise a jour de localisation",
-                       "routePointCount":  "{{count}} points"
+                       "routePointCount":  "{{count}} points",
+                       "reportsEyebrow":  "Rapports",
+                       "reportsTitle":  "Rapports de présence",
+                       "reportsSubtitle":  "Consultez les heures travaillées par employé et exportez les données pour la paie.",
+                       "totalHours":  "Total d'heures",
+                       "totalSessions":  "Sessions",
+                       "uniqueWorkers":  "Employés",
+                       "filtersTitle":  "Filtrer les enregistrements",
+                       "exportCsv":  "Exporter CSV",
+                       "allWorkers":  "Tous les employés",
+                       "csvWorker":  "Employé",
+                       "csvDate":  "Date",
+                       "csvStart":  "Début",
+                       "csvEnd":  "Fin",
+                       "csvHours":  "Heures",
+                       "noRecords":  "Aucun enregistrement de présence pour cette période.",
+                       "summaryByWorker":  "Résumé par employé",
+                       "sessions":  "sessions"
                    },
     "landing":  {
                     "eyebrow":  "SaaS pour les opérations de chantier",
@@ -983,7 +1028,9 @@
                     "cancelScheduledTitle":  "Résiliation programmée",
                     "cancelScheduledHint":  "Votre abonnement expirera le {{date}}. Vous bénéficiez d'un accès complet jusqu'à cette date.",
                     "cancelScheduledHintNoDate":  "Votre abonnement sera résilié à la fin de la période en cours.",
-                    "manageInStripeShort":  "Gérer dans Stripe"
+                    "manageInStripeShort":  "Gérer dans Stripe",
+                    "supportTitle":  "Besoin d'aide ?",
+                    "supportHint":  "Des questions sur votre plan, votre facture ou votre compte ? Écrivez-nous."
                 },
     "seed":  {
                  "common":  {
@@ -1211,6 +1258,26 @@
                         "resentBanner":  "Email de verification renvoye.",
                         "resend":  "Renvoyer"
                     },
+    "forgotPassword":  {
+                           "checkEmail":  "Vérifiez votre boîte mail",
+                           "sentDescription":  "Nous avons envoyé un lien de réinitialisation à",
+                           "linkExpiry":  "Le lien expire dans 30 minutes.",
+                           "noEmail":  "Vous n'avez rien reçu ? Vérifiez vos spams ou",
+                           "tryAgain":  "réessayez",
+                           "subtitle":  "Entrez votre email et nous vous enverrons un lien de réinitialisation.",
+                           "send":  "Envoyer le lien de réinitialisation"
+                       },
+    "resetPassword":  {
+                          "tokenInvalid":  "Ce lien est invalide ou a expiré. Demandez un nouveau lien.",
+                          "invalidLink":  "Lien invalide",
+                          "invalidLinkDescription":  "Le jeton de réinitialisation est manquant dans le lien. Demandez un nouveau lien.",
+                          "requestNew":  "Demander un nouveau lien",
+                          "title":  "Définir un nouveau mot de passe",
+                          "subtitle":  "Choisissez un mot de passe fort que vous n'avez pas utilisé auparavant.",
+                          "newPassword":  "Nouveau mot de passe",
+                          "passwordHint":  "Min. 8 caractères — majuscule, minuscule et chiffre.",
+                          "submit":  "Définir le nouveau mot de passe"
+                      },
     "verifyPending":  {
                           "title":  "Vérifiez votre boîte mail",
                           "subtitle":  "Nous avons envoyé un lien de vérification à {{email}}.",

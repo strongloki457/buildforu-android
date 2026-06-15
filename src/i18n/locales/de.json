@@ -63,7 +63,9 @@
                    "toggleStatus":  "Status wechseln",
                    "all":  "Alle",
                    "project":  "Projekt",
-                   "retry":  "Erneut versuchen"
+                   "retry":  "Erneut versuchen",
+                   "dismiss":  "Schließen",
+                   "loadError":  "Daten konnten nicht geladen werden."
                },
     "statusLabels":  {
                          "pending":  "Ausstehend",
@@ -376,7 +378,8 @@
                     "employeeAccessSubtitle":  "Geben Sie dem Mitarbeiter die temporären Anmeldedaten.",
                     "employeeAccessTitle":  "Mitarbeiterzugang",
                     "employeeAccessHint":  "Der Mitarbeiter kann dieses Passwort später ändern, sobald Backend-Auth verbunden ist.",
-                    "employeeLoginProvisioning":  "Ein verknüpfter Mitarbeiterzugang wird mit einem temporären Passwort erstellt."
+                    "employeeLoginProvisioning":  "Ein verknüpfter Mitarbeiterzugang wird mit einem temporären Passwort erstellt.",
+                    "saveError":  "Speichern fehlgeschlagen. Überprüfe deine Eingaben und versuche es erneut."
                 },
     "projects":  {
                      "title":  "Projekte",
@@ -523,7 +526,32 @@
                      "billingDescription":  "Offnen Sie die Abo-Ansicht, um Plan, Mitarbeiterzahl und Mock-Abrechnungsdaten zu prufen.",
                      "manageBilling":  "Abrechnung verwalten",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "Workspace-Zugriff ist in diesem Frontend-MVP simuliert."
+                     "workspaceAccessHint":  "Workspace-Zugriff ist in diesem Frontend-MVP simuliert.",
+                     "profilePhoto":  "Profilfoto",
+                     "uploadPhoto":  "Foto hochladen",
+                     "removePhoto":  "Foto entfernen",
+                     "avatarHint":  "JPG, PNG oder WebP · max. 5 MB",
+                     "changePasswordTitle":  "Passwort ändern",
+                     "currentPassword":  "Aktuelles Passwort",
+                     "newPassword":  "Neues Passwort",
+                     "confirmPassword":  "Neues Passwort bestätigen",
+                     "passwordChanged":  "Passwort erfolgreich geändert.",
+                     "changePasswordButton":  "Passwort aktualisieren",
+                     "deactivateTitle":  "Konto deaktivieren",
+                     "deactivateHint":  "Deine Anmeldung wird dauerhaft entfernt. Deine Arbeitshistorie bleibt erhalten.",
+                     "deactivateHintAdmin":  "Deine Anmeldung wird dauerhaft entfernt. Firmendaten und Mitarbeiter bleiben erhalten.",
+                     "deactivateButton":  "Konto deaktivieren",
+                     "deactivateConfirmTitle":  "Konto deaktivieren?",
+                     "deactivateConfirmBody":  "Deine Anmeldung wird dauerhaft entfernt. Deine Arbeitshistorie bleibt bestehen. Diese Aktion kann nicht rückgängig gemacht werden.",
+                     "deactivateConfirmBodyAdmin":  "Deine Admin-Anmeldung wird dauerhaft entfernt. Firmendaten und alle Mitarbeiter bleiben bestehen. Diese Aktion kann nicht rückgängig gemacht werden.",
+                     "deactivateConfirm":  "Ja, deaktivieren",
+                     "avatarInvalidType":  "Bitte eine Bilddatei auswählen (JPG, PNG oder WebP).",
+                     "avatarTooLarge":  "Datei zu groß. Max. 5 MB.",
+                     "avatarUploadError":  "Upload fehlgeschlagen. Bitte versuche es erneut.",
+                     "deactivateError":  "Konto konnte nicht deaktiviert werden. Bitte versuche es erneut.",
+                     "passwordMismatch":  "Die neuen Passwörter stimmen nicht überein.",
+                     "wrongCurrentPassword":  "Das aktuelle Passwort ist falsch.",
+                     "passwordChangeError":  "Passwort konnte nicht geändert werden. Bitte versuche es erneut."
                  },
     "marketMap":  {
                       "title":  "Marktkarte",
@@ -649,7 +677,24 @@
                        "gpsPoints":  "GPS-Punkte",
                        "gpsPointsRecorded":  "{{count}} GPS-Punkte aufgezeichnet",
                        "lastLocationUpdate":  "Letzte Standortaktualisierung",
-                       "routePointCount":  "{{count}} Punkte"
+                       "routePointCount":  "{{count}} Punkte",
+                       "reportsEyebrow":  "Berichte",
+                       "reportsTitle":  "Anwesenheitsberichte",
+                       "reportsSubtitle":  "Arbeitsstunden je Mitarbeiter einsehen und für die Lohnabrechnung exportieren.",
+                       "totalHours":  "Gesamtstunden",
+                       "totalSessions":  "Sitzungen",
+                       "uniqueWorkers":  "Mitarbeiter",
+                       "filtersTitle":  "Einträge filtern",
+                       "exportCsv":  "CSV exportieren",
+                       "allWorkers":  "Alle Mitarbeiter",
+                       "csvWorker":  "Mitarbeiter",
+                       "csvDate":  "Datum",
+                       "csvStart":  "Beginn",
+                       "csvEnd":  "Ende",
+                       "csvHours":  "Stunden",
+                       "noRecords":  "Keine Anwesenheitseinträge für diesen Zeitraum.",
+                       "summaryByWorker":  "Zusammenfassung je Mitarbeiter",
+                       "sessions":  "Sitzungen"
                    },
     "landing":  {
                     "eyebrow":  "SaaS für Bauabläufe",
@@ -955,7 +1000,9 @@
                     "cancelScheduledTitle":  "Kündigung geplant",
                     "cancelScheduledHint":  "Ihr Abonnement läuft am {{date}} aus. Bis dahin haben Sie vollen Zugang.",
                     "cancelScheduledHintNoDate":  "Ihr Abonnement wird am Ende des aktuellen Zeitraums gekündigt.",
-                    "manageInStripeShort":  "In Stripe verwalten"
+                    "manageInStripeShort":  "In Stripe verwalten",
+                    "supportTitle":  "Hilfe benötigt?",
+                    "supportHint":  "Fragen zu deinem Plan, deiner Rechnung oder deinem Konto? Schreib uns."
                 },
     "seed":  {
                  "common":  {
@@ -1191,6 +1238,26 @@
                         "resentBanner":  "Verifizierungs-E-Mail erneut gesendet.",
                         "resend":  "Erneut senden"
                     },
+    "forgotPassword":  {
+                           "checkEmail":  "Überprüfe deine E-Mails",
+                           "sentDescription":  "Wir haben einen Link zum Zurücksetzen des Passworts an folgende Adresse gesendet:",
+                           "linkExpiry":  "Der Link läuft in 30 Minuten ab.",
+                           "noEmail":  "Nichts erhalten? Überprüfe deinen Spam-Ordner oder",
+                           "tryAgain":  "versuche es erneut",
+                           "subtitle":  "Gib deine E-Mail-Adresse ein und wir senden dir einen Link zum Zurücksetzen.",
+                           "send":  "Zurücksetzen-Link senden"
+                       },
+    "resetPassword":  {
+                          "tokenInvalid":  "Dieser Link ist ungültig oder abgelaufen. Fordere einen neuen Link an.",
+                          "invalidLink":  "Ungültiger Link",
+                          "invalidLinkDescription":  "Der Reset-Token fehlt im Link. Fordere einen neuen Link an.",
+                          "requestNew":  "Neuen Link anfordern",
+                          "title":  "Neues Passwort festlegen",
+                          "subtitle":  "Wähle ein sicheres Passwort, das du noch nicht verwendet hast.",
+                          "newPassword":  "Neues Passwort",
+                          "passwordHint":  "Min. 8 Zeichen — Großbuchstabe, Kleinbuchstabe und Ziffer.",
+                          "submit":  "Neues Passwort festlegen"
+                      },
     "verifyPending":  {
                           "title":  "Posteingang prüfen",
                           "subtitle":  "Wir haben einen Bestätigungslink an {{email}} gesendet.",

@@ -109,7 +109,8 @@
                    "all":  "All",
                    "project":  "Project",
                    "retry":  "Retry",
-                   "dismiss":  "Dismiss"
+                   "dismiss":  "Dismiss",
+                   "loadError":  "Could not load data."
                },
     "statusLabels":  {
                          "pending":  "Pending",
@@ -425,7 +426,8 @@
                     "employeeAccessSubtitle":  "Give this worker their temporary login details.",
                     "employeeAccessTitle":  "Employee access",
                     "employeeAccessHint":  "The worker can change this password later when backend auth is connected.",
-                    "employeeLoginProvisioning":  "A linked employee login will be created with a temporary password."
+                    "employeeLoginProvisioning":  "A linked employee login will be created with a temporary password.",
+                    "saveError":  "Could not save. Please check your input and try again."
                 },
     "attendance":  {
                        "title":  "Work status",
@@ -476,7 +478,24 @@
                        "gpsPoints":  "GPS points",
                        "gpsPointsRecorded":  "{{count}} GPS points recorded",
                        "lastLocationUpdate":  "Last location update",
-                       "routePointCount":  "{{count}} points"
+                       "routePointCount":  "{{count}} points",
+                       "reportsEyebrow":  "Reports",
+                       "reportsTitle":  "Attendance reports",
+                       "reportsSubtitle":  "View hours worked per crew member and export records for payroll.",
+                       "totalHours":  "Total hours",
+                       "totalSessions":  "Sessions",
+                       "uniqueWorkers":  "Workers",
+                       "filtersTitle":  "Filter records",
+                       "exportCsv":  "Export CSV",
+                       "allWorkers":  "All workers",
+                       "csvWorker":  "Worker",
+                       "csvDate":  "Date",
+                       "csvStart":  "Start",
+                       "csvEnd":  "End",
+                       "csvHours":  "Hours",
+                       "noRecords":  "No attendance records for this period.",
+                       "summaryByWorker":  "Summary by worker",
+                       "sessions":  "sessions"
                    },
     "projects":  {
                      "title":  "Projects",
@@ -672,7 +691,32 @@
                      "workspaceSaved":  "Workspace preferences saved locally",
                      "workspaceSavedDetail":  "This screen is UI-only for now and ready to connect to your future backend settings service.",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "Workspace access is mocked in this frontend MVP."
+                     "workspaceAccessHint":  "Workspace access is mocked in this frontend MVP.",
+                     "profilePhoto":  "Profile photo",
+                     "uploadPhoto":  "Upload photo",
+                     "removePhoto":  "Remove photo",
+                     "avatarHint":  "JPG, PNG or WebP · max 5 MB",
+                     "changePasswordTitle":  "Change password",
+                     "currentPassword":  "Current password",
+                     "newPassword":  "New password",
+                     "confirmPassword":  "Confirm new password",
+                     "passwordChanged":  "Password changed successfully.",
+                     "changePasswordButton":  "Update password",
+                     "deactivateTitle":  "Deactivate account",
+                     "deactivateHint":  "Your login will be permanently removed. Your work history will be preserved.",
+                     "deactivateHintAdmin":  "Your login will be permanently removed. Company data and workers will be preserved.",
+                     "deactivateButton":  "Deactivate account",
+                     "deactivateConfirmTitle":  "Deactivate your account?",
+                     "deactivateConfirmBody":  "This will permanently remove your login. Your work history will remain. This cannot be undone.",
+                     "deactivateConfirmBodyAdmin":  "This will permanently remove your admin login. Company data and all workers will remain. This cannot be undone.",
+                     "deactivateConfirm":  "Yes, deactivate",
+                     "avatarInvalidType":  "Please select an image file (JPG, PNG or WebP).",
+                     "avatarTooLarge":  "File is too large. Max 5 MB.",
+                     "avatarUploadError":  "Upload failed. Please try again.",
+                     "deactivateError":  "Failed to deactivate account. Please try again.",
+                     "passwordMismatch":  "New passwords do not match.",
+                     "wrongCurrentPassword":  "Current password is incorrect.",
+                     "passwordChangeError":  "Failed to change password. Please try again."
                  },
     "marketMap":  {
                       "title":  "Market Map",
@@ -1041,7 +1085,9 @@
                     "cancelScheduledTitle":  "Subscription scheduled for cancellation",
                     "cancelScheduledHint":  "Your subscription will expire on {{date}}. You have full access until then.",
                     "cancelScheduledHintNoDate":  "Your subscription will be cancelled at the end of the current period.",
-                    "manageInStripeShort":  "Manage in Stripe"
+                    "manageInStripeShort":  "Manage in Stripe",
+                    "supportTitle":  "Need help?",
+                    "supportHint":  "Questions about your plan, invoice or account? Write to us."
                 },
     "seed":  {
                  "common":  {
@@ -1270,6 +1316,26 @@
                         "resentBanner":  "Verification email resent. Please check your inbox.",
                         "resend":  "Resend"
                     },
+    "forgotPassword":  {
+                           "checkEmail":  "Check your email",
+                           "sentDescription":  "We've sent a password reset link to",
+                           "linkExpiry":  "The link expires in 30 minutes.",
+                           "noEmail":  "Didn't receive it? Check your spam folder or",
+                           "tryAgain":  "try again",
+                           "subtitle":  "Enter your email and we'll send you a reset link.",
+                           "send":  "Send reset link"
+                       },
+    "resetPassword":  {
+                          "tokenInvalid":  "This link is invalid or has expired. Request a new link.",
+                          "invalidLink":  "Invalid link",
+                          "invalidLinkDescription":  "The reset token is missing from the link. Request a new link.",
+                          "requestNew":  "Request new link",
+                          "title":  "Set new password",
+                          "subtitle":  "Choose a strong password you haven't used before.",
+                          "newPassword":  "New password",
+                          "passwordHint":  "Min. 8 characters — uppercase, lowercase and a number.",
+                          "submit":  "Set new password"
+                      },
     "verifyPending":  {
                           "title":  "Check your inbox",
                           "subtitle":  "We sent a verification link to {{email}}. Click it to activate your account.",

@@ -63,7 +63,9 @@
                    "toggleStatus":  "Cambia stato",
                    "all":  "Tutti",
                    "project":  "Progetto",
-                   "retry":  "Riprova"
+                   "retry":  "Riprova",
+                   "dismiss":  "Ignora",
+                   "loadError":  "Impossibile caricare i dati."
                },
     "statusLabels":  {
                          "pending":  "In sospeso",
@@ -376,7 +378,8 @@
                     "employeeAccessSubtitle":  "Consegna al lavoratore le credenziali temporanee.",
                     "employeeAccessTitle":  "Accesso dipendente",
                     "employeeAccessHint":  "Il lavoratore potrà cambiare questa password quando sarà collegata l’autenticazione backend.",
-                    "employeeLoginProvisioning":  "Verrà creato un accesso dipendente collegato con password temporanea."
+                    "employeeLoginProvisioning":  "Verrà creato un accesso dipendente collegato con password temporanea.",
+                    "saveError":  "Salvataggio non riuscito. Controlla i dati e riprova."
                 },
     "projects":  {
                      "title":  "Progetti",
@@ -523,7 +526,32 @@
                      "billingDescription":  "Apri la vista abbonamento per verificare piano, utilizzo lavoratori e dati mock di fatturazione.",
                      "manageBilling":  "Gestisci fatturazione",
                      "planLabel":  "Piano",
-                     "workspaceAccessHint":  "L’accesso al workspace ? simulato in questo MVP frontend."
+                     "workspaceAccessHint":  "L’accesso al workspace ? simulato in questo MVP frontend.",
+                     "profilePhoto":  "Foto profilo",
+                     "uploadPhoto":  "Carica foto",
+                     "removePhoto":  "Rimuovi foto",
+                     "avatarHint":  "JPG, PNG o WebP · max 5 MB",
+                     "changePasswordTitle":  "Cambia password",
+                     "currentPassword":  "Password attuale",
+                     "newPassword":  "Nuova password",
+                     "confirmPassword":  "Conferma nuova password",
+                     "passwordChanged":  "Password modificata con successo.",
+                     "changePasswordButton":  "Aggiorna password",
+                     "deactivateTitle":  "Disattiva account",
+                     "deactivateHint":  "Il tuo accesso verrà rimosso definitivamente. La tua cronologia di lavoro verrà conservata.",
+                     "deactivateHintAdmin":  "Il tuo accesso verrà rimosso definitivamente. I dati aziendali e i lavoratori verranno conservati.",
+                     "deactivateButton":  "Disattiva account",
+                     "deactivateConfirmTitle":  "Disattivare il tuo account?",
+                     "deactivateConfirmBody":  "Il tuo accesso verrà rimosso definitivamente. La tua cronologia di lavoro rimarrà. Questa azione non può essere annullata.",
+                     "deactivateConfirmBodyAdmin":  "Il tuo accesso amministratore verrà rimosso definitivamente. I dati aziendali e tutti i lavoratori rimarranno. Questa azione non può essere annullata.",
+                     "deactivateConfirm":  "Sì, disattiva",
+                     "avatarInvalidType":  "Seleziona un file immagine (JPG, PNG o WebP).",
+                     "avatarTooLarge":  "Il file è troppo grande. Max 5 MB.",
+                     "avatarUploadError":  "Caricamento non riuscito. Riprova.",
+                     "deactivateError":  "Impossibile disattivare l’account. Riprova.",
+                     "passwordMismatch":  "Le nuove password non coincidono.",
+                     "wrongCurrentPassword":  "La password attuale non è corretta.",
+                     "passwordChangeError":  "Impossibile modificare la password. Riprova."
                  },
     "marketMap":  {
                       "title":  "Mappa negozi",
@@ -648,7 +676,24 @@
                        "gpsPoints":  "Punti GPS",
                        "gpsPointsRecorded":  "{{count}} punti GPS registrati",
                        "lastLocationUpdate":  "Ultimo aggiornamento posizione",
-                       "routePointCount":  "{{count}} punti"
+                       "routePointCount":  "{{count}} punti",
+                       "reportsEyebrow":  "Rapporti",
+                       "reportsTitle":  "Rapporti presenze",
+                       "reportsSubtitle":  "Visualizza le ore lavorate per dipendente ed esporta i dati per la busta paga.",
+                       "totalHours":  "Ore totali",
+                       "totalSessions":  "Sessioni",
+                       "uniqueWorkers":  "Lavoratori",
+                       "filtersTitle":  "Filtra i registri",
+                       "exportCsv":  "Esporta CSV",
+                       "allWorkers":  "Tutti i lavoratori",
+                       "csvWorker":  "Lavoratore",
+                       "csvDate":  "Data",
+                       "csvStart":  "Inizio",
+                       "csvEnd":  "Fine",
+                       "csvHours":  "Ore",
+                       "noRecords":  "Nessun registro presenze per questo periodo.",
+                       "summaryByWorker":  "Riepilogo per lavoratore",
+                       "sessions":  "sessioni"
                    },
     "billing":  {
                     "title":  "Fatturazione e abbonamento",
@@ -706,7 +751,9 @@
                     "cancelScheduledTitle":  "Annullamento programmato",
                     "cancelScheduledHint":  "Il tuo abbonamento scadrà il {{date}}. Hai accesso completo fino ad allora.",
                     "cancelScheduledHintNoDate":  "L'abbonamento sarà annullato alla fine del periodo corrente.",
-                    "manageInStripeShort":  "Gestisci in Stripe"
+                    "manageInStripeShort":  "Gestisci in Stripe",
+                    "supportTitle":  "Hai bisogno di aiuto?",
+                    "supportHint":  "Domande sul tuo piano, fattura o account? Scrivici."
                 },
     "pricing":  {
                     "eyebrow":  "Prezzi",
@@ -1190,6 +1237,26 @@
                         "resentBanner":  "Email di verifica inviata nuovamente.",
                         "resend":  "Invia di nuovo"
                     },
+    "forgotPassword":  {
+                           "checkEmail":  "Controlla la tua email",
+                           "sentDescription":  "Abbiamo inviato un link di ripristino a",
+                           "linkExpiry":  "Il link scade in 30 minuti.",
+                           "noEmail":  "Non l'hai ricevuto? Controlla lo spam o",
+                           "tryAgain":  "riprova",
+                           "subtitle":  "Inserisci la tua email e ti invieremo un link di ripristino.",
+                           "send":  "Invia link di ripristino"
+                       },
+    "resetPassword":  {
+                          "tokenInvalid":  "Questo link non è valido o è scaduto. Richiedi un nuovo link.",
+                          "invalidLink":  "Link non valido",
+                          "invalidLinkDescription":  "Il token di ripristino manca nel link. Richiedi un nuovo link.",
+                          "requestNew":  "Richiedi nuovo link",
+                          "title":  "Imposta nuova password",
+                          "subtitle":  "Scegli una password sicura che non hai mai usato prima.",
+                          "newPassword":  "Nuova password",
+                          "passwordHint":  "Min. 8 caratteri — maiuscola, minuscola e numero.",
+                          "submit":  "Imposta nuova password"
+                      },
     "verifyPending":  {
                           "title":  "Controlla la tua casella",
                           "subtitle":  "Abbiamo inviato un link di verifica a {{email}}.",

@@ -63,7 +63,9 @@
                    "toggleStatus":  "Cambiar estado",
                    "all":  "Todos",
                    "project":  "Proyecto",
-                   "retry":  "Reintentar"
+                   "retry":  "Reintentar",
+                   "dismiss":  "Descartar",
+                   "loadError":  "No se pudieron cargar los datos."
                },
     "statusLabels":  {
                          "pending":  "Pendiente",
@@ -376,7 +378,8 @@
                     "employeeAccessSubtitle":  "Entrega al trabajador sus credenciales temporales.",
                     "employeeAccessTitle":  "Acceso de empleado",
                     "employeeAccessHint":  "El trabajador podrá cambiar esta contraseña cuando se conecte la autenticación backend.",
-                    "employeeLoginProvisioning":  "Se creará un acceso de empleado vinculado con una contraseña temporal."
+                    "employeeLoginProvisioning":  "Se creará un acceso de empleado vinculado con una contraseña temporal.",
+                    "saveError":  "No se pudo guardar. Verifica tus datos e intenta de nuevo."
                 },
     "projects":  {
                      "title":  "Proyectos",
@@ -523,7 +526,32 @@
                      "billingDescription":  "Abre la vista de suscripcion para revisar el plan, uso de trabajadores y datos mock de facturacion.",
                      "manageBilling":  "Gestionar facturacion",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "El acceso al espacio de trabajo está simulado en este MVP frontend."
+                     "workspaceAccessHint":  "El acceso al espacio de trabajo está simulado en este MVP frontend.",
+                     "profilePhoto":  "Foto de perfil",
+                     "uploadPhoto":  "Subir foto",
+                     "removePhoto":  "Eliminar foto",
+                     "avatarHint":  "JPG, PNG o WebP · máx. 5 MB",
+                     "changePasswordTitle":  "Cambiar contraseña",
+                     "currentPassword":  "Contraseña actual",
+                     "newPassword":  "Nueva contraseña",
+                     "confirmPassword":  "Confirmar nueva contraseña",
+                     "passwordChanged":  "Contraseña cambiada con éxito.",
+                     "changePasswordButton":  "Actualizar contraseña",
+                     "deactivateTitle":  "Desactivar cuenta",
+                     "deactivateHint":  "Tu inicio de sesión será eliminado permanentemente. Tu historial de trabajo se conservará.",
+                     "deactivateHintAdmin":  "Tu inicio de sesión será eliminado permanentemente. Los datos de la empresa y los trabajadores se conservarán.",
+                     "deactivateButton":  "Desactivar cuenta",
+                     "deactivateConfirmTitle":  "¿Desactivar tu cuenta?",
+                     "deactivateConfirmBody":  "Tu inicio de sesión será eliminado permanentemente. Tu historial de trabajo permanecerá. Esta acción no se puede deshacer.",
+                     "deactivateConfirmBodyAdmin":  "Tu inicio de sesión de administrador será eliminado permanentemente. Los datos de la empresa y todos los trabajadores permanecerán. Esta acción no se puede deshacer.",
+                     "deactivateConfirm":  "Sí, desactivar",
+                     "avatarInvalidType":  "Selecciona un archivo de imagen (JPG, PNG o WebP).",
+                     "avatarTooLarge":  "El archivo es demasiado grande. Máx. 5 MB.",
+                     "avatarUploadError":  "La carga falló. Por favor, inténtalo de nuevo.",
+                     "deactivateError":  "No se pudo desactivar la cuenta. Por favor, inténtalo de nuevo.",
+                     "passwordMismatch":  "Las nuevas contraseñas no coinciden.",
+                     "wrongCurrentPassword":  "La contraseña actual es incorrecta.",
+                     "passwordChangeError":  "No se pudo cambiar la contraseña. Por favor, inténtalo de nuevo."
                  },
     "marketMap":  {
                       "title":  "Mapa de tiendas",
@@ -649,7 +677,24 @@
                        "gpsPoints":  "Puntos GPS",
                        "gpsPointsRecorded":  "{{count}} puntos GPS registrados",
                        "lastLocationUpdate":  "Ultima actualizacion de ubicacion",
-                       "routePointCount":  "{{count}} puntos"
+                       "routePointCount":  "{{count}} puntos",
+                       "reportsEyebrow":  "Informes",
+                       "reportsTitle":  "Informes de asistencia",
+                       "reportsSubtitle":  "Consulta las horas trabajadas por empleado y exporta los datos para nómina.",
+                       "totalHours":  "Horas totales",
+                       "totalSessions":  "Sesiones",
+                       "uniqueWorkers":  "Trabajadores",
+                       "filtersTitle":  "Filtrar registros",
+                       "exportCsv":  "Exportar CSV",
+                       "allWorkers":  "Todos los trabajadores",
+                       "csvWorker":  "Trabajador",
+                       "csvDate":  "Fecha",
+                       "csvStart":  "Inicio",
+                       "csvEnd":  "Fin",
+                       "csvHours":  "Horas",
+                       "noRecords":  "No hay registros de asistencia para este período.",
+                       "summaryByWorker":  "Resumen por trabajador",
+                       "sessions":  "sesiones"
                    },
     "billing":  {
                     "title":  "Facturacion y suscripcion",
@@ -707,7 +752,9 @@
                     "cancelScheduledTitle":  "Suscripción programada para cancelar",
                     "cancelScheduledHint":  "Tu suscripción expirará el {{date}}. Tendrás acceso completo hasta entonces.",
                     "cancelScheduledHintNoDate":  "Tu suscripción se cancelará al final del período actual.",
-                    "manageInStripeShort":  "Gestionar en Stripe"
+                    "manageInStripeShort":  "Gestionar en Stripe",
+                    "supportTitle":  "¿Necesitas ayuda?",
+                    "supportHint":  "¿Preguntas sobre tu plan, factura o cuenta? Escríbenos."
                 },
     "pricing":  {
                     "eyebrow":  "Precios",
@@ -1191,6 +1238,26 @@
                         "resentBanner":  "Correo de verificacion reenviado.",
                         "resend":  "Reenviar"
                     },
+    "forgotPassword":  {
+                           "checkEmail":  "Revisa tu correo electrónico",
+                           "sentDescription":  "Hemos enviado un enlace de restablecimiento a",
+                           "linkExpiry":  "El enlace caduca en 30 minutos.",
+                           "noEmail":  "¿No lo recibiste? Revisa tu carpeta de spam o",
+                           "tryAgain":  "inténtalo de nuevo",
+                           "subtitle":  "Introduce tu email y te enviaremos un enlace de restablecimiento.",
+                           "send":  "Enviar enlace de restablecimiento"
+                       },
+    "resetPassword":  {
+                          "tokenInvalid":  "Este enlace es inválido o ha expirado. Solicita un nuevo enlace.",
+                          "invalidLink":  "Enlace inválido",
+                          "invalidLinkDescription":  "Falta el token de restablecimiento en el enlace. Solicita un nuevo enlace.",
+                          "requestNew":  "Solicitar nuevo enlace",
+                          "title":  "Establecer nueva contraseña",
+                          "subtitle":  "Elige una contraseña segura que no hayas usado antes.",
+                          "newPassword":  "Nueva contraseña",
+                          "passwordHint":  "Mín. 8 caracteres — mayúscula, minúscula y número.",
+                          "submit":  "Establecer nueva contraseña"
+                      },
     "verifyPending":  {
                           "title":  "Revisa tu bandeja",
                           "subtitle":  "Enviamos un enlace de verificación a {{email}}.",
