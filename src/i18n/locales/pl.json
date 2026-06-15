@@ -65,7 +65,8 @@
     "all": "Wszystkie",
     "project": "Projekt",
     "retry": "Ponów",
-    "dismiss": "Odrzuć"
+    "dismiss": "Odrzuć",
+    "loadError": "Nie udało się wczytać danych."
   },
   "statusLabels": {
     "pending": "Oczekujące",
@@ -381,7 +382,8 @@
     "employeeAccessSubtitle": "Przekaż pracownikowi tymczasowe dane logowania.",
     "employeeAccessTitle": "Dostęp pracownika",
     "employeeAccessHint": "Pracownik będzie mógł zmienić hasło po podłączeniu uwierzytelniania po stronie serwera.",
-    "employeeLoginProvisioning": "Powiązany login pracownika zostanie utworzony z hasłem tymczasowym."
+    "employeeLoginProvisioning": "Powiązany login pracownika zostanie utworzony z hasłem tymczasowym.",
+    "saveError": "Nie udało się zapisać. Sprawdź dane i spróbuj ponownie."
   },
   "projects": {
     "title": "Projekty",
@@ -577,7 +579,32 @@
     "billingDescription": "Otwórz widok subskrypcji, aby sprawdzić plan, liczbę pracowników i przykładowe informacje rozliczeniowe.",
     "manageBilling": "Zarządzaj rozliczeniami",
     "planLabel": "Plan",
-    "workspaceAccessHint": "Dostęp do przestrzeni jest symulowany w tym MVP."
+    "workspaceAccessHint": "Dostęp do przestrzeni jest symulowany w tym MVP.",
+    "profilePhoto": "Zdjęcie profilowe",
+    "uploadPhoto": "Prześlij zdjęcie",
+    "removePhoto": "Usuń zdjęcie",
+    "avatarHint": "JPG, PNG lub WebP · maks. 5 MB",
+    "changePasswordTitle": "Zmień hasło",
+    "currentPassword": "Aktualne hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź nowe hasło",
+    "passwordChanged": "Hasło zostało zmienione.",
+    "changePasswordButton": "Zaktualizuj hasło",
+    "deactivateTitle": "Dezaktywuj konto",
+    "deactivateHint": "Twój login zostanie trwale usunięty. Historia pracy zostanie zachowana.",
+    "deactivateHintAdmin": "Twój login zostanie trwale usunięty. Dane firmy i pracownicy pozostaną.",
+    "deactivateButton": "Dezaktywuj konto",
+    "deactivateConfirmTitle": "Dezaktywować konto?",
+    "deactivateConfirmBody": "Twój login zostanie trwale usunięty. Historia pracy pozostanie. Tej operacji nie można cofnąć.",
+    "deactivateConfirmBodyAdmin": "Twój login admina zostanie trwale usunięty. Dane firmy i wszyscy pracownicy pozostaną. Tej operacji nie można cofnąć.",
+    "deactivateConfirm": "Tak, dezaktywuj",
+    "avatarInvalidType": "Wybierz plik graficzny (JPG, PNG lub WebP).",
+    "avatarTooLarge": "Plik jest za duży. Maks. 5 MB.",
+    "avatarUploadError": "Przesyłanie nie powiodło się. Spróbuj ponownie.",
+    "deactivateError": "Nie udało się dezaktywować konta. Spróbuj ponownie.",
+    "passwordMismatch": "Nowe hasła nie są takie same.",
+    "wrongCurrentPassword": "Aktualne hasło jest nieprawidłowe.",
+    "passwordChangeError": "Nie udało się zmienić hasła. Spróbuj ponownie."
   },
   "marketMap": {
     "title": "Mapa marketów",
@@ -703,7 +730,24 @@
     "gpsPoints": "Punkty GPS",
     "gpsPointsRecorded": "Zapisane punkty GPS: {{count}}",
     "lastLocationUpdate": "Ostatnia aktualizacja lokalizacji",
-    "routePointCount": "{{count}} punktów"
+    "routePointCount": "{{count}} punktów",
+    "reportsEyebrow": "Raporty",
+    "reportsTitle": "Raporty obecności",
+    "reportsSubtitle": "Przeglądaj przepracowane godziny według pracownika i eksportuj dane do listy płac.",
+    "totalHours": "Łącznie godzin",
+    "totalSessions": "Sesje",
+    "uniqueWorkers": "Pracownicy",
+    "filtersTitle": "Filtruj rekordy",
+    "exportCsv": "Eksportuj CSV",
+    "allWorkers": "Wszyscy pracownicy",
+    "csvWorker": "Pracownik",
+    "csvDate": "Data",
+    "csvStart": "Początek",
+    "csvEnd": "Koniec",
+    "csvHours": "Godziny",
+    "noRecords": "Brak rekordów obecności w tym okresie.",
+    "summaryByWorker": "Podsumowanie według pracownika",
+    "sessions": "sesje"
   },
   "landing": {
     "eyebrow": "SaaS dla operacji budowlanych",
@@ -1034,6 +1078,8 @@
     "cancelScheduledHint": "Twoja subskrypcja wygaśnie {{date}}. Do tego czasu masz pełny dostęp.",
     "cancelScheduledHintNoDate": "Twoja subskrypcja zostanie anulowana na koniec bieżącego okresu.",
     "manageInStripeShort": "Zarządzaj w Stripe",
+    "supportTitle": "Potrzebujesz pomocy?",
+    "supportHint": "Pytania o plan, fakturę lub konto? Napisz do nas.",
     "activity": {
       "invoiceTitle": "Faktura INV-2026-041",
       "invoiceBody": "Opłacona pomyślnie",
@@ -1269,6 +1315,26 @@
     "banner": "Potwierdź swój adres email, aby aktywować konto. Sprawdź skrzynkę odbiorczą.",
     "resentBanner": "Email weryfikacyjny został wysłany ponownie. Sprawdź skrzynkę odbiorczą.",
     "resend": "Wyślij ponownie"
+  },
+  "forgotPassword": {
+    "checkEmail": "Sprawdź skrzynkę pocztową",
+    "sentDescription": "Wysłaliśmy link do resetowania hasła na adres",
+    "linkExpiry": "Link wygaśnie za 30 minut.",
+    "noEmail": "Nie otrzymałeś? Sprawdź folder spam lub",
+    "tryAgain": "spróbuj ponownie",
+    "subtitle": "Wpisz email, a wyślemy Ci link do resetowania hasła.",
+    "send": "Wyślij link resetujący"
+  },
+  "resetPassword": {
+    "tokenInvalid": "Ten link jest nieważny lub wygasł. Poproś o nowy link.",
+    "invalidLink": "Nieprawidłowy link",
+    "invalidLinkDescription": "W linku brakuje tokenu resetowania. Poproś o nowy link.",
+    "requestNew": "Poproś o nowy link",
+    "title": "Ustaw nowe hasło",
+    "subtitle": "Wybierz mocne hasło, którego wcześniej nie używałeś.",
+    "newPassword": "Nowe hasło",
+    "passwordHint": "Min. 8 znaków — wielka litera, mała litera i cyfra.",
+    "submit": "Ustaw nowe hasło"
   },
   "verifyPending": {
     "title": "Sprawdź swoją skrzynkę",
