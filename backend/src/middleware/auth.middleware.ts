@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { Role } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
 import { verifyAccessToken } from "../utils/jwt";
@@ -64,11 +65,17 @@ export async function authenticate(req: Request, _res: Response, next: NextFunct
       throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
     }
 
+    // Honor JWT role=EMPLOYEE for admins who have a worker profile (safe downgrade)
+    const effectiveRole: Role =
+      payload.role === Role.EMPLOYEE && membership.role === Role.ADMIN && membership.workerId !== null
+        ? Role.EMPLOYEE
+        : membership.role;
+
     req.user = {
       userId: membership.user.id,
       name: membership.user.name,
       email: membership.user.email,
-      role: membership.role,
+      role: effectiveRole,
       companyId: payload.companyId,
       workerId: membership.workerId
     };

@@ -372,7 +372,7 @@ function mapApiThread(thread, currentUserId) {
 }
 
 export function AppDataProvider({ children }) {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [state, dispatch] = useReducer(appDataReducer, undefined, createInitialAppState);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [dataError, setDataError] = useState("");
@@ -563,6 +563,10 @@ export function AppDataProvider({ children }) {
           const response = await workersApi.createWorker(workerPayload(input));
           const normalizedWorker = normalizeWorkerRecord(mapApiWorker(response.worker), null, state.projects);
           dispatch({ type: "ADD_WORKER", payload: normalizedWorker });
+          if (response.selfLinked) {
+            // Admin linked themselves as a worker — refresh auth to reveal the role-switch button
+            void refreshUser();
+          }
           return { ...normalizedWorker, _temporaryPassword: response.temporaryPassword || "" };
         }, { rethrowCodes: ["EMAIL_EXISTS_OTHER_COMPANY"] });
       },

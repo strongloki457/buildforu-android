@@ -58,6 +58,9 @@ function normalizeApiUser(apiUser) {
   return {
     ...apiUser,
     role,
+    dbRole: normalizeRole(apiUser.dbRole) || role,
+    canSwitchToEmployee: apiUser.canSwitchToEmployee ?? false,
+    canSwitchToAdmin: apiUser.canSwitchToAdmin ?? false,
     company,
     companyId: apiCompanyId,
     apiCompanyId,
@@ -328,6 +331,31 @@ export function AuthProvider({ children }) {
     };
   }, [user]);
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await authApi.me();
+      if (response?.user) {
+        persistSession(response.user);
+      }
+    } catch {
+      // ignore — user stays as-is
+    }
+  }, [persistSession]);
+
+  const switchRole = useCallback(
+    async (role) => {
+      try {
+        const response = await authApi.switchRole(role);
+        if (response.token) setStoredToken(response.token, shouldRememberSession());
+        if (response.refreshToken) setStoredRefreshToken(response.refreshToken, shouldRememberSession());
+        return persistSession(response.user);
+      } catch (error) {
+        throw new Error(error?.message || "Role switch failed.");
+      }
+    },
+    [persistSession],
+  );
+
   const value = useMemo(
     () => ({
       user,
@@ -349,6 +377,8 @@ export function AuthProvider({ children }) {
       selectCompany,
       registerCompany,
       updateUser,
+      switchRole,
+      refreshUser,
     }),
     [
       company,
@@ -360,6 +390,8 @@ export function AuthProvider({ children }) {
       selectCompany,
       registerCompany,
       updateUser,
+      switchRole,
+      refreshUser,
       user,
     ],
   );

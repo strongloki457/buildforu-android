@@ -29,6 +29,13 @@ export const authApi = {
     return apiRequest("/api/auth/me");
   },
 
+  switchRole(role) {
+    return apiRequest("/api/auth/switch-role", {
+      method: "POST",
+      body: { role },
+    });
+  },
+
   refresh(refreshToken) {
     return apiRequest("/api/auth/refresh", {
       method: "POST",

@@ -95,8 +95,25 @@ export const logout = asyncHandler(async (_req: Request, res: Response) => {
 });
 
 export const me = asyncHandler(async (req: Request, res: Response) => {
-  const user = await authService.getCurrentUser(req.user!.userId, req.user!.companyId);
+  const user = await authService.getCurrentUser(req.user!.userId, req.user!.companyId, req.user!.role);
   res.json({ user });
+});
+
+export const switchRole = asyncHandler(async (req: Request, res: Response) => {
+  const remember: boolean = req.body.rememberMe !== false;
+  const targetRole = req.body.role;
+
+  if (targetRole !== "ADMIN" && targetRole !== "EMPLOYEE") {
+    throw new AppError(400, "role must be 'ADMIN' or 'EMPLOYEE'.", "VALIDATION_ERROR");
+  }
+
+  const { token, refreshToken, user } = await authService.switchRole(
+    req.user!.userId,
+    req.user!.companyId,
+    targetRole
+  );
+  setAuthCookies(res, token, refreshToken, remember);
+  res.json({ user, token, refreshToken });
 });
 
 export const refresh = asyncHandler(async (req: Request, res: Response) => {

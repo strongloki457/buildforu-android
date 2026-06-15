@@ -12,6 +12,7 @@ export type AccessTokenPayload = {
 export type RefreshTokenPayload = {
   userId: string;
   companyId?: string;
+  role?: string;
 };
 
 export function signAccessToken(payload: AccessTokenPayload) {

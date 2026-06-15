@@ -57,7 +57,8 @@ function normalizeEmail(email: string | null | undefined) {
 
 type EmailCheckResult =
   | { available: true }
-  | { available: false; sameCompany: true }
+  | { available: false; sameCompany: true; canSelfLink: false }
+  | { available: false; sameCompany: true; canSelfLink: true; existingUserId: string }
   | { available: false; sameCompany: false; existingUserId: string; existingUserName: string };
 
 async function checkEmailAvailability(email: string, companyId: string, excludeWorkerId?: string): Promise<EmailCheckResult> {
@@ -68,7 +69,7 @@ async function checkEmailAvailability(email: string, companyId: string, excludeW
       name: true,
       userCompanies: {
         where: { companyId },
-        select: { id: true, workerId: true }
+        select: { id: true, role: true, workerId: true }
       }
     }
   });
@@ -82,7 +83,11 @@ async function checkEmailAvailability(email: string, companyId: string, excludeW
     if (excludeWorkerId && membershipInThisCompany.workerId === excludeWorkerId) {
       return { available: true };
     }
-    return { available: false, sameCompany: true };
+    // Allow admin to add themselves as a worker (self-link)
+    if (membershipInThisCompany.role === Role.ADMIN && membershipInThisCompany.workerId === null) {
+      return { available: false, sameCompany: true, canSelfLink: true, existingUserId: existingUser.id };
+    }
+    return { available: false, sameCompany: true, canSelfLink: false };
   }
 
   // Email exists but in a different company — can be linked
@@ -127,6 +132,7 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
   let temporaryPassword: string | null = null;
   let temporaryPasswordHash: string | null = null;
   let linkedUserId: string | null = null;
+  let selfLinkUserId: string | null = null;
 
   if (input.createLogin) {
     if (input.linkExistingUserId) {
@@ -160,17 +166,23 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
 
       if (!check.available) {
         if (check.sameCompany) {
-          throw new AppError(409, "An account with this email already exists.", "EMAIL_IN_USE");
+          if (check.canSelfLink) {
+            // Admin adding themselves as worker — will update their UserCompany.workerId
+            selfLinkUserId = check.existingUserId;
+          } else {
+            throw new AppError(409, "An account with this email already exists.", "EMAIL_IN_USE");
+          }
+        } else {
+          // Cross-company: return info so frontend can offer linking
+          throw new AppError(409, "An account with this email already exists in another company.", "EMAIL_EXISTS_OTHER_COMPANY", {
+            existingUserId: check.existingUserId,
+            existingUserName: check.existingUserName
+          });
         }
-        // Cross-company: return info so frontend can offer linking
-        throw new AppError(409, "An account with this email already exists in another company.", "EMAIL_EXISTS_OTHER_COMPANY", {
-          existingUserId: check.existingUserId,
-          existingUserName: check.existingUserName
-        });
+      } else {
+        temporaryPassword = generateTemporaryPassword();
+        temporaryPasswordHash = await hashPassword(temporaryPassword);
       }
-
-      temporaryPassword = generateTemporaryPassword();
-      temporaryPasswordHash = await hashPassword(temporaryPassword);
     }
   }
 
@@ -210,8 +222,14 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
     });
 
     if (input.createLogin) {
-      if (linkedUserId) {
-        // Link existing account to this worker
+      if (selfLinkUserId) {
+        // Admin adding themselves as worker — update their existing UserCompany.workerId
+        await tx.userCompany.update({
+          where: { userId_companyId: { userId: selfLinkUserId, companyId: currentUser.companyId } },
+          data: { workerId: worker.id }
+        });
+      } else if (linkedUserId) {
+        // Link existing account from another company to this worker
         await tx.userCompany.create({
           data: {
             userId: linkedUserId,
@@ -248,7 +266,8 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
 
   return {
     worker,
-    temporaryPassword
+    temporaryPassword,
+    selfLinked: !!selfLinkUserId
   };
 }
 

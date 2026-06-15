@@ -80,20 +80,30 @@ function logAuthFailure(details: {
   );
 }
 
-async function buildAuthResponse(user: UserWithCompanies, companyId: string) {
+async function buildAuthResponse(user: UserWithCompanies, companyId: string, desiredRole?: Role) {
   const membership = user.userCompanies.find((uc) => uc.company.id === companyId);
   if (!membership) {
     throw new AppError(403, "User does not belong to this company.", "AUTH_INVALID");
   }
 
+  // Allow admins to downgrade to EMPLOYEE (if they have a worker profile)
+  const effectiveRole: Role =
+    desiredRole === Role.EMPLOYEE && membership.role === Role.ADMIN && membership.workerId !== null
+      ? Role.EMPLOYEE
+      : membership.role;
+
   const token = signAccessToken({
     userId: user.id,
-    role: membership.role,
+    role: effectiveRole,
     companyId: membership.company.id,
     workerId: membership.workerId
   });
 
-  const refreshToken = signRefreshToken({ userId: user.id, companyId: membership.company.id });
+  const refreshToken = signRefreshToken({
+    userId: user.id,
+    companyId: membership.company.id,
+    role: effectiveRole
+  });
 
   await prisma.refreshToken.create({
     data: {
@@ -106,13 +116,16 @@ async function buildAuthResponse(user: UserWithCompanies, companyId: string) {
   return {
     token,
     refreshToken,
-    user: formatPublicUser(user, companyId)
+    user: formatPublicUser(user, companyId, effectiveRole)
   };
 }
 
-function formatPublicUser(user: UserWithCompanies, companyId: string) {
+function formatPublicUser(user: UserWithCompanies, companyId: string, effectiveRole?: Role) {
   const membership = user.userCompanies.find((uc) => uc.company.id === companyId);
   if (!membership) return null;
+
+  const dbRole = membership.role;
+  const currentRole = effectiveRole ?? dbRole;
 
   return {
     id: user.id,
@@ -120,7 +133,10 @@ function formatPublicUser(user: UserWithCompanies, companyId: string) {
     email: user.email,
     emailVerified: user.emailVerified,
     avatarUrl: user.avatarUrl,
-    role: membership.role,
+    role: currentRole,
+    dbRole,
+    canSwitchToEmployee: dbRole === Role.ADMIN && membership.workerId !== null && currentRole === Role.ADMIN,
+    canSwitchToAdmin: dbRole === Role.ADMIN && currentRole === Role.EMPLOYEE,
     companyId: membership.company.id,
     workerId: membership.workerId,
     company: membership.company,
@@ -130,7 +146,7 @@ function formatPublicUser(user: UserWithCompanies, companyId: string) {
 }
 
 export async function refreshAccessToken(rawRefreshToken: string) {
-  let payload: { userId: string; companyId?: string };
+  let payload: { userId: string; companyId?: string; role?: string };
 
   try {
     payload = verifyRefreshToken(rawRefreshToken);
@@ -170,7 +186,9 @@ export async function refreshAccessToken(rawRefreshToken: string) {
     throw new AppError(401, "Refresh token is invalid or has expired.", "REFRESH_TOKEN_INVALID");
   }
 
-  return buildAuthResponse(result, companyId);
+  // Preserve the role stored in the refresh token (supports EMPLOYEE mode for admins)
+  const desiredRole = payload.role ? payload.role as Role : undefined;
+  return buildAuthResponse(result, companyId, desiredRole);
 }
 
 export async function registerCompany(input: RegisterCompanyInput, lang?: string) {
@@ -469,16 +487,46 @@ export async function updateAvatar(userId: string, companyId: string, avatarUrl:
   return { user: formatPublicUser(user, companyId) };
 }
 
-export async function getCurrentUser(userId: string, companyId: string) {
+export async function getCurrentUser(userId: string, companyId: string, effectiveRole?: Role) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: publicUserSelect
   });
 
   const found = assertFound(user, "Current user was not found.");
-  const formatted = formatPublicUser(found, companyId);
+  const formatted = formatPublicUser(found, companyId, effectiveRole);
   if (!formatted) throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
   return formatted;
+}
+
+export async function switchRole(userId: string, companyId: string, targetRole: "ADMIN" | "EMPLOYEE") {
+  const membership = await prisma.userCompany.findUnique({
+    where: { userId_companyId: { userId, companyId } },
+    select: { role: true, workerId: true }
+  });
+
+  if (!membership) {
+    throw new AppError(401, "Authentication token is invalid.", "AUTH_INVALID");
+  }
+
+  if (membership.role !== Role.ADMIN) {
+    throw new AppError(403, "Only admins can switch roles.", "FORBIDDEN");
+  }
+
+  if (targetRole === "EMPLOYEE" && !membership.workerId) {
+    throw new AppError(400, "No worker profile found. Create your worker profile first.", "NO_WORKER_PROFILE");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: publicUserSelect
+  });
+
+  if (!user) {
+    throw new AppError(401, "User not found.", "AUTH_INVALID");
+  }
+
+  return buildAuthResponse(user, companyId, targetRole === "EMPLOYEE" ? Role.EMPLOYEE : Role.ADMIN);
 }
 
 export async function deleteAccount(userId: string) {
