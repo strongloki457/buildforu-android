@@ -5,31 +5,29 @@ import SectionHeader from "../ui/SectionHeader";
 function ActionTile({ action }) {
   const Icon = action.icon;
   const className =
-    "flex min-h-[76px] w-full items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-4 text-left transition hover:border-brand-200 hover:bg-brand-50/40";
+    "flex w-full flex-col items-start gap-3 rounded-2xl border border-slate-100 bg-white px-4 py-4 text-left transition hover:border-brand-200 hover:bg-brand-50/40";
+
+  const content = (
+    <>
+      <span className="rounded-xl bg-brand-50 p-2.5 text-brand-700">
+        <Icon size={18} />
+      </span>
+      <span>
+        <span className="block text-sm font-medium text-slate-900">{action.label}</span>
+        {action.description ? (
+          <span className="mt-0.5 block text-xs leading-5 text-slate-500">{action.description}</span>
+        ) : null}
+      </span>
+    </>
+  );
 
   if (action.to) {
-    return (
-      <Link to={action.to} className={className}>
-        <span className="rounded-lg bg-brand-50 p-3 text-brand-700">
-          <Icon size={18} />
-        </span>
-        <span className="min-w-0">
-          <span className="break-anywhere block text-sm text-slate-900">{action.label}</span>
-          {action.description ? <span className="break-anywhere mt-1 block text-sm leading-5 text-slate-500">{action.description}</span> : null}
-        </span>
-      </Link>
-    );
+    return <Link to={action.to} className={className}>{content}</Link>;
   }
 
   return (
     <button type="button" onClick={action.onClick} className={className}>
-      <span className="rounded-lg bg-brand-50 p-3 text-brand-700">
-        <Icon size={18} />
-      </span>
-      <span className="min-w-0">
-        <span className="break-anywhere block text-sm text-slate-900">{action.label}</span>
-        {action.description ? <span className="break-anywhere mt-1 block text-sm leading-5 text-slate-500">{action.description}</span> : null}
-      </span>
+      {content}
     </button>
   );
 }
