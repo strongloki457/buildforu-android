@@ -14,6 +14,7 @@ const threadInclude = {
       id: true,
       senderId: true,
       text: true,
+      attachments: true,
       createdAt: true,
       sender: { select: { id: true, name: true } }
     }
@@ -62,7 +63,13 @@ export async function getOrCreateThread(userId: string, otherUserId: string, com
   });
 }
 
-export async function sendMessage(threadId: string, senderId: string, companyId: string, text: string) {
+export async function sendMessage(
+  threadId: string,
+  senderId: string,
+  companyId: string,
+  text: string,
+  attachments: { id: string; name: string; type: string; data: string }[] = []
+) {
   const thread = await prisma.chatThread.findFirst({
     where: { id: threadId, companyId, participants: { some: { userId: senderId } } },
     select: { id: true }
@@ -74,8 +81,20 @@ export async function sendMessage(threadId: string, senderId: string, companyId:
 
   const [message] = await prisma.$transaction([
     prisma.chatMessage.create({
-      data: { threadId, senderId, text },
-      include: { sender: { select: { id: true, name: true } } }
+      data: {
+        threadId,
+        senderId,
+        text,
+        attachments: attachments.length ? attachments : undefined
+      },
+      select: {
+        id: true,
+        senderId: true,
+        text: true,
+        attachments: true,
+        createdAt: true,
+        sender: { select: { id: true, name: true } }
+      }
     }),
     prisma.chatThread.update({ where: { id: threadId }, data: { updatedAt: new Date() } })
   ]);

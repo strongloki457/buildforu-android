@@ -19,8 +19,8 @@ export const createThread = asyncHandler(async (req: Request, res: Response) => 
 export const postMessage = asyncHandler(async (req: Request, res: Response) => {
   const { userId, companyId } = req.user!;
   const { threadId } = req.params;
-  const { text } = req.body;
-  const message = await chatService.sendMessage(threadId, userId, companyId, text);
+  const { text, attachments } = req.body;
+  const message = await chatService.sendMessage(threadId, userId, companyId, text, attachments);
 
   io?.to(`company:${companyId}`).emit("chat:message", {
     threadId,
@@ -28,6 +28,7 @@ export const postMessage = asyncHandler(async (req: Request, res: Response) => {
       id: message.id,
       senderId: message.senderId,
       text: message.text,
+      attachments: message.attachments ?? [],
       createdAt: message.createdAt
     }
   });

@@ -31,9 +31,19 @@ export default function ChatPage() {
     if (message.senderId === user.id) return;
     const ts = new Date(message.createdAt);
     const formatted = `${String(ts.getHours()).padStart(2, "0")}:${String(ts.getMinutes()).padStart(2, "0")}`;
+    const apiAttachments = Array.isArray(message.attachments) ? message.attachments : [];
+    const attachments = apiAttachments.length
+      ? apiAttachments.map((a) => ({ ...a, previewUrl: a.data }))
+      : undefined;
     setLiveMessages((prev) => ({
       ...prev,
-      [threadId]: [...(prev[threadId] ?? []), { id: message.id, senderId: message.senderId, text: message.text, timestamp: formatted }]
+      [threadId]: [...(prev[threadId] ?? []), {
+        id: message.id,
+        senderId: message.senderId,
+        text: message.text,
+        timestamp: formatted,
+        attachments
+      }]
     }));
   }, [user.id]);
 

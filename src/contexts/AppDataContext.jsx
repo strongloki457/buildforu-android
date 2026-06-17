@@ -362,12 +362,18 @@ function mapApiThread(thread, currentUserId) {
     id: thread.id,
     name: otherParticipant?.user?.name ?? "Unknown",
     participants: thread.participants.map((p) => p.userId),
-    messages: thread.messages.map((msg) => ({
-      id: msg.id,
-      senderId: msg.senderId,
-      text: msg.text,
-      timestamp: formatTimestamp(msg.createdAt)
-    }))
+    messages: thread.messages.map((msg) => {
+      const apiAttachments = Array.isArray(msg.attachments) ? msg.attachments : [];
+      return {
+        id: msg.id,
+        senderId: msg.senderId,
+        text: msg.text,
+        timestamp: formatTimestamp(msg.createdAt),
+        attachments: apiAttachments.length
+          ? apiAttachments.map((a) => ({ ...a, previewUrl: a.data }))
+          : undefined
+      };
+    })
   };
 }
 
@@ -535,17 +541,19 @@ export function AppDataProvider({ children }) {
     () => ({
       async sendMessage({ threadId, text, attachments = [] }) {
         if (!text.trim() && !attachments.length) return null;
-        if (!text.trim()) return null;
 
         return runMutation(async () => {
-          const response = await chatApi.sendMessage(threadId, text.trim());
+          const response = await chatApi.sendMessage(threadId, text.trim(), attachments);
           const msg = response.message;
+          const apiAttachments = Array.isArray(msg.attachments) ? msg.attachments : [];
           const mappedMsg = {
             id: msg.id,
             senderId: msg.senderId,
             text: msg.text,
             timestamp: formatTimestamp(msg.createdAt),
-            attachments: attachments.length ? attachments : undefined
+            attachments: apiAttachments.length
+              ? apiAttachments.map((a) => ({ ...a, previewUrl: a.data }))
+              : attachments.length ? attachments : undefined
           };
           dispatch({ type: "SEND_MESSAGE", payload: { threadId, message: mappedMsg } });
           return mappedMsg;

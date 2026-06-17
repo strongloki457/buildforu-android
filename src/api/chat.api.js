@@ -12,10 +12,13 @@ export const chatApi = {
     });
   },
 
-  sendMessage(threadId, text) {
+  sendMessage(threadId, text, attachments = []) {
+    const apiAttachments = attachments
+      .filter((a) => a.previewUrl)
+      .map((a) => ({ id: a.id, name: a.name, type: a.type, data: a.previewUrl }));
     return apiRequest(`/api/chat/threads/${threadId}/messages`, {
       method: "POST",
-      body: { text }
+      body: { text, attachments: apiAttachments }
     });
   },
 

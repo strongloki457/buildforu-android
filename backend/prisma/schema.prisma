@@ -245,13 +245,14 @@ model ChatParticipant {
 }
 
 model ChatMessage {
-  id        String     @id @default(cuid())
-  threadId  String
-  senderId  String
-  text      String
-  thread    ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  sender    User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  createdAt DateTime   @default(now())
+  id          String     @id @default(cuid())
+  threadId    String
+  senderId    String
+  text        String     @default("")
+  attachments Json?
+  thread      ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  sender      User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
 
   @@index([threadId])
   @@index([threadId, createdAt])

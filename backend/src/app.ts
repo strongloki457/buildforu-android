@@ -49,7 +49,7 @@ app.use(
 app.use(cookieParser());
 // Stripe webhook needs raw body — must be registered before express.json()
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
-app.use(express.json({ limit: "1.5mb" }));
+app.use(express.json({ limit: "8mb" }));
 
 const rateLimitMessage = {
   error: { code: "RATE_LIMITED", message: "Too many requests. Please try again later." }
