@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ChatComposer from "../chat/ChatComposer";
 import ChatMessageList from "../chat/ChatMessageList";
 import ChatThreadList from "../chat/ChatThreadList";
@@ -7,6 +7,11 @@ import { MessageSquarePlus } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
 import Card from "../ui/Card";
 import SectionHeader from "../ui/SectionHeader";
+
+function nowTimestamp() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
 
 export default function ChatPanel({
   contacts = [],
@@ -24,11 +29,23 @@ export default function ChatPanel({
   const [message, setMessage] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [startingUserId, setStartingUserId] = useState("");
+  const [localMessages, setLocalMessages] = useState({});
+  const localMsgIdRef = useRef(0);
 
   const activeThread = useMemo(
     () => threads.find((thread) => thread.id === activeThreadId) ?? threads[0],
     [threads, activeThreadId]
   );
+
+  const activeThreadWithLocal = useMemo(() => {
+    if (!activeThread) return activeThread;
+    const pending = localMessages[activeThread.id] ?? [];
+    if (!pending.length) return activeThread;
+    const existingIds = new Set(activeThread.messages.map((m) => m.id));
+    const newOnes = pending.filter((m) => !existingIds.has(m.id));
+    if (!newOnes.length) return activeThread;
+    return { ...activeThread, messages: [...activeThread.messages, ...newOnes] };
+  }, [activeThread, localMessages]);
 
   useEffect(() => {
     if (!threads.some((thread) => thread.id === activeThreadId)) {
@@ -52,14 +69,48 @@ export default function ChatPanel({
       return;
     }
 
-    onSendMessage({
-      threadId: activeThread.id,
+    const trimmedText = message.trim();
+    if (!trimmedText && !attachments.length) return;
+
+    const localId = `local-${Date.now()}-${++localMsgIdRef.current}`;
+    const capturedThreadId = activeThread.id;
+    const capturedAttachments = attachments;
+    const capturedText = message;
+
+    const localMsg = {
+      id: localId,
       senderId: user.id,
-      text: message,
-      attachments
-    });
+      text: trimmedText,
+      timestamp: nowTimestamp(),
+      attachments: capturedAttachments.length ? capturedAttachments : undefined
+    };
+
+    setLocalMessages((prev) => ({
+      ...prev,
+      [capturedThreadId]: [...(prev[capturedThreadId] ?? []), localMsg]
+    }));
+
     setMessage("");
     setAttachments([]);
+
+    let result = null;
+    try {
+      result = await onSendMessage({
+        threadId: capturedThreadId,
+        senderId: user.id,
+        text: capturedText,
+        attachments: capturedAttachments
+      });
+    } catch {
+      // keep local message visible on error
+    }
+
+    if (result) {
+      setLocalMessages((prev) => ({
+        ...prev,
+        [capturedThreadId]: (prev[capturedThreadId] ?? []).filter((m) => m.id !== localId)
+      }));
+    }
   };
 
   const removeAttachment = (attachmentId) => {
@@ -123,7 +174,7 @@ export default function ChatPanel({
         </div>
 
         <div className="flex min-h-[min(62dvh,520px)] min-w-0 flex-col rounded-[22px] bg-white/70 p-3 sm:min-h-[360px] sm:rounded-[28px] sm:p-4">
-          <ChatMessageList activeThread={activeThread} hasThreads={threads.length > 0} user={user} />
+          <ChatMessageList activeThread={activeThreadWithLocal} hasThreads={threads.length > 0} user={user} />
           {activeThread ? (
             <ChatComposer
               attachments={attachments}

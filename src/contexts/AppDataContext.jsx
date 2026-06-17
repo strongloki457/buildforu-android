@@ -535,6 +535,8 @@ export function AppDataProvider({ children }) {
     () => ({
       async sendMessage({ threadId, text, attachments = [] }) {
         if (!text.trim() && !attachments.length) return null;
+        if (!text.trim()) return null;
+
         return runMutation(async () => {
           const response = await chatApi.sendMessage(threadId, text.trim());
           const msg = response.message;
