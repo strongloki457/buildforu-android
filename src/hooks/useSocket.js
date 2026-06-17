@@ -19,9 +19,11 @@ function getSocket(token) {
   return sharedSocket;
 }
 
-export function useSocket(onMessage) {
-  const handlerRef = useRef(onMessage);
-  handlerRef.current = onMessage;
+export function useSocket(onMessage, onMessageDeleted) {
+  const messageRef = useRef(onMessage);
+  const deletedRef = useRef(onMessageDeleted);
+  messageRef.current = onMessage;
+  deletedRef.current = onMessageDeleted;
 
   useEffect(() => {
     const token = getStoredToken();
@@ -30,11 +32,14 @@ export function useSocket(onMessage) {
     const socket = getSocket(token);
     socketRefCount++;
 
-    const handler = (...args) => handlerRef.current?.(...args);
-    socket.on("chat:message", handler);
+    const messageHandler = (...args) => messageRef.current?.(...args);
+    const deletedHandler = (...args) => deletedRef.current?.(...args);
+    socket.on("chat:message", messageHandler);
+    socket.on("chat:message_deleted", deletedHandler);
 
     return () => {
-      socket.off("chat:message", handler);
+      socket.off("chat:message", messageHandler);
+      socket.off("chat:message_deleted", deletedHandler);
       socketRefCount--;
       if (socketRefCount <= 0 && sharedSocket) {
         sharedSocket.disconnect();

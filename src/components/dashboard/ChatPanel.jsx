@@ -22,6 +22,7 @@ export default function ChatPanel({
   threads,
   user,
   onSendMessage,
+  onDeleteMessage,
   placeholder
 }) {
   const { t } = useI18n();
@@ -113,6 +114,17 @@ export default function ChatPanel({
     }
   };
 
+  const handleDeleteMessage = (threadId, messageId) => {
+    if (messageId.startsWith("local-")) {
+      setLocalMessages((prev) => ({
+        ...prev,
+        [threadId]: (prev[threadId] ?? []).filter((m) => m.id !== messageId)
+      }));
+      return;
+    }
+    onDeleteMessage?.({ threadId, messageId });
+  };
+
   const removeAttachment = (attachmentId) => {
     setAttachments((current) => current.filter((attachment) => attachment.id !== attachmentId));
   };
@@ -174,7 +186,12 @@ export default function ChatPanel({
         </div>
 
         <div className="flex min-h-[min(62dvh,520px)] min-w-0 flex-col rounded-[22px] bg-white/70 p-3 sm:min-h-[360px] sm:rounded-[28px] sm:p-4">
-          <ChatMessageList activeThread={activeThreadWithLocal} hasThreads={threads.length > 0} user={user} />
+          <ChatMessageList
+            activeThread={activeThreadWithLocal}
+            hasThreads={threads.length > 0}
+            user={user}
+            onDeleteMessage={handleDeleteMessage}
+          />
           {activeThread ? (
             <ChatComposer
               attachments={attachments}

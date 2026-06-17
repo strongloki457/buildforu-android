@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function ChatPage() {
   const { user } = useAuth();
-  const { threads, sendMessage, startThread } = useAppData();
+  const { threads, sendMessage, startThread, deleteMessage, removeMessage } = useAppData();
   const { t } = useI18n();
   const [contacts, setContacts] = useState([]);
   const [isContactsLoading, setIsContactsLoading] = useState(false);
@@ -47,7 +47,17 @@ export default function ChatPage() {
     }));
   }, [user.id]);
 
-  useSocket(handleSocketMessage);
+  const handleSocketDeleted = useCallback(({ threadId, messageId }) => {
+    removeMessage({ threadId, messageId });
+    setLiveMessages((prev) => {
+      const list = prev[threadId];
+      if (!list?.length) return prev;
+      const filtered = list.filter((m) => m.id !== messageId);
+      return filtered.length === list.length ? prev : { ...prev, [threadId]: filtered };
+    });
+  }, [removeMessage]);
+
+  useSocket(handleSocketMessage, handleSocketDeleted);
 
   useEffect(() => {
     let isMounted = true;
@@ -67,6 +77,7 @@ export default function ChatPage() {
       threads={scopedThreads}
       user={user}
       onSendMessage={sendMessage}
+      onDeleteMessage={deleteMessage}
       contacts={contacts}
       isContactsLoading={isContactsLoading}
       onStartThread={startThread}

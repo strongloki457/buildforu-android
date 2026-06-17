@@ -1,7 +1,8 @@
+import { Trash2 } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
 import MessageAttachments from "./MessageAttachments";
 
-export default function ChatMessageList({ activeThread, hasThreads = Boolean(activeThread), user }) {
+export default function ChatMessageList({ activeThread, hasThreads = Boolean(activeThread), user, onDeleteMessage }) {
   const { t } = useI18n();
 
   if (!activeThread) {
@@ -36,7 +37,17 @@ export default function ChatMessageList({ activeThread, hasThreads = Boolean(act
         const isOwn = item.senderId === user.id;
 
         return (
-          <div key={item.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
+          <div key={item.id} className={`group flex items-end gap-1.5 ${isOwn ? "justify-end" : "justify-start"}`}>
+            {isOwn && onDeleteMessage ? (
+              <button
+                type="button"
+                onClick={() => onDeleteMessage(activeThread.id, item.id)}
+                className="mb-1 shrink-0 rounded-full p-1 text-slate-300 opacity-0 transition hover:text-red-400 group-hover:opacity-100"
+                title={t("chat.deleteMessage", "Usuń wiadomość")}
+              >
+                <Trash2 size={13} />
+              </button>
+            ) : null}
             <div
               className={`max-w-[92%] rounded-[22px] px-4 py-3 text-sm shadow-soft sm:max-w-[75%] sm:rounded-[24px] ${
                 isOwn ? "bg-brand-700 text-white" : "bg-slate-100 text-slate-700"

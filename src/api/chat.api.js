@@ -22,6 +22,10 @@ export const chatApi = {
     });
   },
 
+  deleteMessage(threadId, messageId) {
+    return apiRequest(`/api/chat/threads/${threadId}/messages/${messageId}`, { method: "DELETE" });
+  },
+
   getCompanyUsers() {
     return apiRequest("/api/chat/users");
   }

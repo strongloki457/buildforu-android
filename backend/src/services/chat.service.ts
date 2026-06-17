@@ -102,6 +102,20 @@ export async function sendMessage(
   return message;
 }
 
+export async function deleteMessage(messageId: string, senderId: string, companyId: string) {
+  const message = await prisma.chatMessage.findFirst({
+    where: { id: messageId, senderId },
+    select: { id: true, threadId: true, thread: { select: { companyId: true } } }
+  });
+
+  if (!message || message.thread.companyId !== companyId) {
+    throw new AppError(403, "Message not found or you are not the sender.", "FORBIDDEN");
+  }
+
+  await prisma.chatMessage.delete({ where: { id: messageId } });
+  return { messageId, threadId: message.threadId };
+}
+
 export async function getCompanyUsers(userId: string, companyId: string) {
   const memberships = await prisma.userCompany.findMany({
     where: { companyId, userId: { not: userId } },

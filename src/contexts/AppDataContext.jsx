@@ -559,6 +559,16 @@ export function AppDataProvider({ children }) {
           return mappedMsg;
         });
       },
+      async deleteMessage({ threadId, messageId }) {
+        return runMutation(async () => {
+          await chatApi.deleteMessage(threadId, messageId);
+          dispatch({ type: "DELETE_MESSAGE", payload: { threadId, messageId } });
+          return true;
+        });
+      },
+      removeMessage({ threadId, messageId }) {
+        dispatch({ type: "DELETE_MESSAGE", payload: { threadId, messageId } });
+      },
       async startThread(otherUserId) {
         return runMutation(async () => {
           const response = await chatApi.createThread(otherUserId);

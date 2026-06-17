@@ -228,6 +228,15 @@ export function appDataReducer(state, action) {
             : thread
         )
       };
+    case "DELETE_MESSAGE":
+      return {
+        ...state,
+        threads: state.threads.map((thread) =>
+          thread.id === action.payload.threadId
+            ? { ...thread, messages: thread.messages.filter((m) => m.id !== action.payload.messageId) }
+            : thread
+        )
+      };
     case "SET_THREADS":
       return { ...state, threads: action.payload };
     case "ADD_THREAD":

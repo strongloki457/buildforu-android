@@ -36,6 +36,16 @@ export const postMessage = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).json({ message });
 });
 
+export const removeMessage = asyncHandler(async (req: Request, res: Response) => {
+  const { userId, companyId } = req.user!;
+  const { threadId, messageId } = req.params;
+  await chatService.deleteMessage(messageId, userId, companyId);
+
+  io?.to(`company:${companyId}`).emit("chat:message_deleted", { threadId, messageId });
+
+  res.json({ success: true });
+});
+
 export const listCompanyUsers = asyncHandler(async (req: Request, res: Response) => {
   const { userId, companyId } = req.user!;
   const users = await chatService.getCompanyUsers(userId, companyId);
