@@ -1,4 +1,6 @@
-export default function SectionHeader({ eyebrow, title, subtitle, action }) {
+import { memo } from "react";
+
+const SectionHeader = memo(function SectionHeader({ eyebrow, title, subtitle, action }) {
   return (
     <div className="mb-4 flex min-w-0 flex-col gap-3 sm:mb-5 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
@@ -9,4 +11,6 @@ export default function SectionHeader({ eyebrow, title, subtitle, action }) {
       {action ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
-}
+});
+
+export default SectionHeader;

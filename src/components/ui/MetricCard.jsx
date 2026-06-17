@@ -1,6 +1,7 @@
+import { memo } from "react";
 import Card from "./Card";
 
-export default function MetricCard({ icon: Icon, label, value, tone = "default", detail }) {
+const MetricCard = memo(function MetricCard({ icon: Icon, label, value, tone = "default", detail }) {
   const tones = {
     default: "from-white to-brand-50/70",
     dark: "from-brand-800 to-brand-600 text-white",
@@ -27,4 +28,6 @@ export default function MetricCard({ icon: Icon, label, value, tone = "default",
       ) : null}
     </Card>
   );
-}
+});
+
+export default MetricCard;

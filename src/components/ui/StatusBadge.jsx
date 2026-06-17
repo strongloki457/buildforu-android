@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useI18n } from "../../hooks/useI18n";
 
 const styles = {
@@ -28,7 +29,7 @@ const styles = {
   "out of stock": "bg-rose-100 text-rose-700"
 };
 
-export default function StatusBadge({ value }) {
+const StatusBadge = memo(function StatusBadge({ value }) {
   const { t } = useI18n();
   const key = String(value).toLowerCase();
 
@@ -39,4 +40,6 @@ export default function StatusBadge({ value }) {
       {t(`statusLabels.${key}`, value)}
     </span>
   );
-}
+});
+
+export default StatusBadge;

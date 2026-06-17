@@ -12,5 +12,17 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          "map-vendor": ["leaflet", "react-leaflet"],
+          "socket-vendor": ["socket.io-client"]
+        }
+      }
+    }
   }
 });

@@ -774,7 +774,7 @@ export function AppDataProvider({ children }) {
       dataError,
       ...actions
     }),
-    [actions, attendance, dataError, isDataLoading, materialRequests, projects, state.threads, tasks, workers]
+    [actions, attendance, dataError, dismissNotification, isDataLoading, materialRequests, notifications, projects, state.threads, tasks, workers]
   );
 
   return <AppDataContext.Provider value={value}>{children}</AppDataContext.Provider>;
