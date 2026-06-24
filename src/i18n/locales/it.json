@@ -9,6 +9,12 @@
                   "employee":  "Dipendente",
                   "admin":  "Capo"
               },
+    "userMenu":  {
+                     "employeeModeBadge":  "Modalità dipendente",
+                     "switchCompany":  "Cambia azienda",
+                     "switchToEmployee":  "Passa all'account dipendente",
+                     "switchToAdmin":  "Torna al pannello admin"
+                 },
     "languages":  {
                       "en":  "Inglese",
                       "pl":  "Polacco",
@@ -58,6 +64,7 @@
                    "delete":  "Elimina",
                    "account":  "Account",
                    "openMenu":  "Apri menu",
+                   "more":  "Altro",
                    "viewOnMap":  "Vedi sulla mappa",
                    "viewProfile":  "Vedi profilo",
                    "toggleStatus":  "Cambia stato",
@@ -141,7 +148,9 @@
                   "databaseUnavailable":  "Il database non è attivo. Avvia PostgreSQL ed esegui la migrazione backend.",
                   "sessionExpired":  "La sessione è scaduta. Accedi di nuovo.",
                   "serverError":  "Accesso non riuscito. Riprova.",
-                  "mockCredentialsHint":  "Questi account di esempio devono esistere nei dati seed del backend."
+                  "mockCredentialsHint":  "Questi account di esempio devono esistere nei dati seed del backend.",
+                  "companyPickerTitle":  "Scegli un'azienda",
+                  "companyPickerSubtitle":  "Il tuo account appartiene a più aziende. Scegli quella che vuoi usare."
               },
     "sidebar":  {
                     "controlTower":  "Torre di controllo",
@@ -379,7 +388,18 @@
                     "employeeAccessTitle":  "Accesso dipendente",
                     "employeeAccessHint":  "Il lavoratore potrà cambiare questa password quando sarà collegata l’autenticazione backend.",
                     "employeeLoginProvisioning":  "Verrà creato un accesso dipendente collegato con password temporanea.",
-                    "saveError":  "Salvataggio non riuscito. Controlla i dati e riprova."
+                    "saveError":  "Salvataggio non riuscito. Controlla i dati e riprova.",
+                    "linkAccountTitle":  "Collega account esistente",
+                    "linkAccountDescription":  "L'account {{name}} è già registrato in un'altra azienda.",
+                    "linkAccountBody":  "Questa persona ha già un account (come capo / dipendente in un'altra azienda). Puoi collegare questo account — potrà accedere con una sola email e scegliere l'azienda dopo l'accesso.",
+                    "linkAccountPasswordNote":  "Non verrà creata una nuova password — la persona accede con la password esistente.",
+                    "linkAccountConfirm":  "Collega account",
+                    "linkAccountLinking":  "Collegamento...",
+                    "linkErrorNoUserId":  "Impossibile collegare l'account — ID utente mancante. Riprova.",
+                    "linkErrorEmailInUse":  "Questo account è già membro di questa azienda.",
+                    "linkErrorUserNotFound":  "Account da collegare non trovato. Riprova.",
+                    "linkErrorGeneric":  "Impossibile collegare l'account. Riprova.",
+                    "unknownUser":  "questo utente"
                 },
     "projects":  {
                      "title":  "Progetti",
@@ -509,7 +529,20 @@
                     "cashFlowOutlook":  "Prospettiva cash flow",
                     "monthOverMonth":  "+12,4% mese su mese",
                     "weekLabel":  "S{{number}}",
-                    "demoNotice":  "Questa sezione mostra dati di esempio. Il modulo finanziario completo sarà disponibile a breve."
+                    "demoNotice":  "Questa sezione mostra dati di esempio. Il modulo finanziario completo sarà disponibile a breve.",
+                    "workerRatesTitle": "Tariffe orarie dei lavoratori",
+                    "workerRatesSubtitle": "Usato per calcolare il costo della manodopera dalle ore registrate.",
+                    "projectBudgetsTitle": "Budget di progetto",
+                    "projectBudgetsSubtitle": "Imposta un budget obiettivo per monitorare la redditività per progetto.",
+                    "perHour": "€/h",
+                    "currency": "€",
+                    "noWorkers": "Nessun lavoratore ancora.",
+                    "noProjects": "Nessun progetto ancora.",
+                    "proOnly": {
+                        "title": "Tariffe e budget sono una funzione Pro",
+                        "subtitle": "Passa a Pro per impostare tariffe orarie e budget di progetto e monitorare la redditività.",
+                        "cta": "Vedi i piani"
+                    }
                 },
     "settings":  {
                      "title":  "Impostazioni",
@@ -914,6 +947,39 @@
                     "eyebrow":  "SaaS per operazioni di cantiere",
                     "title":  "Gestisci squadre, pianificazioni e comunicazione di cantiere da un solo spazio BuildForU.",
                     "subtitle":  "BuildForU aiuta le imprese edili a gestire lavoratori, attivita, pianificazione, chat e approvvigionamento in una dashboard curata per ufficio e campo.",
+                    "howEyebrow":  "Per iniziare",
+                    "howTitle":  "Pronto all'uso in meno di 5 minuti",
+                    "how":  {
+                                "register":  {
+                                                 "title":  "Registra la tua azienda",
+                                                 "description":  "Crea lo spazio di lavoro della tua azienda e l'account admin — nessuna carta di credito richiesta."
+                                             },
+                                "setup":  {
+                                              "title":  "Aggiungi dipendenti e progetti",
+                                              "description":  "Invita il tuo team, crea progetti, assegna attivita e configura i materiali."
+                                          },
+                                "manage":  {
+                                               "title":  "Gestisci tutto da un unico posto",
+                                               "description":  "Segui l'avanzamento del cantiere, i cambi di squadra e i materiali in tempo reale."
+                                           }
+                            },
+                    "aiEyebrow":  "Assistente AI — funzione Pro",
+                    "aiTitle":  "Il tuo esperto di cantiere personale, disponibile 24/7",
+                    "aiSubtitle":  "Chiedi informazioni su quantita di materiali, preventivi, normative edilizie o pianificazione. Risposte in pochi secondi, non ore.",
+                    "aiCta":  "Provalo con il piano Pro",
+                    "aiOnline":  "Online",
+                    "aiDemo":  {
+                                   "q1":  "Quanto materiale serve per le fondamenta del progetto Kowalski?",
+                                   "a1":  "Per fondamenta di 10x12m e profondita 1m servono circa 120m3 di calcestruzzo C25/30. Ho incluso un margine standard del 10% per gli scarti.",
+                                   "q2":  "Quanto costera?",
+                                   "a2":  "Ai prezzi attuali di circa 680 EUR/m3, il costo del calcestruzzo e di circa 81.600 EUR. Devo includere il costo di armatura e casseforme?"
+                               },
+                    "aiCapability":  {
+                                         "estimates":  "Preventivi e quantita di materiali",
+                                         "scheduling":  "Pianificazione del cantiere",
+                                         "regulations":  "Normative edilizie",
+                                         "materials":  "Selezione e specifica dei materiali"
+                                     },
                     "featuresEyebrow":  "Capacita chiave",
                     "featuresTitle":  "Progettato intorno al ritmo quotidiano di unimpresa edile.",
                     "ctaEyebrow":  "Pronto a partire",
@@ -1203,6 +1269,8 @@
                         "placeholder":  "Fai una domanda edilizia…",
                         "send":  "Invia",
                         "newConversation":  "Nuova conversazione",
+                        "imageReady":  "Foto pronta per l'invio",
+                        "addImage":  "Aggiungi foto",
                         "errorFallback":  "Impossibile connettersi all\u0027assistente. Riprova.",
                         "suggestions":  [
                                             "Quanto cemento serve per 10 m² di pavimento?",

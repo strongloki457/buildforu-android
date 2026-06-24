@@ -27,3 +27,8 @@ export const assignProjectWorkers = asyncHandler(async (req: Request, res: Respo
   const project = await projectsService.assignProjectWorkers(req.user!, req.params.id, req.body);
   res.json({ project });
 });
+
+export const updateProjectBudget = asyncHandler(async (req: Request, res: Response) => {
+  const project = await projectsService.updateProjectBudget(req.user!, req.params.id, req.body.budget);
+  res.json({ project });
+});

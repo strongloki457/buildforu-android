@@ -21,7 +21,7 @@ const NOTIFICATION_LINKS = {
   project: "/projects"
 };
 
-export default function Topbar({ navItems, pageTitle, notifications, onDismissNotification, onMenuOpen }) {
+export default function Topbar({ navItems, pageTitle, notifications, onDismissNotification, onMenuOpen, hideMenuButton }) {
   const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
   const { t } = useI18n();
@@ -42,17 +42,21 @@ export default function Topbar({ navItems, pageTitle, notifications, onDismissNo
   return (
     <header className="glass-nav sticky top-2 z-20 rounded-[20px] p-2.5 sm:top-4 sm:rounded-[28px] sm:p-4">
       <div className="flex flex-col gap-3 sm:gap-4">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
-          <button onClick={onMenuOpen} className="min-h-11 min-w-11 rounded-2xl bg-slate-900 p-3 text-white lg:hidden" aria-label={t("common.openMenu")}>
-            <Menu size={18} />
-          </button>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {hideMenuButton ? null : (
+            <button onClick={onMenuOpen} className="min-h-11 min-w-11 rounded-2xl bg-slate-900 p-3 text-white lg:hidden" aria-label={t("common.openMenu")}>
+              <Menu size={18} />
+            </button>
+          )}
 
           <div className="min-w-0 flex-1">
             <p className="hidden text-xs uppercase tracking-[0.2em] text-brand-600 sm:block sm:tracking-[0.25em]">{t("common.welcomeBack")}</p>
             <h1 className="truncate text-lg text-slate-900 sm:text-2xl">{pageTitle}</h1>
           </div>
 
-          <LanguageSwitcher />
+          <div className="hidden sm:block">
+            <LanguageSwitcher />
+          </div>
 
           <div className="relative" ref={dropdownRef}>
             <button

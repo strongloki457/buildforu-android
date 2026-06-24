@@ -26,7 +26,12 @@ export const projectsQuerySchema = z.object({
   status: z.nativeEnum(ProjectStatus).optional()
 });
 
+export const updateProjectBudgetSchema = z.object({
+  budget: z.number().nonnegative().max(100_000_000).nullable()
+});
+
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
 export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
 export type AssignProjectWorkersInput = z.infer<typeof assignProjectWorkersSchema>;
 export type ProjectsQuery = z.infer<typeof projectsQuerySchema>;
+export type UpdateProjectBudgetInput = z.infer<typeof updateProjectBudgetSchema>;

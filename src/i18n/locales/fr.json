@@ -9,6 +9,12 @@
                   "employee":  "Employé",
                   "admin":  "Patron"
               },
+    "userMenu":  {
+                     "employeeModeBadge":  "Mode employé",
+                     "switchCompany":  "Changer d'entreprise",
+                     "switchToEmployee":  "Passer au compte employé",
+                     "switchToAdmin":  "Retour au panneau admin"
+                 },
     "languages":  {
                       "en":  "Anglais",
                       "pl":  "Polonais",
@@ -58,6 +64,7 @@
                    "delete":  "Supprimer",
                    "account":  "Compte",
                    "openMenu":  "Ouvrir le menu",
+                   "more":  "Plus",
                    "viewOnMap":  "Voir sur la carte",
                    "viewProfile":  "Voir le profil",
                    "toggleStatus":  "Changer le statut",
@@ -143,7 +150,9 @@
                   "serverError":  "La connexion a échoué. Veuillez réessayer.",
                   "mockCredentialsHint":  "Ces comptes d’exemple doivent exister dans les données initiales du serveur.",
                   "rateLimited":  "Trop de tentatives de connexion. Patientez un moment puis réessayez.",
-                  "validationError":  "Saisissez une adresse email valide et un mot de passe."
+                  "validationError":  "Saisissez une adresse email valide et un mot de passe.",
+                  "companyPickerTitle":  "Choisissez une entreprise",
+                  "companyPickerSubtitle":  "Votre compte appartient à plusieurs entreprises. Choisissez celle que vous souhaitez utiliser."
               },
     "sidebar":  {
                     "controlTower":  "Tour de controle",
@@ -381,7 +390,18 @@
                     "employeeAccessTitle":  "Accès employé",
                     "employeeAccessHint":  "L’employé pourra changer ce mot de passe lorsque l’authentification côté serveur sera connectée.",
                     "employeeLoginProvisioning":  "Un accès employé lié sera créé avec un mot de passe temporaire.",
-                    "saveError":  "Impossible d'enregistrer. Vérifiez vos informations et réessayez."
+                    "saveError":  "Impossible d'enregistrer. Vérifiez vos informations et réessayez.",
+                    "linkAccountTitle":  "Lier un compte existant",
+                    "linkAccountDescription":  "Le compte {{name}} est déjà enregistré dans une autre entreprise.",
+                    "linkAccountBody":  "Cette personne possède déjà un compte (en tant que patron / employé dans une autre entreprise). Vous pouvez lier ce compte — elle pourra se connecter avec un seul email et choisir l'entreprise après connexion.",
+                    "linkAccountPasswordNote":  "Aucun nouveau mot de passe ne sera créé — la personne se connecte avec son mot de passe existant.",
+                    "linkAccountConfirm":  "Lier le compte",
+                    "linkAccountLinking":  "Liaison...",
+                    "linkErrorNoUserId":  "Impossible de lier le compte — ID utilisateur manquant. Veuillez réessayer.",
+                    "linkErrorEmailInUse":  "Ce compte est déjà membre de cette entreprise.",
+                    "linkErrorUserNotFound":  "Compte à lier introuvable. Veuillez réessayer.",
+                    "linkErrorGeneric":  "Impossible de lier le compte. Veuillez réessayer.",
+                    "unknownUser":  "cet utilisateur"
                 },
     "projects":  {
                      "title":  "Projets",
@@ -532,7 +552,20 @@
                     "cashFlowOutlook":  "Perspective de tresorerie",
                     "monthOverMonth":  "+12,4% mois sur mois",
                     "weekLabel":  "S{{number}}",
-                    "demoNotice":  "Cette section affiche des données d'exemple. Le module financier complet sera disponible prochainement."
+                    "demoNotice":  "Cette section affiche des données d'exemple. Le module financier complet sera disponible prochainement.",
+                    "workerRatesTitle": "Taux horaires des employés",
+                    "workerRatesSubtitle": "Utilisé pour calculer le coût de la main-d'œuvre à partir des heures enregistrées.",
+                    "projectBudgetsTitle": "Budgets de projet",
+                    "projectBudgetsSubtitle": "Définissez un budget cible pour suivre la rentabilité par projet.",
+                    "perHour": "€/h",
+                    "currency": "€",
+                    "noWorkers": "Aucun employé pour le moment.",
+                    "noProjects": "Aucun projet pour le moment.",
+                    "proOnly": {
+                        "title": "Les taux et budgets sont une fonctionnalité Pro",
+                        "subtitle": "Passez à Pro pour définir des taux horaires et des budgets de projet, et suivre la rentabilité.",
+                        "cta": "Voir les forfaits"
+                    }
                 },
     "settings":  {
                      "title":  "Parametres",
@@ -723,6 +756,39 @@
                     "eyebrow":  "SaaS pour les opérations de chantier",
                     "title":  "Pilotez equipes, plannings et communication chantier depuis un seul espace BuildForU.",
                     "subtitle":  "BuildForU aide les entreprises du batiment a gerer travailleurs, taches, planification, chat equipe et approvisionnement dans un tableau de bord soigne pour bureau et terrain.",
+                    "howEyebrow":  "Premiers pas",
+                    "howTitle":  "Prêt à l'emploi en moins de 5 minutes",
+                    "how":  {
+                                "register":  {
+                                                 "title":  "Enregistrez votre entreprise",
+                                                 "description":  "Créez l'espace de travail de votre entreprise et le compte administrateur — sans carte bancaire."
+                                             },
+                                "setup":  {
+                                              "title":  "Ajoutez des employés et des projets",
+                                              "description":  "Invitez votre équipe, créez des projets, assignez des tâches et configurez les matériaux."
+                                          },
+                                "manage":  {
+                                               "title":  "Gérez tout depuis un seul endroit",
+                                               "description":  "Suivez l'avancement du chantier, les changements d'équipe et les matériaux en temps réel."
+                                           }
+                            },
+                    "aiEyebrow":  "Assistant IA — fonctionnalité Pro",
+                    "aiTitle":  "Votre expert chantier personnel, disponible 24/7",
+                    "aiSubtitle":  "Posez vos questions sur les quantités de matériaux, les coûts, la réglementation ou la planification. Réponses en quelques secondes.",
+                    "aiCta":  "Essayer avec le plan Pro",
+                    "aiOnline":  "En ligne",
+                    "aiDemo":  {
+                                   "q1":  "De combien de matériaux avons-nous besoin pour les fondations du projet Kowalski ?",
+                                   "a1":  "Pour des fondations de 10x12m sur 1m de profondeur, il vous faut environ 120m3 de béton C25/30. J'ai inclus une marge standard de 10% pour les pertes.",
+                                   "q2":  "Combien cela va-t-il coûter ?",
+                                   "a2":  "Aux prix actuels d'environ 680 EUR/m3, le coût du béton est d'environ 81 600 EUR. Dois-je inclure le coût du ferraillage et du coffrage ?"
+                               },
+                    "aiCapability":  {
+                                         "estimates":  "Coûts et quantités de matériaux",
+                                         "scheduling":  "Planification de chantier",
+                                         "regulations":  "Réglementation du bâtiment",
+                                         "materials":  "Sélection et spécification des matériaux"
+                                     },
                     "featuresEyebrow":  "Capacites principales",
                     "featuresTitle":  "Construit autour du rythme quotidien dune entreprise du batiment.",
                     "ctaEyebrow":  "Pret a demarrer",
@@ -1224,6 +1290,8 @@
                         "placeholder":  "Posez une question de construction…",
                         "send":  "Envoyer",
                         "newConversation":  "Nouvelle conversation",
+                        "imageReady":  "Photo prête à envoyer",
+                        "addImage":  "Ajouter une photo",
                         "errorFallback":  "Impossible de se connecter à l\u0027assistant. Veuillez réessayer.",
                         "suggestions":  [
                                             "Quelle quantité de ciment faut-il pour 10 m² de dalle ?",

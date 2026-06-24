@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -62,11 +63,16 @@ function FallbackRouter() {
   return <Navigate to={user ? "/dashboard" : "/"} replace />;
 }
 
+const isNativeApp = Capacitor.isNativePlatform();
+
 export default function App() {
   return (
     <Suspense fallback={<RouteFallback />}>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={isNativeApp ? <Navigate to="/login" replace /> : <LandingPage />}
+        />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/terms" element={<LegalPage type="terms" />} />
         <Route path="/privacy" element={<LegalPage type="privacy" />} />

@@ -1,24 +1,28 @@
+import { Capacitor } from "@capacitor/core";
 import { Building2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { demoAccounts } from "../components/auth/authData";
 import LoginFormCard from "../components/auth/LoginFormCard";
 import LoginHeroPanel from "../components/auth/LoginHeroPanel";
+import MobileLoginScreen from "../components/auth/MobileLoginScreen";
 import LanguageSwitcher from "../components/navigation/LanguageSwitcher";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 
+const isNativeApp = Capacitor.isNativePlatform();
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PUBLIC_AUTH_PATHS = new Set(["/login", "/register-company"]);
 
-const ROLE_LABELS = { ADMIN: "Admin", EMPLOYEE: "Pracownik" };
-
-function CompanyPicker({ companies, onSelect, isSubmitting }) {
+function CompanyPicker({ companies, onSelect, isSubmitting, t }) {
   return (
     <div className="w-full min-w-0 rounded-[24px] border border-slate-200/80 bg-white/92 p-4 shadow-[0_28px_70px_-44px_rgba(15,23,42,0.38)] backdrop-blur sm:rounded-[32px] sm:p-8">
       <div className="mb-6">
-        <h2 className="text-2xl text-slate-950 sm:text-3xl">Wybierz firmę</h2>
-        <p className="mt-2 text-sm text-slate-500">Twoje konto należy do kilku firm. Wybierz z której chcesz korzystać.</p>
+        <h2 className="text-2xl text-slate-950 sm:text-3xl">{t("login.companyPickerTitle", "Choose a company")}</h2>
+        <p className="mt-2 text-sm text-slate-500">
+          {t("login.companyPickerSubtitle", "Your account belongs to multiple companies. Pick the one you want to use.")}
+        </p>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -35,7 +39,9 @@ function CompanyPicker({ companies, onSelect, isSubmitting }) {
             </div>
             <div className="min-w-0">
               <p className="font-medium text-slate-900">{company.name}</p>
-              <p className="mt-0.5 text-xs text-slate-500">{ROLE_LABELS[company.role] ?? company.role}</p>
+              <p className="mt-0.5 text-xs text-slate-500">
+                {company.role === "ADMIN" ? t("roles.admin") : t("roles.employee")}
+              </p>
             </div>
           </button>
         ))}
@@ -135,6 +141,22 @@ export default function LoginPage() {
     }
   };
 
+  if (isNativeApp) {
+    return pendingCompanies ? (
+      <div className="flex min-h-screen items-center justify-center bg-white px-6">
+        <CompanyPicker companies={pendingCompanies} onSelect={handleSelectCompany} isSubmitting={isSubmitting} t={t} />
+      </div>
+    ) : (
+      <MobileLoginScreen
+        error={error}
+        form={form}
+        isSubmitting={isSubmitting}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+      />
+    );
+  }
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f4f7f3] px-3 py-4 text-slate-900 sm:px-4 sm:py-6">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,197,94,0.12),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(20,83,45,0.12),transparent_28%)]" />
@@ -153,6 +175,7 @@ export default function LoginPage() {
                 companies={pendingCompanies}
                 onSelect={handleSelectCompany}
                 isSubmitting={isSubmitting}
+                t={t}
               />
             </section>
           ) : (

@@ -451,6 +451,22 @@ export async function updateWorker(currentUser: AuthContext, workerId: string, i
   };
 }
 
+export async function updateWorkerRate(currentUser: AuthContext, workerId: string, hourlyRate: number | null) {
+  const existingWorker = await prisma.worker.findFirst({
+    where: { id: workerId, companyId: currentUser.companyId, deletedAt: null },
+    select: { id: true }
+  });
+
+  assertFound(existingWorker, "Worker was not found in this company.");
+
+  await prisma.worker.update({
+    where: { id: workerId },
+    data: { hourlyRate }
+  });
+
+  return normalizeWorker(await fetchWorker(workerId));
+}
+
 export async function deleteWorker(currentUser: AuthContext, workerId: string) {
   const worker = await prisma.worker.findFirst({
     where: {

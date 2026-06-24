@@ -9,6 +9,12 @@
                   "employee":  "Empleado",
                   "admin":  "Jefe"
               },
+    "userMenu":  {
+                     "employeeModeBadge":  "Modo empleado",
+                     "switchCompany":  "Cambiar de empresa",
+                     "switchToEmployee":  "Cambiar a cuenta de empleado",
+                     "switchToAdmin":  "Volver al panel de administrador"
+                 },
     "languages":  {
                       "en":  "Inglés",
                       "pl":  "Polaco",
@@ -58,6 +64,7 @@
                    "delete":  "Eliminar",
                    "account":  "Cuenta",
                    "openMenu":  "Abrir menu",
+                   "more":  "Más",
                    "viewOnMap":  "Ver en el mapa",
                    "viewProfile":  "Ver perfil",
                    "toggleStatus":  "Cambiar estado",
@@ -141,7 +148,9 @@
                   "databaseUnavailable":  "La base de datos no está activa. Inicia PostgreSQL y ejecuta la migración del backend.",
                   "sessionExpired":  "Tu sesión ha caducado. Inicia sesión de nuevo.",
                   "serverError":  "No se pudo iniciar sesión. Inténtalo de nuevo.",
-                  "mockCredentialsHint":  "Estas cuentas de ejemplo deben existir en los datos seed del backend."
+                  "mockCredentialsHint":  "Estas cuentas de ejemplo deben existir en los datos seed del backend.",
+                  "companyPickerTitle":  "Elige una empresa",
+                  "companyPickerSubtitle":  "Tu cuenta pertenece a varias empresas. Elige con cuál quieres trabajar."
               },
     "sidebar":  {
                     "controlTower":  "Torre de control",
@@ -379,7 +388,18 @@
                     "employeeAccessTitle":  "Acceso de empleado",
                     "employeeAccessHint":  "El trabajador podrá cambiar esta contraseña cuando se conecte la autenticación backend.",
                     "employeeLoginProvisioning":  "Se creará un acceso de empleado vinculado con una contraseña temporal.",
-                    "saveError":  "No se pudo guardar. Verifica tus datos e intenta de nuevo."
+                    "saveError":  "No se pudo guardar. Verifica tus datos e intenta de nuevo.",
+                    "linkAccountTitle":  "Vincular cuenta existente",
+                    "linkAccountDescription":  "La cuenta {{name}} ya está registrada en otra empresa.",
+                    "linkAccountBody":  "Esta persona ya tiene una cuenta (como jefe / empleado en otra empresa). Puedes vincular esta cuenta — podrán iniciar sesión con un solo email y elegir la empresa después de iniciar sesión.",
+                    "linkAccountPasswordNote":  "No se creará una contraseña nueva — la persona inicia sesión con su contraseña actual.",
+                    "linkAccountConfirm":  "Vincular cuenta",
+                    "linkAccountLinking":  "Vinculando...",
+                    "linkErrorNoUserId":  "No se puede vincular la cuenta — falta el ID de usuario. Inténtalo de nuevo.",
+                    "linkErrorEmailInUse":  "Esta cuenta ya es miembro de esta empresa.",
+                    "linkErrorUserNotFound":  "No se encontró la cuenta para vincular. Inténtalo de nuevo.",
+                    "linkErrorGeneric":  "No se pudo vincular la cuenta. Inténtalo de nuevo.",
+                    "unknownUser":  "este usuario"
                 },
     "projects":  {
                      "title":  "Proyectos",
@@ -509,7 +529,20 @@
                     "cashFlowOutlook":  "Perspectiva de flujo de caja",
                     "monthOverMonth":  "+12,4% mes a mes",
                     "weekLabel":  "S{{number}}",
-                    "demoNotice":  "Esta sección muestra datos de ejemplo. El módulo financiero completo estará disponible pronto."
+                    "demoNotice":  "Esta sección muestra datos de ejemplo. El módulo financiero completo estará disponible pronto.",
+                    "workerRatesTitle": "Tarifas por hora de los trabajadores",
+                    "workerRatesSubtitle": "Se usa para calcular el coste de mano de obra a partir de las horas registradas.",
+                    "projectBudgetsTitle": "Presupuestos de proyecto",
+                    "projectBudgetsSubtitle": "Establece un presupuesto objetivo para seguir la rentabilidad por proyecto.",
+                    "perHour": "€/h",
+                    "currency": "€",
+                    "noWorkers": "Aún no hay trabajadores.",
+                    "noProjects": "Aún no hay proyectos.",
+                    "proOnly": {
+                        "title": "Las tarifas y presupuestos son una función Pro",
+                        "subtitle": "Actualiza a Pro para establecer tarifas por hora y presupuestos de proyecto, y hacer seguimiento de la rentabilidad.",
+                        "cta": "Ver planes"
+                    }
                 },
     "settings":  {
                      "title":  "Configuracion",
@@ -915,6 +948,39 @@
                     "eyebrow":  "SaaS de operaciones de construccion",
                     "title":  "Gestiona equipos, horarios y comunicacion de obra desde un solo espacio BuildForU.",
                     "subtitle":  "BuildForU ayuda a las empresas constructoras a gestionar trabajadores, tareas, planificacion, chat y compras en un panel cuidado para oficina y campo.",
+                    "howEyebrow":  "Primeros pasos",
+                    "howTitle":  "Listo para usar en menos de 5 minutos",
+                    "how":  {
+                                "register":  {
+                                                 "title":  "Registra tu empresa",
+                                                 "description":  "Crea el espacio de trabajo de tu empresa y la cuenta de administrador — sin tarjeta de crédito."
+                                             },
+                                "setup":  {
+                                              "title":  "Añade trabajadores y proyectos",
+                                              "description":  "Invita a tu equipo, crea proyectos, asigna tareas y configura materiales."
+                                          },
+                                "manage":  {
+                                               "title":  "Gestiona todo desde un solo lugar",
+                                               "description":  "Sigue el progreso de la obra, los cambios de equipo y los materiales en tiempo real."
+                                           }
+                            },
+                    "aiEyebrow":  "Asistente de IA — función Pro",
+                    "aiTitle":  "Tu experto en construcción personal, disponible 24/7",
+                    "aiSubtitle":  "Pregunta sobre cantidades de materiales, presupuestos, normativa de construcción o planificación. Respuestas en segundos, no en horas.",
+                    "aiCta":  "Pruébalo con el plan Pro",
+                    "aiOnline":  "En línea",
+                    "aiDemo":  {
+                                   "q1":  "¿Cuánto material necesitamos para los cimientos del proyecto Kowalski?",
+                                   "a1":  "Para unos cimientos de 10x12m y 1m de profundidad necesitas unos 120m3 de hormigón C25/30. He incluido un margen estándar del 10% por pérdidas.",
+                                   "q2":  "¿Cuánto costará eso?",
+                                   "a2":  "A precios actuales de unos 680 EUR/m3, el coste del hormigón es de unos 81.600 EUR. ¿Incluyo el coste de armadura y encofrado?"
+                               },
+                    "aiCapability":  {
+                                         "estimates":  "Presupuestos y cantidades de materiales",
+                                         "scheduling":  "Planificación de obra",
+                                         "regulations":  "Normativa de construcción",
+                                         "materials":  "Selección y especificación de materiales"
+                                     },
                     "featuresEyebrow":  "Capacidades clave",
                     "featuresTitle":  "Pensado alrededor del ritmo diario de una empresa constructora.",
                     "ctaEyebrow":  "Listo para arrancar",
@@ -1205,6 +1271,8 @@
                         "send":  "Enviar",
                         "newConversation":  "Nueva conversacion",
                         "errorFallback":  "No se pudo conectar con el asistente. Intentalo de nuevo.",
+                        "imageReady":  "Foto lista para enviar",
+                        "addImage":  "Añadir foto",
                         "suggestions":  [
                                             "Cuanto cemento necesito para 10 m² de suelo?",
                                             "Como calculo el numero de ladrillos para una pared?",

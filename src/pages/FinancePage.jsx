@@ -1,18 +1,187 @@
 import {
   CalendarCheck2,
-  ClipboardList,
   FolderKanban,
   PackageCheck,
   PackagePlus,
   Users2
 } from "lucide-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { projectsApi } from "../api/projects.api";
+import { workersApi } from "../api/workers.api";
+import PlanUpgradeWall from "../components/common/PlanUpgradeWall";
 import Card from "../components/ui/Card";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useAppData } from "../hooks/useAppData";
+import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 import { getLocalDateKey } from "../utils/date";
+
+function RateInputRow({ label, sublabel, value, suffix, onSave, isSaving }) {
+  const [draft, setDraft] = useState(value ?? "");
+
+  useEffect(() => {
+    setDraft(value ?? "");
+  }, [value]);
+
+  const handleBlur = () => {
+    const trimmed = draft.trim();
+    const numeric = trimmed === "" ? null : Number(trimmed);
+    if (numeric !== null && (Number.isNaN(numeric) || numeric < 0)) {
+      setDraft(value ?? "");
+      return;
+    }
+    if (numeric === (value ?? null)) return;
+    onSave(numeric);
+  };
+
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-2xl bg-white/70 px-4 py-3">
+      <div className="min-w-0">
+        <p className="break-anywhere text-sm text-slate-900">{label}</p>
+        {sublabel ? <p className="text-xs text-slate-400">{sublabel}</p> : null}
+      </div>
+      <div className="flex shrink-0 items-center gap-2">
+        <input
+          type="number"
+          inputMode="decimal"
+          min="0"
+          step="0.01"
+          value={draft}
+          disabled={isSaving}
+          onChange={(event) => setDraft(event.target.value)}
+          onBlur={handleBlur}
+          placeholder="0"
+          className="w-24 rounded-xl border border-slate-200 bg-white px-3 py-2 text-right text-sm text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+        />
+        <span className="text-xs text-slate-400">{suffix}</span>
+      </div>
+    </div>
+  );
+}
+
+function RatesAndBudgetsSection() {
+  const { t } = useI18n();
+  const { user } = useAuth();
+  const isStarterPlan = (user?.plan ?? "starter") === "starter";
+  const [workersList, setWorkersList] = useState([]);
+  const [projectsList, setProjectsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [savingId, setSavingId] = useState(null);
+
+  useEffect(() => {
+    if (isStarterPlan) {
+      setIsLoading(false);
+      return;
+    }
+
+    let active = true;
+    Promise.all([workersApi.list({ limit: 200 }), projectsApi.list({ limit: 200 })])
+      .then(([workersRes, projectsRes]) => {
+        if (!active) return;
+        setWorkersList(workersRes.data ?? []);
+        setProjectsList(projectsRes.data ?? []);
+      })
+      .finally(() => {
+        if (active) setIsLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [isStarterPlan]);
+
+  if (isStarterPlan) {
+    return (
+      <PlanUpgradeWall
+        title={t("finance.proOnly.title", "Rates & budgets are a Pro feature")}
+        subtitle={t(
+          "finance.proOnly.subtitle",
+          "Upgrade to Pro to set hourly rates and project budgets, and track job costing."
+        )}
+        cta={t("finance.proOnly.cta", "View plans")}
+      />
+    );
+  }
+
+  const handleSaveRate = async (workerId, hourlyRate) => {
+    setSavingId(workerId);
+    try {
+      const { worker } = await workersApi.updateRate(workerId, hourlyRate);
+      setWorkersList((current) =>
+        current.map((item) => (item.id === workerId ? { ...item, hourlyRate: worker.hourlyRate } : item))
+      );
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const handleSaveBudget = async (projectId, budget) => {
+    setSavingId(projectId);
+    try {
+      const { project } = await projectsApi.updateBudget(projectId, budget);
+      setProjectsList((current) =>
+        current.map((item) => (item.id === projectId ? { ...item, budget: project.budget } : item))
+      );
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  return (
+    <div className="grid gap-6 xl:grid-cols-2">
+      <Card>
+        <SectionHeader
+          title={t("finance.workerRatesTitle", "Worker hourly rates")}
+          subtitle={t("finance.workerRatesSubtitle", "Used to calculate labor cost from logged hours.")}
+        />
+        {isLoading ? (
+          <p className="text-sm text-slate-400">{t("common.loading", "Loading interface...")}</p>
+        ) : workersList.length ? (
+          <div className="space-y-2">
+            {workersList.map((worker) => (
+              <RateInputRow
+                key={worker.id}
+                label={worker.name}
+                value={worker.hourlyRate}
+                suffix={t("finance.perHour", "€/h")}
+                isSaving={savingId === worker.id}
+                onSave={(value) => handleSaveRate(worker.id, value)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-slate-400">{t("finance.noWorkers", "No workers yet.")}</p>
+        )}
+      </Card>
+
+      <Card>
+        <SectionHeader
+          title={t("finance.projectBudgetsTitle", "Project budgets")}
+          subtitle={t("finance.projectBudgetsSubtitle", "Set a target budget to track profitability per project.")}
+        />
+        {isLoading ? (
+          <p className="text-sm text-slate-400">{t("common.loading", "Loading interface...")}</p>
+        ) : projectsList.length ? (
+          <div className="space-y-2">
+            {projectsList.map((project) => (
+              <RateInputRow
+                key={project.id}
+                label={project.name}
+                value={project.budget}
+                suffix={t("finance.currency", "€")}
+                isSaving={savingId === project.id}
+                onSave={(value) => handleSaveBudget(project.id, value)}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-slate-400">{t("finance.noProjects", "No projects yet.")}</p>
+        )}
+      </Card>
+    </div>
+  );
+}
 
 function WeeklyTasksChart({ tasks }) {
   const { t } = useI18n();
@@ -115,7 +284,7 @@ export default function FinancePage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         <MetricCard
           icon={FolderKanban}
           label={t("finance.activeProjects", "Active projects")}
@@ -183,23 +352,10 @@ export default function FinancePage() {
               </p>
             </div>
           )}
-
-          <div className="mt-6 rounded-2xl border border-brand-100 bg-brand-50/50 px-4 py-4">
-            <div className="flex items-center gap-2">
-              <ClipboardList size={15} className="shrink-0 text-brand-600" />
-              <p className="text-xs font-medium text-brand-800">
-                {t("finance.budgetComingSoon", "Project budgets & invoicing — coming in v0.2")}
-              </p>
-            </div>
-            <p className="mt-1.5 text-xs leading-5 text-brand-700/80">
-              {t(
-                "finance.budgetComingSoonDesc",
-                "Add project budgets, track expenses per job site and export reports directly to your accountant."
-              )}
-            </p>
-          </div>
         </Card>
       </div>
+
+      <RatesAndBudgetsSection />
     </div>
   );
 }

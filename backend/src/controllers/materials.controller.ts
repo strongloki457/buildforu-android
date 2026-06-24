@@ -22,3 +22,8 @@ export const deleteMaterialRequest = asyncHandler(async (req: Request, res: Resp
   await materialsService.deleteMaterialRequest(req.user!, req.params.id);
   res.status(204).send();
 });
+
+export const updateMaterialCost = asyncHandler(async (req: Request, res: Response) => {
+  const materialRequest = await materialsService.updateMaterialCost(req.user!, req.params.id, req.body.totalCost);
+  res.json({ materialRequest });
+});

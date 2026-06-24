@@ -9,6 +9,12 @@
                   "employee":  "Employee",
                   "admin":  "Boss"
               },
+    "userMenu":  {
+                     "employeeModeBadge":  "Employee mode",
+                     "switchCompany":  "Switch company",
+                     "switchToEmployee":  "Switch to employee account",
+                     "switchToAdmin":  "Back to admin panel"
+                 },
     "languages":  {
                       "en":  "English",
                       "pl":  "Polish",
@@ -103,6 +109,7 @@
                    "delete":  "Delete",
                    "account":  "Account",
                    "openMenu":  "Open menu",
+                   "more":  "More",
                    "viewOnMap":  "View on map",
                    "viewProfile":  "View profile",
                    "toggleStatus":  "Toggle status",
@@ -187,7 +194,9 @@
                   "rateLimited":  "Too many sign-in attempts. Please wait a moment and try again.",
                   "validationError":  "Enter a valid email address and password.",
                   "serverError":  "Sign-in failed. Please try again.",
-                  "mockCredentialsHint":  "These example accounts must exist in the backend seed data."
+                  "mockCredentialsHint":  "These example accounts must exist in the backend seed data.",
+                  "companyPickerTitle":  "Choose a company",
+                  "companyPickerSubtitle":  "Your account belongs to multiple companies. Pick the one you want to use."
               },
     "sidebar":  {
                     "controlTower":  "Control tower",
@@ -427,7 +436,18 @@
                     "employeeAccessTitle":  "Employee access",
                     "employeeAccessHint":  "The worker can change this password later when backend auth is connected.",
                     "employeeLoginProvisioning":  "A linked employee login will be created with a temporary password.",
-                    "saveError":  "Could not save. Please check your input and try again."
+                    "saveError":  "Could not save. Please check your input and try again.",
+                    "linkAccountTitle":  "Link existing account",
+                    "linkAccountDescription":  "Account {{name}} is already registered with another company.",
+                    "linkAccountBody":  "This person already has an account (as a boss / employee at another company). You can link this account — they'll be able to sign in with one email and choose a company after logging in.",
+                    "linkAccountPasswordNote":  "No new password will be created — they sign in with their existing password.",
+                    "linkAccountConfirm":  "Link account",
+                    "linkAccountLinking":  "Linking...",
+                    "linkErrorNoUserId":  "Can't link this account — missing user ID. Please try again.",
+                    "linkErrorEmailInUse":  "This account is already a member of this company.",
+                    "linkErrorUserNotFound":  "Couldn't find the account to link. Please try again.",
+                    "linkErrorGeneric":  "Couldn't link the account. Please try again.",
+                    "unknownUser":  "this user"
                 },
     "attendance":  {
                        "title":  "Work status",
@@ -674,7 +694,20 @@
                     "completedProjectsDetail":  "{{count}} completed total",
                     "totalWorkersDetail":  "{{count}} workers in company",
                     "todayTasksDetail":  "{{count}} tasks scheduled today",
-                    "pendingMaterialsDetail":  "{{count}} pending approval"
+                    "pendingMaterialsDetail":  "{{count}} pending approval",
+                    "workerRatesTitle": "Worker hourly rates",
+                    "workerRatesSubtitle": "Used to calculate labor cost from logged hours.",
+                    "projectBudgetsTitle": "Project budgets",
+                    "projectBudgetsSubtitle": "Set a target budget to track profitability per project.",
+                    "perHour": "€/h",
+                    "currency": "€",
+                    "noWorkers": "No workers yet.",
+                    "noProjects": "No projects yet.",
+                    "proOnly": {
+                        "title": "Rates & budgets are a Pro feature",
+                        "subtitle": "Upgrade to Pro to set hourly rates and project budgets, and track job costing.",
+                        "cta": "View plans"
+                    }
                 },
     "settings":  {
                      "title":  "Settings",
@@ -774,6 +807,12 @@
                     "aiSubtitle":  "Ask about material quantities, cost estimates, building regulations or scheduling. Answers in seconds, not hours.",
                     "aiCta":  "Try with Pro plan",
                     "aiOnline":  "Online",
+                    "aiDemo":  {
+                                   "q1":  "How much material do we need for the foundation on the Kowalski project?",
+                                   "a1":  "For a 10x12m foundation at 1m depth you'll need about 120m3 of C25/30 concrete. I've included a standard 10% waste allowance.",
+                                   "q2":  "How much will that cost?",
+                                   "a2":  "At current prices of about EUR680/m3, the concrete cost is roughly EUR81,600. Should I include rebar and formwork costs?"
+                               },
                     "aiCapability":  {
                                          "estimates":  "Cost estimates and material quantities",
                                          "scheduling":  "Construction schedule planning",
@@ -1282,6 +1321,8 @@
                         "send":  "Send",
                         "newConversation":  "New conversation",
                         "errorFallback":  "Could not connect to the assistant. Please try again.",
+                        "imageReady":  "Photo ready to send",
+                        "addImage":  "Add photo",
                         "suggestions":  [
                                             "How much cement do I need for 10 m² of flooring?",
                                             "How do I calculate the number of bricks for a wall?",

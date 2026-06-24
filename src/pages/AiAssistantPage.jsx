@@ -1,7 +1,7 @@
-import { Bot, Camera, CornerDownLeft, Lock, RotateCcw, Sparkles, X } from "lucide-react";
+import { Bot, Camera, CornerDownLeft, RotateCcw, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { aiApi } from "../api/ai.api";
+import PlanUpgradeWall from "../components/common/PlanUpgradeWall";
 import Card from "../components/ui/Card";
 import SectionHeader from "../components/ui/SectionHeader";
 import { useAuth } from "../hooks/useAuth";
@@ -14,26 +14,6 @@ function TypingDots() {
       <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:150ms]" />
       <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400 [animation-delay:300ms]" />
     </div>
-  );
-}
-
-function UpgradeWall({ t }) {
-  return (
-    <Card>
-      <div className="flex flex-col items-center py-16 text-center">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-50">
-          <Lock size={36} className="text-brand-700" />
-        </div>
-        <h2 className="mt-6 text-2xl text-slate-950">{t("aiAssistant.proOnly.title")}</h2>
-        <p className="mt-3 max-w-md text-slate-500">{t("aiAssistant.proOnly.subtitle")}</p>
-        <Link
-          to="/settings/billing"
-          className="mt-8 inline-flex items-center justify-center rounded-2xl bg-brand-700 px-6 py-3.5 text-sm text-white hover:bg-brand-600 transition"
-        >
-          {t("aiAssistant.proOnly.cta")}
-        </Link>
-      </div>
-    </Card>
   );
 }
 
@@ -128,7 +108,13 @@ export default function AiAssistantPage() {
   };
 
   if (isStarterPlan) {
-    return <UpgradeWall t={t} />;
+    return (
+      <PlanUpgradeWall
+        title={t("aiAssistant.proOnly.title")}
+        subtitle={t("aiAssistant.proOnly.subtitle")}
+        cta={t("aiAssistant.proOnly.cta")}
+      />
+    );
   }
 
   return (
@@ -246,7 +232,7 @@ export default function AiAssistantPage() {
               <X size={10} />
             </button>
           </div>
-          <p className="mt-1 text-xs text-slate-400">Zdjęcie gotowe do wysłania</p>
+          <p className="mt-1 text-xs text-slate-400">{t("aiAssistant.imageReady", "Photo ready to send")}</p>
         </div>
       )}
 
@@ -263,7 +249,7 @@ export default function AiAssistantPage() {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isLoading}
-          title="Dodaj zdjęcie"
+          title={t("aiAssistant.addImage", "Add photo")}
           className="shrink-0 rounded-2xl border border-slate-200 bg-white p-3 text-slate-500 transition hover:bg-slate-50 hover:text-brand-700 disabled:opacity-50"
         >
           <Camera size={16} />

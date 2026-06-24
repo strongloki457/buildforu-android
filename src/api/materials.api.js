@@ -25,4 +25,11 @@ export const materialsApi = {
       method: "DELETE",
     });
   },
+
+  updateCost(id, totalCost) {
+    return apiRequest(`/api/materials/${id}/cost`, {
+      method: "PATCH",
+      body: { totalCost },
+    });
+  },
 };

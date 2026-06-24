@@ -9,6 +9,12 @@
                   "employee":  "Mitarbeiter",
                   "admin":  "Chef"
               },
+    "userMenu":  {
+                     "employeeModeBadge":  "Mitarbeitermodus",
+                     "switchCompany":  "Firma wechseln",
+                     "switchToEmployee":  "Zum Mitarbeiterkonto wechseln",
+                     "switchToAdmin":  "Zurück zum Admin-Bereich"
+                 },
     "languages":  {
                       "en":  "Englisch",
                       "pl":  "Polnisch",
@@ -58,6 +64,7 @@
                    "delete":  "Löschen",
                    "account":  "Konto",
                    "openMenu":  "Menü öffnen",
+                   "more":  "Mehr",
                    "viewOnMap":  "Auf Karte anzeigen",
                    "viewProfile":  "Profil ansehen",
                    "toggleStatus":  "Status wechseln",
@@ -141,7 +148,9 @@
                   "databaseUnavailable":  "Die Datenbank läuft nicht. Starten Sie PostgreSQL und führen Sie die Backend-Migration aus.",
                   "sessionExpired":  "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
                   "serverError":  "Die Anmeldung ist fehlgeschlagen. Bitte versuchen Sie es erneut.",
-                  "mockCredentialsHint":  "Diese Beispielkonten müssen in den Backend-Seed-Daten vorhanden sein."
+                  "mockCredentialsHint":  "Diese Beispielkonten müssen in den Backend-Seed-Daten vorhanden sein.",
+                  "companyPickerTitle":  "Firma auswählen",
+                  "companyPickerSubtitle":  "Ihr Konto gehört zu mehreren Firmen. Wählen Sie die gewünschte aus."
               },
     "sidebar":  {
                     "controlTower":  "Leitstand",
@@ -379,7 +388,18 @@
                     "employeeAccessTitle":  "Mitarbeiterzugang",
                     "employeeAccessHint":  "Der Mitarbeiter kann dieses Passwort später ändern, sobald Backend-Auth verbunden ist.",
                     "employeeLoginProvisioning":  "Ein verknüpfter Mitarbeiterzugang wird mit einem temporären Passwort erstellt.",
-                    "saveError":  "Speichern fehlgeschlagen. Überprüfe deine Eingaben und versuche es erneut."
+                    "saveError":  "Speichern fehlgeschlagen. Überprüfe deine Eingaben und versuche es erneut.",
+                    "linkAccountTitle":  "Bestehendes Konto verknüpfen",
+                    "linkAccountDescription":  "Das Konto {{name}} ist bereits bei einer anderen Firma registriert.",
+                    "linkAccountBody":  "Diese Person hat bereits ein Konto (als Chef / Mitarbeiter bei einer anderen Firma). Sie können dieses Konto verknüpfen — sie können sich mit einer E-Mail anmelden und nach der Anmeldung die Firma wählen.",
+                    "linkAccountPasswordNote":  "Es wird kein neues Passwort erstellt — die Person meldet sich mit ihrem bestehenden Passwort an.",
+                    "linkAccountConfirm":  "Konto verknüpfen",
+                    "linkAccountLinking":  "Verknüpfe...",
+                    "linkErrorNoUserId":  "Konto kann nicht verknüpft werden — Benutzer-ID fehlt. Bitte versuchen Sie es erneut.",
+                    "linkErrorEmailInUse":  "Dieses Konto ist bereits Mitglied dieser Firma.",
+                    "linkErrorUserNotFound":  "Das zu verknüpfende Konto wurde nicht gefunden. Bitte versuchen Sie es erneut.",
+                    "linkErrorGeneric":  "Das Konto konnte nicht verknüpft werden. Bitte versuchen Sie es erneut.",
+                    "unknownUser":  "dieser Benutzer"
                 },
     "projects":  {
                      "title":  "Projekte",
@@ -509,7 +529,20 @@
                     "cashFlowOutlook":  "Cashflow-Ausblick",
                     "monthOverMonth":  "+12,4% zum Vormonat",
                     "weekLabel":  "W{{number}}",
-                    "demoNotice":  "Dieser Bereich zeigt Beispieldaten. Das vollständige Finanzmodul kommt bald."
+                    "demoNotice":  "Dieser Bereich zeigt Beispieldaten. Das vollständige Finanzmodul kommt bald.",
+                    "workerRatesTitle": "Stundensätze der Mitarbeiter",
+                    "workerRatesSubtitle": "Wird verwendet, um die Arbeitskosten aus erfassten Stunden zu berechnen.",
+                    "projectBudgetsTitle": "Projektbudgets",
+                    "projectBudgetsSubtitle": "Legen Sie ein Zielbudget fest, um die Rentabilität pro Projekt zu verfolgen.",
+                    "perHour": "€/Std",
+                    "currency": "€",
+                    "noWorkers": "Noch keine Mitarbeiter.",
+                    "noProjects": "Noch keine Projekte.",
+                    "proOnly": {
+                        "title": "Stundensätze & Budgets sind eine Pro-Funktion",
+                        "subtitle": "Upgraden Sie auf Pro, um Stundensätze und Projektbudgets festzulegen und die Rentabilität zu verfolgen.",
+                        "cta": "Pläne ansehen"
+                    }
                 },
     "settings":  {
                      "title":  "Einstellungen",
@@ -700,6 +733,39 @@
                     "eyebrow":  "SaaS für Bauabläufe",
                     "title":  "Steuern Sie Teams, Pläne und Baustellenkommunikation aus einem BuildForU-Arbeitsbereich.",
                     "subtitle":  "BuildForU hilft Bauunternehmen, Mitarbeiter, Aufgaben, Planung, Team-Chat und Beschaffungstools in einem hochwertigen Dashboard für Büro und Feld zu verwalten.",
+                    "howEyebrow":  "Erste Schritte",
+                    "howTitle":  "In unter 5 Minuten startklar",
+                    "how":  {
+                                "register":  {
+                                                 "title":  "Firma registrieren",
+                                                 "description":  "Erstellen Sie Ihren Firmen-Arbeitsbereich und Admin-Konto — keine Kreditkarte erforderlich."
+                                             },
+                                "setup":  {
+                                              "title":  "Mitarbeiter und Projekte hinzufügen",
+                                              "description":  "Laden Sie Ihr Team ein, erstellen Sie Projekte, weisen Sie Aufgaben zu und konfigurieren Sie Materialien."
+                                          },
+                                "manage":  {
+                                               "title":  "Von einem Ort aus verwalten",
+                                               "description":  "Verfolgen Sie Baufortschritt, Teamwechsel und Materialien in Echtzeit."
+                                           }
+                            },
+                    "aiEyebrow":  "KI-Assistent — Pro-Funktion",
+                    "aiTitle":  "Ihr persönlicher Bauexperte, 24/7 verfügbar",
+                    "aiSubtitle":  "Fragen Sie nach Materialmengen, Kostenschätzungen, Bauvorschriften oder Terminplanung. Antworten in Sekunden, nicht Stunden.",
+                    "aiCta":  "Mit Pro-Plan testen",
+                    "aiOnline":  "Online",
+                    "aiDemo":  {
+                                   "q1":  "Wie viel Material brauchen wir für das Fundament des Kowalski-Projekts?",
+                                   "a1":  "Für ein Fundament von 10x12m und 1m Tiefe benötigen Sie etwa 120m3 Beton C25/30. Ich habe einen Standard-Verlustzuschlag von 10% berücksichtigt.",
+                                   "q2":  "Was wird das kosten?",
+                                   "a2":  "Bei aktuellen Preisen von etwa 680 EUR/m3 betragen die Betonkosten rund 81.600 EUR. Soll ich die Kosten für Bewehrung und Schalung einbeziehen?"
+                               },
+                    "aiCapability":  {
+                                         "estimates":  "Kostenschätzungen und Materialmengen",
+                                         "scheduling":  "Bauzeitplanung",
+                                         "regulations":  "Bauvorschriften und Normen",
+                                         "materials":  "Materialauswahl und -spezifikation"
+                                     },
                     "featuresEyebrow":  "Kernfunktionen",
                     "featuresTitle":  "Auf den täglichen Rhythmus eines Bauunternehmens zugeschnitten.",
                     "ctaEyebrow":  "Bereit für den Start",
@@ -1205,6 +1271,8 @@
                         "send":  "Senden",
                         "newConversation":  "Neues Gespräch",
                         "errorFallback":  "Verbindung zum Assistenten fehlgeschlagen. Bitte erneut versuchen.",
+                        "imageReady":  "Foto bereit zum Senden",
+                        "addImage":  "Foto hinzufügen",
                         "suggestions":  [
                                             "Wie viel Zement brauche ich für 10 m² Bodenbelag?",
                                             "Wie berechnet man die Anzahl der Ziegel für eine Wand?",

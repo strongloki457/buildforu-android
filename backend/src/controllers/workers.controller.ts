@@ -22,3 +22,8 @@ export const deleteWorker = asyncHandler(async (req: Request, res: Response) => 
   await workersService.deleteWorker(req.user!, req.params.id);
   res.status(204).send();
 });
+
+export const updateWorkerRate = asyncHandler(async (req: Request, res: Response) => {
+  const worker = await workersService.updateWorkerRate(req.user!, req.params.id, req.body.hourlyRate);
+  res.json({ worker });
+});

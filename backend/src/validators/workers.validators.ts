@@ -39,5 +39,10 @@ export const updateWorkerSchema = z.object({
   }
 });
 
+export const updateWorkerRateSchema = z.object({
+  hourlyRate: z.number().nonnegative().max(10_000).nullable()
+});
+
 export type CreateWorkerInput = z.infer<typeof createWorkerSchema>;
 export type UpdateWorkerInput = z.infer<typeof updateWorkerSchema>;
+export type UpdateWorkerRateInput = z.infer<typeof updateWorkerRateSchema>;

@@ -107,6 +107,7 @@ model Worker {
   email            String?
   phone            String?
   notes            String?
+  hourlyRate       Float?
   companyId        String
   company          Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
   userCompany      UserCompany?
@@ -129,6 +130,7 @@ model Project {
   name             String
   status           ProjectStatus          @default(TO_START)
   note             String?
+  budget           Float?
   companyId        String
   company          Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
   workers          WorkerProject[]
@@ -294,6 +296,7 @@ model MaterialRequest {
   quantity          String?
   note              String?
   imageBase64       String?
+  totalCost         Float?
   status            MaterialRequestStatus @default(PENDING)
   companyId         String
   requesterWorkerId String

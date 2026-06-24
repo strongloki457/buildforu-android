@@ -9,6 +9,12 @@
     "employee": "Pracownik",
     "admin": "Szef"
   },
+  "userMenu": {
+    "employeeModeBadge": "Tryb pracownika",
+    "switchCompany": "Przełącz firmę",
+    "switchToEmployee": "Przełącz na konto pracownika",
+    "switchToAdmin": "Wróć do panelu admina"
+  },
   "languages": {
     "en": "Angielski",
     "pl": "Polski",
@@ -59,6 +65,7 @@
     "delete": "Usuń",
     "account": "Konto",
     "openMenu": "Otwórz menu",
+    "more": "Więcej",
     "viewOnMap": "Pokaż na mapie",
     "viewProfile": "Zobacz profil",
     "toggleStatus": "Zmień status",
@@ -143,7 +150,9 @@
     "serverError": "Logowanie nie powiodło się. Spróbuj ponownie.",
     "mockCredentialsHint": "Te konta przykładowe muszą istnieć w danych początkowych serwera.",
     "rateLimited": "Zbyt wiele prób logowania. Poczekaj chwilę i spróbuj ponownie.",
-    "validationError": "Wpisz poprawny adres email i hasło."
+    "validationError": "Wpisz poprawny adres email i hasło.",
+    "companyPickerTitle": "Wybierz firmę",
+    "companyPickerSubtitle": "Twoje konto należy do kilku firm. Wybierz z której chcesz korzystać."
   },
   "sidebar": {
     "controlTower": "Centrum dowodzenia",
@@ -383,7 +392,18 @@
     "employeeAccessTitle": "Dostęp pracownika",
     "employeeAccessHint": "Pracownik będzie mógł zmienić hasło po podłączeniu uwierzytelniania po stronie serwera.",
     "employeeLoginProvisioning": "Powiązany login pracownika zostanie utworzony z hasłem tymczasowym.",
-    "saveError": "Nie udało się zapisać. Sprawdź dane i spróbuj ponownie."
+    "saveError": "Nie udało się zapisać. Sprawdź dane i spróbuj ponownie.",
+    "linkAccountTitle": "Podlinkuj istniejące konto",
+    "linkAccountDescription": "Konto {{name}} jest już zarejestrowane w innej firmie.",
+    "linkAccountBody": "Ta osoba ma już konto (jest bossem / pracownikiem w innej firmie). Możesz podlinkować to konto — będą mogli się logować jednym emailem i wybierać firmę po zalogowaniu.",
+    "linkAccountPasswordNote": "Nie zostanie utworzone nowe hasło — osoba loguje się swoim dotychczasowym hasłem.",
+    "linkAccountConfirm": "Podlinkuj konto",
+    "linkAccountLinking": "Linkuję...",
+    "linkErrorNoUserId": "Nie można podlinkować konta — brak ID użytkownika. Spróbuj ponownie.",
+    "linkErrorEmailInUse": "To konto jest już członkiem tej firmy.",
+    "linkErrorUserNotFound": "Nie znaleziono konta do podlinkowania. Spróbuj ponownie.",
+    "linkErrorGeneric": "Nie udało się podlinkować konta. Spróbuj ponownie.",
+    "unknownUser": "ten użytkownik"
   },
   "projects": {
     "title": "Projekty",
@@ -543,6 +563,19 @@
     "todayTasksDetail": "{{count}} zadań na dziś",
     "materialsPurchased": "Kupione materiały",
     "pendingMaterialsDetail": "{{count}} oczekuje na zatwierdzenie",
+    "workerRatesTitle": "Stawki godzinowe pracowników",
+    "workerRatesSubtitle": "Używane do liczenia kosztu robocizny na podstawie zarejestrowanych godzin.",
+    "projectBudgetsTitle": "Budżety projektów",
+    "projectBudgetsSubtitle": "Ustaw docelowy budżet, aby śledzić rentowność projektu.",
+    "perHour": "€/h",
+    "currency": "€",
+    "noWorkers": "Brak pracowników.",
+    "noProjects": "Brak projektów.",
+    "proOnly": {
+        "title": "Stawki i budżety to funkcja planu Pro",
+        "subtitle": "Przejdź na plan Pro, aby ustawiać stawki godzinowe i budżety projektów oraz śledzić rentowność.",
+        "cta": "Zobacz plany"
+    },
     "taskProgressTitle": "Aktywność zadań",
     "taskProgressSubtitle": "Ukończone zadania na tydzień we wszystkich projektach.",
     "weeklyTasksLabel": "Ukończone zadania — ostatnie 7 tygodni",
@@ -774,6 +807,12 @@
     "aiSubtitle": "Zapytaj o ilości materiałów, kosztorysy, polskie przepisy budowlane lub harmonogramowanie. Odpowiedzi w sekundy, nie godziny.",
     "aiCta": "Wypróbuj z planem Pro",
     "aiOnline": "Dostępny",
+    "aiDemo": {
+      "q1": "Ile materiałów potrzebujemy na fundamenty dla projektu Kowalski?",
+      "a1": "Dla fundamentów o wymiarach 10×12m i głębokości 1m potrzebujesz ok. 120m³ betonu C25/30. Uwzględniłem standardowy naddatek 10% na straty.",
+      "q2": "Ile to będzie kosztować?",
+      "a2": "Przy aktualnych cenach ok. 680 zł/m³, koszt betonu to ok. 81 600 zł. Czy mam uwzględnić koszt zbrojenia i szalunków?"
+    },
     "aiCapability": {
       "estimates": "Kosztorysy i ilości materiałów",
       "scheduling": "Planowanie harmonogramów budowy",
@@ -1291,6 +1330,8 @@
     "send": "Wyślij",
     "newConversation": "Nowa rozmowa",
     "errorFallback": "Nie udało się połączyć z asystentem. Spróbuj ponownie.",
+    "imageReady": "Zdjęcie gotowe do wysłania",
+    "addImage": "Dodaj zdjęcie",
     "suggestions": [
       "Ile cementu potrzebuję na 10m² posadzki?",
       "Jak obliczyć ilość cegieł na ścianę?",

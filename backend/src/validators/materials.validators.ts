@@ -28,5 +28,10 @@ export const updateMaterialStatusSchema = z.object({
   status: z.nativeEnum(MaterialRequestStatus)
 });
 
+export const updateMaterialCostSchema = z.object({
+  totalCost: z.number().nonnegative().max(10_000_000).nullable()
+});
+
 export type CreateMaterialRequestInput = z.infer<typeof createMaterialRequestSchema>;
 export type MaterialsQuery = z.infer<typeof materialsQuerySchema>;
+export type UpdateMaterialCostInput = z.infer<typeof updateMaterialCostSchema>;

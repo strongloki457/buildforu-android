@@ -13,7 +13,19 @@ import { ensureWorkersBelongToCompany } from "./companyScope.service";
 const projectInclude = {
   workers: {
     include: {
-      worker: true
+      worker: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          notes: true,
+          companyId: true,
+          deletedAt: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      }
     }
   }
 } as const;
@@ -64,7 +76,10 @@ export async function listProjects(currentUser: AuthContext, query: ProjectsQuer
     })
   ]);
 
-  return toPaginatedResult(projects, total, query);
+  const visibleProjects =
+    currentUser.role === Role.EMPLOYEE ? projects.map(({ budget, ...rest }) => rest) : projects;
+
+  return toPaginatedResult(visibleProjects, total, query);
 }
 
 export async function createProject(currentUser: AuthContext, input: CreateProjectInput) {
@@ -130,6 +145,25 @@ export async function updateProject(currentUser: AuthContext, projectId: string,
         });
       }
     }
+  });
+
+  return prisma.project.findUniqueOrThrow({
+    where: { id: projectId },
+    include: projectInclude
+  });
+}
+
+export async function updateProjectBudget(currentUser: AuthContext, projectId: string, budget: number | null) {
+  const existingProject = await prisma.project.findFirst({
+    where: { id: projectId, companyId: currentUser.companyId, deletedAt: null },
+    select: { id: true }
+  });
+
+  assertFound(existingProject, "Project was not found in this company.");
+
+  await prisma.project.update({
+    where: { id: projectId },
+    data: { budget }
   });
 
   return prisma.project.findUniqueOrThrow({

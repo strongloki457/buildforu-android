@@ -58,7 +58,12 @@ export async function listMaterialRequests(currentUser: AuthContext, query: Mate
     })
   ]);
 
-  return toPaginatedResult(materialRequests, total, query);
+  const visibleRequests =
+    currentUser.role === Role.EMPLOYEE
+      ? materialRequests.map(({ totalCost, ...rest }) => rest)
+      : materialRequests;
+
+  return toPaginatedResult(visibleRequests, total, query);
 }
 
 function resolveRequesterWorkerId(currentUser: AuthContext, input: CreateMaterialRequestInput) {
@@ -122,6 +127,21 @@ export async function updateMaterialRequestStatus(
   return prisma.materialRequest.update({
     where: { id: requestId },
     data: { status },
+    include: materialInclude
+  });
+}
+
+export async function updateMaterialCost(currentUser: AuthContext, requestId: string, totalCost: number | null) {
+  const request = await prisma.materialRequest.findFirst({
+    where: { id: requestId, companyId: currentUser.companyId },
+    select: { id: true }
+  });
+
+  assertFound(request, "Material request was not found in this company.");
+
+  return prisma.materialRequest.update({
+    where: { id: requestId },
+    data: { totalCost },
     include: materialInclude
   });
 }

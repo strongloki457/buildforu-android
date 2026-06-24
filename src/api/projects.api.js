@@ -32,4 +32,11 @@ export const projectsApi = {
       body: { workerIds },
     });
   },
+
+  updateBudget(id, budget) {
+    return apiRequest(`/api/projects/${id}/budget`, {
+      method: "PATCH",
+      body: { budget },
+    });
+  },
 };

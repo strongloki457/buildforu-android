@@ -25,4 +25,11 @@ export const workersApi = {
       method: "DELETE",
     });
   },
+
+  updateRate(id, hourlyRate) {
+    return apiRequest(`/api/workers/${id}/rate`, {
+      method: "PATCH",
+      body: { hourlyRate },
+    });
+  },
 };
