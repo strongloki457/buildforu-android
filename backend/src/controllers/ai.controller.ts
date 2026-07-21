@@ -129,7 +129,8 @@ export async function chat(req: Request, res: Response, next: NextFunction) {
       next(error);
       return;
     }
-    // Never expose provider errors or stack traces to the client
+    // Log the real provider error server-side; never expose it to the client
+    console.error("[ai.controller] Groq request failed:", error);
     next(new AppError(502, "The AI assistant is temporarily unavailable. Please try again.", "AI_UNAVAILABLE"));
   }
 }
