@@ -1,9 +1,25 @@
+import { Share2 } from "lucide-react";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
 import { useI18n } from "../../hooks/useI18n";
+import { isNativeApp, shareText } from "../../utils/nativeMedia";
 
 export default function WorkerAccessModal({ access, onClose }) {
   const { t } = useI18n();
+
+  const handleShare = async () => {
+    const message = t(
+      "workers.employeeAccessShareMessage",
+      { email: access.email, password: access.temporaryPassword },
+      "BuildForU sign-in\nEmail: {{email}}\nTemporary password: {{password}}"
+    );
+
+    try {
+      await shareText({ title: t("workers.employeeAccessTitle", "Employee login ready"), text: message });
+    } catch {
+      // user cancelled the share sheet — nothing to recover from here
+    }
+  };
 
   return (
     <Modal
@@ -32,7 +48,13 @@ export default function WorkerAccessModal({ access, onClose }) {
           )}
         </p>
 
-        <div className="mt-2 flex justify-end">
+        <div className="mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          {isNativeApp ? (
+            <Button variant="secondary" className="w-full sm:w-auto" onClick={handleShare}>
+              <Share2 size={16} className="mr-2" />
+              {t("workers.shareAccess", "Share")}
+            </Button>
+          ) : null}
           <Button className="w-full sm:w-auto" onClick={onClose}>
             {t("common.close")}
           </Button>

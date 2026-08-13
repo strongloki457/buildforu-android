@@ -124,3 +124,77 @@ _Ostatnia aktualizacja: 2026-08-10 (sesja testowa na emulatorze Android)_
   linków w mailach/Stripe, drobne zmiany frontendu). To NIE są rozdzielone logiczne commity — user
   poprosił o jeden `git add . && git commit`, więc tak to zrobiono (temat z PLAN.md, punkt 5,
   rozstrzygnięty na "jeden duży commit"). Push do `origin/main` powiódł się.
+
+### 2026-08-13 (ciąg dalszy) — poprawka repo, fix SSL Gradle, fix refresh tokenu, 4 nowe pluginy
+
+**WAŻNA KOREKTA: zły remote.** Repo `Aplikacja-BuildForU` (do którego poszedł commit `3b9dab2`
+opisany wyżej) to **inna aplikacja**, nie ta. Właściwe repo dla tego projektu to
+`https://github.com/strongloki457/buildforu-android.git`. Naprawione:
+- `origin` w tym repo przepięty na `buildforu-android` (potwierdzone: było puste, teraz ma pełną
+  historię łącznie z `3b9dab2`).
+- Commit `3b9dab2` w `Aplikacja-BuildForU` **cofnięty przez `git revert`** (nowy commit `94f4e48`
+  na ich `main`, wypchnięty tam) — nie force-push, historia tamtego repo nietknięta poza tym.
+  Zrobione na tymczasowym branchu + tymczasowym drugim remote (`old-origin`), oba posprzątane po
+  fakcie.
+- **Od teraz ten folder ma tylko jeden remote (`origin` → `buildforu-android`)** — potwierdzone
+  `git remote -v`. Żadna dalsza praca nie dotyka `Aplikacja-BuildForU`.
+- Skutek uboczny do zapamiętania: przełączanie branchy na inny checkout (do revertu) **nadpisało
+  realny `node_modules/`** starą, zacommitowaną wersją (bo git nie rozróżnia "duży folder
+  zależności" od zwykłych plików przy checkout) — trzeba było `npm install` żeby naprawić
+  (`vite` zniknął z `node_modules/.bin`). Jeśli kiedyś znowu trzeba będzie przełączać branch na
+  coś, co ma inną historię `node_modules`/`dist`, spodziewać się tego samego i od razu robić
+  `npm install` po powrocie.
+
+**Fix SSL Gradle — zrobiony i zweryfikowany.** Norton nie pozwalał zapisać certu bezpośrednio do
+`C:\Program Files\Android\Android Studio\jbr\lib\security\cacerts` (Odmowa dostępu — wymaga
+admina). Obejście: kopia `cacerts` w `%USERPROFILE%\.android-build-truststore\cacerts` (z
+zaimportowanym certem Nortona) + `$env:JAVA_TOOL_OPTIONS = "-Djavax.net.ssl.trustStore=...
+-Djavax.net.ssl.trustStorePassword=changeit"` przed każdym `gradlew`. To ustawienie środowiskowe,
+nie plik w repo — trzeba je ustawiać w każdej nowej sesji/terminalu przed buildem Androida.
+`gradlew assembleDebug` przechodzi teraz w pełni (BUILD SUCCESSFUL), APK się pakuje.
+
+**Fix refresh tokenu — zrobiony, zacommitowany (`1f7dfc0`), przetestowany na emulatorze.**
+`src/api/auth.storage.js`: `getStoredRefreshToken`/`setStoredRefreshToken` przestały być no-opami
+na platformie natywnej (`Capacitor.isNativePlatform()`) — realnie zapisują/zwracają token z
+localStorage tylko na Androidzie, web/PC bez zmian (nadal `null`, cookie-only). Test: świeże
+logowanie na koncie QA przez lokalny dev backend (`JWT_EXPIRES_IN` tymczasowo skrócony do 20s,
+potem przywrócony na 15m) — appka nie wylogowała po wygaśnięciu tokenu. Zastrzeżenie: w trybie dev
+frontend i backend siedzą na tym samym hoście (`10.0.2.2`, różne porty), więc `SameSite=Lax` i tak
+by przeszło — to nie jest w 100% wierna reprodukcja cross-site scenariusza z produkcji. Mechanizm
+(jawny refresh token w body zamiast polegania na cookie) jest jednak poprawny niezależnie od tego.
+
+**Dodane 4 brakujące pluginy Capacitor + integracje** (`@capacitor/app`, `@capacitor/filesystem`,
+`@capacitor/share`, `@capacitor/preferences`, wszystkie `^8.x`):
+- `App` — obsługa przycisku wstecz w `src/App.jsx` (cofa w historii routera, przy braku historii
+  zamyka appkę). Zweryfikowane w logu: listener się rejestruje bez błędu.
+- `Share`/`Filesystem` — nowy `src/utils/nativeMedia.js` (helpers: `shareImageAttachment`,
+  `saveImageAttachment`, `shareText`, `shareTextFile`, wszystkie no-op poza platformą natywną).
+  Wpięte w:
+  - `AttachmentPreview.jsx` (lightbox zdjęć w czacie) — przyciski Udostępnij/Zapisz, tylko native.
+    Save idzie do `Directory.Documents` (app-scoped, bez uprawnień) — **to NIE jest systemowa
+    Galeria/Zdjęcia**, świadoma decyzja żeby nie obiecywać czegoś niesprawdzonego (prawdziwy zapis
+    do Galerii na scoped storage Androida 10+ wymaga MediaStore API / osobnego pluginu, nie
+    zrobione).
+  - `WorkerAccessModal.jsx` — przycisk Udostępnij (Share.share z tekstem: email + hasło
+    tymczasowe pracownika).
+  - `AttendanceReportsPage.jsx` — **naprawiony realny bug**: istniejący "Export CSV" używał
+    `<a download>` + blob URL, co **nie działa w Android WebView** (brak menedżera pobierania).
+    Na native teraz idzie przez `Filesystem` + `Share`; web/PC bez zmian (stary kod, nietknięty).
+- `Preferences` — offline cache w `src/contexts/AppDataContext.jsx`. Przy udanym
+  `loadBackendData()` normalizowany payload (workers/projects/tasks/attendance/materials) zapisuje
+  się do `Preferences` pod kluczem per `companyId`, tylko na native. Przy błędzie sieci
+  (`ApiError.code === "NETWORK_ERROR"`) na native próbuje wczytać cache zamiast czyścić dane do
+  pustych — UI dostaje istniejący baner `dataError` ("You're offline — showing the last saved
+  data.") + przycisk Refresh, bez nowego komponentu.
+- Build zweryfikowany: `npm run build` + `cap sync android` + `gradlew assembleDebug` — wszystkie
+  8 pluginów zarejestrowanych, BUILD SUCCESSFUL, APK się instaluje i appka się uruchamia bez crasha
+  na emulatorze (potwierdzone zrzutem ekranu, ekran logowania renderuje się poprawnie).
+
+**Nowe odkrycie: Norton blokuje też ruch sieciowy emulatora do `api.buildforu.eu`**, nie tylko
+Gradle (`CertPathValidatorException: Trust anchor for certification path not found` w logu
+WebView). To osobny magazyn zaufania (system Android w AVD) niż ten naprawiony dla Gradle/JBR —
+nienaprawione, bo to inny problem/inny fix. Nie blokuje developmentu (apka poprawnie łapie błąd
+sieci i pokazuje login zamiast się wywalać), ale uniemożliwia pełny test end-to-end z prawdziwym
+backendem produkcyjnym na tym emulatorze, dopóki ktoś nie zaimportuje certu Nortona też do
+systemowego magazynu zaufania Androida w AVD (albo nie wyłączy skanowania SSL Nortona dla tego
+ruchu).

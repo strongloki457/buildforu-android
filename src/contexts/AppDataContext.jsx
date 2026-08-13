@@ -1,3 +1,5 @@
+import { Capacitor } from "@capacitor/core";
+import { Preferences } from "@capacitor/preferences";
 import { createContext, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { ApiError } from "../api/client";
 import { attendanceApi } from "../api/attendance.api";
@@ -16,6 +18,31 @@ import { hydrateTaskRecord, normalizeTaskRecord } from "./appData/tasks";
 import { hydrateWorkerRecord, normalizeWorkerRecord } from "./appData/workers";
 
 export const AppDataContext = createContext(null);
+
+const isNativeApp = Capacitor.isNativePlatform();
+const OFFLINE_CACHE_PREFIX = "buildforu-offline-cache-";
+
+// Native-only offline fallback: on a network error we'd otherwise wipe the screen to
+// nothing (see the loadBackendData catch below). Web/desktop keep their existing
+// behavior — only the Android/Capacitor build reads/writes this cache.
+async function readOfflineCache(companyId) {
+  if (!isNativeApp || !companyId) return null;
+  try {
+    const { value } = await Preferences.get({ key: OFFLINE_CACHE_PREFIX + companyId });
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeOfflineCache(companyId, payload) {
+  if (!isNativeApp || !companyId) return;
+  try {
+    await Preferences.set({ key: OFFLINE_CACHE_PREFIX + companyId, value: JSON.stringify(payload) });
+  } catch {
+    // best-effort cache — ignore write failures (e.g. storage full)
+  }
+}
 
 const EMPTY_CORE_DATA = {
   attendance: [],
@@ -420,22 +447,30 @@ export function AppDataProvider({ children }) {
           dispatch({ type: "SET_THREADS", payload: [] });
         });
 
-      dispatch({
-        type: "SET_CORE_DATA",
-        payload: normalizeCoreData(
-          {
-            attendance: mappedAttendance,
-            materialRequests: mappedMaterials,
-            projects: mappedProjects,
-            tasks: mappedTasks,
-            workers: mappedWorkers
-          },
-          user
-        )
-      });
+      const corePayload = normalizeCoreData(
+        {
+          attendance: mappedAttendance,
+          materialRequests: mappedMaterials,
+          projects: mappedProjects,
+          tasks: mappedTasks,
+          workers: mappedWorkers
+        },
+        user
+      );
+
+      dispatch({ type: "SET_CORE_DATA", payload: corePayload });
+      void writeOfflineCache(user.companyId, corePayload);
     } catch (error) {
-      dispatch({ type: "SET_CORE_DATA", payload: EMPTY_CORE_DATA });
-      setDataError(formatDataError(error));
+      const isOffline = error instanceof ApiError && error.code === "NETWORK_ERROR";
+      const cached = isOffline ? await readOfflineCache(user.companyId) : null;
+
+      if (cached) {
+        dispatch({ type: "SET_CORE_DATA", payload: cached });
+        setDataError("You're offline — showing the last saved data.");
+      } else {
+        dispatch({ type: "SET_CORE_DATA", payload: EMPTY_CORE_DATA });
+        setDataError(formatDataError(error));
+      }
     } finally {
       setIsDataLoading(false);
     }

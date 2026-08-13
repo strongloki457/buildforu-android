@@ -5,6 +5,7 @@ import SectionHeader from "../components/ui/SectionHeader";
 import { attendanceApi } from "../api/attendance.api";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { isNativeApp, shareTextFile } from "../utils/nativeMedia";
 
 function durationHours(startTime, endTime) {
   if (!startTime || !endTime) return null;
@@ -29,7 +30,7 @@ function formatHours(h) {
   return `${hrs}h ${mins}m`;
 }
 
-function exportCsv(records, t, locale = "en") {
+async function exportCsv(records, t, locale = "en") {
   const header = [
     t("attendance.csvWorker", "Worker"),
     t("attendance.csvDate", "Date"),
@@ -50,11 +51,24 @@ function exportCsv(records, t, locale = "en") {
   });
 
   const csv = [header, ...rows].join("\n");
+  const fileName = `attendance_${new Date().toISOString().slice(0, 10)}.csv`;
+
+  if (isNativeApp) {
+    // Android WebView has no download manager for blob + <a download> — hand the
+    // file to the native share sheet instead (save to Files, send by email, etc.).
+    try {
+      await shareTextFile({ fileName, content: "﻿" + csv, title: t("attendance.exportCsv", "Export CSV") });
+    } catch {
+      // user cancelled the share sheet — nothing to recover from here
+    }
+    return;
+  }
+
   const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `attendance_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = fileName;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

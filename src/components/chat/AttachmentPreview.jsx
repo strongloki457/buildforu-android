@@ -1,10 +1,34 @@
-import { FileText, X, ZoomIn } from "lucide-react";
+import { Check, Download, FileText, Share2, X, ZoomIn } from "lucide-react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useI18n } from "../../hooks/useI18n";
+import { isNativeApp, saveImageAttachment, shareImageAttachment } from "../../utils/nativeMedia";
 import { formatFileSize } from "./chatAttachments";
 
-function ImageLightbox({ src, alt, onClose }) {
+function ImageLightbox({ attachment, onClose }) {
+  const { t } = useI18n();
+  const [savedFlash, setSavedFlash] = useState(false);
+
+  const handleShare = async (event) => {
+    event.stopPropagation();
+    try {
+      await shareImageAttachment(attachment);
+    } catch {
+      // user cancelled the share sheet or it failed silently — nothing to recover from here
+    }
+  };
+
+  const handleSave = async (event) => {
+    event.stopPropagation();
+    try {
+      await saveImageAttachment(attachment);
+      setSavedFlash(true);
+      setTimeout(() => setSavedFlash(false), 2000);
+    } catch {
+      // ignore — no toast system to surface a failure through
+    }
+  };
+
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 p-4"
@@ -18,9 +42,31 @@ function ImageLightbox({ src, alt, onClose }) {
       >
         <X size={20} />
       </button>
+
+      {isNativeApp ? (
+        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-3">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm text-white transition hover:bg-white/30"
+          >
+            <Share2 size={16} />
+            {t("chat.shareAttachment", "Share")}
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm text-white transition hover:bg-white/30"
+          >
+            {savedFlash ? <Check size={16} /> : <Download size={16} />}
+            {savedFlash ? t("chat.attachmentSaved", "Saved") : t("chat.saveAttachment", "Save")}
+          </button>
+        </div>
+      ) : null}
+
       <img
-        src={src}
-        alt={alt}
+        src={attachment.previewUrl}
+        alt={attachment.name}
         className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       />
@@ -72,11 +118,7 @@ export default function AttachmentPreview({ attachment, onRemove, removable = fa
       </div>
 
       {lightboxOpen ? (
-        <ImageLightbox
-          src={attachment.previewUrl}
-          alt={attachment.name}
-          onClose={() => setLightboxOpen(false)}
-        />
+        <ImageLightbox attachment={attachment} onClose={() => setLightboxOpen(false)} />
       ) : null}
     </>
   );

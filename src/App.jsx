@@ -1,5 +1,6 @@
+import { App as CapacitorApp } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import PublicOnlyRoute from "./components/common/PublicOnlyRoute";
@@ -66,6 +67,24 @@ function FallbackRouter() {
 const isNativeApp = Capacitor.isNativePlatform();
 
 export default function App() {
+  useEffect(() => {
+    if (!isNativeApp) return;
+
+    // BrowserRouter navigation pushes real history entries, so canGoBack tracks
+    // in-app route depth — fall through to exiting only once there's nowhere left to go back to.
+    const listenerPromise = CapacitorApp.addListener("backButton", ({ canGoBack }) => {
+      if (canGoBack) {
+        window.history.back();
+      } else {
+        CapacitorApp.exitApp();
+      }
+    });
+
+    return () => {
+      listenerPromise.then((listener) => listener.remove());
+    };
+  }, []);
+
   return (
     <Suspense fallback={<RouteFallback />}>
       <Routes>
