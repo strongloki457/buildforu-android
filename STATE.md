@@ -223,3 +223,21 @@ ruchu).
 - Zostało: `FIREBASE_SERVICE_ACCOUNT` w `backend/.env` (klucz z Firebase Console → Project
   settings → Service accounts → Generate new private key) — backend bez tego cicho nie wysyła
   powiadomień (zaprojektowane tak celowo, nie crashuje).
+
+### 2026-08-14 (ciąg dalszy) — klucz service account dodany i zweryfikowany; ważne ustalenie o Railway
+
+- `FIREBASE_SERVICE_ACCOUNT` wklejony do `backend/.env` (**tylko lokalnie** — potwierdzone
+  `git check-ignore`, `.env` ignorowany przez `backend/.gitignore`, nigdy nie trafi do repo).
+- **Zweryfikowane bezpośrednim wywołaniem `firebase-admin` z prawdziwym kluczem** (tymczasowy
+  skrypt `backend/test-push-tmp.ts`, usunięty po teście): wysłanie do zmyślonego tokenu FCM
+  zwróciło `400 messaging/invalid-argument` **z prawdziwych serwerów Firebase** (nie błąd
+  autoryzacji) — dowód, że klucz service account jest poprawny i w pełni funkcjonalny. Jedyne
+  czego nie da się przetestować lokalnie to odbiór na prawdziwym urządzeniu (Norton blokuje
+  emulatorowi pobranie realnego tokenu, patrz wpis wyżej).
+- **Ważne ustalenie architektury, do zapamiętania na przyszłość**: backend w tym repo
+  (`buildforu-android`) to **odłączona kopia** tego, co faktycznie stoi na Railway i obsługuje
+  działającą apkę (PC + cokolwiek już online). Zmiany robione tutaj (w tym cała ta sesja push
+  notifications) **nie mają żadnego wpływu na produkcję**, dopóki ktoś świadomie nie wdroży tego
+  kodu na Railway (redeploy + migracja `PushToken` na produkcyjnej bazie + `FIREBASE_SERVICE_ACCOUNT`
+  jako zmienna środowiskowa tam). Użytkownik świadomie odłożył ten deploy na później — najpierw
+  dokończyć wszystko lokalnie. **Nie wdrażać na Railway bez wyraźnej, osobnej zgody użytkownika.**

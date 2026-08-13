@@ -31,11 +31,21 @@ _Ostatnia aktualizacja: 2026-08-13_
    To ograniczenie tej konkretnej maszyny deweloperskiej (Norton na Windows), nie produkcji —
    prawdziwy telefon nie routuje ruchu przez ten PC. Pełny test end-to-end push notifications
    wymaga albo prawdziwego telefonu, albo tymczasowego wyłączenia skanowania SSL w Nortonie.
-9. ~~google-services.json / Firebase~~ — **zrobione 2026-08-14**: projekt Firebase
-   "BuildForU-Android" utworzony, appka Android zarejestrowana (`com.buildforu.app`),
-   `google-services.json` wgrany do `android/app/`, `gradlew assembleDebug` z prawdziwym configiem
-   przechodzi. Zostało: `FIREBASE_SERVICE_ACCOUNT` w `backend/.env` (klucz service account z
-   Firebase Console → Project settings → Service accounts) — bez tego backend nie wyśle żadnego
-   powiadomienia (cicho się wyłącza, patrz STATE.md).
+9. ~~google-services.json / Firebase~~ — **w pełni zrobione i zweryfikowane 2026-08-14**: projekt
+   Firebase "BuildForU-Android", appka Android zarejestrowana (`com.buildforu.app`),
+   `google-services.json` w `android/app/`, `FIREBASE_SERVICE_ACCOUNT` w `backend/.env` (**tylko
+   lokalnie, nigdy nie w gicie** — potwierdzone `.gitignore`). Zweryfikowane bezpośrednim
+   wywołaniem Firebase Admin SDK z prawdziwym kluczem: odpowiedź `400 INVALID_ARGUMENT` od
+   serwerów Firebase (nie błąd autoryzacji!) — dowodzi, że klucz service account działa
+   poprawnie, tylko testowy/zmyślony token FCM został (słusznie) odrzucony. Realny odbiór na
+   urządzeniu nieprzetestowany lokalnie (Norton, patrz punkt 8) — do zrobienia na prawdziwym
+   telefonie albo po wdrożeniu na Railway.
+   **WAŻNE — to działa TYLKO lokalnie, dopóki nie zostanie wdrożone na Railway** (backend w tym
+   repo to odłączona kopia produkcyjnego, patrz dziennik 2026-08-14 w STATE.md). Deploy
+   celowo wstrzymany na prośbę użytkownika — najpierw dokończyć wszystko lokalnie.
 10. Dokończyć audyt Fazy 1 z pierwotnego briefu: przetestować szerzej nieprzetestowane widoki
     (Zadania, Kalendarz, Materiały, Asystent AI, Raporty pełne).
+11. **Zaplanować deploy zmian backendu na Railway** (nowa tabela `PushToken` + migracja na
+    produkcyjnej bazie, `FIREBASE_SERVICE_ACCOUNT` jako zmienna środowiskowa na Railway, redeploy
+    kodu) — świadomie odłożone, użytkownik chce najpierw dokończyć lokalnie. Nie ruszać Railway
+    bez wyraźnej zgody.
