@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { ArrowUpRight, Check, CreditCard, ExternalLink, Mail, ReceiptText, Users2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -16,6 +17,12 @@ const PLAN_PRICES = {
   pro: { amount: "€39.95", monthly: "€39.95", hasStripe: true },
   business: { amount: "€79.95", monthly: "€79.95", hasStripe: true }
 };
+
+// Google Play requires digital subscriptions purchased *inside* an Android app to go through
+// Google Play Billing, not a third-party processor like Stripe. Rather than build that
+// integration, the native app is checkout-free: plan changes and payment management happen on
+// the web, the app only shows the current plan/usage read-only.
+const isNative = Capacitor.isNativePlatform();
 
 export default function BillingPage() {
   const { workers } = useAppData();
@@ -103,7 +110,7 @@ export default function BillingPage() {
           title={t("billing.title")}
           subtitle={t("billing.subtitle")}
           action={
-            hasActiveSubscription && hasStripeCustomer ? (
+            !isNative && hasActiveSubscription && hasStripeCustomer ? (
               <Button onClick={handleOpenPortal} disabled={loadingPortal} className="w-full gap-2 sm:w-auto">
                 {loadingPortal ? t("common.loading") : t("billing.manageSubscription")}
                 <ExternalLink size={16} />
@@ -111,6 +118,15 @@ export default function BillingPage() {
             ) : null
           }
         />
+
+        {isNative ? (
+          <div className="mb-6 rounded-[24px] border border-brand-100 bg-brand-50/60 p-5 text-sm text-brand-800">
+            {t(
+              "billing.manageOnWeb",
+              "Plan changes, payment methods, and invoices are managed at buildforu.eu on a computer or browser — this app shows your plan read-only."
+            )}
+          </div>
+        ) : null}
 
         <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[28px] bg-white/82 p-6">
@@ -166,13 +182,15 @@ export default function BillingPage() {
               {hasActiveSubscription ? (
                 <>
                   <p className="mt-4 text-2xl">{t("billing.activeCard")}</p>
-                  <button
-                    onClick={handleOpenPortal}
-                    disabled={loadingPortal}
-                    className="mt-3 flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition"
-                  >
-                    {t("billing.manageInStripe")} <ExternalLink size={12} />
-                  </button>
+                  {!isNative ? (
+                    <button
+                      onClick={handleOpenPortal}
+                      disabled={loadingPortal}
+                      className="mt-3 flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition"
+                    >
+                      {t("billing.manageInStripe")} <ExternalLink size={12} />
+                    </button>
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -182,7 +200,7 @@ export default function BillingPage() {
               )}
             </div>
 
-            {switchablePlans.length > 0 && (
+            {!isNative && switchablePlans.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between px-1">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{t("billing.availablePlans")}</p>
@@ -303,27 +321,31 @@ export default function BillingPage() {
                         ? t("billing.cancelScheduledHint", { date: cancelAtDate })
                         : t("billing.cancelScheduledHintNoDate")}
                     </p>
-                    <button
-                      onClick={handleOpenPortal}
-                      disabled={loadingPortal}
-                      className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
-                    >
-                      <ExternalLink size={15} />
-                      {loadingPortal ? t("common.loading") : t("billing.manageInStripeShort")}
-                    </button>
+                    {!isNative ? (
+                      <button
+                        onClick={handleOpenPortal}
+                        disabled={loadingPortal}
+                        className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
+                      >
+                        <ExternalLink size={15} />
+                        {loadingPortal ? t("common.loading") : t("billing.manageInStripeShort")}
+                      </button>
+                    ) : null}
                   </>
                 ) : (
                   <>
                     <p className="text-sm font-medium text-red-900">{t("billing.cancelTitle")}</p>
                     <p className="mt-1 text-sm text-red-700">{t("billing.cancelHint")}</p>
-                    <button
-                      onClick={handleOpenPortal}
-                      disabled={loadingPortal}
-                      className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
-                    >
-                      <XCircle size={15} />
-                      {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
-                    </button>
+                    {!isNative ? (
+                      <button
+                        onClick={handleOpenPortal}
+                        disabled={loadingPortal}
+                        className="mt-4 flex items-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-sm text-red-700 hover:bg-red-50 transition disabled:opacity-50"
+                      >
+                        <XCircle size={15} />
+                        {loadingPortal ? t("common.loading") : t("billing.cancelButton")}
+                      </button>
+                    ) : null}
                   </>
                 )}
               </div>

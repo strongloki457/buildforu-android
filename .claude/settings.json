@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit *)",
+      "Bash(curl -s -o /dev/null -w *)",
+      "Bash(adb devices*)",
+      "Bash(railway status)",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+
+      "Bash(adb pull *)",
+      "Bash(adb shell input *)",
+      "Bash(adb shell screencap *)",
+      "Bash(adb exec-out screencap*)",
+      "Bash(adb shell monkey *)",
+      "Bash(adb shell dumpsys*)",
+      "Bash(adb shell ime*)",
+      "Bash(adb shell uiautomator*)",
+      "Bash(adb shell settings get*)",
+
+      "PowerShell(adb devices*)",
+      "PowerShell(adb pull *)",
+      "PowerShell(adb shell input *)",
+      "PowerShell(adb shell screencap *)",
+      "PowerShell(adb exec-out screencap*)",
+      "PowerShell(adb shell monkey *)",
+      "PowerShell(adb shell dumpsys*)",
+      "PowerShell(adb shell ime*)",
+      "PowerShell(adb shell uiautomator*)",
+      "PowerShell(adb shell settings get*)"
+    ]
+  }
+}

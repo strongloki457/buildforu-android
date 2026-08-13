@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
-import { env } from "../config/env";
+import { env, getAllowedOrigins } from "../config/env";
 
 const SUPPORTED_LOCALES = ["en", "pl", "de", "fr", "es", "it", "ro", "tr", "uk"] as const;
 type Locale = (typeof SUPPORTED_LOCALES)[number];
@@ -284,7 +284,7 @@ const passwordChangedTemplates: Record<Locale, (name: string) => { subject: stri
 
 export async function sendPasswordResetEmail(to: string, token: string, lang?: string): Promise<void> {
   const locale = resolveLocale(lang);
-  const link = `${env.FRONTEND_URL}/reset-password?token=${encodeURIComponent(token)}`;
+  const link = `${getAllowedOrigins()[0]}/reset-password?token=${encodeURIComponent(token)}`;
   const { subject, html } = passwordResetTemplates[locale](link);
   await sendMail(to, subject, html);
 }
@@ -299,7 +299,7 @@ export async function sendPasswordChangedEmail(to: string, name: string, lang?: 
 export async function sendEmailVerificationEmail(to: string, name: string, token: string, lang?: string): Promise<void> {
   const locale = resolveLocale(lang);
   const safeName = escapeHtml(name);
-  const link = `${env.FRONTEND_URL}/verify-email?token=${encodeURIComponent(token)}`;
+  const link = `${getAllowedOrigins()[0]}/verify-email?token=${encodeURIComponent(token)}`;
   const { subject, html } = verificationTemplates[locale](safeName, link);
   await sendMail(to, subject, html);
 }

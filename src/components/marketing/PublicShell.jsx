@@ -45,17 +45,17 @@ export default function PublicShell({ children }) {
               })}
             </nav>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
               <LanguageSwitcher />
               <Link
                 to={user ? "/dashboard" : "/login"}
-                className="rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50"
+                className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 transition hover:bg-slate-50 sm:px-4 sm:py-2.5 sm:text-sm"
               >
                 {user ? t("publicNav.openDashboard") : t("login.button")}
               </Link>
               <Link
                 to="/register-company"
-                className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-4 py-2.5 text-sm text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600"
+                className="inline-flex items-center gap-2 rounded-2xl bg-brand-700 px-3 py-2 text-xs text-white shadow-[0_18px_36px_-24px_rgba(20,83,45,0.9)] transition hover:bg-brand-600 sm:px-4 sm:py-2.5 sm:text-sm"
               >
                 {t("publicNav.startTrial")}
                 <ArrowRight size={15} />

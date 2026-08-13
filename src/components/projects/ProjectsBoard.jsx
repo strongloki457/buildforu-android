@@ -243,7 +243,7 @@ export default function ProjectsBoard({
         <ProjectsLoadingState />
       ) : projects.length ? (
         <div className="grid gap-5">
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 xl:grid-cols-5">
             <SummaryTile
               icon={FolderKanban}
               label={t("projects.activeBuilds", "Active builds")}

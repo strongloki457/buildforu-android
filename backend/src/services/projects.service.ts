@@ -1,4 +1,4 @@
-import { Prisma, ProjectStatus, Role } from "@prisma/client";
+import { MaterialRequestStatus, Prisma, ProjectStatus, Role } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import type { AuthContext } from "../types/api";
 import { AppError, assertFound } from "../utils/errors";
@@ -170,6 +170,100 @@ export async function updateProjectBudget(currentUser: AuthContext, projectId: s
     where: { id: projectId },
     include: projectInclude
   });
+}
+
+export async function getProjectCosting(currentUser: AuthContext, projectId: string) {
+  const existingProject = await prisma.project.findFirst({
+    where: { id: projectId, companyId: currentUser.companyId, deletedAt: null },
+    select: { id: true, budget: true }
+  });
+
+  const project = assertFound(existingProject, "Project was not found in this company.");
+
+  const assignments = await prisma.workerProject.findMany({
+    where: { projectId },
+    select: {
+      createdAt: true,
+      worker: {
+        select: {
+          id: true,
+          name: true,
+          hourlyRate: true,
+          _count: { select: { projects: { where: { project: { deletedAt: null } } } } }
+        }
+      }
+    }
+  });
+
+  const workerIds = assignments.map(({ worker }) => worker.id);
+
+  const attendanceSessions = workerIds.length
+    ? await prisma.attendance.findMany({
+        where: { workerId: { in: workerIds }, endTime: { not: null } },
+        select: { workerId: true, startTime: true, endTime: true }
+      })
+    : [];
+
+  const sessionsByWorker = new Map<string, typeof attendanceSessions>();
+  for (const session of attendanceSessions) {
+    const list = sessionsByWorker.get(session.workerId);
+    if (list) list.push(session);
+    else sessionsByWorker.set(session.workerId, [session]);
+  }
+
+  let laborCost = 0;
+  let laborHours = 0;
+  const multiProjectWorkers: string[] = [];
+
+  for (const assignment of assignments) {
+    const { worker } = assignment;
+    // A worker's logged hours aren't tagged with a project, so sessions predating this
+    // assignment are excluded and, for workers on multiple concurrent projects, the hours
+    // are split evenly across those projects instead of being counted in full on each.
+    const concurrentProjects = worker._count.projects || 1;
+    const sessions = sessionsByWorker.get(worker.id) ?? [];
+
+    const hours = sessions.reduce((sum, session) => {
+      if (session.startTime < assignment.createdAt) return sum;
+      const ms = (session.endTime as Date).getTime() - session.startTime.getTime();
+      return sum + Math.max(ms, 0) / (1000 * 60 * 60);
+    }, 0);
+
+    const shareHours = hours / concurrentProjects;
+    laborHours += shareHours;
+    laborCost += shareHours * (worker.hourlyRate ?? 0);
+
+    if (concurrentProjects > 1) multiProjectWorkers.push(worker.name);
+  }
+
+  const materialsAgg = await prisma.materialRequest.aggregate({
+    where: { projectId, status: MaterialRequestStatus.PURCHASED },
+    _sum: { totalCost: true }
+  });
+  const materialsCost = materialsAgg._sum.totalCost ?? 0;
+
+  const expensesAgg = await prisma.expense.aggregate({
+    where: { projectId },
+    _sum: { amount: true }
+  });
+  const expensesCost = expensesAgg._sum.amount ?? 0;
+
+  const totalCost = laborCost + materialsCost + expensesCost;
+  const budget = project.budget;
+  const variance = budget !== null ? budget - totalCost : null;
+  const variancePct = budget !== null && budget > 0 ? (variance! / budget) * 100 : null;
+
+  return {
+    budget,
+    laborCost,
+    laborHours,
+    materialsCost,
+    expensesCost,
+    totalCost,
+    variance,
+    variancePct,
+    multiProjectWorkers
+  };
 }
 
 export async function deleteProject(currentUser: AuthContext, projectId: string) {

@@ -2,11 +2,11 @@ import { ArrowRight, Bot, CheckCircle2, MessageSquare, Zap } from "lucide-react"
 import { Link } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
 
-const MESSAGES = [
-  { role: "user", text: "Ile materiałów potrzebujemy na fundamenty dla projektu Kowalski?" },
-  { role: "ai", text: "Dla fundamentów o wymiarach 10×12m i głębokości 1m potrzebujesz ok. 120m³ betonu C25/30. Uwzględniłem standardowy naddatek 10% na straty." },
-  { role: "user", text: "Ile to będzie kosztować?" },
-  { role: "ai", text: "Przy aktualnych cenach ok. 680 zł/m³, koszt betonu to ok. 81 600 zł. Czy mam uwzględnić koszt zbrojenia i szalunków?" }
+const MESSAGE_KEYS = [
+  { role: "user", key: "q1" },
+  { role: "ai", key: "a1" },
+  { role: "user", key: "q2" },
+  { role: "ai", key: "a2" }
 ];
 
 const CAPABILITIES = [
@@ -70,24 +70,24 @@ export default function LandingAiSection() {
           </div>
 
           <div className="space-y-3">
-            {MESSAGES.map((msg, i) => (
+            {MESSAGE_KEYS.map(({ role, key }) => (
               <div
-                key={i}
-                className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
+                key={key}
+                className={`flex gap-2.5 ${role === "user" ? "flex-row-reverse" : ""}`}
               >
-                {msg.role === "ai" ? (
+                {role === "ai" ? (
                   <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-500/20 text-brand-400">
                     <MessageSquare size={11} />
                   </div>
                 ) : null}
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-xs leading-5 ${
-                    msg.role === "user"
+                    role === "user"
                       ? "bg-brand-600 text-white"
                       : "bg-white/10 text-white/85"
                   }`}
                 >
-                  {msg.text}
+                  {t(`landing.aiDemo.${key}`)}
                 </div>
               </div>
             ))}

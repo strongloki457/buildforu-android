@@ -11,8 +11,8 @@ export default function LandingHero() {
     <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
       <div className="max-w-2xl">
         <p className="text-xs uppercase tracking-[0.28em] text-brand-700/75">{t("landing.eyebrow")}</p>
-        <h1 className="mt-6 text-5xl leading-tight text-slate-950 sm:text-6xl">{t("landing.title")}</h1>
-        <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600">{t("landing.subtitle")}</p>
+        <h1 className="mt-6 text-3xl leading-tight text-slate-950 sm:text-5xl lg:text-6xl">{t("landing.title")}</h1>
+        <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{t("landing.subtitle")}</p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <Link

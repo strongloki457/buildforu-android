@@ -40,5 +40,12 @@ router.patch(
   validate({ params: idParamSchema, body: updateProjectBudgetSchema }),
   projectsController.updateProjectBudget
 );
+router.get(
+  "/:id/costing",
+  requireRole(Role.ADMIN),
+  requirePlan("pro", "business", "enterprise"),
+  validate({ params: idParamSchema }),
+  projectsController.getProjectCosting
+);
 
 export default router;

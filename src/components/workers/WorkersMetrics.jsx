@@ -15,7 +15,7 @@ export default function WorkersMetrics({ workers }) {
   ).length;
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
       <MetricCard icon={Users} label={t("workers.activeWorkers")} value={workers.length} />
       <MetricCard icon={BadgeCheck} label={t("statusLabels.on site", "On Site")} value={onSiteCount} />
       <MetricCard icon={BriefcaseBusiness} label={t("workers.assignedProjects")} value={assignedCount} />

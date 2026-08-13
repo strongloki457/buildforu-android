@@ -21,8 +21,8 @@ export default function PricingPage() {
     <PublicShell>
       <section className="mx-auto max-w-3xl text-center">
         <p className="text-xs uppercase tracking-[0.28em] text-brand-700/75">{t("pricing.eyebrow")}</p>
-        <h1 className="mt-5 text-5xl leading-tight text-slate-950 sm:text-6xl">{t("pricing.title")}</h1>
-        <p className="mt-5 text-lg leading-8 text-slate-600">{t("pricing.subtitle")}</p>
+        <h1 className="mt-5 text-3xl leading-tight text-slate-950 sm:text-5xl lg:text-6xl">{t("pricing.title")}</h1>
+        <p className="mt-5 text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{t("pricing.subtitle")}</p>
 
         <div className="mt-8 inline-flex items-center gap-1 rounded-2xl border border-slate-200 bg-white p-1 shadow-soft">
           <button

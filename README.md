@@ -117,6 +117,17 @@ npm run build   # Outputs to dist/
 
 Serve the `dist/` folder with any static host (Nginx, Vercel, Netlify, etc.). Point API calls to your deployed backend by setting `VITE_API_URL` at build time.
 
+### Android (Capacitor)
+
+`capacitor.config.ts` only points the native shell at the Vite dev server (`10.0.2.2`) when `CAP_ENV=dev` is set — otherwise it loads the bundled `dist/` assets, which is what a Play Store build needs to work for real users.
+
+```bash
+npm run cap:sync:dev    # local emulator, live Vite dev server
+npm run cap:sync:prod   # release build, bundled dist/ assets
+```
+
+Never build a release APK/AAB with `CAP_ENV=dev` set — the app would try to reach the developer's local machine and fail for every real user.
+
 ## Project Structure
 
 ```text

@@ -21,8 +21,8 @@ export default {
         }
       },
       fontFamily: {
-        display: ['"Cal Sans"', "sans-serif"],
-        sans: ['"Cal Sans"', "sans-serif"]
+        display: ['"Plus Jakarta Sans"', "sans-serif"],
+        sans: ['"Plus Jakarta Sans"', "sans-serif"]
       },
       boxShadow: {
         glass: "0 20px 60px -24px rgba(20, 83, 45, 0.35)",

@@ -20,7 +20,7 @@ export default function MaterialsMetrics({ isAdmin, scopedRequests }) {
   );
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
       <MetricCard
         icon={ClipboardList}
         label={isAdmin ? t("materials.requestsVisible", "All requests") : t("materials.requestsVisible", "My requests")}

@@ -26,8 +26,10 @@ function LinkAccountModal({ existingUserName, onConfirm, onCancel, isLinking }) 
   return (
     <Modal
       onClose={onCancel}
-      title="Podlinkuj istniejące konto"
-      description={`Konto ${existingUserName} jest już zarejestrowane w innej firmie.`}
+      title={t("workers.linkAccountTitle", "Link existing account")}
+      description={t("workers.linkAccountDescription", "Account {{name}} is already registered with another company.", {
+        name: existingUserName
+      })}
     >
       <div className="grid gap-4">
         <div className="rounded-2xl bg-brand-50 px-4 py-4 text-sm text-brand-900">
@@ -36,18 +38,22 @@ function LinkAccountModal({ existingUserName, onConfirm, onCancel, isLinking }) 
             {existingUserName}
           </p>
           <p className="mt-2 text-brand-700">
-            Ta osoba ma już konto (jest bossem / pracownikiem w innej firmie). Możesz podlinkować to konto — będą mogli się logować
-            jednym emailem i wybierać firmę po zalogowaniu.
+            {t(
+              "workers.linkAccountBody",
+              "This person already has an account (as a boss / employee at another company). You can link this account — they'll be able to sign in with one email and choose a company after logging in."
+            )}
           </p>
         </div>
-        <p className="text-sm text-slate-500">Nie zostanie utworzone nowe hasło — osoba loguje się swoim dotychczasowym hasłem.</p>
+        <p className="text-sm text-slate-500">
+          {t("workers.linkAccountPasswordNote", "No new password will be created — they sign in with their existing password.")}
+        </p>
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button variant="ghost" className="w-full sm:w-auto" onClick={onCancel} disabled={isLinking}>
             {t("common.cancel")}
           </Button>
           <Button className="w-full gap-2 sm:w-auto" onClick={onConfirm} disabled={isLinking}>
             <Link2 size={15} />
-            {isLinking ? "Linkuję..." : "Podlinkuj konto"}
+            {isLinking ? t("workers.linkAccountLinking", "Linking...") : t("workers.linkAccountConfirm", "Link account")}
           </Button>
         </div>
       </div>
@@ -168,7 +174,7 @@ export default function WorkersPage() {
         // Email belongs to a user in another company — offer to link
         setLinkPrompt({
           existingUserId: error.details?.existingUserId,
-          existingUserName: error.details?.existingUserName ?? "ten użytkownik",
+          existingUserName: error.details?.existingUserName ?? t("workers.unknownUser", "this user"),
           pendingPayload: payload,
           mode: formModal?.mode,
           workerId: formModal?.workerId
@@ -183,7 +189,7 @@ export default function WorkersPage() {
     if (!linkPrompt) return;
 
     if (!linkPrompt.existingUserId) {
-      setFormError("Nie można podlinkować konta — brak ID użytkownika. Spróbuj ponownie.");
+      setFormError(t("workers.linkErrorNoUserId", "Can't link this account — missing user ID. Please try again."));
       setLinkPrompt(null);
       return;
     }
@@ -200,7 +206,7 @@ export default function WorkersPage() {
       }
 
       if (!savedWorker) {
-        setFormError(getLastMutationError() || "Nie udało się podlinkować konta. Spróbuj ponownie.");
+        setFormError(getLastMutationError() || t("workers.linkErrorGeneric", "Couldn't link the account. Please try again."));
         setLinkPrompt(null);
         return;
       }
@@ -211,14 +217,14 @@ export default function WorkersPage() {
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.code === "EMAIL_IN_USE") {
-          setFormError("To konto jest już członkiem tej firmy.");
+          setFormError(t("workers.linkErrorEmailInUse", "This account is already a member of this company."));
         } else if (error.code === "USER_NOT_FOUND") {
-          setFormError("Nie znaleziono konta do podlinkowania. Spróbuj ponownie.");
+          setFormError(t("workers.linkErrorUserNotFound", "Couldn't find the account to link. Please try again."));
         } else {
-          setFormError(error.message || "Nie udało się podlinkować konta. Spróbuj ponownie.");
+          setFormError(error.message || t("workers.linkErrorGeneric", "Couldn't link the account. Please try again."));
         }
       } else {
-        setFormError("Nie udało się podlinkować konta. Spróbuj ponownie.");
+        setFormError(t("workers.linkErrorGeneric", "Couldn't link the account. Please try again."));
       }
       setLinkPrompt(null);
     } finally {

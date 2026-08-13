@@ -10,6 +10,7 @@ const OWNER_PASSWORD = "WPISZ_HASLO_TUTAJ"; // min. 8 znaków
 const OWNER_COMPANY_NAME = "BuildForU Admin";
 
 const DEMO_EMAILS_TO_DELETE = ["admin@buildforu.com", "worker@buildforu.com"];
+const DEMO_COMPANY_ID = "company_demo_buildforu";
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -40,41 +41,44 @@ async function main() {
     update: {
       name: OWNER_NAME,
       passwordHash,
-      role: Role.ADMIN,
-      companyId: company.id,
       emailVerified: true
     },
     create: {
       name: OWNER_NAME,
       email: OWNER_EMAIL,
       passwordHash,
-      role: Role.ADMIN,
-      companyId: company.id,
       emailVerified: true
     }
+  });
+
+  // 3. Podepnij właściciela do jego firmy jako ADMIN (multi-company: rola żyje na UserCompany)
+  await prisma.userCompany.upsert({
+    where: { userId_companyId: { userId: owner.id, companyId: company.id } },
+    update: { role: Role.ADMIN },
+    create: { userId: owner.id, companyId: company.id, role: Role.ADMIN }
   });
 
   process.stdout.write(`Konto właściciela utworzone: ${owner.email} (${owner.id})\n`);
   process.stdout.write(`Firma: ${company.name} | Plan: enterprise | isFree: true\n`);
 
-  // 3. Usuń konta demo z bazy
+  // 4. Usuń konta demo z bazy
   for (const email of DEMO_EMAILS_TO_DELETE) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
-      await prisma.user.delete({ where: { email } });
+      await prisma.user.delete({ where: { id: user.id } });
       process.stdout.write(`Usunięto konto demo: ${email}\n`);
     } else {
       process.stdout.write(`Konto demo nie istnieje (pominięto): ${email}\n`);
     }
   }
 
-  // 4. Usuń firmę demo jeśli nie ma już żadnych użytkowników
+  // 5. Usuń firmę demo jeśli nie ma już żadnych powiązanych kont
   const demoCompany = await prisma.company.findUnique({
-    where: { id: "company_demo_buildforu" },
-    include: { users: true }
+    where: { id: DEMO_COMPANY_ID },
+    include: { userCompanies: true }
   });
-  if (demoCompany && demoCompany.users.length === 0) {
-    await prisma.company.delete({ where: { id: "company_demo_buildforu" } });
+  if (demoCompany && demoCompany.userCompanies.length === 0) {
+    await prisma.company.delete({ where: { id: DEMO_COMPANY_ID } });
     process.stdout.write("Usunięto firmę demo: BuildForU Demo Construction\n");
   }
 }

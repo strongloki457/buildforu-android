@@ -9,7 +9,7 @@ export default function UserMenu() {
   const [open, setOpen] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
   const { user, logout, switchRole, switchCompany } = useAuth();
-  const { t } = useI18n();
+  const { t, locale, setLocale, languageOptions } = useI18n();
   const navigate = useNavigate();
 
   const handleSwitchRole = async (role) => {
@@ -46,7 +46,7 @@ export default function UserMenu() {
       {isEmployeeMode && (
         <div className="mb-1 flex items-center gap-1.5 rounded-2xl bg-amber-50 border border-amber-200 px-2.5 py-1 text-xs text-amber-700">
           <ArrowLeftRight size={11} />
-          Tryb pracownika
+          {t("userMenu.employeeModeBadge")}
         </div>
       )}
       <button
@@ -78,7 +78,7 @@ export default function UserMenu() {
 
           {otherCompanies.length > 0 && (
             <div className="mt-3">
-              <p className="px-3 pb-1 text-[10px] uppercase tracking-widest text-slate-400">Przełącz firmę</p>
+              <p className="px-3 pb-1 text-[10px] uppercase tracking-widest text-slate-400">{t("userMenu.switchCompany")}</p>
               {otherCompanies.map((company) => (
                 <button
                   key={company.id}
@@ -90,7 +90,7 @@ export default function UserMenu() {
                   <span className="min-w-0 flex-1">
                     <span className="block truncate">{company.name}</span>
                     <span className="block text-xs text-slate-400">
-                      {company.role === "ADMIN" ? "Admin" : "Pracownik"}
+                      {company.role === "ADMIN" ? t("roles.admin") : t("roles.employee")}
                     </span>
                   </span>
                 </button>
@@ -105,7 +105,7 @@ export default function UserMenu() {
               className="mt-3 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
             >
               <ArrowLeftRight size={16} />
-              Przełącz na konto pracownika
+              {t("userMenu.switchToEmployee")}
             </button>
           )}
 
@@ -116,13 +116,33 @@ export default function UserMenu() {
               className="mt-3 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm text-brand-700 transition hover:bg-brand-50 disabled:opacity-50"
             >
               <ArrowLeftRight size={16} />
-              Wróć do panelu admina
+              {t("userMenu.switchToAdmin")}
             </button>
           )}
 
+          <div className="mt-3 border-t border-slate-100 pt-3 sm:hidden">
+            <p className="px-3 pb-1 text-[10px] uppercase tracking-widest text-slate-400">{t("common.language")}</p>
+            <div className="flex flex-wrap gap-1.5 px-3">
+              {languageOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => setLocale(option.value)}
+                  className={`rounded-full px-3 py-1.5 text-xs transition ${
+                    locale === option.value
+                      ? "bg-brand-700 text-white"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {t(`languages.${option.value}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <button
             onClick={() => { setOpen(false); navigate("/settings"); }}
-            className="mt-1 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50"
+            className="mt-3 flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm text-slate-600 transition hover:bg-slate-50"
           >
             <UserCircle size={16} />
             {t("common.account")}

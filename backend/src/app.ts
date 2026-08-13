@@ -9,6 +9,7 @@ import { AppError } from "./utils/errors";
 import attendanceRoutes from "./routes/attendance.routes";
 import authRoutes from "./routes/auth.routes";
 import chatRoutes from "./routes/chat.routes";
+import expensesRoutes from "./routes/expenses.routes";
 import materialsRoutes from "./routes/materials.routes";
 import notificationsRoutes from "./routes/notifications.routes";
 import projectsRoutes from "./routes/projects.routes";
@@ -90,6 +91,7 @@ app.use("/api/projects", crudRateLimit, projectsRoutes);
 app.use("/api/tasks", crudRateLimit, tasksRoutes);
 app.use("/api/attendance", crudRateLimit, attendanceRoutes);
 app.use("/api/materials", crudRateLimit, materialsRoutes);
+app.use("/api/expenses", crudRateLimit, expensesRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 app.use(notFoundHandler);

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +8,7 @@
   :root {
     color: #10231a;
     background: #f3f6f3;
-    font-family: "Cal Sans", sans-serif;
+    font-family: "Plus Jakarta Sans", sans-serif;
   }
 
   * {

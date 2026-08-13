@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const StripeLib = require("stripe");
-import { env } from "../config/env";
+import { env, getAllowedOrigins } from "../config/env";
 import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
 
@@ -63,8 +63,8 @@ export async function createCheckoutSession(companyId: string, plan: string, use
     payment_method_types: ["card"],
     payment_method_collection: "if_required",
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${env.FRONTEND_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${env.FRONTEND_URL}/settings/billing`,
+    success_url: `${getAllowedOrigins()[0]}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${getAllowedOrigins()[0]}/settings/billing`,
     metadata: { companyId, plan },
     subscription_data: {
       metadata: { companyId, plan },
@@ -85,7 +85,7 @@ export async function createBillingPortalSession(companyId: string) {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: company.stripeCustomerId,
-    return_url: `${env.FRONTEND_URL}/settings/billing`
+    return_url: `${getAllowedOrigins()[0]}/settings/billing`
   });
 
   return { url: session.url as string };

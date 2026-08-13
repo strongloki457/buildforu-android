@@ -39,4 +39,8 @@ export const projectsApi = {
       body: { budget },
     });
   },
+
+  getCosting(id) {
+    return apiRequest(`/api/projects/${id}/costing`);
+  },
 };

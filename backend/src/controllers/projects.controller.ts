@@ -32,3 +32,8 @@ export const updateProjectBudget = asyncHandler(async (req: Request, res: Respon
   const project = await projectsService.updateProjectBudget(req.user!, req.params.id, req.body.budget);
   res.json({ project });
 });
+
+export const getProjectCosting = asyncHandler(async (req: Request, res: Response) => {
+  const costing = await projectsService.getProjectCosting(req.user!, req.params.id);
+  res.json({ costing });
+});

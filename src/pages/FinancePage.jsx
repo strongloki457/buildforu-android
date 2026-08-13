@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { projectsApi } from "../api/projects.api";
 import { workersApi } from "../api/workers.api";
 import PlanUpgradeWall from "../components/common/PlanUpgradeWall";
+import ProjectCostingCard from "../components/finance/ProjectCostingCard";
 import Card from "../components/ui/Card";
 import MetricCard from "../components/ui/MetricCard";
 import SectionHeader from "../components/ui/SectionHeader";
@@ -16,6 +17,43 @@ import { useAppData } from "../hooks/useAppData";
 import { useAuth } from "../hooks/useAuth";
 import { useI18n } from "../hooks/useI18n";
 import { getLocalDateKey } from "../utils/date";
+
+function BudgetInlineInput({ value, suffix, onSave, isSaving }) {
+  const [draft, setDraft] = useState(value ?? "");
+
+  useEffect(() => {
+    setDraft(value ?? "");
+  }, [value]);
+
+  const handleBlur = () => {
+    const trimmed = draft.trim();
+    const numeric = trimmed === "" ? null : Number(trimmed);
+    if (numeric !== null && (Number.isNaN(numeric) || numeric < 0)) {
+      setDraft(value ?? "");
+      return;
+    }
+    if (numeric === (value ?? null)) return;
+    onSave(numeric);
+  };
+
+  return (
+    <div className="flex shrink-0 items-center gap-2">
+      <input
+        type="number"
+        inputMode="decimal"
+        min="0"
+        step="0.01"
+        value={draft}
+        disabled={isSaving}
+        onChange={(event) => setDraft(event.target.value)}
+        onBlur={handleBlur}
+        placeholder="0"
+        className="w-24 rounded-xl border border-slate-200 bg-white px-3 py-2 text-right text-sm text-slate-900 outline-none transition focus:border-brand-400 focus:ring-4 focus:ring-brand-100"
+      />
+      <span className="text-xs text-slate-400">{suffix}</span>
+    </div>
+  );
+}
 
 function RateInputRow({ label, sublabel, value, suffix, onSave, isSaving }) {
   const [draft, setDraft] = useState(value ?? "");
@@ -165,13 +203,17 @@ function RatesAndBudgetsSection() {
         ) : projectsList.length ? (
           <div className="space-y-2">
             {projectsList.map((project) => (
-              <RateInputRow
+              <ProjectCostingCard
                 key={project.id}
-                label={project.name}
-                value={project.budget}
-                suffix={t("finance.currency", "€")}
-                isSaving={savingId === project.id}
-                onSave={(value) => handleSaveBudget(project.id, value)}
+                project={project}
+                budgetSlot={
+                  <BudgetInlineInput
+                    value={project.budget}
+                    suffix={t("finance.currency", "€")}
+                    isSaving={savingId === project.id}
+                    onSave={(value) => handleSaveBudget(project.id, value)}
+                  />
+                }
               />
             ))}
           </div>
