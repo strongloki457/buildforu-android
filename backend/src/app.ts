@@ -13,6 +13,7 @@ import expensesRoutes from "./routes/expenses.routes";
 import materialsRoutes from "./routes/materials.routes";
 import notificationsRoutes from "./routes/notifications.routes";
 import projectsRoutes from "./routes/projects.routes";
+import pushRoutes from "./routes/push.routes";
 import tasksRoutes from "./routes/tasks.routes";
 import aiRoutes from "./routes/ai.routes";
 import workersRoutes from "./routes/workers.routes";
@@ -92,6 +93,7 @@ app.use("/api/tasks", crudRateLimit, tasksRoutes);
 app.use("/api/attendance", crudRateLimit, attendanceRoutes);
 app.use("/api/materials", crudRateLimit, materialsRoutes);
 app.use("/api/expenses", crudRateLimit, expensesRoutes);
+app.use("/api/push", crudRateLimit, pushRoutes);
 app.use("/api/stripe", stripeRoutes);
 
 app.use(notFoundHandler);

@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma";
 import { AppError } from "../utils/errors";
+import * as pushService from "./push.service";
 
 const threadInclude = {
   participants: {
@@ -98,6 +99,20 @@ export async function sendMessage(
     }),
     prisma.chatThread.update({ where: { id: threadId }, data: { updatedAt: new Date() } })
   ]);
+
+  const otherParticipants = await prisma.chatParticipant.findMany({
+    where: { threadId, userId: { not: senderId } },
+    select: { userId: true }
+  });
+
+  const notificationBody = message.text.trim() || "Sent a photo";
+  for (const participant of otherParticipants) {
+    void pushService.sendToUser(participant.userId, {
+      title: message.sender.name,
+      body: notificationBody,
+      data: { type: "chat", threadId }
+    });
+  }
 
   return message;
 }

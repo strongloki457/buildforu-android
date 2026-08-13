@@ -11,11 +11,13 @@ import { getMobileNavigation, getNavigation } from "../components/navigation/nav
 import { useAuth } from "../hooks/useAuth";
 import { useAppData } from "../hooks/useAppData";
 import { useI18n } from "../hooks/useI18n";
+import { usePushNotifications } from "../hooks/usePushNotifications";
 
 const isNativeApp = Capacitor.isNativePlatform();
 
 export default function AppLayout() {
   const { user } = useAuth();
+  usePushNotifications(Boolean(user));
   const { dataError, isDataLoading, notifications, dismissNotification, refreshData } = useAppData();
   const { t } = useI18n();
   const location = useLocation();

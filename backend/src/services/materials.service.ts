@@ -5,6 +5,7 @@ import { AppError, assertFound } from "../utils/errors";
 import { getPagination, toPaginatedResult } from "../utils/pagination";
 import type { CreateMaterialRequestInput, MaterialsQuery } from "../validators/materials.validators";
 import { normalizeOptionalId, requireCompanyProject, requireCompanyWorker } from "./companyScope.service";
+import * as pushService from "./push.service";
 
 const materialInclude = {
   requesterWorker: {
@@ -124,11 +125,22 @@ export async function updateMaterialRequestStatus(
 
   assertFound(request, "Material request was not found in this company.");
 
-  return prisma.materialRequest.update({
+  const updated = await prisma.materialRequest.update({
     where: { id: requestId },
     data: { status },
     include: materialInclude
   });
+
+  const requesterUserId = await pushService.resolveUserIdForWorker(updated.requesterWorkerId);
+  if (requesterUserId) {
+    void pushService.sendToUser(requesterUserId, {
+      title: "Material request updated",
+      body: `${updated.itemName} is now ${status}`,
+      data: { type: "material", requestId }
+    });
+  }
+
+  return updated;
 }
 
 export async function updateMaterialCost(currentUser: AuthContext, requestId: string, totalCost: number | null) {

@@ -69,8 +69,21 @@ model User {
   passwordResetTokens       PasswordResetToken[]
   emailVerificationTokens   EmailVerificationToken[]
   refreshTokens             RefreshToken[]
+  pushTokens                PushToken[]
   createdAt            DateTime             @default(now())
   updatedAt            DateTime             @updatedAt
+}
+
+model PushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  platform  String   @default("android")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model UserCompany {

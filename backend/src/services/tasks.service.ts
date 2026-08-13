@@ -5,6 +5,7 @@ import { AppError, assertFound } from "../utils/errors";
 import { getPagination, toPaginatedResult } from "../utils/pagination";
 import type { CreateTaskInput, TasksQuery, UpdateTaskInput } from "../validators/tasks.validators";
 import { normalizeOptionalId, requireCompanyProject, requireCompanyWorker } from "./companyScope.service";
+import * as pushService from "./push.service";
 
 const taskInclude = {
   worker: {
@@ -80,7 +81,7 @@ export async function createTask(currentUser: AuthContext, input: CreateTaskInpu
     await requireCompanyProject(projectId, currentUser.companyId);
   }
 
-  return prisma.task.create({
+  const task = await prisma.task.create({
     data: {
       title: input.title,
       description: input.description || null,
@@ -92,6 +93,19 @@ export async function createTask(currentUser: AuthContext, input: CreateTaskInpu
     },
     include: taskInclude
   });
+
+  if (workerId) {
+    const assigneeUserId = await pushService.resolveUserIdForWorker(workerId);
+    if (assigneeUserId) {
+      void pushService.sendToUser(assigneeUserId, {
+        title: "New task assigned",
+        body: task.title,
+        data: { type: "task", taskId: task.id }
+      });
+    }
+  }
+
+  return task;
 }
 
 function assertEmployeeCanUpdate(input: UpdateTaskInput) {
