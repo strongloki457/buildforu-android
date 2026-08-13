@@ -1,6 +1,17 @@
+import { Capacitor } from "@capacitor/core";
+
 const USER_KEY = "buildforu-auth-user";
 const TOKEN_KEY = "buildforu-auth-token";
 const REFRESH_KEY = "buildforu-auth-refresh";
+
+// On web, the frontend and api.buildforu.eu share the same registrable domain, so the
+// SameSite=Lax httpOnly refresh cookie is sent automatically — the refresh token never
+// needs to touch JS there, which keeps it out of reach of XSS.
+// The native Capacitor build serves the app from a different origin (https://localhost),
+// which is cross-site relative to api.buildforu.eu, so SameSite=Lax silently drops that
+// cookie on refresh requests. Only on native do we fall back to storing the refresh token
+// ourselves and sending it in the request body (see src/api/client.js).
+const isNativeApp = Capacitor.isNativePlatform();
 
 function getStoredValue(key) {
   return window.localStorage.getItem(key) || window.sessionStorage.getItem(key);
@@ -32,12 +43,14 @@ export function setStoredToken(token, remember = true) {
 }
 
 export function getStoredRefreshToken() {
-  // Refresh token lives only in httpOnly cookie — not exposed to JS
-  return null;
+  if (!isNativeApp) return null;
+  return getStoredValue(REFRESH_KEY);
 }
 
-export function setStoredRefreshToken(_token, _remember = true) {
-  // Intentionally no-op: refresh token is stored server-side in httpOnly cookie only
+export function setStoredRefreshToken(token, remember = true) {
+  if (!isNativeApp) return;
+  if (!token) { removeStoredValue(REFRESH_KEY); return; }
+  setStoredValue(REFRESH_KEY, token, remember);
 }
 
 export function getStoredUser() {
