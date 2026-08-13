@@ -198,3 +198,28 @@ sieci i pokazuje login zamiast się wywalać), ale uniemożliwia pełny test end
 backendem produkcyjnym na tym emulatorze, dopóki ktoś nie zaimportuje certu Nortona też do
 systemowego magazynu zaufania Androida w AVD (albo nie wyłączy skanowania SSL Nortona dla tego
 ruchu).
+
+### 2026-08-14 — google-services.json dodany, test rejestracji push tokenu
+
+- Użytkownik założył projekt Firebase "BuildForU-Android" (konto Google biznesowe
+  `suport@buildforu.eu` — literówka w adresie, ale konto działa, niekrytyczne, odpuszczone) i
+  zarejestrował appkę Android (`com.buildforu.app`). Pobrany `google-services.json` wgrany do
+  `android/app/google-services.json` (to NIE jest sekret — bezpieczne w repo, zawarty w każdym
+  APK i tak; w przeciwieństwie do klucza service account, który zostaje tylko lokalnie).
+- Root `android/build.gradle` już miał `classpath 'com.google.gms:google-services:4.4.4'`
+  przygotowany wcześniej przez generator Capacitora — nic dodatkowego nie trzeba było dopisywać.
+- `gradlew assembleDebug` z prawdziwym configiem: **BUILD SUCCESSFUL**.
+- **Test na emulatorze (przez lokalny dev backend)**: logowanie ✓, system poprawnie poprosił o
+  zgodę na powiadomienia (`Allow BuildForU to send you notifications?`) ✓, `registrationError`
+  listener poprawnie złapał błąd bez crasha appki ✓. Sama rejestracja tokenu FCM **nie powiodła
+  się** — `FirebaseMessaging: Failed to get FIS auth token... SERVICE_NOT_AVAILABLE` przy próbie
+  dobicia do `firebaseinstallations.googleapis.com`. To ten sam Norton co poprzednio, ale
+  **prawdopodobnie nienaprawialny lokalnie tym samym sposobem** — Google Play Services celowo
+  ignoruje ręcznie dodane certy CA (ochrona przed MITM), więc import certu Nortona do systemu
+  Android (w przeciwieństwie do JBR dla Gradle) najpewniej by nie pomógł. To ograniczenie tej
+  maszyny deweloperskiej — prawdziwy telefon nie routuje ruchu przez Nortona na tym PC, więc
+  produkcyjnie push notifications powinny działać. Pełny test end-to-end wymaga prawdziwego
+  telefonu albo tymczasowego wyłączenia skanowania SSL w Nortonie.
+- Zostało: `FIREBASE_SERVICE_ACCOUNT` w `backend/.env` (klucz z Firebase Console → Project
+  settings → Service accounts → Generate new private key) — backend bez tego cicho nie wysyła
+  powiadomień (zaprojektowane tak celowo, nie crashuje).

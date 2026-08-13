@@ -22,12 +22,20 @@ _Ostatnia aktualizacja: 2026-08-13_
 7. (Opcjonalnie, do rozważenia) Wyczyścić historię gita z ~307 MB starych plików `.zip` i
    ~7000 plików `node_modules` zacommitowanych w przeszłości (przepisanie historii +
    force-push) — obecnie tylko odznaczone ze śledzenia, nadal zajmują miejsce w `.git`.
-8. **Norton blokuje też ruch sieciowy emulatora do prawdziwego `api.buildforu.eu`** (nie tylko
-   Gradle) — `CertPathValidatorException: Trust anchor for certification path not found` w logu
-   WebView. Nie blokuje developmentu (apka poprawnie łapie `NETWORK_ERROR` i pokazuje ekran
-   logowania zamiast się wywalać), ale uniemożliwia pełny test end-to-end z produkcyjnym API na
-   tej maszynie/emulatorze, dopóki cert Nortona nie trafi też do zaufanych certów systemu Android
-   w AVD (osobny problem od naprawy Gradle — inny magazyn zaufania).
-9. Dokończyć audyt Fazy 1 z pierwotnego briefu: przetestować szerzej nieprzetestowane widoki
-   (Zadania, Kalendarz, Materiały, Asystent AI, Raporty pełne), `google-services.json` /
-   Firebase dla push notifications wciąż brakuje.
+8. **Norton blokuje ruch sieciowy emulatora do prawdziwych serwerów Google/backendu** —
+   potwierdzone w dwóch miejscach: `api.buildforu.eu` (`CertPathValidatorException`, WebView) i
+   `firebaseinstallations.googleapis.com` (`SERVICE_NOT_AVAILABLE`, Google Play Services przy
+   rejestracji tokenu push). Nie blokuje developmentu (apka łapie błędy i nie się nie wywala), ale
+   **prawdopodobnie NIE da się tego naprawić importem certu tak jak dla Gradle** — Google Play
+   Services celowo nie honoruje ręcznie dodanych certów CA (ochrona przed dokładnie takim MITM).
+   To ograniczenie tej konkretnej maszyny deweloperskiej (Norton na Windows), nie produkcji —
+   prawdziwy telefon nie routuje ruchu przez ten PC. Pełny test end-to-end push notifications
+   wymaga albo prawdziwego telefonu, albo tymczasowego wyłączenia skanowania SSL w Nortonie.
+9. ~~google-services.json / Firebase~~ — **zrobione 2026-08-14**: projekt Firebase
+   "BuildForU-Android" utworzony, appka Android zarejestrowana (`com.buildforu.app`),
+   `google-services.json` wgrany do `android/app/`, `gradlew assembleDebug` z prawdziwym configiem
+   przechodzi. Zostało: `FIREBASE_SERVICE_ACCOUNT` w `backend/.env` (klucz service account z
+   Firebase Console → Project settings → Service accounts) — bez tego backend nie wyśle żadnego
+   powiadomienia (cicho się wyłącza, patrz STATE.md).
+10. Dokończyć audyt Fazy 1 z pierwotnego briefu: przetestować szerzej nieprzetestowane widoki
+    (Zadania, Kalendarz, Materiały, Asystent AI, Raporty pełne).

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "632975619530",
+    "project_id": "buildforu-android",
+    "storage_bucket": "buildforu-android.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632975619530:android:679abdcccedb8e9bd18b33",
+        "android_client_info": {
+          "package_name": "com.buildforu.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBLLJd1ATqUb6-aV3IFbOwUQZbDll4_Hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
