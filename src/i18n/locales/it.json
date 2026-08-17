@@ -578,7 +578,7 @@
                      "billingDescription":  "Apri la vista abbonamento per verificare piano, utilizzo lavoratori e dati mock di fatturazione.",
                      "manageBilling":  "Gestisci fatturazione",
                      "planLabel":  "Piano",
-                     "workspaceAccessHint":  "L’accesso al workspace ? simulato in questo MVP frontend.",
+                     "workspaceAccessHint":  "Workspace aziendale, piano di abbonamento e struttura dei posti per {{plan}}.",
                      "profilePhoto":  "Foto profilo",
                      "uploadPhoto":  "Carica foto",
                      "removePhoto":  "Rimuovi foto",

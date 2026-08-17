@@ -578,7 +578,7 @@
                      "billingDescription":  "Abre la vista de suscripcion para revisar el plan, uso de trabajadores y datos mock de facturacion.",
                      "manageBilling":  "Gestionar facturacion",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "El acceso al espacio de trabajo está simulado en este MVP frontend.",
+                     "workspaceAccessHint":  "Espacio de trabajo de la empresa, plan de suscripción y estructura de puestos para {{plan}}.",
                      "profilePhoto":  "Foto de perfil",
                      "uploadPhoto":  "Subir foto",
                      "removePhoto":  "Eliminar foto",

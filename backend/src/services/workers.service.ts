@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { Prisma, Role } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import type { AuthContext, PaginationQuery } from "../types/api";
@@ -6,6 +7,24 @@ import { generateTemporaryPassword, hashPassword } from "../utils/password";
 import { getPagination, toPaginatedResult } from "../utils/pagination";
 import type { CreateWorkerInput, UpdateWorkerInput } from "../validators/workers.validators";
 import { ensureProjectsBelongToCompany } from "./companyScope.service";
+import { sendEmailVerificationEmail } from "./email.service";
+
+const EMAIL_VERIFY_TTL_MS = 24 * 60 * 60 * 1000;
+
+async function sendNewAccountVerificationEmail(userId: string, email: string, name: string, lang?: string) {
+  const verifyToken = crypto.randomBytes(32).toString("hex");
+  await prisma.emailVerificationToken.create({
+    data: {
+      userId,
+      token: verifyToken,
+      expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS)
+    }
+  });
+
+  sendEmailVerificationEmail(email, name, verifyToken, lang).catch((error) => {
+    process.stderr.write(`[workers] Failed to send verification email to ${email}: ${error}\n`);
+  });
+}
 
 const workerInclude = {
   userCompany: {
@@ -126,7 +145,7 @@ const PLAN_WORKER_LIMITS: Record<string, number> = {
   enterprise: Infinity
 };
 
-export async function createWorker(currentUser: AuthContext, input: CreateWorkerInput) {
+export async function createWorker(currentUser: AuthContext, input: CreateWorkerInput, lang?: string) {
   const projectIds = await ensureProjectsBelongToCompany(input.projectIds, currentUser.companyId);
   const email = normalizeEmail(input.email);
   let temporaryPassword: string | null = null;
@@ -185,6 +204,8 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
       }
     }
   }
+
+  let newAccountUserId: string | null = null;
 
   const createdWorker = await prisma.$transaction(async (tx) => {
     const company = await tx.company.findUnique({
@@ -256,11 +277,17 @@ export async function createWorker(currentUser: AuthContext, input: CreateWorker
             workerId: worker.id
           }
         });
+
+        newAccountUserId = newUser.id;
       }
     }
 
     return worker;
   }, { isolationLevel: "Serializable" });
+
+  if (newAccountUserId && email) {
+    await sendNewAccountVerificationEmail(newAccountUserId, email, input.name, lang);
+  }
 
   const worker = normalizeWorker(await fetchWorker(createdWorker.id));
 

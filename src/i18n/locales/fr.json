@@ -601,7 +601,7 @@
                      "billingDescription":  "Ouvrez la vue abonnement pour vérifier le forfait, l’utilisation des employés et les informations de facturation d’exemple.",
                      "manageBilling":  "Gerer la facturation",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "L’accès à l’espace de travail est simulé dans ce MVP.",
+                     "workspaceAccessHint":  "Espace de travail de l'entreprise, plan d'abonnement et structure des sièges pour {{plan}}.",
                      "profilePhoto":  "Photo de profil",
                      "uploadPhoto":  "Télécharger une photo",
                      "removePhoto":  "Supprimer la photo",

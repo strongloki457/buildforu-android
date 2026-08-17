@@ -636,7 +636,7 @@
     "billingDescription": "Otwórz widok subskrypcji, aby sprawdzić plan, liczbę pracowników i przykładowe informacje rozliczeniowe.",
     "manageBilling": "Zarządzaj rozliczeniami",
     "planLabel": "Plan",
-    "workspaceAccessHint": "Dostęp do przestrzeni jest symulowany w tym MVP.",
+    "workspaceAccessHint": "Przestrzeń firmowa, plan subskrypcji i struktura miejsc dla planu {{plan}}.",
     "profilePhoto": "Zdjęcie profilowe",
     "uploadPhoto": "Prześlij zdjęcie",
     "removePhoto": "Usuń zdjęcie",

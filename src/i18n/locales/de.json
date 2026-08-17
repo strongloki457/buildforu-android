@@ -578,7 +578,7 @@
                      "billingDescription":  "Offnen Sie die Abo-Ansicht, um Plan, Mitarbeiterzahl und Mock-Abrechnungsdaten zu prufen.",
                      "manageBilling":  "Abrechnung verwalten",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "Workspace-Zugriff ist in diesem Frontend-MVP simuliert.",
+                     "workspaceAccessHint":  "Unternehmens-Workspace, Abo-Plan und Sitzplatzstruktur für {{plan}}.",
                      "profilePhoto":  "Profilfoto",
                      "uploadPhoto":  "Foto hochladen",
                      "removePhoto":  "Foto entfernen",

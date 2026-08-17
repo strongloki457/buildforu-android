@@ -3,13 +3,19 @@ import * as workersService from "../services/workers.service";
 import type { PaginationQuery } from "../types/api";
 import { asyncHandler } from "../utils/asyncHandler";
 
+function getLang(req: Request): string | undefined {
+  const header = req.headers["accept-language"];
+  if (!header || typeof header !== "string") return undefined;
+  return header.split(",")[0].trim().split("-")[0].toLowerCase() || undefined;
+}
+
 export const listWorkers = asyncHandler(async (req: Request, res: Response) => {
   const result = await workersService.listWorkers(req.user!, req.query as unknown as PaginationQuery);
   res.json(result);
 });
 
 export const createWorker = asyncHandler(async (req: Request, res: Response) => {
-  const result = await workersService.createWorker(req.user!, req.body);
+  const result = await workersService.createWorker(req.user!, req.body, getLang(req));
   res.status(201).json(result);
 });
 

@@ -748,7 +748,7 @@
                      "workspaceSaved":  "Workspace preferences saved locally",
                      "workspaceSavedDetail":  "This screen is UI-only for now and ready to connect to your future backend settings service.",
                      "planLabel":  "Plan",
-                     "workspaceAccessHint":  "Workspace access is mocked in this frontend MVP.",
+                     "workspaceAccessHint":  "Company workspace, subscription plan and seat structure for {{plan}}.",
                      "profilePhoto":  "Profile photo",
                      "uploadPhoto":  "Upload photo",
                      "removePhoto":  "Remove photo",
